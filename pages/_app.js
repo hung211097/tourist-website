@@ -4,7 +4,6 @@ import { Provider } from 'react-redux'
 import withRedux from 'next-redux-wrapper'
 import { initStore } from '../store'
 import { authLogin } from '../actions'
-import { isServer } from 'services/utils.service'
 import Routes from 'routes'
 
 class TouristApp extends App {
@@ -30,7 +29,7 @@ class TouristApp extends App {
         return (
             <Container>
                 <Provider store={store}>
-                    <Component {...pageProps} store={store} />
+                    <Component {...pageProps} />
                 </Provider>
             </Container>
         )

@@ -19,7 +19,7 @@ module.exports = {
         },
         'babel-loader',
         'styled-jsx-css-loader',
-      ],
+      ]
     })
 
     // const configFileMappings = {

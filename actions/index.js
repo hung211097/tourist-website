@@ -3,7 +3,8 @@ import Router from 'next/router'
 import { isServer } from 'services/utils.service'
 
 export const actionTypes = {
-  
+  SET_USER: 'SET_USER',
+  REDIRECT_AFFTER_LOGIN: 'REDIRECT_AFFTER_LOGIN',
 }
 
 export const storeKEY = 'tourist-v1'
@@ -23,5 +24,12 @@ export const authLogin = (user, bool = false) => {
 export const loadSuccess = () => {
     return {
         type: actionTypes.DATA_LOAD_SUCCESS
+    }
+}
+
+export const saveRedirectUrl = (url) => {
+    return {
+        type: actionTypes.REDIRECT_AFFTER_LOGIN,
+        payload: url
     }
 }
