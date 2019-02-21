@@ -23,7 +23,8 @@ module.exports = {
       "document": true,
       "setInterval": true,
       "google": true,
-      "clearInterval": true
+      "clearInterval": true,
+      "navigator": true
   },
   "extends": ["eslint:recommended", "plugin:react/recommended"]
 };

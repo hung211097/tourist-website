@@ -1,13 +1,21 @@
 import React from 'react'
-// import {Link, Router} from 'routes'
+import { Link } from 'routes'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 // import ApiService from 'services/api.service'
-import { FaRegCreditCard, FaRegCheckSquare, FaSearch, FaTimesCircle } from "react-icons/fa";
+import { FaRegCreditCard, FaRegCheckSquare, FaSearch, FaTimesCircle } from "react-icons/fa"
+import { saveLocation } from '../../actions'
 
 const mapStateToProps = () => {
-  return {}
+  return {
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    saveLocation: (location, err) => {dispatch(saveLocation(location, err))}
+  }
 }
 
 class Header extends React.Component {
@@ -16,7 +24,7 @@ class Header extends React.Component {
   static propTypes = {
     accessToken: PropTypes.string,
     page: PropTypes.string,
-    dispatch: PropTypes.func.isRequired
+    saveLocation: PropTypes.func
   }
 
   constructor(props) {
@@ -24,11 +32,41 @@ class Header extends React.Component {
     // this.apiService = ApiService()
     this.state = {
       showSidebar: false,
-      showSearchBox: false
+      showSearchBox: false,
     }
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(this.showLocation.bind(this), this.showError.bind(this));
+    } else {
+      this.props.saveLocation && this.props.saveLocation(undefined, 'Geolocation is not supported by this browser.')
+    }
+  }
+
+  showLocation(position) {
+    this.props.saveLocation && this.props.saveLocation({latitude:  position.coords.latitude, longitude: position.coords.longitude}, '')
+  }
+
+  showError(error) {
+    let strError = ''
+    switch(error.code) {
+      case error.PERMISSION_DENIED:
+        strError = "User denied the request for Geolocation."
+        break;
+      case error.POSITION_UNAVAILABLE:
+        strError = "Location information is unavailable."
+        break;
+      case error.TIMEOUT:
+        strError = "The request to get user location timed out."
+        break;
+      case error.UNKNOWN_ERROR:
+        strError = "An unknown error occurred."
+        break;
+    }
+
+    this.props.saveLocation && this.props.saveLocation(undefined, strError)
+  }
 
   toggleSideBar(){
     this.setState({
@@ -249,15 +287,17 @@ class Header extends React.Component {
                 <div className="nav-content nd_options_dnone_responsive">
                   <div style={{height: '10px'}} className="nd_options_section" />
                   {/*LOGO*/}
-                  <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel">
-                    <img alt="logo" className="nd_options_position_absolute nd_options_left_15 logo" src="/static/images/logo.png"/>
-                  </a>
+                  <Link route="home">
+                    <a>
+                      <img alt="logo" className="nd_options_position_absolute nd_options_left_15 logo" src="/static/images/logo.png"/>
+                    </a>
+                  </Link>
                   <div className="nd_options_navigation_2 nd_options_navigation_type nd_options_text_align_right nd_options_float_right nd_options_dnone_responsive">
                     <div className="nd_options_display_table">
                       <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
                         <div className="menu-menu-1-container">
                           <ul id="menu-menu-2" className="menu">
-                            <li>
+                            <li className={this.props.page === 'home' ? 'active' : ''}>
                               <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/">HOME</a>
                             </li>
                             <li>
@@ -292,12 +332,6 @@ class Header extends React.Component {
                                 </li>*/}
                               </ul>
                             </li>
-                            <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/our-news/">NEWS</a>
-                              <ul className="sub-menu">
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/our-news/">Archive</a></li>
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/new-routes/">Single Post</a></li>
-                              </ul>
-                            </li>
                             <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-1/">CONTACT</a>
                               <ul className="sub-menu">
                                 <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-1/">Contact 1</a></li>
@@ -316,7 +350,7 @@ class Header extends React.Component {
                 <div className="nd_options_section text-center d-none nd_options_display_block_responsive">
                   <div className="nd_options_section nd_options_height_20" />
                   <a className="d-inline-block" href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel">
-                    <img alt className="nd_options_float_left" src="/static/images/logo.png" />
+                    <img alt="logo" className="nd_options_float_left" src="/static/images/logo.png" />
                   </a>
                   <div className="nd_options_section nd_options_height_10" />
                   <div className="nd_options_section">
@@ -339,4 +373,4 @@ class Header extends React.Component {
     }
 }
 
-export default connect(mapStateToProps)(Header)
+export default connect(mapStateToProps, mapDispatchToProps)(Header)

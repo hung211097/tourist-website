@@ -5,6 +5,7 @@ import { isServer } from 'services/utils.service'
 export const actionTypes = {
   SET_USER: 'SET_USER',
   REDIRECT_AFFTER_LOGIN: 'REDIRECT_AFFTER_LOGIN',
+  SAVE_LOCATION: 'SAVE_LOCATION'
 }
 
 export const storeKEY = 'tourist-v1'
@@ -31,5 +32,13 @@ export const saveRedirectUrl = (url) => {
     return {
         type: actionTypes.REDIRECT_AFFTER_LOGIN,
         payload: url
+    }
+}
+
+export const saveLocation = (location, err) => {
+    return {
+        type: actionTypes.SAVE_LOCATION,
+        payload: location,
+        error: err
     }
 }

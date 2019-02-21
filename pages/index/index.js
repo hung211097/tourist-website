@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout } from 'components'
+import { Layout, MyMap } from 'components'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { Router } from 'routes'
@@ -8,9 +8,11 @@ import { isServer } from 'services/utils.service'
 import { saveRedirectUrl } from 'actions'
 
 const mapStateToProps = state => {
-    return {
-        user: state.user
-    }
+  return {
+    user: state.user,
+    location: state.location,
+    errorPermission: state.error
+  }
 }
 
 class Home extends React.Component {
@@ -18,7 +20,9 @@ class Home extends React.Component {
 
   static propTypes = {
     dispatch: PropTypes.func,
-    user: PropTypes.object
+    user: PropTypes.object,
+    location: PropTypes.object,
+    errorPermission: PropTypes.string
   }
 
   constructor(props) {
@@ -27,7 +31,6 @@ class Home extends React.Component {
 
   componentDidMount() {
     const {dispatch} = this.props
-    // console.log(saveRedirectUrl);
     dispatch(saveRedirectUrl(''))
   }
 
@@ -46,8 +49,14 @@ class Home extends React.Component {
       <>
         <Layout page="home" {...this.props}>
           <style jsx>{styles}</style>
-          <section>
+          <section className='map-content'>
             {/* section box*/}
+            <MyMap isMarkerShown
+              googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
+              loadingElement={<div style={{ height: `100%` }} />}
+              containerElement={<div style={{ height: `400px` }} />}
+              mapElement={<div style={{ height: `100%` }} />}
+            />
           </section>
         </Layout>
       </>

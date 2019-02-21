@@ -172,6 +172,19 @@
       & > li {
         display: inline-block;
         padding: 0px;
+        &:hover{
+          & > a{
+            color: #717c8c;
+          }
+        }
+        & > a {
+          transition: 0.2s ease;
+        }
+        &.active{
+          & > a {
+            font-weight: bold;
+          }
+        }
         .sub-menu{
           z-index: 999;
           position: absolute;
@@ -185,7 +198,7 @@
           padding-top: 25px;
         }
         a {
-          color: #5e6d81;
+          color: #3d495a;
           font-size: 16px;
           line-height: 16px;
           font-family: Open Sans;
@@ -232,7 +245,7 @@
       }
     }
   }
-  
+
   .nd_options_book_now_btn {
     background-color: #f3a46b;
     a{
@@ -261,10 +274,10 @@
       position: relative;
       transition: width 0.2s ease-out;
       // backface-visibility: hidden;
-      
+
       &.active {
         width: 230px;
-        
+
         .fa-times-circle {
           opacity: 1;
         }
@@ -290,7 +303,7 @@
           right: 6px;
           transition: opacity 0.2s ease-out;
           cursor: pointer;
-      }  
+      }
       .search-input {
           color: white;
           position: absolute;
@@ -320,7 +333,7 @@
       position: relative;
       transition: width 0.2s ease-out;
       // backface-visibility: hidden;
-      
+
       &.active {
         width: 230px;
         .search-input {

@@ -5,6 +5,8 @@ import indexStyles from 'styles/global.scss'
 import PropTypes from 'prop-types'
 import { convertFullUrl } from 'services/utils.service'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import ScrollToTop  from "react-scroll-up"
+import { FaArrowCircleUp } from "react-icons/fa"
 
 export default class extends React.Component {
     displayName = 'Layout Component'
@@ -85,6 +87,9 @@ export default class extends React.Component {
                     {this.props.children}
                 </ReactCSSTransitionGroup>
                 {/*<Footer/>*/}
+                <ScrollToTop showUnder={90} style={{bottom: '30px'}}>
+                  <span><FaArrowCircleUp style={{color: '#434A54', fontSize: '40px'}}/></span>
+                </ScrollToTop>
             </>
         )
     }

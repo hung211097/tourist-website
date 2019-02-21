@@ -9,6 +9,12 @@ export default (state = {}, action) => {
             ...state,
             link_redirect: action.payload
           }
+        case actionTypes.SAVE_LOCATION:
+          return {
+            ...state,
+            location: action.payload,
+            error: action.error
+          }
         default:
           return state
     }
