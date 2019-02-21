@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint ./pages/**/*.js ./components/**/*.js ./pages/**.js ./components/**.js",
+    "lint:fix": "./node_modules/.bin/eslint ./pages/**/*.js ./components/**/*.js ./pages/**.js ./components/**.js ./services/**.js --fix",
     "lint-watch": "./node_modules/.bin/esw -w ./pages/**/*.js ./components/**/*.js ./pages/**.js ./components/**.js",
     "dev": "./node_modules/.bin/concurrently \"next\" \"npm run lint-watch\" \"node index\"",
     "build": "./node_modules/.bin/concurrently NODE_ENV=production \"next build\" \"node index\" \"npm run lint-watch\" ",
@@ -16,6 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "babel-core": "^6.26.3",
+    "babel-plugin-import-static-files": "^1.0.4",
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-plugin-wrap-in-js": "^1.1.1",
     "bootstrap": "^4.3.1",
@@ -29,8 +31,9 @@
     "isomorphic-fetch": "^2.2.1",
     "isomorphic-unfetch": "^3.0.0",
     "lodash": "^4.17.11",
-    "next": "^7.0.2",
+    "next": "^6.1.1",
     "next-auth": "^1.8.5",
+    "next-images": "^1.0.4",
     "next-redux-wrapper": "^3.0.0-alpha.1",
     "next-routes": "^1.4.2",
     "node-sass": "^4.8.3",

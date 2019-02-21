@@ -2,13 +2,12 @@ import React from 'react'
 import { Layout } from 'components'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
-import { Link, Router } from 'routes'
+import { Router } from 'routes'
 import { connect } from 'react-redux'
 import { isServer } from 'services/utils.service'
 import { saveRedirectUrl } from 'actions'
 
 const mapStateToProps = state => {
-  console.log("STATE", state);
     return {
         user: state.user
     }
@@ -46,7 +45,7 @@ class Home extends React.Component {
     return (
       <>
         <Layout page="home" {...this.props}>
-          {/*<style jsx>{styles}</style>*/}
+          <style jsx>{styles}</style>
           <section>
             {/* section box*/}
           </section>

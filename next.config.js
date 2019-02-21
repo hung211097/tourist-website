@@ -20,7 +20,7 @@ module.exports = {
         'babel-loader',
         'styled-jsx-css-loader',
       ]
-    })
+    });
 
     // const configFileMappings = {
     //   'mock': './configs/.env.mock',
