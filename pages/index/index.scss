@@ -1,0 +1,9 @@
+.map-content{
+  padding-top: 137px;
+  @media screen and (max-width: 1112px){
+    padding-top: 124px;
+  }
+  @media screen and (max-width: 320px){
+    width: 89%;
+  }
+}

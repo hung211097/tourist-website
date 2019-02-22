@@ -1,0 +1,59 @@
+//
+// Variables
+// --------------------------------------------------
+//==Colors
+$black: #000;
+$white: #fff;
+$blue: #2b85c1;
+$green: #27ae60;
+$cyan: #3498db;
+$red: #d01715;
+$red-light: #fc391d;
+$yellow: #f1c40f;
+$orange: #f39c12;
+$pink: #d60a6c;
+$purple: #8e44ad;
+$grey: #7e7e7e;
+
+//== Brand colors
+$brand-facebook: #3b5998;
+$brand-twitter: #3a92c8;
+$brand-google: #dd4b39;
+$brand-dribbble: #c32361;
+$brand-youtube: #b00;
+$brand-pinterest: #cb2027;
+$brand-instagram: #fb3958;
+$brand-rss: #f26522;
+$brand-linkedin:#0077b5;
+
+//== Key colors
+$bg-color:#f4f4f4;
+$base-color:#000000;
+$text-color: #000;
+$active-color: #F92372;
+$active-color-second: #4999d6;
+$hover-color:lighten($active-color, 10%);
+$border-color: #dddddd;
+$search-border-color:#c1c1c1;
+$box-color-second:#fff9fb;
+$border-radius:2px;
+$main-bg-color: rgb(67, 74, 84);
+
+//== Padding
+$padding-section:60px;
+$padding-section-mobile:30px;
+
+//== Typography
+$font-size-large:60px;
+$font-size-h1: 3.5rem;
+$font-size-h2: 3rem;
+$font-size-h3: 2.5rem;
+$font-size-h4: 2rem;
+$font-size-h5: 1.8rem;
+$font-size-h6: 1.5rem;
+$font-size-base: 1.3rem;
+$font-size-heading: 1.8rem;
+
+//== Font family
+$font-family:'Open Sans',
+sans-serif;

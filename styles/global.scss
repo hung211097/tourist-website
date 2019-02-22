@@ -1,0 +1,191 @@
+@import 'node_modules/bootstrap/scss/bootstrap.scss';
+@import 'styles/fonts.scss';
+@import 'styles/variables.scss';
+
+html {
+  font-size: 10px;
+}
+
+body {
+  min-width: 360px;
+  font-size: 1.4rem;
+  font-family: $font-family;
+  line-height: 1.5;
+  letter-spacing: 1px;
+}
+
+dd,
+dt {
+  line-height: 1.5;
+}
+
+body,
+html {}
+
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+a:active,
+a:focus {
+  text-decoration: none;
+  color: inherit;
+}
+
+a.pointer {
+  cursor: pointer;
+  color: $active-color;
+
+  &:hover {
+    color: $active-color!important;
+  }
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+iframe {
+  width: 100%;
+  border: none;
+}
+
+p {
+  margin: 0;
+  color: $text-color;
+}
+
+.example-appear {
+   opacity: 0.01;
+}
+.example-appear.example-appear-active {
+   opacity: 1;
+   transition: opacity 500ms ease-in;
+}
+
+.section {
+  margin: 0 0 100px;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.nd_options_cursor_pointer {
+  cursor: pointer;
+}
+
+.nd_options_top_20 {
+  top: 20px;
+}
+
+.nd_options_right_20 {
+  right: 20px;
+}
+
+.nd_options_position_absolute {
+  position: absolute;
+}
+
+.nd_options_margin_right_10 {
+  margin-right: 10px;
+}
+
+.nd_options_margin_right_20 {
+  margin-right: 20px;
+}
+
+.nd_options_margin_left_10 {
+  margin-left: 10px;
+}
+
+.nd_options_float_left {
+  float: left;
+}
+
+.nd_options_float_right {
+  float: right;
+}
+
+.nd_options_display_table {
+  display: table;
+}
+
+.nd_options_display_table_cell {
+  display: table-cell;
+}
+
+.nd_options_vertical_align_middle {
+  vertical-align: middle;
+}
+
+.nd_options_clearfix::after {
+  content: "";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+.nd_options_height_5 {
+  height: 5px;
+}
+
+.nd_options_height_20 {
+  height: 20px;
+}
+
+.nd_options_height_10 {
+  height: 10px;
+}
+
+.nd_options_height_50 {
+    height: 50px;
+}
+
+.nd_options_position_relative {
+  position: relative;
+}
+
+.nd_options_text_align_right {
+  text-align: right;
+}
+
+.nd_options_container {
+  width: 1200px;
+  margin: auto;
+  padding: 0px;
+  @media screen and (min-width: 960px) and (max-width: 1199px){
+    width: 960px;
+  }
+  @media screen and (min-width: 768px) and (max-width: 959px){
+    width: 748px;
+  }
+  @media screen and (min-width: 480px) and (max-width: 767px){
+    width: 460px;
+  }
+  @media screen and (min-width: 320px) and (max-width: 479px){
+    width: 300px;
+  }
+  @media screen and (max-width: 320px){
+    margin-right: 50px
+  }
+}
+
+.nd_options_dnone_responsive {
+  @media screen and (min-width: 320px) and (max-width: 1199px){
+    display: none !important;
+  }
+}
+
+.nd_options_display_block_responsive {
+  @media screen and (min-width: 320px) and (max-width: 1199px){
+    display: block !important;
+  }
+}
