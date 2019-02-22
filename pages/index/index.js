@@ -51,7 +51,7 @@ class Home extends React.Component {
           <style jsx>{styles}</style>
           <section className='map-content'>
             {/* section box*/}
-            <MyMap isMarkerShown userLocation={this.props.location}/>
+            <MyMap isMarkerShown isSearchBox userLocation={this.props.location}/>
           </section>
         </Layout>
       </>
