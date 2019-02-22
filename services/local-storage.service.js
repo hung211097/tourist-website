@@ -2,11 +2,11 @@ const KEY = {
   notifyID: 'NOTIFY_ID'
 }
 
-function setLocalStorage(key, value){
+export function setLocalStorage(key, value){
   window.localStorage[key] = value
 }
 
-function getLocalStorage(key){
+export function getLocalStorage(key){
   return window.localStorage[key]
 }
 

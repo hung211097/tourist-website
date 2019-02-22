@@ -31,6 +31,7 @@ const configFileMappings = {
     'development': './configs/.env.development',
     'production': './configs/.env.production'
 }
+
 dotenv.config({path: configFileMappings[process.env.NODE_ENV]})
 
 const app = next({

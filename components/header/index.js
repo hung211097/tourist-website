@@ -5,7 +5,10 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 // import ApiService from 'services/api.service'
 import { FaRegCreditCard, FaRegCheckSquare, FaSearch, FaTimesCircle } from "react-icons/fa"
+import { MdLocationOn } from "react-icons/md";
 import { saveLocation } from '../../actions'
+import { setLocalStorage, getLocalStorage } from '../../services/local-storage.service'
+import { KEY } from '../../constants/local-storage'
 
 const mapStateToProps = () => {
   return {
@@ -37,15 +40,34 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
+    const objLocation = getLocalStorage(KEY.LOCATION)
+    if(objLocation || objLocation === ''){
+      return
+    }
+    else{
+      this.requestGeolocation()
+    }
+  }
+
+  componentWillUnmount(){
+    // if (this.watchID != null) {
+    //   navigator.geolocation.clearWatch(this.watchID);
+    //   this.watchID = null;
+    // }
+  }
+
+  requestGeolocation(){
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.showLocation.bind(this), this.showError.bind(this));
+      this.watchID = navigator.geolocation.watchPosition(this.showLocation.bind(this), this.showError.bind(this), {timeout: 100000});
     } else {
       this.props.saveLocation && this.props.saveLocation(undefined, 'Geolocation is not supported by this browser.')
     }
   }
 
   showLocation(position) {
-    this.props.saveLocation && this.props.saveLocation({latitude:  position.coords.latitude, longitude: position.coords.longitude}, '')
+    const objLocation = { latitude: position.coords.latitude, longitude: position.coords.longitude }
+    this.props.saveLocation && this.props.saveLocation(objLocation, '')
+    setLocalStorage(KEY.LOCATION, JSON.stringify(objLocation))
   }
 
   showError(error) {
@@ -66,6 +88,7 @@ class Header extends React.Component {
     }
 
     this.props.saveLocation && this.props.saveLocation(undefined, strError)
+    setLocalStorage(KEY.LOCATION, '')
   }
 
   toggleSideBar(){
@@ -341,7 +364,14 @@ class Header extends React.Component {
                             <li className="nd_options_book_now_btn">
                               <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/">BOOK NOW</a>
                             </li>
-                          </ul></div>	                	</div>
+                          </ul>
+                          <div className="access-location">
+                            <a href='javascript:;' onClick={this.requestGeolocation.bind(this)} title="Access your location">
+                              <MdLocationOn style={{color: '#EA4335', fontSize: '28px'}}/>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div style={{height: '10px'}} className="nd_options_section" />

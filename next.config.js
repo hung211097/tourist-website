@@ -2,12 +2,11 @@ const webpack = require('webpack')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const { ANALYZE } = process.env
 
-process.env.NODE_BUILD_ENV = process.env.NODE_BUILD_ENV || 'development'
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
 module.exports = {
-  useFileSystemPublicRoutes: process.env.NODE_BUILD_ENV == 'development',
+  useFileSystemPublicRoutes: process.env.NODE_ENV == 'development',
   webpack: (config, { isServer }) => {
-
     config.module.rules.push({
       test: /\.scss$/,
       use: [
@@ -22,16 +21,16 @@ module.exports = {
       ]
     });
 
-    // const configFileMappings = {
-    //   'mock': './configs/.env.mock',
-    //   'development': './configs/.env.development',
-    //   'staging': './configs/.env.staging',
-    //   'production': './configs/.env.production'
-    // }
-    // const { parsed: localEnv } = require('dotenv').config({path: configFileMappings[process.env.NODE_BUILD_ENV]})
-    // config.plugins.push(
-    //   new webpack.EnvironmentPlugin(localEnv)
-    // )
+    const configFileMappings = {
+        'development': './configs/.env.development',
+        'production': './configs/.env.production'
+    }
+
+    const { parsed: localEnv } = require('dotenv').config({path: configFileMappings[process.env.NODE_ENV]})
+    config.plugins.push(
+      new webpack.EnvironmentPlugin(localEnv)
+    )
+
     //
     // if (ANALYZE) {
     //   config.plugins.push(new BundleAnalyzerPlugin({
