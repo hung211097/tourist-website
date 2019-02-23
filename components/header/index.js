@@ -58,7 +58,7 @@ class Header extends React.Component {
 
   requestGeolocation(){
     if (navigator.geolocation) {
-      this.watchID = navigator.geolocation.watchPosition(this.showLocation.bind(this), this.showError.bind(this), {timeout: 100000});
+      this.watchID = navigator.geolocation.getCurrentPosition(this.showLocation.bind(this), this.showError.bind(this), {timeout: 100000});
     } else {
       this.props.saveLocation && this.props.saveLocation(undefined, 'Geolocation is not supported by this browser.')
     }
