@@ -6,6 +6,7 @@ import { SearchBox } from "react-google-maps/lib/components/places/SearchBox"
 import _ from 'lodash'
 import PropTypes from 'prop-types'
 import Geocode from "react-geocode"
+import {mapOption} from '../../constants/map-option';
 
 const KEY_GOOGLE_MAP = process.env.KEY_GOOGLE_MAP
 Geocode.setApiKey(KEY_GOOGLE_MAP);
@@ -130,6 +131,7 @@ class MyMap extends React.Component {
         onBoundsChanged={props.onBoundsChanged}
         defaultZoom={props.zoom}
         defaultCenter={props.center}
+        defaultOptions={mapOption}
         onClick={props.onClickedMap}>
         {props.isSearchBox &&
           <SearchBox
