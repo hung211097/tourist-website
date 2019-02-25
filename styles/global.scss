@@ -189,3 +189,28 @@ p {
     display: block !important;
   }
 }
+
+.info-box{
+  padding: 20px 15px;
+  background: white;
+  position: relative;
+  overflow: auto;
+  height: 40vh;
+  .info-content{
+    padding-bottom: 20px;
+    img{
+      width: 60%;
+      max-width: 100% !important;
+      margin-bottom: 10px;
+    }
+    p{
+      font-size: 15px;
+      margin-bottom: 5px;
+    }
+  }
+}
+
+.gm-style .gm-style-iw-c{
+  padding-right: 25px !important;
+  width: 450px !important;
+}

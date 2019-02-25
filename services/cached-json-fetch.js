@@ -33,20 +33,22 @@ export default async function(url, force = false) {
   // That way if users refresh the page they always get fresh data.
 
   // let token = (await import('./auth.service')).getAccessToken()
+  let token = null
   let authorization = (token) ? ('JWT ' + token) : null;
   let options = {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: authorization
-    }
+      'Authorization': authorization
+    },
   }
 
   return fetch(url, options).then(checkStatus).then(parseJSON)
 }
 
 export async function httpPost(url, data) {
-  let token = (await import('./auth.service')).getAccessToken()
+  let token = null
+  // let token = (await import('./auth.service')).getAccessToken()
   let authorization = (token) ? ('JWT ' + token) : null;
   return fetch(url, {
       method: 'POST',
@@ -60,7 +62,8 @@ export async function httpPost(url, data) {
 }
 
 export async function httpPut(url, data) {
-  let token = (await import('./auth.service')).getAccessToken()
+  let token = null
+  // let token = (await import('./auth.service')).getAccessToken()
   let authorization = (token) ? ('JWT ' + token) : '';
   return fetch(url, {
       method: 'PUT',
@@ -74,7 +77,8 @@ export async function httpPut(url, data) {
 }
 
 export async function httpPostForm(url, form) {
-  let token = (await import('./auth.service')).getAccessToken()
+  let token = null
+  // let token = (await import('./auth.service')).getAccessToken()
   return fetch(url, {
       method: 'POST',
       headers: {
@@ -87,7 +91,8 @@ export async function httpPostForm(url, form) {
 }
 
 export async function httpPutForm(url, form) {
-  let token = (await import('./auth.service')).getAccessToken()
+  let token = null
+  // let token = (await import('./auth.service')).getAccessToken()
   return fetch(url, {
       method: 'PUT',
       headers: {
@@ -100,7 +105,8 @@ export async function httpPutForm(url, form) {
 }
 
 export async function httpDelete(url) {
-  let token = (await import('./auth.service')).getAccessToken()
+  let token = null
+  // let token = (await import('./auth.service')).getAccessToken()
   return fetch(url, {
       method: 'DELETE',
       headers: {

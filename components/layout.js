@@ -68,6 +68,7 @@ export default class extends React.Component {
                         type="image/x-icon"
                         sizes="64x64"
                     />
+                  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" />
                     <title>{fullTitle}</title>
                     <script src="https://cdn.polyfill.io/v2/polyfill.min.js" />
                 </Head>
