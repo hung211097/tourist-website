@@ -195,17 +195,22 @@ p {
   background: white;
   position: relative;
   overflow: auto;
-  height: 40vh;
+  max-height: 40vh;
   .info-content{
     padding-bottom: 20px;
     img{
-      width: 60%;
+      width: 70%;
       max-width: 100% !important;
       margin-bottom: 10px;
     }
     p{
       font-size: 15px;
       margin-bottom: 5px;
+      a{
+        cursor: pointer;
+        color: $main-bg-color;
+        font-weight: bold;
+      }
     }
   }
 }

@@ -1,23 +1,25 @@
 import React from 'react'
 import { Marker, InfoWindow } from "react-google-maps"
 import PropTypes from 'prop-types'
+const ENV = process.env.NODE_ENV
 
 class MarkerComponent extends React.Component{
   static propTypes = {
-    position: PropTypes.object.isRequired,
     isMe: PropTypes.bool,
-    address: PropTypes.string
+    infoLocation: PropTypes.object.isRequired
   }
 
   static defaultProps = {
     isMe: false,
-    address: ''
+    infoLocation: null
   }
 
   constructor(props){
     super(props)
+    this.maxDes = 100
     this.state = {
-      isOpen: false
+      isOpen: false,
+      isShowMore: false
     }
   }
 
@@ -30,10 +32,16 @@ class MarkerComponent extends React.Component{
     })
   }
 
+  toggleShowMore(){
+    this.setState({
+      isShowMore: !this.state.isShowMore
+    })
+  }
+
   render(){
     return(
       <Marker
-        position={{lat: this.props.position.latitude, lng: this.props.position.longitude}}
+        position={{lat: this.props.infoLocation.latitude, lng: this.props.infoLocation.longitude}}
         onClick={this.toggleOpen.bind(this)}
         icon={this.props.isMe ? '/static/images/person.png' : null}
         animation={google.maps.Animation.DROP}
@@ -42,11 +50,24 @@ class MarkerComponent extends React.Component{
         <InfoWindow options={{ closeBoxURL: ``, enableEventPropagation: true }}>
           <div className="info-box animated fadeIn">
             <div className="info-content">
-              <img alt="feature_img" src="/static/images/japan.jpg"/>
+              {this.props.infoLocation.featured_img &&
+                <img alt="feature_img" src={ENV === 'development' ? 'http://' + this.props.infoLocation.featured_img : this.props.infoLocation.featured_img}/>
+              }
               {this.props.isMe &&
                 <p>You are here!</p>
               }
-              <p>{this.props.address}</p>
+              {this.props.infoLocation.name &&
+                <p>Tên địa điểm: {this.props.infoLocation.name}</p>
+              }
+              {this.props.infoLocation.description &&
+                <p>
+                  Thông tin: {this.state.isShowMore ? this.props.infoLocation.description : this.props.infoLocation.description.substring(0, this.maxDes)}
+                  <a onClick={this.toggleShowMore.bind(this)}> {this.state.isShowMore ? 'Show less' : '... Show more'}</a>
+                </p>
+              }
+              {this.props.infoLocation.address &&
+                <p>Địa chỉ: {this.props.infoLocation.address}</p>
+              }
             </div>
           </div>
         </InfoWindow>

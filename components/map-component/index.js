@@ -5,8 +5,9 @@ import { SearchBox } from "react-google-maps/lib/components/places/SearchBox"
 import _ from 'lodash'
 import PropTypes from 'prop-types'
 import Geocode from "react-geocode"
-import {mapOption} from '../../constants/map-option'
+import { mapOption, mapDistance } from '../../constants/map-option'
 import { MarkerComponent } from 'components'
+import ApiService from '../../services/api.service'
 
 class MapComponent extends React.Component{
 
@@ -24,6 +25,7 @@ class MapComponent extends React.Component{
 
   static defaultProps = {
     center: { lat: 10.762622, lng: 106.660172 }, //Vietnam
+    // center: {lat: 10.758989, lng: 106.669403},
     myLocation: null
   }
 
@@ -31,22 +33,74 @@ class MapComponent extends React.Component{
     super(props)
     this.googleMap = React.createRef()
     this.searchBox = React.createRef()
+    this.traceAddedLocation = []
+    this.apiService = ApiService()
     this.state = {
       bounds: null,
       markerChoose: null,
-      zoom: 6,
+      locationNearCenter: [],
+      zoom: 15,
       address: '',
-      center: this.props.center
+      center: this.props.center,
+      isChangeCenter: false
     }
   }
 
   componentDidMount(){
-
+    if(this.props.myLocation){
+      const body = {
+        lat: this.props.myLocation.position.latitude,
+        lng: this.props.myLocation.position.longitude,
+        distance: mapDistance[this.googleMap.current.getZoom().toString()]
+      }
+      this.apiService.getLocationsNearCenter(body).then((res) => {
+        this.setState({
+          locationNearCenter: this.addMarker(res.result),
+        })
+      })
+    }
   }
 
-  onBoundsChanged() {
-    this.setState({
-      bounds: this.googleMap.current.getBounds()
+  addMarker(locations){
+    if(!this.state.locationNearCenter.length){
+      locations.forEach((item) => {
+        this.traceAddedLocation[item.id] = true
+      })
+      return locations
+    }
+    let temp = this.state.locationNearCenter
+    locations.forEach((item) => {
+      if(!this.traceAddedLocation[item.id]){
+        temp.push(item)
+        this.traceAddedLocation[item.id] = true
+      }
+    })
+    return temp
+  }
+
+  onDragEndMap(){
+    // console.log(mapDistance[this.googleMap.current.getZoom().toString()]);
+    // console.log(this.googleMap.current.getCenter().lat());
+    // console.log(this.googleMap.current.getCenter().lng());
+    this.getLocations()
+  }
+
+  onZoomChanged(){
+    this.getLocations()
+  }
+
+  getLocations(){
+    const body = {
+      lat: this.googleMap.current.getCenter().lat(),
+      lng: this.googleMap.current.getCenter().lng(),
+      distance: mapDistance[this.googleMap.current.getZoom().toString()]
+    }
+    this.apiService.getLocationsNearCenter(body).then((res) => {
+      this.setState({
+        locationNearCenter: this.addMarker(res.result),
+        isChangeCenter: true,
+        center: this.googleMap.current.getCenter()
+      })
     })
   }
 
@@ -75,8 +129,7 @@ class MapComponent extends React.Component{
   onPlacesChanged(){
     const places = this.searchBox.current.getPlaces();
     const bounds = new google.maps.LatLngBounds();
-    // console.log("PLACE", places);
-    // console.log("BOUND", bounds);
+
     places.forEach(place => {
       if (place.geometry.viewport) {
         bounds.union(place.geometry.viewport)
@@ -96,7 +149,8 @@ class MapComponent extends React.Component{
       markerChoose: {
         latitude: nextMarkers[0].position.lat(),
         longitude: nextMarkers[0].position.lng()
-      }
+      },
+      isChangeCenter: true
     });
     // refs.map.fitBounds(bounds);
   }
@@ -105,11 +159,14 @@ class MapComponent extends React.Component{
     return(
       <GoogleMap
         ref={this.googleMap}
-        center={this.state.center}
-        onBoundsChanged={this.onBoundsChanged.bind(this)}
+        center={this.props.myLocation && !this.state.isChangeCenter ?
+          {lat: this.props.myLocation.position.latitude, lng: this.props.myLocation.position.longitude}
+          : this.state.center}
         defaultZoom={this.state.zoom}
         defaultOptions={mapOption}
         onClick={this.onClickedMap.bind(this)}
+        onDragEnd={this.onDragEndMap.bind(this)}
+        onZoomChanged={this.onZoomChanged.bind(this)}
       >
       {this.props.isSearchBox &&
         <SearchBox
@@ -137,10 +194,25 @@ class MapComponent extends React.Component{
           </SearchBox>
         }
         {this.props.myLocation &&
-          <MarkerComponent isMe position={this.props.myLocation.position} address={this.props.myLocation.address}/>
+          <MarkerComponent
+            isMe
+            infoLocation={{
+              latitude: this.props.myLocation.position.latitude,
+              longitude: this.props.myLocation.position.longitude,
+              address: this.props.myLocation.address}}/>
         }
         {this.state.markerChoose &&
-          <MarkerComponent position={this.state.markerChoose} address={this.state.address}/>
+          <MarkerComponent
+            infoLocation={{
+              latitude: this.state.markerChoose.latitude,
+              longitude: this.state.markerChoose.longitude,
+              address: this.state.address}}/>
+        }
+        {this.state.locationNearCenter.length && this.state.locationNearCenter.map((item) => {
+            return(
+              <MarkerComponent infoLocation={item} key={item.id}/>
+            )
+          })
         }
       </GoogleMap>
     )

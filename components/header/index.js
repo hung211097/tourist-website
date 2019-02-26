@@ -130,8 +130,10 @@ class Header extends React.Component {
                     </form>
                   </li>
                   <li>
-                      <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/">HOME</a>
-                    </li>
+                    <Link route="home">
+                      <a>HOME</a>
+                    </Link>
+                  </li>
                   <li>
                       <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/">PACKAGES</a>
                       <ul className="sub-menu">
@@ -321,7 +323,9 @@ class Header extends React.Component {
                         <div className="menu-menu-1-container">
                           <ul id="menu-menu-2" className="menu">
                             <li className={this.props.page === 'home' ? 'active' : ''}>
-                              <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/">HOME</a>
+                              <Link route="home">
+                                <a>HOME</a>
+                              </Link>
                             </li>
                             <li>
                               <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/">PACKAGES</a>
