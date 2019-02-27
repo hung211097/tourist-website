@@ -54,7 +54,7 @@ class MarkerComponent extends React.Component{
                 <img alt="feature_img" src={ENV === 'development' ? 'http://' + this.props.infoLocation.featured_img : this.props.infoLocation.featured_img}/>
               }
               {this.props.isMe &&
-                <p>You are here!</p>
+                <p>Bạn ở đây!</p>
               }
               {this.props.infoLocation.name &&
                 <p>Tên địa điểm: {this.props.infoLocation.name}</p>

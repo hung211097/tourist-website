@@ -55,7 +55,7 @@ class MyMap extends React.Component {
           isSearchBox={this.props.isSearchBox}
           googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${KEY_GOOGLE_MAP}&v=3.exp&libraries=geometry,drawing,places`}
           loadingElement={<div style={{ height: `100%` }} />}
-          containerElement={<div style={{ height: `100vh` }} />}
+          containerElement={<div style={{ height: `100%` }} />}
           mapElement={<div style={{ height: `100%` }} />}
           myLocation={{position: this.props.userLocation, address: this.state.myLocation}}/>
       </div>

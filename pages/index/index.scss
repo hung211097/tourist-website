@@ -1,9 +1,137 @@
-.map-content{
+@import 'styles/variables.scss';
+
+.middle{
   padding-top: 137px;
   @media screen and (max-width: 1112px){
     padding-top: 124px;
   }
   @media screen and (max-width: 320px){
     width: 89%;
+  }
+  .contain{
+    padding: 0px 15px;
+    box-sizing: border-box;
+    .page-content{
+      float: left;
+      width: 100%;
+      .top-promotion{
+        margin-top: 60px;
+        .top-promotion-title{
+          h1{
+            font-size: 30px;
+            line-height: 30px;
+            color: $main-title-color;
+          }
+          h3{
+            color: #a4a4a4;
+            font-size: 20px;
+            line-height: 20px;
+          }
+          .underline-title{
+            height: 4px;
+            width: 80px;
+            background-color: #f1f1f1;
+            display: inline-block;
+          }
+        }
+      }
+      .top-promotion-item{
+        margin-top: 10px;
+      }
+      .show-more-area{
+        margin: 30px 0 40px;
+        .show-more{
+          cursor: pointer;
+          background-color: #434a54;
+          padding: 15px 40px;
+          font-size: 16px;
+          color: #ffffff;
+          transition: 0.2s ease;
+          display: inline-block;
+          margin: auto;
+          &:hover{
+            background: #5d6572;
+          }
+        }
+      }
+
+    }
+  }
+  .parallax-area{
+    position: relative;
+    left: -14.5px;
+    box-sizing: border-box;
+    padding-left: 100.5px;
+    padding-right: 74.5px;
+    transition: opacity 0.5s ease;
+    overflow: hidden;
+    margin-top: 50px !important;
+    padding-top: 80px !important;
+    padding-bottom: 80px !important;
+    .parallax-item{
+      padding-left: 0;
+      padding-right: 0;
+      & > *{
+        position: relative;
+        z-index: 1;
+      }
+      .inner{
+        box-sizing: border-box;
+        padding-left: 15px;
+        padding-right: 15px;
+        width: 100%;
+        padding-top: 0;
+        .wrapper{
+          h1{
+            color: #ffffff;
+            text-align: center;
+            font-size: 45px;
+            font-weight: normal;
+            line-height: 30px;
+          }
+          a{
+            line-height: 15px;
+            font-size: 15px;
+            padding: 8px 12px;color: #ffffff;
+            display: inline-block;
+            font-weight: normal;
+            &.yellow-bg{
+              background-color: #ffd205;
+            }
+            &.green-bg{
+              background: #1bbc9b;
+            }
+            &.red-bg{
+              background: #f76570;
+            }
+          }
+        }
+      }
+    }
+
+    .vc_parallax-inner{
+      pointer-events: none;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      background-attachment: scroll;
+      background-color: transparent;
+      background-image: inherit;
+      background-size: cover;
+      z-index: 0;
+      background-position: 50% 0%;
+      height: 150%;
+      background-image: url("/static/images/parallax-3.jpg");
+      top: -50%;
+      &:after{
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(101, 100, 96, 0.3);
+        left: 0px;
+      }
+    }
   }
 }

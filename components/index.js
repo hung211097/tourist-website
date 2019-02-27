@@ -18,6 +18,7 @@ const MyMap = dynamic(import('./mymap'), defaultLoading)
 const MapComponent = dynamic(import('./map-component'), defaultLoading)
 
 const MarkerComponent = dynamic(import('./marker'), defaultNoSSR)
+const TopPromotionItem = dynamic(import('./top-promotion-item'), defaultNoSSR)
 
 export {
     Header,
@@ -26,5 +27,6 @@ export {
     ClickOutside,
     MyMap,
     MapComponent,
-    MarkerComponent
+    MarkerComponent,
+    TopPromotionItem
 }

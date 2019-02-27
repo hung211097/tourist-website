@@ -133,6 +133,10 @@ p {
   visibility: hidden;
 }
 
+.nd_options_line_height_0 {
+  line-height: 0px;
+}
+
 .nd_options_height_5 {
   height: 5px;
 }
@@ -230,6 +234,13 @@ p {
         font-weight: bold;
       }
     }
+  }
+}
+
+.custom-map{
+  height: 100vh;
+  @media screen and (max-width: 767px){
+    height: 80vh;
   }
 }
 
