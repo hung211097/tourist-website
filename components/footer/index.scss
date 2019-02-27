@@ -71,12 +71,30 @@ footer{
     }
     .wpb_widgetised_column .widget {
       margin-bottom: 40px;
+      @media screen and (max-width: 767px){
+        margin-bottom: 25px;
+      }
     }
 
     .to-top{
       position: absolute;
-      right: 25px;
-      bottom: 30px;
+      right: 15px;
+      bottom: 15px;
+    }
+  }
+
+  .copy-right{
+    background: white;
+    .copy-right-container{
+      border-top: 1px solid #f1f1f1;
+      p{
+        font-size: 14px;
+        line-height: 14px;
+        color: #a4a4a4;
+      }
+      .copy-right-content{
+        padding: 15px;
+      }
     }
   }
 }

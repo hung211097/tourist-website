@@ -5,7 +5,7 @@
     background-color: $main-bg-color;
     right: 0px;
     transition: all 0.8s ease;
-    z-index: 999;
+    z-index: 9999;
     overflow: hidden;
     overflow-y: auto;
     position: fixed;
@@ -132,6 +132,7 @@
     }
   }
 
+  
   .navigation{
     background-color: #ffffff;
     border-bottom: 1px solid #f1f1f1;

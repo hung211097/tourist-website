@@ -2,6 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Geocode from "react-geocode"
 import { MapComponent } from 'components'
+import { getLocalStorage } from '../../services/local-storage.service'
+import { KEY } from '../../constants/local-storage'
 
 const KEY_GOOGLE_MAP = process.env.KEY_GOOGLE_MAP
 Geocode.setApiKey(KEY_GOOGLE_MAP);
@@ -15,7 +17,7 @@ class MyMap extends React.Component {
   }
 
   static propTypes = {
-    userLocation: PropTypes.object,
+    userLocation: PropTypes.any,
     isMarkerShown: PropTypes.bool,
     isSearchBox: PropTypes.bool
   }
@@ -35,12 +37,19 @@ class MyMap extends React.Component {
         })
       })
     }
+    else if(getLocalStorage(KEY.LOCATION)){
+      const obj = JSON.parse(getLocalStorage(KEY.LOCATION))
+      Geocode.fromLatLng(obj.latitude, obj.longitude).then((result) => {
+        this.setState({
+          myLocation: result.results[0].formatted_address
+        })
+      })
+    }
   }
 
   render() {
     return (
       <div className="custom-map">
-        {/*<MapComponent isMarkerShown={this.props.isMarkerShown} isSearchBox={this.props.isSearchBox}/>*/}
         <MapComponent
           isMarkerShown={this.props.isMarkerShown}
           isSearchBox={this.props.isSearchBox}

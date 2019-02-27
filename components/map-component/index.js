@@ -55,7 +55,7 @@ class MapComponent extends React.Component{
       }
       this.apiService.getLocationsNearCenter(body).then((res) => {
         this.setState({
-          locationNearCenter: this.addMarker(res.result),
+          locationNearCenter: this.addMarker(res.data),
         })
       })
     }
@@ -79,9 +79,6 @@ class MapComponent extends React.Component{
   }
 
   onDragEndMap(){
-    // console.log(mapDistance[this.googleMap.current.getZoom().toString()]);
-    // console.log(this.googleMap.current.getCenter().lat());
-    // console.log(this.googleMap.current.getCenter().lng());
     this.getLocations()
   }
 
@@ -97,7 +94,7 @@ class MapComponent extends React.Component{
     }
     this.apiService.getLocationsNearCenter(body).then((res) => {
       this.setState({
-        locationNearCenter: this.addMarker(res.result),
+        locationNearCenter: this.addMarker(res.data),
         isChangeCenter: true,
         center: this.googleMap.current.getCenter()
       })

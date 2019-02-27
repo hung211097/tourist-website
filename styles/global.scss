@@ -190,6 +190,24 @@ p {
   }
 }
 
+.nd_options_navigation_2_sticky_move_down{
+  margin-top: 0px;
+}
+
+.sticky_nav{
+  transition: all 0.8s ease;
+  position: fixed;
+  z-index: 999;
+}
+
+.sticky_move_up{
+  margin-top: -220px;
+}
+
+.sticky_move_down{
+  margin-top: 0px;
+}
+
 .info-box{
   padding: 20px 15px;
   background: white;

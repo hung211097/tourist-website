@@ -25,10 +25,10 @@ class Footer extends React.Component {
     return (
       <footer className="footer" itemScope itemType="http://schema.org/WPFooter">
         <style jsx>{styles}</style>
-          <div className="nd_options_section footer-content">
-            <div className="nd_options_section nd_options_height_50" />
-            {/*start nd_options_container*/}
-            <div className="nd_options_container nd_options_clearfix">
+        <div className="nd_options_section footer-content">
+          <div className="nd_options_section nd_options_height_50" />
+          {/*start nd_options_container*/}
+          <div className="nd_options_container nd_options_clearfix">
               <div className="grid content wpb_widgetised_column">
                 <div className="widget widget_text">
                   <div className="textwidget">
@@ -76,11 +76,21 @@ class Footer extends React.Component {
                 </div>
               </div>
             </div>
-            {/*end container*/}
-            <div className="nd_options_section nd_options_height_10" />
-            <a href="javascript:;" className="to-top" onClick={this.scrollToTop.bind(this)}>
-              <FaArrowCircleUp style={{color: 'white', fontSize: '28px'}}/>
-            </a>
+          {/*end container*/}
+          <div className="nd_options_section nd_options_height_10" />
+          <a href="javascript:;" className="to-top" onClick={this.scrollToTop.bind(this)}>
+            <FaArrowCircleUp style={{color: 'white', fontSize: '28px'}}/>
+          </a>
+        </div>
+        <div className="nd_options_section copy-right">
+          <div className="nd_options_container nd_options_clearfix copy-right-container">
+            <div className="row copy-right-content">
+              <div className="col-sm-6">
+                <p>© Copyright 2018 Travel Tour</p>
+              </div>
+              <div className="col-sm-6"></div>
+            </div>
+          </div>
         </div>
       </footer>
     )

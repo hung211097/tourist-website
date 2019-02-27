@@ -21,7 +21,7 @@ class Home extends React.Component {
   static propTypes = {
     dispatch: PropTypes.func,
     user: PropTypes.object,
-    location: PropTypes.object,
+    location: PropTypes.any,
     errorPermission: PropTypes.string
   }
 
@@ -51,7 +51,24 @@ class Home extends React.Component {
           <style jsx>{styles}</style>
           <section className='map-content'>
             {/* section box*/}
-            <MyMap isMarkerShown isSearchBox userLocation={this.props.location}/>
+            <MyMap isMarkerShown isSearchBox userLocation={this.props.location ? JSON.parse(this.props.location) : null}/>
+            <p>asds</p>
+            <p>asds</p>
+            <p>asds</p>
+            <p>asds</p>
+            <p>asds</p>
+            <p>asds</p>
+            <p>asds</p>
+              <p>asds</p>
+              <p>asds</p>
+                <p>asds</p>
+                <p>asds</p>
+                  <p>asds</p>
+                  <p>asds</p>
+                    <p>asds</p>
+                    <p>asds</p>
+                      <p>asds</p>
+                      <p>asds</p>
           </section>
         </Layout>
       </>
