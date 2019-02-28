@@ -43,7 +43,7 @@ class MarkerComponent extends React.Component{
       <Marker
         position={{lat: this.props.infoLocation.latitude, lng: this.props.infoLocation.longitude}}
         onClick={this.toggleOpen.bind(this)}
-        icon={this.props.isMe ? '/static/images/person.png' : null}
+        icon={this.props.isMe ? '/static/images/person.png' : `static/images/${this.props.infoLocation.type.marker}.png`}
         animation={google.maps.Animation.DROP}
       >
       {this.state.isOpen &&
