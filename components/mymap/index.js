@@ -4,9 +4,23 @@ import Geocode from "react-geocode"
 import { MapComponent } from 'components'
 import { getLocalStorage } from '../../services/local-storage.service'
 import { KEY } from '../../constants/local-storage'
+import { connect } from 'react-redux'
+import { toggleShowTour } from '../../actions'
 
 const KEY_GOOGLE_MAP = process.env.KEY_GOOGLE_MAP
 Geocode.setApiKey(KEY_GOOGLE_MAP);
+
+const mapStateToProps = (state) => {
+  return {
+    isShowTour: state.isShowTour
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleShowTour: (isShow) => {dispatch(toggleShowTour(isShow))}
+  }
+}
 
 class MyMap extends React.Component {
   displayName = 'Google Map'
@@ -19,7 +33,9 @@ class MyMap extends React.Component {
   static propTypes = {
     userLocation: PropTypes.any,
     isMarkerShown: PropTypes.bool,
-    isSearchBox: PropTypes.bool
+    isSearchBox: PropTypes.bool,
+    toggleShowTour: PropTypes.func,
+    isShowTour: PropTypes.bool
   }
 
   constructor(props) {
@@ -47,6 +63,10 @@ class MyMap extends React.Component {
     }
   }
 
+  onToggleShowTour(value){
+    this.props.toggleShowTour && this.props.toggleShowTour(value)
+  }
+
   render() {
     return (
       <div className="custom-map">
@@ -57,10 +77,12 @@ class MyMap extends React.Component {
           loadingElement={<div style={{ height: `100%` }} />}
           containerElement={<div style={{ height: `100%` }} />}
           mapElement={<div style={{ height: `100%` }} />}
-          myLocation={{position: this.props.userLocation, address: this.state.myLocation}}/>
+          myLocation={{position: this.props.userLocation, address: this.state.myLocation}}
+          toggleShowTour={this.onToggleShowTour.bind(this)}
+          isShowTour={this.props.isShowTour}/>
       </div>
     )
   }
 }
 
-export default MyMap
+export default connect(mapStateToProps, mapDispatchToProps)(MyMap)

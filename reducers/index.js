@@ -15,6 +15,11 @@ export default (state = {}, action) => {
             location: action.payload,
             error: action.error
           }
+        case actionTypes.TOGGLE_SHOW_TOUR:
+          return {
+            ...state,
+            isShowTour: action.payload
+          }
         default:
           return state
     }

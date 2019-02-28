@@ -69,6 +69,29 @@ p {
    transition: opacity 500ms ease-in;
 }
 
+.bold{
+  font-weight: bold;
+}
+
+.tour-list{
+  margin-top: 10px;
+  .tour-item{
+    font-size: 14px;
+    font-weight: 500;
+    a{
+      &:hover{
+        color: #757575;
+      }
+      cursor: pointer;
+    }
+    .display-tour{
+      position: relative;
+      top: -1px;
+    }
+  }
+}
+
+
 .section {
   margin: 0 0 100px;
 }
@@ -241,6 +264,27 @@ p {
   height: 100vh;
   @media screen and (max-width: 767px){
     height: 80vh;
+  }
+}
+
+.map-content{
+  .hide-tour{
+    cursor: pointer;
+    position: absolute;
+    top: 81%;
+    @media screen and (max-width: 991px){
+      top: 87%;
+    }
+    @media screen and (max-width: 767px){
+      top: 61%;
+    }
+    right: 10px;
+    padding: 10px;
+    background: white;
+    color: #666666 !important;
+    &:hover{
+      color: #000 !important;
+    }
   }
 }
 

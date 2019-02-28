@@ -2,11 +2,31 @@ import React from 'react'
 import { Marker, InfoWindow } from "react-google-maps"
 import PropTypes from 'prop-types'
 const ENV = process.env.NODE_ENV
+import { FaEye, FaEyeSlash } from "react-icons/fa"
+import ApiService from '../../services/api.service'
+import { connect } from 'react-redux'
+import { toggleShowTour } from '../../actions'
+
+const mapStateToProps = (state) => {
+  return {
+    isShowTour: state.isShowTour
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleShowTour: (isShow) => {dispatch(toggleShowTour(isShow))}
+  }
+}
 
 class MarkerComponent extends React.Component{
   static propTypes = {
     isMe: PropTypes.bool,
-    infoLocation: PropTypes.object.isRequired
+    infoLocation: PropTypes.object.isRequired,
+    onDrawDirection: PropTypes.func,
+    tourChosen: PropTypes.number,
+    toggleShowTour: PropTypes.func,
+    isShowTour: PropTypes.bool
   }
 
   static defaultProps = {
@@ -16,6 +36,7 @@ class MarkerComponent extends React.Component{
 
   constructor(props){
     super(props)
+    this.apiService = ApiService()
     this.maxDes = 100
     this.state = {
       isOpen: false,
@@ -38,12 +59,31 @@ class MarkerComponent extends React.Component{
     })
   }
 
+  onShowRoute(id){
+    if(this.props.toggleShowTour){
+      if(this.props.tourChosen === id){
+        this.props.toggleShowTour(false)
+      }
+      else{
+        this.props.toggleShowTour(true)
+      }
+    }
+    this.setState({
+      isOpen: false
+    })
+    this.apiService.getRouteByTour(id).then((res) => {
+      this.props.onDrawDirection(res.data, id);
+    })
+  }
+
   render(){
     return(
       <Marker
         position={{lat: this.props.infoLocation.latitude, lng: this.props.infoLocation.longitude}}
         onClick={this.toggleOpen.bind(this)}
-        icon={this.props.isMe ? '/static/images/person.png' : `static/images/${this.props.infoLocation.type.marker}.png`}
+        icon={this.props.isMe ? '/static/images/person.png' :
+          this.props.infoLocation.isInTour ? '/static/images/location.png' :
+          this.props.infoLocation.type ? `static/images/${this.props.infoLocation.type.marker}.png` : null }
         animation={google.maps.Animation.DROP}
       >
       {this.state.isOpen &&
@@ -54,19 +94,41 @@ class MarkerComponent extends React.Component{
                 <img alt="feature_img" src={ENV === 'development' ? 'http://' + this.props.infoLocation.featured_img : this.props.infoLocation.featured_img}/>
               }
               {this.props.isMe &&
-                <p>Bạn ở đây!</p>
+                <p className="bold">Bạn ở đây!</p>
               }
               {this.props.infoLocation.name &&
-                <p>Tên địa điểm: {this.props.infoLocation.name}</p>
+                <p><span className="bold">Tên địa điểm:</span> {this.props.infoLocation.name}</p>
               }
               {this.props.infoLocation.description &&
                 <p>
-                  Thông tin: {this.state.isShowMore ? this.props.infoLocation.description : this.props.infoLocation.description.substring(0, this.maxDes)}
+                  <span className="bold">Thông tin: </span> {this.state.isShowMore ? this.props.infoLocation.description : this.props.infoLocation.description.substring(0, this.maxDes)}
                   <a onClick={this.toggleShowMore.bind(this)}> {this.state.isShowMore ? 'Show less' : '... Show more'}</a>
                 </p>
               }
               {this.props.infoLocation.address &&
-                <p>Địa chỉ: {this.props.infoLocation.address}</p>
+                <p><span className="bold">Địa chỉ: </span> {this.props.infoLocation.address}</p>
+              }
+              {this.props.infoLocation.tours && !!this.props.infoLocation.tours.length &&
+                <div>
+                  <p className="bold">Các Tour du lịch đi qua: </p>
+                  <ol className="tour-list">
+                    {this.props.infoLocation.tours.map((item) => {
+                        return(
+                          <li className="tour-item" key={item.id}>
+                            <a>{item.name}</a>&nbsp;&nbsp;&nbsp;
+                            <a className="display-tour" onClick={this.onShowRoute.bind(this, item.id)}>
+                              {this.props.tourChosen && this.props.tourChosen === item.id && this.props.isShowTour ?
+                                <FaEyeSlash style={{fontSize: '19px'}}/>
+                                :
+                                <FaEye style={{fontSize: '19px'}}/>
+                              }
+                            </a>
+                          </li>
+                        )
+                      })
+                    }
+                  </ol>
+                </div>
               }
             </div>
           </div>
@@ -77,4 +139,4 @@ class MarkerComponent extends React.Component{
   }
 }
 
-export default MarkerComponent
+export default connect(mapStateToProps, mapDispatchToProps)(MarkerComponent)

@@ -8,6 +8,7 @@ import Geocode from "react-geocode"
 import { mapOption, mapDistance } from '../../constants/map-option'
 import { MarkerComponent } from 'components'
 import ApiService from '../../services/api.service'
+import { FaEyeSlash } from "react-icons/fa"
 
 class MapComponent extends React.Component{
 
@@ -20,7 +21,9 @@ class MapComponent extends React.Component{
     containerElement: PropTypes.any,
     mapElement: PropTypes.any,
     center: PropTypes.object,
-    myLocation: PropTypes.object
+    myLocation: PropTypes.object,
+    toggleShowTour: PropTypes.func,
+    isShowTour: PropTypes.bool
   }
 
   static defaultProps = {
@@ -42,7 +45,9 @@ class MapComponent extends React.Component{
       zoom: 15,
       address: '',
       center: this.props.center,
-      isChangeCenter: false
+      isChangeCenter: false,
+      idTourChosen: null,
+      locationsInTour: []
     }
   }
 
@@ -54,7 +59,6 @@ class MapComponent extends React.Component{
         distance: mapDistance[this.googleMap.current.getZoom().toString()]
       }
       this.apiService.getLocationsNearCenter(body, {tour: true}).then((res) => {
-        console.log(res);
         this.setState({
           locationNearCenter: this.addMarker(res.data),
         })
@@ -66,12 +70,14 @@ class MapComponent extends React.Component{
     if(!this.state.locationNearCenter.length){
       locations.forEach((item) => {
         this.traceAddedLocation[item.id] = true
+        item.isInTour = false
       })
       return locations
     }
     let temp = this.state.locationNearCenter
     locations.forEach((item) => {
       if(!this.traceAddedLocation[item.id]){
+        item.isInTour = false
         temp.push(item)
         this.traceAddedLocation[item.id] = true
       }
@@ -153,66 +159,147 @@ class MapComponent extends React.Component{
     // refs.map.fitBounds(bounds);
   }
 
+  onDrawDirection(routes, idTour){
+    if(!this.state.idTourChosen || this.state.idTourChosen != idTour){  //Xét tồn tại tour đã chọn chưa hoặc chọn hiển thị tour khác
+      if(!this.state.idTourChosen){
+        this.changeTourToDisplay(routes, idTour)
+      }
+      else{
+        let temp = this.state.locationNearCenter
+        this.state.locationsInTour.forEach((item) => {
+          let tempItem = temp.find((filterItem) => {
+            return item.location.id === filterItem.id
+          })
+          if(tempItem){
+            tempItem.isInTour = false
+          }
+        })
+        this.setState({
+          locationNearCenter: temp
+        }, () => {
+          this.changeTourToDisplay(routes, idTour)
+        })
+      }
+    }
+    else{
+      this.resetMarker()
+    }
+  }
+
+  changeTourToDisplay(routes, idTour){
+    let temp = this.state.locationNearCenter
+    routes.forEach((item) => {
+      let tempItem = temp.find((filterItem) => {
+        return item.location.id === filterItem.id
+      })
+      if(tempItem){
+        tempItem.isInTour = true
+      }
+      else{
+        let addItem = item.location
+        addItem.isInTour = true
+        temp.push(addItem)
+        this.traceAddedLocation[addItem.id] = true
+      }
+      this.setState({
+        locationsInTour: routes,
+        locationNearCenter: temp,
+        idTourChosen: idTour
+      })
+    })
+  }
+
+  resetMarker(){
+    let temp = this.state.locationNearCenter
+    this.state.locationsInTour.forEach((item) => {
+      let tempItem = temp.find((filterItem) => {
+        return item.location.id === filterItem.id
+      })
+      if(tempItem){
+        tempItem.isInTour = false
+      }
+
+      this.setState({
+        locationsInTour: [],
+        locationNearCenter: temp,
+        idTourChosen: null
+      })
+    })
+  }
+
+  onToggleShowTour(){
+    this.props.toggleShowTour && this.props.toggleShowTour(false)
+    this.resetMarker()
+  }
+
   render(){
     return(
-      <GoogleMap
-        ref={this.googleMap}
-        center={this.props.myLocation && !this.state.isChangeCenter ?
-          {lat: this.props.myLocation.position.latitude, lng: this.props.myLocation.position.longitude}
-          : this.state.center}
-        defaultZoom={this.state.zoom}
-        defaultOptions={mapOption}
-        onClick={this.onClickedMap.bind(this)}
-        onDragEnd={this.onDragEndMap.bind(this)}
-        onZoomChanged={this.onZoomChanged.bind(this)}
-      >
-      {this.props.isSearchBox &&
-        <SearchBox
-          ref={this.searchBox}
-          bounds={this.state.bounds}
-          controlPosition={google.maps.ControlPosition.TOP_LEFT}
-          onPlacesChanged={this.onPlacesChanged.bind(this)}>
-            <input
-              type="text"
-              placeholder="Search location"
-              style={{
-                boxSizing: `border-box`,
-                border: `1px solid transparent`,
-                width: `240px`,
-                height: `32px`,
-                marginTop: `14px`,
-                padding: `0 12px`,
-                borderRadius: `3px`,
-                boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-                fontSize: `14px`,
-                outline: `none`,
-                textOverflow: `ellipses`,
-              }}
-            />
-          </SearchBox>
-        }
-        {this.props.myLocation &&
-          <MarkerComponent
-            isMe
-            infoLocation={{
-              latitude: this.props.myLocation.position.latitude,
-              longitude: this.props.myLocation.position.longitude,
-              address: this.props.myLocation.address}}/>
-        }
-        {this.state.markerChoose &&
-          <MarkerComponent
-            infoLocation={{
-              latitude: this.state.markerChoose.latitude,
-              longitude: this.state.markerChoose.longitude,
-              address: this.state.address}}/>
-        }
-        {this.state.locationNearCenter.length && this.state.locationNearCenter.map((item) => {
-            return(
-              <MarkerComponent infoLocation={item} key={item.id}/>
-            )
-          })
-        }
-      </GoogleMap>
+      <div className="map-content">
+        <GoogleMap
+          ref={this.googleMap}
+          center={this.props.myLocation && !this.state.isChangeCenter ?
+            {lat: this.props.myLocation.position.latitude, lng: this.props.myLocation.position.longitude}
+            : this.state.center}
+            defaultZoom={this.state.zoom}
+            defaultOptions={mapOption}
+            onClick={this.onClickedMap.bind(this)}
+            onDragEnd={this.onDragEndMap.bind(this)}
+            onZoomChanged={this.onZoomChanged.bind(this)}>
+        {this.props.isSearchBox &&
+              <SearchBox
+                ref={this.searchBox}
+                bounds={this.state.bounds}
+                controlPosition={google.maps.ControlPosition.TOP_LEFT}
+                onPlacesChanged={this.onPlacesChanged.bind(this)}>
+                <input
+                  type="text"
+                  placeholder="Search location"
+                  style={{
+                    boxSizing: `border-box`,
+                    border: `1px solid transparent`,
+                    width: `240px`,
+                    height: `32px`,
+                    marginTop: `14px`,
+                    padding: `0 12px`,
+                    borderRadius: `3px`,
+                    boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+                    fontSize: `14px`,
+                    outline: `none`,
+                    textOverflow: `ellipses`,
+                  }}
+                  />
+              </SearchBox>
+            }
+            {this.props.myLocation &&
+              <MarkerComponent
+                isMe
+                infoLocation={{
+                  latitude: this.props.myLocation.position.latitude,
+                  longitude: this.props.myLocation.position.longitude,
+                  address: this.props.myLocation.address}}/>
+              }
+              {this.state.markerChoose &&
+                <MarkerComponent
+                  infoLocation={{
+                    latitude: this.state.markerChoose.latitude,
+                    longitude: this.state.markerChoose.longitude,
+                    address: this.state.address}}/>
+                }
+                {this.state.locationNearCenter.length && this.state.locationNearCenter.map((item) => {
+                  return(
+                    <MarkerComponent infoLocation={item} key={item.id}
+                      onDrawDirection={this.onDrawDirection.bind(this)}
+                      tourChosen={this.state.idTourChosen}/>
+                  )
+                })
+              }
+            </GoogleMap>
+            {this.props.isShowTour &&
+              <a className="hide-tour" title="Hide tour's direction on map" onClick={this.onToggleShowTour.bind(this)}>
+                <FaEyeSlash style={{fontSize: '20px'}}/>
+              </a>
+            }
+      </div>
     )
   }
 }

@@ -12,6 +12,14 @@ export default () => {
       url += params.tour ? `?tour=${params.tour}` : ''
       return httpPost(url, data)
     },
+    getTour: (id) => {
+      let url = baseURL + `tour/getById/${id}`
+      return fetchCached(url)
+    },
+    getRouteByTour: (id) => {
+      let url = baseURL + `route/getByTour/${id}`
+      return fetchCached(url)
+    }
   }
 
   return services
