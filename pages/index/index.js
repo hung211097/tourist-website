@@ -124,9 +124,7 @@ class Home extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="vc_parallax-inner skrollable skrollable-before">
-
-              </div>
+              <div className="vc_parallax-inner skrollable skrollable-before"></div>
             </div>
           </section>
         </Layout>

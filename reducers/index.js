@@ -1,6 +1,6 @@
 import { actionTypes } from '../actions'
 
-export default (state = {}, action) => {
+export default (state = {isShowTour: false}, action) => {
     switch (action.type) {
       case actionTypes.SET_USER:
           return { ...state, user: action.user.me, accessToken:  action.user.access_token}

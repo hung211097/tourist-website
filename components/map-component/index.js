@@ -1,6 +1,6 @@
 import React from 'react'
 import { compose } from "recompose"
-import { withScriptjs, withGoogleMap, GoogleMap } from "react-google-maps"
+import { withScriptjs, withGoogleMap, DirectionsRenderer, GoogleMap } from "react-google-maps"
 import { SearchBox } from "react-google-maps/lib/components/places/SearchBox"
 import _ from 'lodash'
 import PropTypes from 'prop-types'
@@ -47,7 +47,8 @@ class MapComponent extends React.Component{
       center: this.props.center,
       isChangeCenter: false,
       idTourChosen: null,
-      locationsInTour: []
+      locationsInTour: [],
+      directions: null
     }
   }
 
@@ -201,12 +202,40 @@ class MapComponent extends React.Component{
         temp.push(addItem)
         this.traceAddedLocation[addItem.id] = true
       }
-      this.setState({
-        locationsInTour: routes,
-        locationNearCenter: temp,
-        idTourChosen: idTour
-      })
     })
+    const DirectionsService = new google.maps.DirectionsService();
+    let request = {}
+    routes.forEach((item, i) => {
+      if (i == 0) request.origin = new google.maps.LatLng(item.location.latitude, item.location.longitude);
+      else if (i == routes.length - 1) request.destination = new google.maps.LatLng(item.location.latitude, item.location.longitude);
+      else {
+        if (!request.waypoints) request.waypoints = [];
+        request.waypoints.push({
+          location:  new google.maps.LatLng(item.location.latitude, item.location.longitude),
+          stopover: true
+        });
+      }
+    })
+    request.travelMode = google.maps.TravelMode.DRIVING
+    console.log(routes);
+    DirectionsService.route(request, (result, status) => {
+        if (status === google.maps.DirectionsStatus.OK) {
+          this.setState({
+            directions: result,
+            locationsInTour: routes,
+            locationNearCenter: temp,
+            idTourChosen: idTour
+          });
+          console.log(result);
+        } else {
+          console.error(`error fetching directions ${result}`);
+        }
+      })
+      // this.setState({
+      //   locationsInTour: routes,
+      //   locationNearCenter: temp,
+      //   idTourChosen: idTour
+      // })
   }
 
   resetMarker(){
@@ -222,7 +251,8 @@ class MapComponent extends React.Component{
       this.setState({
         locationsInTour: [],
         locationNearCenter: temp,
-        idTourChosen: null
+        idTourChosen: null,
+        directions: null
       })
     })
   }
@@ -245,7 +275,7 @@ class MapComponent extends React.Component{
             onClick={this.onClickedMap.bind(this)}
             onDragEnd={this.onDragEndMap.bind(this)}
             onZoomChanged={this.onZoomChanged.bind(this)}>
-        {this.props.isSearchBox &&
+            {this.props.isSearchBox &&
               <SearchBox
                 ref={this.searchBox}
                 bounds={this.state.bounds}
@@ -293,6 +323,7 @@ class MapComponent extends React.Component{
                   )
                 })
               }
+              {this.state.directions && <DirectionsRenderer directions={this.state.directions} options={{suppressMarkers: true}}/>}
             </GoogleMap>
             {this.props.isShowTour &&
               <a className="hide-tour" title="Hide tour's direction on map" onClick={this.onToggleShowTour.bind(this)}>
