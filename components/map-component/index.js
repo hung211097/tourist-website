@@ -217,25 +217,17 @@ class MapComponent extends React.Component{
       }
     })
     request.travelMode = google.maps.TravelMode.DRIVING
-    console.log(routes);
+    request.optimizeWaypoints = true
     DirectionsService.route(request, (result, status) => {
-        if (status === google.maps.DirectionsStatus.OK) {
-          this.setState({
-            directions: result,
-            locationsInTour: routes,
-            locationNearCenter: temp,
-            idTourChosen: idTour
-          });
-          console.log(result);
-        } else {
-          console.error(`error fetching directions ${result}`);
-        }
-      })
-      // this.setState({
-      //   locationsInTour: routes,
-      //   locationNearCenter: temp,
-      //   idTourChosen: idTour
-      // })
+      if (status === google.maps.DirectionsStatus.OK) {
+        this.setState({
+          directions: result,
+          locationsInTour: routes,
+          locationNearCenter: temp,
+          idTourChosen: idTour
+        });
+      }
+    })
   }
 
   resetMarker(){

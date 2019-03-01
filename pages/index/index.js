@@ -27,6 +27,28 @@ class Home extends React.Component {
 
   constructor(props) {
     super(props)
+    this.destinations = [
+      {
+        route: '',
+        title: 'OCEANIA',
+        featured_img: '/static/images/oceania.jpg'
+      },
+      {
+        route: '',
+        title: 'AFRICA',
+        featured_img: '/static/images/africa.jpg'
+      },
+      {
+        route: '',
+        title: 'AMERICA',
+        featured_img: '/static/images/america.jpg'
+      },
+      {
+        route: '',
+        title: 'ASIA',
+        featured_img: '/static/images/asia.jpg'
+      }
+    ]
   }
 
   componentDidMount() {
@@ -51,7 +73,8 @@ class Home extends React.Component {
           <style jsx>{styles}</style>
           <section className='middle'>
             {/* section box*/}
-            <MyMap isMarkerShown isSearchBox userLocation={this.props.location ? JSON.parse(this.props.location) : null}/>
+            <MyMap isMarkerShown={true}
+               isSearchBox={true} userLocation={this.props.location ? JSON.parse(this.props.location) : null}/>
             <div className="contain nd_options_container nd_options_clearfix">
               <div className="page-content">
                 <div className="row top-promotion">
@@ -144,46 +167,21 @@ class Home extends React.Component {
                   </div>
                 </div>
                 <div className="row our-destination-item">
-                  <div className="col-sm-3 no-padding destination-item">
-                    <div className="destination-item-contain">
-                      <div className="content">
-                        <div className="title-item">
-                          <a>OCEANIA</a>
+                  {this.destinations.map((item, key) => {
+                      return(
+                        <div className="col-sm-3 no-padding destination-item" key={key}>
+                          <div className="destination-item-contain">
+                            <div className="content">
+                              <div className="title-item">
+                                <a>{item.title}</a>
+                              </div>
+                              <img alt="featured_img" src={item.featured_img} />
+                            </div>
+                          </div>
                         </div>
-                        <img alt="feature_img" src="/static/images/oceania.jpg" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-sm-3 no-padding destination-item">
-                    <div className="destination-item-contain">
-                      <div className="content">
-                        <div className="title-item">
-                          <a>AFRICA</a>
-                        </div>
-                        <img alt="feature_img" src="/static/images/africa.jpg" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-sm-3 no-padding destination-item">
-                    <div className="destination-item-contain">
-                      <div className="content">
-                        <div className="title-item">
-                          <a>AMERICA</a>
-                        </div>
-                        <img alt="feature_img" src="/static/images/america.jpg" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-sm-3 no-padding destination-item">
-                    <div className="destination-item-contain">
-                      <div className="content">
-                        <div className="title-item">
-                          <a>ASIA</a>
-                        </div>
-                        <img alt="feature_img" src="/static/images/asia.jpg" />
-                      </div>
-                    </div>
-                  </div>
+                      )
+                    })
+                  }
                 </div>
               </div>
             </div>
