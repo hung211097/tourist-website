@@ -233,7 +233,7 @@ class MapComponent extends React.Component{
       }
     })
     request.travelMode = google.maps.TravelMode.DRIVING
-    request.optimizeWaypoints = true
+    // request.optimizeWaypoints = true
     DirectionsService.route(request, (result, status) => {
       if (status === google.maps.DirectionsStatus.OK) {
         this.setState({
@@ -331,7 +331,7 @@ class MapComponent extends React.Component{
                   )
                 })
               }
-              {this.state.directions && <DirectionsRenderer directions={this.state.directions} options={{suppressMarkers: true}}/>}
+              {this.state.directions && <DirectionsRenderer directions={this.state.directions} />}
             </GoogleMap>
             {this.props.isShowTour &&
               <a className="hide-tour" title="Hide tour's direction on map" onClick={this.onToggleShowTour.bind(this)}>
