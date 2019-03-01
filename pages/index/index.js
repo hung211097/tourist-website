@@ -73,8 +73,10 @@ class Home extends React.Component {
           <style jsx>{styles}</style>
           <section className='middle'>
             {/* section box*/}
-            <MyMap isMarkerShown={true}
-               isSearchBox={true} userLocation={this.props.location ? JSON.parse(this.props.location) : null}/>
+            <MyMap
+                isMarkerShown={true}
+                isSearchBox={true}
+                userLocation={this.props.location ? this.props.location : null}/>
             <div className="contain nd_options_container nd_options_clearfix">
               <div className="page-content">
                 <div className="row top-promotion">

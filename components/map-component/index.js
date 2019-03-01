@@ -53,7 +53,7 @@ class MapComponent extends React.Component{
   }
 
   componentDidMount(){
-    if(this.props.myLocation){
+    if(this.props.myLocation && this.props.myLocation.position){
       const body = {
         lat: this.props.myLocation.position.latitude,
         lng: this.props.myLocation.position.longitude,
@@ -62,6 +62,22 @@ class MapComponent extends React.Component{
       this.apiService.getLocationsNearCenter(body, {tour: true}).then((res) => {
         this.setState({
           locationNearCenter: this.addMarker(res.data),
+        })
+      })
+    }
+    else{
+      this.setState({
+        zoom: 9
+      }, () => {
+        const body = {
+          lat: this.props.center.lat,
+          lng: this.props.center.lng,
+          distance: mapDistance[this.googleMap.current.getZoom().toString()]
+        }
+        this.apiService.getLocationsNearCenter(body, {tour: true}).then((res) => {
+          this.setState({
+            locationNearCenter: this.addMarker(res.data),
+          })
         })
       })
     }
@@ -259,10 +275,10 @@ class MapComponent extends React.Component{
       <div className="map-content">
         <GoogleMap
           ref={this.googleMap}
-          center={this.props.myLocation && !this.state.isChangeCenter ?
+          center={this.props.myLocation && this.props.myLocation.position && !this.state.isChangeCenter ?
             {lat: this.props.myLocation.position.latitude, lng: this.props.myLocation.position.longitude}
             : this.state.center}
-            defaultZoom={this.state.zoom}
+            zoom={this.state.zoom}
             defaultOptions={mapOption}
             onClick={this.onClickedMap.bind(this)}
             onDragEnd={this.onDragEndMap.bind(this)}
@@ -292,7 +308,7 @@ class MapComponent extends React.Component{
                   />
               </SearchBox>
             }
-            {this.props.myLocation &&
+            {this.props.myLocation && this.props.myLocation.position &&
               <MarkerComponent
                 isMe
                 infoLocation={{
