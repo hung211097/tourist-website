@@ -41,7 +41,7 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
-    // window.addEventListener('scroll', this.handleOnScroll.bind(this))
+    window.addEventListener('scroll', this.handleOnScroll.bind(this))
     const objLocation = getLocalStorage(KEY.LOCATION)
     if(objLocation || objLocation === ''){
       return
@@ -52,7 +52,7 @@ class Header extends React.Component {
   }
 
   componentWillUnmount(){
-    // window.removeEventListener('scroll', this.handleOnScroll.bind(this))
+    window.removeEventListener('scroll', this.handleOnScroll.bind(this))
     // if (this.watchID != null) {
     //   navigator.geolocation.clearWatch(this.watchID);
     //   this.watchID = null;

@@ -126,6 +126,67 @@ class Home extends React.Component {
               </div>
               <div className="vc_parallax-inner skrollable skrollable-before"></div>
             </div>
+            <div className="contain nd_options_container nd_options_clearfix">
+              <div className="page-content">
+                <div className="row our-destination">
+                  <div className="col-sm-12 our-destination-title">
+                    <div className="our-destination-inner">
+                      <div className="wrapper text-center">
+                        <h1>OUR DESTINATIONS</h1>
+                        <div className="nd_options_height_20" />
+                        <h3>CHOOSE YOUR NEXT DESTINATION</h3>
+                        <div className="nd_options_height_20" />
+                        <div className="nd_options_section nd_options_line_height_0 text-center">
+                          <span className="underline-title"/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="row our-destination-item">
+                  <div className="col-sm-3 no-padding destination-item">
+                    <div className="destination-item-contain">
+                      <div className="content">
+                        <div className="title-item">
+                          <a>OCEANIA</a>
+                        </div>
+                        <img alt="feature_img" src="/static/images/oceania.jpg" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-sm-3 no-padding destination-item">
+                    <div className="destination-item-contain">
+                      <div className="content">
+                        <div className="title-item">
+                          <a>AFRICA</a>
+                        </div>
+                        <img alt="feature_img" src="/static/images/africa.jpg" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-sm-3 no-padding destination-item">
+                    <div className="destination-item-contain">
+                      <div className="content">
+                        <div className="title-item">
+                          <a>AMERICA</a>
+                        </div>
+                        <img alt="feature_img" src="/static/images/america.jpg" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-sm-3 no-padding destination-item">
+                    <div className="destination-item-contain">
+                      <div className="content">
+                        <div className="title-item">
+                          <a>ASIA</a>
+                        </div>
+                        <img alt="feature_img" src="/static/images/asia.jpg" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </section>
         </Layout>
       </>

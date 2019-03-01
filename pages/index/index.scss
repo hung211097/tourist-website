@@ -14,9 +14,9 @@
     .page-content{
       float: left;
       width: 100%;
-      .top-promotion{
+      .top-promotion, .our-destination{
         margin-top: 60px;
-        .top-promotion-title{
+        .top-promotion-title, .our-destination-title{
           h1{
             font-size: 30px;
             line-height: 30px;
@@ -37,6 +37,35 @@
       }
       .top-promotion-item{
         margin-top: 10px;
+
+      }
+      .our-destination-item{
+        margin-top: 10px;
+        .destination-item{
+          padding: 15px;
+          .destination-item-contain{
+            border: 1px solid #f1f1f1;
+            background-color: #fff;
+            .content{
+              position: relative;
+              .title-item{
+                top: 0px;
+                left: 0px;
+                position: absolute;
+                text-align: center;
+                width: 100%;
+                a{
+                  color: #a4a4a4;
+                  text-transform: uppercase;
+                  display: inline-block;
+                  background-color: #fff;
+                  padding: 10px 20px;
+                  text-align: center;
+                }
+              }
+            }
+          }
+        }
       }
       .show-more-area{
         margin: 30px 0 40px;
