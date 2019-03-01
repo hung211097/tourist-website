@@ -24,7 +24,8 @@ module.exports = {
       "setInterval": true,
       "google": true,
       "clearInterval": true,
-      "navigator": true
+      "navigator": true,
+      "JSON": true
   },
   "extends": ["eslint:recommended", "plugin:react/recommended"]
 };

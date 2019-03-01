@@ -29,6 +29,7 @@ a:hover {
 
 a {
   color: inherit;
+  cursor: pointer;
 }
 
 a:active,
@@ -68,6 +69,32 @@ p {
    opacity: 1;
    transition: opacity 500ms ease-in;
 }
+
+.bold{
+  font-weight: bold;
+}
+
+.tour-list{
+  margin-top: 10px;
+  .tour-item{
+    font-size: 14px;
+    font-weight: 500;
+    margin: 5px 0;
+    a{
+      &:hover{
+        color: #757575;
+      }
+      cursor: pointer;
+    }
+    .display-tour{
+      z-index: 99;
+      padding: 7px;
+      position: relative;
+      top: -1px;
+    }
+  }
+}
+
 
 .section {
   margin: 0 0 100px;
@@ -133,6 +160,10 @@ p {
   visibility: hidden;
 }
 
+.nd_options_line_height_0 {
+  line-height: 0px;
+}
+
 .nd_options_height_5 {
   height: 5px;
 }
@@ -187,5 +218,92 @@ p {
 .nd_options_display_block_responsive {
   @media screen and (min-width: 320px) and (max-width: 1199px){
     display: block !important;
+  }
+}
+
+.nd_options_navigation_2_sticky_move_down{
+  margin-top: 0px;
+}
+
+.sticky_nav{
+  transition: all 0.8s ease;
+  position: fixed;
+  z-index: 999;
+}
+
+.sticky_move_up{
+  margin-top: -220px;
+}
+
+.sticky_move_down{
+  margin-top: 0px;
+}
+
+.info-box{
+  padding: 20px 15px;
+  background: white;
+  position: relative;
+  overflow: auto;
+  max-height: 40vh;
+  .info-content{
+    padding-bottom: 20px;
+    img{
+      width: 70%;
+      max-width: 100% !important;
+      margin-bottom: 10px;
+    }
+    p{
+      font-size: 15px;
+      margin-bottom: 5px;
+      a{
+        cursor: pointer;
+        color: $main-bg-color;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.custom-map{
+  height: 100vh;
+  @media screen and (max-width: 767px){
+    height: 80vh;
+  }
+}
+
+.map-content{
+  .hide-tour{
+    cursor: pointer;
+    position: absolute;
+    top: 81%;
+    @media screen and (max-width: 991px){
+      top: 87%;
+    }
+    @media screen and (max-width: 767px){
+      top: 61%;
+    }
+    right: 10px;
+    padding: 10px;
+    background: white;
+    color: #666666 !important;
+    &:hover{
+      color: #000 !important;
+    }
+  }
+}
+
+.gm-style .gm-style-iw-c{
+  padding-right: 25px !important;
+  width: 450px !important;
+}
+
+.gm-ui-hover-effect{
+  top: -4px !important;
+  right: -4px !important;
+  width: 32px !important;
+  height: 32px !important;
+  img{
+    width: 18px !important;
+    height: 18px !important;
   }
 }

@@ -1,0 +1,69 @@
+@import 'styles/variables.scss';
+
+.promotion-item{
+  padding: 15px;
+  .wrapper-item{
+    border: 1px solid #f1f1f1;
+    background-color: #fff;
+    .content-item{
+      position: relative;
+      overflow: hidden;
+      a{
+        cursor: pointer;
+        color: #a4a4a4;
+        top: 0;
+        left: 0;
+        position: absolute;
+        padding: 10px 20px;
+        background-color: #fff;
+        span{
+          color: #a4a4a4;
+        }
+      }
+    }
+    .name-item{
+      a{
+        cursor: pointer;
+        color: #a4a4a4;
+        &:hover{
+          h3{
+            background: #5d6572;
+          }
+        }
+        h3{
+          padding: 20px;
+          font-weight: normal;
+          color: white;
+          font-size: 20px;
+          line-height: 20px;
+          background-color: #434a54;
+          transition: 0.2s ease;
+        }
+      }
+    }
+    .description-item{
+      padding: 20px;
+      box-sizing: border-box;
+      p{
+        color: #777;
+        font-size: 14px;
+        line-height: 27px;
+        margin-bottom: 20px;
+      }
+      a{
+        color: #777;
+        cursor: pointer;
+        border: 1px solid #f1f1f1;
+        display: inline-block;
+        border-radius: 0px !important;
+        background: white;
+        padding: 10px 20px;
+        font-size: 14px;
+        line-height: 27px;
+        &:hover, &:focus{
+          background: #fbfbfb;
+        }
+      }
+    }
+  }
+}

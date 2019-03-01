@@ -14,7 +14,8 @@ export const initStore = (initialState = actionDefault, {isServer, req, debug, s
         const storage = require('redux-persist/lib/storage').default
         const persistConfig = {
             key: storeKEY,
-            storage
+            storage,
+            blacklist: ['isShowTour']
         }
         const persistedReducer = persistReducer(persistConfig, reducers)
         const store = makeConfiguredStore(persistedReducer, initialState)

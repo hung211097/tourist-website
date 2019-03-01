@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 // import ApiService from 'services/api.service'
 import { FaRegCreditCard, FaRegCheckSquare, FaSearch, FaTimesCircle } from "react-icons/fa"
-import { MdLocationOn } from "react-icons/md";
+import { MdLocationOn } from "react-icons/md"
 import { saveLocation } from '../../actions'
 import { setLocalStorage, getLocalStorage } from '../../services/local-storage.service'
 import { KEY } from '../../constants/local-storage'
@@ -36,10 +36,12 @@ class Header extends React.Component {
     this.state = {
       showSidebar: false,
       showSearchBox: false,
+      isSticky: false
     }
   }
 
   componentDidMount() {
+    window.addEventListener('scroll', this.handleOnScroll.bind(this))
     const objLocation = getLocalStorage(KEY.LOCATION)
     if(objLocation || objLocation === ''){
       return
@@ -50,10 +52,26 @@ class Header extends React.Component {
   }
 
   componentWillUnmount(){
+    window.removeEventListener('scroll', this.handleOnScroll.bind(this))
     // if (this.watchID != null) {
     //   navigator.geolocation.clearWatch(this.watchID);
     //   this.watchID = null;
     // }
+  }
+
+  handleOnScroll(){
+    const winScroll =
+    document.body.scrollTop || document.documentElement.scrollTop
+    if(winScroll > 730){
+      this.setState({
+        isSticky: true
+      })
+    }
+    else{
+      this.setState({
+        isSticky: false
+      })
+    }
   }
 
   requestGeolocation(){
@@ -130,8 +148,10 @@ class Header extends React.Component {
                     </form>
                   </li>
                   <li>
-                      <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/">HOME</a>
-                    </li>
+                    <Link route="home">
+                      <a>HOME</a>
+                    </Link>
+                  </li>
                   <li>
                       <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/">PACKAGES</a>
                       <ul className="sub-menu">
@@ -309,19 +329,21 @@ class Header extends React.Component {
               <div className="nd_options_container nd_options_clearfix nd_options_position_relative">
                 <div className="nav-content nd_options_dnone_responsive">
                   <div style={{height: '10px'}} className="nd_options_section" />
-                  {/*LOGO*/}
-                  <Link route="home">
-                    <a>
-                      <img alt="logo" className="nd_options_position_absolute nd_options_left_15 logo" src="/static/images/logo.png"/>
-                    </a>
-                  </Link>
-                  <div className="nd_options_navigation_2 nd_options_navigation_type nd_options_text_align_right nd_options_float_right nd_options_dnone_responsive">
+                    {/*LOGO*/}
+                    <Link route="home">
+                      <a>
+                        <img alt="logo" className="nd_options_position_absolute nd_options_left_15 logo" src="/static/images/logo.png"/>
+                      </a>
+                    </Link>
+                    <div className="nd_options_navigation_2 nd_options_navigation_type nd_options_text_align_right nd_options_float_right nd_options_dnone_responsive">
                     <div className="nd_options_display_table">
                       <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
                         <div className="menu-menu-1-container">
                           <ul id="menu-menu-2" className="menu">
                             <li className={this.props.page === 'home' ? 'active' : ''}>
-                              <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/">HOME</a>
+                              <Link route="home">
+                                <a>HOME</a>
+                              </Link>
                             </li>
                             <li>
                               <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/">PACKAGES</a>
@@ -347,12 +369,6 @@ class Header extends React.Component {
                                 <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/services/">Services</a></li>
                                 <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/prices/">Prices</a></li>
                                 <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/faq/">Faq</a></li>
-                                {/*<li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-1/">Contact 1</a>
-                                  <ul className="sub-menu">
-                                    <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-1/">Contact 1</a></li>
-                                    <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-2/">Contact 2</a></li>
-                                  </ul>
-                                </li>*/}
                               </ul>
                             </li>
                             <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-1/">CONTACT</a>
@@ -397,6 +413,94 @@ class Header extends React.Component {
               {/*end container*/}
             </div>
           </div>
+          {/*STICKY NAVIGATION*/}
+          <div className={this.state.isSticky ? "nd_options_section navigation sticky_nav sticky_move_down"  : "nd_options_section navigation sticky_nav sticky_move_up"}>
+            <div className="nd_options_container nd_options_position_relative">
+              <div className="nav-content nd_options_dnone_responsive">
+                  <div style={{height: '10px'}} className="nd_options_section" />
+                    {/*LOGO*/}
+                    <Link route="home">
+                      <a>
+                        <img alt="logo" className="nd_options_position_absolute nd_options_left_15 logo" src="/static/images/logo.png"/>
+                      </a>
+                    </Link>
+                    <div className="nd_options_navigation_2 nd_options_navigation_type nd_options_text_align_right nd_options_float_right nd_options_dnone_responsive">
+                    <div className="nd_options_display_table">
+                      <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
+                        <div className="menu-menu-1-container">
+                          <ul id="menu-menu-2" className="menu">
+                            <li className={this.props.page === 'home' ? 'active' : ''}>
+                              <Link route="home">
+                                <a>HOME</a>
+                              </Link>
+                            </li>
+                            <li>
+                              <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/">PACKAGES</a>
+                              <ul className="sub-menu">
+                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/">Search</a></li>
+                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/packages/london/">Single Package</a></li>
+                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/destinations/europe/">Destination</a></li>
+                              </ul>
+                            </li>
+                            <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/">SHOP</a>
+                              <ul className="sub-menu">
+                                <li ><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/">Shop</a></li>
+                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/cart/">Cart</a></li>
+                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/checkout/">Checkout</a></li>
+                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/my-account/">My account</a></li>
+                              </ul>
+                            </li>
+                            <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/about-us/">ABOUT US</a></li>
+                            <li><a href="#">PAGES</a>
+                              <ul className="sub-menu">
+                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/agency-destinations/">Best Destinations</a></li>
+                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/staff/">Staff</a></li>
+                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/services/">Services</a></li>
+                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/prices/">Prices</a></li>
+                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/faq/">Faq</a></li>
+                              </ul>
+                            </li>
+                            <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-1/">CONTACT</a>
+                              <ul className="sub-menu">
+                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-1/">Contact 1</a></li>
+                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-2/">Contact 2</a></li>
+                              </ul>
+                            </li>
+                            <li className="nd_options_book_now_btn">
+                              <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/">BOOK NOW</a>
+                            </li>
+                          </ul>
+                          <div className="access-location">
+                            <a href='javascript:;' onClick={this.requestGeolocation.bind(this)} title="Access your location">
+                              <MdLocationOn style={{color: '#EA4335', fontSize: '28px'}}/>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{height: '10px'}} className="nd_options_section" />
+                </div>
+              {/*RESPONSIVE*/}
+              <div className="nd_options_section text-center d-none nd_options_display_block_responsive">
+                <div className="nd_options_section nd_options_height_20" />
+                <a className="d-inline-block" href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel">
+                  <img alt="logo" className="nd_options_float_left" src="/static/images/logo.png" />
+                </a>
+                <div className="nd_options_section nd_options_height_10" />
+                <div className="nd_options_section">
+                  <a className="nd_options_open_navigation_2_sidebar_content nd_options_open_navigation_2_sidebar_content"
+                    href="javascript:;"
+                    onClick={this.toggleSideBar.bind(this)}>
+                    <img alt="icon-menu" className="icon-menu" src="/static/svg/icon-menu.svg" />
+                  </a>
+                </div>
+                <div className="nd_options_section nd_options_height_20" />
+              </div>
+              {/*RESPONSIVE*/}
+            </div>
+          </div>
+          {/*STICKY NAVIGATION*/}
         </header>
       </div>
       )

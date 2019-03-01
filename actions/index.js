@@ -5,7 +5,8 @@ import { isServer } from 'services/utils.service'
 export const actionTypes = {
   SET_USER: 'SET_USER',
   REDIRECT_AFFTER_LOGIN: 'REDIRECT_AFFTER_LOGIN',
-  SAVE_LOCATION: 'SAVE_LOCATION'
+  SAVE_LOCATION: 'SAVE_LOCATION',
+  TOGGLE_SHOW_TOUR: 'TOGGLE_SHOW_TOUR'
 }
 
 export const storeKEY = 'tourist-v1'
@@ -40,5 +41,12 @@ export const saveLocation = (location, err) => {
         type: actionTypes.SAVE_LOCATION,
         payload: location,
         error: err
+    }
+}
+
+export const toggleShowTour = (isShow) => {
+    return {
+        type: actionTypes.TOGGLE_SHOW_TOUR,
+        payload: isShow,
     }
 }
