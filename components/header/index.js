@@ -291,16 +291,22 @@ class Header extends React.Component {
                 <div className="right-header">
                   <div className="nd_options_navigation_top_header_2">
                     <div className="account-zone">
-                      <a href="#">
-                        <img alt="avatar" src="/static/images/avatar.jpg" width={30} />
-                      </a>
+                      <Link route="login">
+                        <a>
+                          <img alt="avatar" src="/static/images/avatar.jpg" width={30} />
+                        </a>
+                      </Link>
                       <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
                         <p className="nd_options_font_size_12 nd_options_text_align_left">
-                          <a href="#">My Account</a>
+                          <Link route="login">
+                            <a>My Account</a>
+                          </Link>
                         </p>
                         <div className="nd_options_section nd_options_height_5" />
                         <h6 className="nd_options_font_size_10 nd_options_text_align_left nd_options_color_white nd_options_second_font">
-                          <a className="nd_options_color_white" href="#">LOG IN</a>
+                          <Link route="login">
+                            <a className="nd_options_color_white">LOG IN</a>
+                          </Link>
                         </h6>
                       </div>
                     </div>
