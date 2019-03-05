@@ -1,23 +1,27 @@
 import React from 'react'
-import { Link } from 'routes'
+import { Router, Link } from 'routes'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import _ from 'lodash'
 // import ApiService from 'services/api.service'
-import { FaRegCreditCard, FaRegCheckSquare, FaSearch, FaTimesCircle } from "react-icons/fa"
+import { FaRegCreditCard, FaRegCheckSquare, FaSearch, FaTimesCircle, FaSignOutAlt, FaSignInAlt } from "react-icons/fa"
 import { MdLocationOn } from "react-icons/md"
-import { saveLocation } from '../../actions'
-import { setLocalStorage, getLocalStorage } from '../../services/local-storage.service'
+import { saveLocation, logout, saveRedirectUrl } from '../../actions'
+import { setLocalStorage, getLocalStorage, removeItem } from '../../services/local-storage.service'
 import { KEY } from '../../constants/local-storage'
 
-const mapStateToProps = () => {
+const mapStateToProps = (state) => {
   return {
+    user: state.user
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    saveLocation: (location, err) => {dispatch(saveLocation(location, err))}
+    saveLocation: (location, err) => {dispatch(saveLocation(location, err))},
+    saveRedirectUrl: (url) => {dispatch(saveRedirectUrl(url))},
+    logout: () => {dispatch(logout())}
   }
 }
 
@@ -27,7 +31,10 @@ class Header extends React.Component {
   static propTypes = {
     accessToken: PropTypes.string,
     page: PropTypes.string,
-    saveLocation: PropTypes.func
+    saveLocation: PropTypes.func,
+    saveRedirectUrl: PropTypes.func,
+    user: PropTypes.object,
+    logout: PropTypes.func
   }
 
   constructor(props) {
@@ -59,9 +66,15 @@ class Header extends React.Component {
     // }
   }
 
+  handleLogout(){
+    removeItem(KEY.TOKEN)
+    this.props.logout && this.props.logout()
+    this.props.saveRedirectUrl && this.props.saveRedirectUrl(Router.asPath)
+    Router.pushRoute("login")
+  }
+
   handleOnScroll(){
-    const winScroll =
-    document.body.scrollTop || document.documentElement.scrollTop
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop
     if(winScroll > 730){
       this.setState({
         isSticky: true
@@ -290,26 +303,37 @@ class Header extends React.Component {
                 </div>
                 <div className="right-header">
                   <div className="nd_options_navigation_top_header_2">
-                    <div className="account-zone">
-                      <Link route="login">
-                        <a>
-                          <img alt="avatar" src="/static/images/avatar.jpg" width={30} />
-                        </a>
-                      </Link>
-                      <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
-                        <p className="nd_options_font_size_12 nd_options_text_align_left">
-                          <Link route="login">
-                            <a>My Account</a>
-                          </Link>
-                        </p>
-                        <div className="nd_options_section nd_options_height_5" />
-                        <h6 className="nd_options_font_size_10 nd_options_text_align_left nd_options_color_white nd_options_second_font">
-                          <Link route="login">
-                            <a className="nd_options_color_white">LOG IN</a>
-                          </Link>
-                        </h6>
-                      </div>
-                    </div>
+                    {!_.isEmpty(this.props.user) &&
+                      <a onClick={this.handleLogout.bind(this)} href="javascript:;">
+                        <div className="nd_options_display_table_cell nd_options_vertical_align_middle float-right logout">
+                          <p>Logout <FaSignOutAlt style={{fontSize: '16px', color: 'white', marginLeft: '5px'}}/></p>
+                        </div>
+                      </a>
+                    }
+                    <Link route="login">
+                      <a>
+                        <div className="account-zone" style={!_.isEmpty(this.props.user) ? {lineHeight: '2.6', padding: '11px 15px'} : null}>
+                          {_.isEmpty(this.props.user) ?
+                            <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
+                              <h6 className="nd_options_font_size_10 nd_options_text_align_left nd_options_color_white nd_options_second_font">
+                                <p className="nd_options_color_white">
+                                  Log in
+                                  <FaSignInAlt style={{fontSize: '16px', color: 'white', marginLeft: '6px', position: 'relative', top: '-1px'}}/>
+                                </p>
+                              </h6>
+                            </div>
+                            :
+                            <div>
+                              <img alt="avatar" src={this.props.user.avatar ? this.props.user.avatar : "/static/images/avatar.jpg"} width={30} />
+                              <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
+                                <p className="fullname">{this.props.user.fullname}</p>
+                              </div>
+                            </div>
+                          }
+                        </div>
+                      </a>
+                    </Link>
+
                     <div className="add-review">
                       <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
                         <a className="nd_options_margin_left_10" href="#">Add Your Review</a>

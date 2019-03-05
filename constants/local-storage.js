@@ -1,3 +1,4 @@
 export const KEY = {
-  LOCATION: 'location'
+  LOCATION: 'location',
+  TOKEN: 'accessToken'
 }

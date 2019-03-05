@@ -6,7 +6,8 @@ export const actionTypes = {
   SET_USER: 'SET_USER',
   REDIRECT_AFFTER_LOGIN: 'REDIRECT_AFFTER_LOGIN',
   SAVE_LOCATION: 'SAVE_LOCATION',
-  TOGGLE_SHOW_TOUR: 'TOGGLE_SHOW_TOUR'
+  TOGGLE_SHOW_TOUR: 'TOGGLE_SHOW_TOUR',
+  LOGOUT: 'LOGOUT'
 }
 
 export const storeKEY = 'tourist-v1'
@@ -48,5 +49,12 @@ export const toggleShowTour = (isShow) => {
     return {
         type: actionTypes.TOGGLE_SHOW_TOUR,
         payload: isShow,
+    }
+}
+
+export const logout = () => {
+    return {
+        type: actionTypes.LOGOUT,
+        user: ''
     }
 }

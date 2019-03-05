@@ -19,6 +19,14 @@ export default () => {
     getRouteByTour: (id) => {
       let url = baseURL + `route/getByTour/${id}`
       return fetchCached(url)
+    },
+    register: (data) => {
+      let url = baseURL + `user/register`
+      return httpPost(url, data)
+    },
+    login: (data) => {
+      let url = baseURL + `user/login`
+      return httpPost(url, data)
     }
   }
 

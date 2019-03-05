@@ -1,17 +1,28 @@
 import React from 'react'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
-import { Layout } from 'components'
-import { Link } from 'routes'
+import { Layout, PopupInfo } from 'components'
+import { Link, Router } from 'routes'
 import { connect } from 'react-redux'
-// import { isServer } from 'services/utils.service'
-import { FaFacebookF } from "react-icons/fa"
+import { isServer } from 'services/utils.service'
+import { FaFacebookF, FaCheck } from "react-icons/fa"
 import validateEmail from '../../services/validates/email.js'
 import validatePhone from '../../services/validates/phone.js'
+import ApiService from '../../services/api.service'
+import { authLogin } from 'actions'
+import { setLocalStorage } from '../../services/local-storage.service'
+import { KEY } from '../../constants/local-storage'
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    link_redirect: state.link_redirect,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    authLogin: (data) => {dispatch(authLogin(data))}
   }
 }
 
@@ -19,12 +30,14 @@ class Register extends React.Component {
   displayName = 'Register Page'
 
   static propTypes = {
-    dispatch: PropTypes.func,
+    authLogin: PropTypes.func,
     user: PropTypes.object,
+    link_redirect: PropTypes.string
   }
 
   constructor(props) {
     super(props)
+    this.apiService = ApiService()
     this.state = {
       isSubmit: false,
       phone: '',
@@ -32,12 +45,24 @@ class Register extends React.Component {
       fullname: '',
       confirmPassword: '',
       email: '',
+      showPopup: false,
+      error: ''
     }
   }
 
   componentDidMount() {
-
   }
+
+  componentWillUnmount(){
+    this.timeout && clearTimeout(this.timeout)
+  }
+
+  // static getDerivedStateFromProps(props) {
+  //     if (props.user && !isServer()) {
+  //         Router.pushRoute(props.link_redirect || 'home')
+  //     }
+  //     return null
+  // }
 
   handleLoginFB(){
 
@@ -83,6 +108,34 @@ class Register extends React.Component {
       return
     }
 
+    this.apiService.register({
+      fullname: this.state.fullname,
+      password: this.state.password,
+      email: this.state.email,
+      phone: this.state.phone
+    }).then((data) => {
+      setLocalStorage(KEY.TOKEN, data.token)
+      this.props.authLogin && this.props.authLogin(data)
+      this.setState({
+        showPopup: true
+      }, () => {
+        this.timeout = setTimeout(() => {
+          this.setState({
+            showPopup: false
+          }, () => {
+            Router.pushRoute(this.props.link_redirect || 'home')
+          })
+        }, 5000)
+      })
+    }).catch(e => {
+      let error = 'There is an error, please try again!'
+      if(e.status == 400){
+        error = 'Email or phone number already exists'
+      }
+      this.setState({
+        error: error
+      })
+    })
   }
 
   validate(){
@@ -107,6 +160,10 @@ class Register extends React.Component {
     }
 
     return true
+  }
+
+  handleClose(){
+    Router.pushRoute(this.props.link_redirect || 'home')
   }
 
   render() {
@@ -215,7 +272,9 @@ class Register extends React.Component {
                          <p className="error">Email must be in right format!</p>
                        }
                     </div>
-
+                    {this.state.error &&
+                      <p className="error">{this.state.error}</p>
+                    }
                     <div className="form-row">
                       <button type="submit" className="woocommerce-Button button" name="login" onClick={this.handleSubmit.bind(this)}>
                         Login
@@ -234,10 +293,22 @@ class Register extends React.Component {
               </div>
             </div>
           </section>
+          <PopupInfo show={this.state.showPopup} onClose={this.handleClose.bind(this)}>
+            <FaCheck size={100} style={{color: 'rgb(67, 74, 84)'}}/>
+            <h1>Congratulations!</h1>
+            <div className="nd_options_height_10" />
+            <p>You register an account successfully!</p>
+            <div className="nd_options_height_10" />
+            <Link route="home">
+              <a>
+                <button className="co-btn">Back to Homepage</button>
+              </a>
+            </Link>
+          </PopupInfo>
         </Layout>
       </>
     )
   }
 }
 
-export default connect(mapStateToProps)(Register)
+export default connect(mapStateToProps, mapDispatchToProps)(Register)

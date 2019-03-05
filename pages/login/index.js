@@ -2,14 +2,27 @@ import React from 'react'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { Layout } from 'components'
-import { Link } from 'routes'
+import { Router, Link } from 'routes'
 import { connect } from 'react-redux'
-// import { isServer } from 'services/utils.service'
+import { isServer } from 'services/utils.service'
 import { FaFacebookF } from "react-icons/fa";
+import { authLogin } from 'actions'
+import validateEmail from '../../services/validates/email.js'
+import validatePhone from '../../services/validates/phone.js'
+import ApiService from '../../services/api.service'
+import { setLocalStorage } from '../../services/local-storage.service'
+import { KEY } from '../../constants/local-storage'
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    link_redirect: state.link_redirect,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    authLogin: (data) => {dispatch(authLogin(data))}
   }
 }
 
@@ -17,17 +30,20 @@ class Login extends React.Component {
   displayName = 'Login Page'
 
   static propTypes = {
-    dispatch: PropTypes.func,
+    authLogin: PropTypes.func,
     user: PropTypes.object,
+    link_redirect: PropTypes.string
   }
 
   constructor(props) {
     super(props)
+    this.apiService = ApiService()
     this.state = {
       isSubmit: false,
-      phone: '',
+      username: '',
       password: '',
-      remember: false
+      remember: false,
+      error: ''
     }
   }
 
@@ -35,13 +51,23 @@ class Login extends React.Component {
 
   }
 
-  handleLoginFB(){
-
+  static getDerivedStateFromProps(props) {
+      if (props.user && !isServer()) {
+          Router.pushRoute(props.link_redirect || 'home')
+      }
+      return null
   }
 
-  handleChangePhone(e){
+  handleLoginFB(e){
+    e.preventDefault()
+    const href = `/auth/facebook?next=${Router.asPath}`
+    const as = href
+    Router.push(href, as, { shallow: true })
+  }
+
+  handleChangeUsername(e){
     this.setState({
-      phone: e.target.value
+      username: e.target.value
     })
   }
 
@@ -67,14 +93,38 @@ class Login extends React.Component {
       return
     }
 
+    this.apiService.login({
+      username: this.state.username,
+      password: this.state.password
+    }).then((data) => {
+      setLocalStorage(KEY.TOKEN, data.token)
+      this.props.authLogin && this.props.authLogin(data)
+      Router.pushRoute(this.props.link_redirect || 'home')
+    }).catch(e => {
+      let error = 'There is an error, please try again!'
+      if(e.status == 404){
+        error = 'Email or phone number does not exists'
+      }
+      else if(e.status == 402){
+        error = 'Password is not correct'
+      }
+      this.setState({
+        error: error
+      })
+    })
+
   }
 
   validate(){
-    if(!this.state.phone){
+    if(!this.state.username){
       return false
     }
 
     if(!this.state.password){
+      return false
+    }
+
+    if(!validateEmail(this.state.username) && !validatePhone(this.state.username)){
       return false
     }
 
@@ -109,17 +159,20 @@ class Login extends React.Component {
                 <div className="woocommerce">
                   <form className="woocommerce-form woocommerce-form-login login" onSubmit={this.handleSubmit.bind(this)}>
                     <div className="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-                      <label htmlFor="phone">
-                        Phone number
+                      <label htmlFor="username">
+                        Email or Phone number
                         <span className="required"> *</span>
                       </label>
-                      <input id="phone" type="text" name="phone" value={this.state.phone}
-                        className={this.state.isSubmit && !this.state.phone ?
+                      <input id="username" type="text" name="username" value={this.state.username}
+                        className={this.state.isSubmit && !this.state.username ?
                         "woocommerce-Input woocommerce-Input--text input-text error" :
                         "woocommerce-Input woocommerce-Input--text input-text"}
-                         onChange={this.handleChangePhone.bind(this)}/>
-                       {this.state.isSubmit && !this.state.phone &&
-                         <p className="error">Phone number is required!</p>
+                         onChange={this.handleChangeUsername.bind(this)}/>
+                       {this.state.isSubmit && !this.state.username &&
+                         <p className="error">Email or Phone number is required!</p>
+                       }
+                       {this.state.isSubmit && this.state.username && (!validateEmail(this.state.username) && !validatePhone(this.state.username)) &&
+                         <p className="error">Email or Phone number must be in right format!</p>
                        }
                     </div>
                     <div className="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
@@ -136,13 +189,16 @@ class Login extends React.Component {
                         <p className="error">Password is required!</p>
                       }
                     </div>
+                    {this.state.error &&
+                      <p className="error">{this.state.error}</p>
+                    }
                     <div className="form-row">
                       <div className="wrapper">
-                        <label className="woocommerce-form__label woocommerce-form__label-for-checkbox d-inline-block" htmlFor="rememberme">
+                        {/*<label className="woocommerce-form__label woocommerce-form__label-for-checkbox d-inline-block" htmlFor="rememberme">
                           <input className="woocommerce-form__input woocommerce-form__input-checkbox" name="rememberme" type="checkbox" id="rememberme"
                             checked={this.state.remember} onChange={this.handleRemember.bind(this)}/>
                           <span> Remember me</span>
-                        </label>
+                        </label>*/}
                         <span className="woocommerce-LostPassword lost_password">
                           <a>Lost your password?</a>
                         </span>
@@ -170,4 +226,4 @@ class Login extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

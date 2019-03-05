@@ -19,7 +19,7 @@ export function getAccessToken() {
 		return
 	}
 	const item = window.localStorage.getItem(CONST_KEY)
-	return item && JSON.parse(item).accessToken && JSON.parse(JSON.parse(item).accessToken);
+	return item && JSON.parse(item).token && JSON.parse(JSON.parse(item).token);
 }
 
 export function getUserAuth() {

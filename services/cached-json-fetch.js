@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch'
+import { getAccessToken } from './auth.service'
 
 function parseJSON(response) {
   if (response.status === 204 || response.status === 205) {
@@ -32,8 +33,7 @@ export default async function(url, force = false) {
   // We don't cache anything when server-side rendering.
   // That way if users refresh the page they always get fresh data.
 
-  // let token = (await import('./auth.service')).getAccessToken()
-  let token = null
+  let token = getAccessToken()
   let authorization = (token) ? ('JWT ' + token) : null;
   let options = {
     method: 'GET',
@@ -47,14 +47,13 @@ export default async function(url, force = false) {
 }
 
 export async function httpPost(url, data) {
-  let token = null
-  // let token = (await import('./auth.service')).getAccessToken()
+  let token = getAccessToken()
   let authorization = (token) ? ('JWT ' + token) : null;
   return fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: authorization
+        'Authorization': authorization
       },
       body: JSON.stringify(data)
     }).then(checkStatus)
@@ -62,8 +61,8 @@ export async function httpPost(url, data) {
 }
 
 export async function httpPut(url, data) {
-  let token = null
-  // let token = (await import('./auth.service')).getAccessToken()
+
+  let token = getAccessToken()
   let authorization = (token) ? ('JWT ' + token) : '';
   return fetch(url, {
       method: 'PUT',
@@ -77,8 +76,7 @@ export async function httpPut(url, data) {
 }
 
 export async function httpPostForm(url, form) {
-  let token = null
-  // let token = (await import('./auth.service')).getAccessToken()
+  let token = getAccessToken()
   return fetch(url, {
       method: 'POST',
       headers: {
@@ -91,8 +89,7 @@ export async function httpPostForm(url, form) {
 }
 
 export async function httpPutForm(url, form) {
-  let token = null
-  // let token = (await import('./auth.service')).getAccessToken()
+  let token = getAccessToken()
   return fetch(url, {
       method: 'PUT',
       headers: {
@@ -105,8 +102,7 @@ export async function httpPutForm(url, form) {
 }
 
 export async function httpDelete(url) {
-  let token = null
-  // let token = (await import('./auth.service')).getAccessToken()
+  let token = getAccessToken()
   return fetch(url, {
       method: 'DELETE',
       headers: {

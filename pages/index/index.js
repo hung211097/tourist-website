@@ -2,9 +2,8 @@ import React from 'react'
 import { Layout, MyMap, TopPromotionItem } from 'components'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
-import { Router } from 'routes'
+// import { Router } from 'routes'
 import { connect } from 'react-redux'
-import { isServer } from 'services/utils.service'
 import { saveRedirectUrl } from 'actions'
 
 const mapStateToProps = state => {
@@ -15,11 +14,17 @@ const mapStateToProps = state => {
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    saveRedirectUrl: (url) => {dispatch(saveRedirectUrl(url))}
+  }
+}
+
 class Home extends React.Component {
   displayName = 'Home Page'
 
   static propTypes = {
-    dispatch: PropTypes.func,
+    saveRedirectUrl: PropTypes.func,
     user: PropTypes.object,
     location: PropTypes.any,
     errorPermission: PropTypes.string
@@ -52,18 +57,7 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    const {dispatch} = this.props
-    dispatch(saveRedirectUrl(''))
-  }
-
-  saveCurrentUrl(){
-    const { dispatch } = this.props
-
-    let { user } = this.props
-    if (!user && !isServer()) {
-        dispatch(saveRedirectUrl(Router.asPath))
-        Router.pushRoute('login')
-    }
+    this.props.saveRedirectUrl && this.props.saveRedirectUrl('/')
   }
 
   render() {
@@ -194,4 +188,4 @@ class Home extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
