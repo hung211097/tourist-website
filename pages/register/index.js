@@ -4,14 +4,12 @@ import PropTypes from 'prop-types'
 import { Layout, PopupInfo } from 'components'
 import { Link, Router } from 'routes'
 import { connect } from 'react-redux'
-import { isServer } from 'services/utils.service'
+// import { isServer } from 'services/utils.service'
 import { FaFacebookF, FaCheck } from "react-icons/fa"
 import validateEmail from '../../services/validates/email.js'
 import validatePhone from '../../services/validates/phone.js'
 import ApiService from '../../services/api.service'
 import { authLogin } from 'actions'
-import { setLocalStorage } from '../../services/local-storage.service'
-import { KEY } from '../../constants/local-storage'
 
 const mapStateToProps = state => {
   return {
@@ -64,8 +62,11 @@ class Register extends React.Component {
   //     return null
   // }
 
-  handleLoginFB(){
-
+  handleLoginFB(e){
+    e.preventDefault()
+    const href = `/auth/facebook?next=${Router.asPath}`
+    const as = href
+    Router.push(href, as, { shallow: true })
   }
 
   handleChangePhone(e){
@@ -114,7 +115,6 @@ class Register extends React.Component {
       email: this.state.email,
       phone: this.state.phone
     }).then((data) => {
-      setLocalStorage(KEY.TOKEN, data.token)
       this.props.authLogin && this.props.authLogin(data)
       this.setState({
         showPopup: true

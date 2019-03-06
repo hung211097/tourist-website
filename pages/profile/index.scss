@@ -1,0 +1,58 @@
+@import 'styles/variables';
+
+.profile-detail {
+  ul{
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+    margin-top: 5px;
+    padding-left: 60px;
+    @media screen and (max-width: 768px){
+      padding-left: 0px;
+    }
+    li{
+      position: relative;
+      padding-left: 150px;
+      padding-top: 15px;
+      color: #333333;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      span{
+        position: absolute;
+        color: #999999;
+        font-weight: 600;
+        left: 0;
+      }
+      img{
+        width: 60%;
+      }
+    }
+  }
+  .title{
+    @media screen and (max-width: 767px){
+      margin-top: 50px;
+    }
+  }
+  .title-contain{
+    display: block;
+    width: 100%;
+    .my-profile__title {
+      margin-bottom: 0;
+      margin-top: 0;
+      color: #111111;
+    }
+  }
+  .content{
+    margin-top: 20px;
+    .avatar-contain{
+      text-align: center;
+      @media screen and (max-width: 768px){
+        text-align: right;
+      }
+      img{
+        width: 40%;
+        margin-top: 16px;
+      }
+    }
+  }
+}

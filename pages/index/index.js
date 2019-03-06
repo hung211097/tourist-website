@@ -2,7 +2,7 @@ import React from 'react'
 import { Layout, MyMap, TopPromotionItem } from 'components'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
-// import { Router } from 'routes'
+import { Router } from 'routes'
 import { connect } from 'react-redux'
 import { saveRedirectUrl } from 'actions'
 
@@ -57,7 +57,7 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    this.props.saveRedirectUrl && this.props.saveRedirectUrl('/')
+    this.props.saveRedirectUrl && this.props.saveRedirectUrl(Router.asPath)
   }
 
   render() {

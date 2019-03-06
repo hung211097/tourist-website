@@ -111,7 +111,7 @@ app.prepare()
   });
 
   server.get('/auth/facebook', (req, res, next) => {
-      if (req.query.next && req.query.next !== '/login') {
+      if (req.query.next && req.query.next !== '/login' && req.query.next !== '/register') {
           res.cookie('auth_callback_url', req.query.next, { expires: new Date(Date.now() + 900000) })
       }
       passport.authenticate('facebook', {

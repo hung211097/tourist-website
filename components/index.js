@@ -9,10 +9,12 @@ const defaultNoSSR = {
 }
 
 import Layout from './layout'
+import LayoutProfile from './layout-profile'
 import Header from './header'
 import Footer from './footer'
 import ClickOutside from './click-outside'
 import PopupInfo from './popup-info'
+import AutoHide from './auto-hide'
 
 // import Modal from './modal/index'
 
@@ -31,5 +33,7 @@ export {
     MapComponent,
     MarkerComponent,
     TopPromotionItem,
-    PopupInfo
+    PopupInfo,
+    LayoutProfile,
+    AutoHide
 }
