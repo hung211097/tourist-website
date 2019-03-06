@@ -1,4 +1,4 @@
-import fetchCached, { httpPost } from './cached-json-fetch'
+import fetchCached, { httpPost, httpPutForm } from './cached-json-fetch'
 const baseURL = process.env.API_URL
 
 export default () => {
@@ -27,6 +27,14 @@ export default () => {
     login: (data) => {
       let url = baseURL + `user/login`
       return httpPost(url, data)
+    },
+    logout: () => {
+      let url = baseURL + `user/logout`
+      return fetchCached(url)
+    },
+    updateProfile: (data) => {
+      let url = baseURL + `user/update`
+      return httpPutForm(url, data)
     }
   }
 

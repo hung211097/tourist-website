@@ -3,7 +3,7 @@ import { Layout } from 'components'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { Router, Link } from 'routes'
-import { logout, saveRedirectUrl } from 'actions'
+import { logout } from 'actions'
 import { connect } from 'react-redux'
 import ApiService from 'services/api.service'
 import { FaUserAlt, FaCog, FaShoppingCart, FaKey } from "react-icons/fa"
@@ -11,7 +11,6 @@ import { IoIosUndo } from "react-icons/io"
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    saveRedirectUrl: (url) => {dispatch(saveRedirectUrl(url))},
     logout: () => {dispatch(logout())}
   }
 }
@@ -35,13 +34,9 @@ class LayoutProfile extends React.Component {
         }
     }
 
-    componentDidMount(){
-      this.props.saveRedirectUrl && this.props.saveRedirectUrl(Router.asPath)
-    }
-
     handleLogout(){
       this.props.logout && this.props.logout()
-      this.props.saveRedirectUrl && this.props.saveRedirectUrl(Router.asPath)
+      this.apiService.logout(() => {})
       Router.pushRoute("login")
     }
 

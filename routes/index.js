@@ -6,9 +6,9 @@ module.exports = routes()                           // ----                   --
 .add('login', '/login')                             // login                  login                   /login
 .add('register', '/register')                       // register               register                /register
 .add('profile', '/profile')                         // profile                profile                 /profile
-.add('my-booking', '/my-booking')                   //my-booking              my-booking              /my-booking
-.add('update-profile', '/update-profile')           // update-profile         update-profile          /update-profile
-.add('change-password', '/change-password')         // change-password        change-password         /change-password
+.add('my-booking', '/profile/my-booking')           //my-booking              my-booking              /my-booking
+.add('update-profile', '/profile/update-profile')   // update-profile         update-profile          /update-profile
+.add('change-password', '/profile/change-password') // change-password        change-password         /change-password
 .add('about')                                       // about                  about                   /about
 .add('post')                                       // post                    post                    /post
 // .add('user', '/user/:id', 'profile')                // user   profile   /user/:id

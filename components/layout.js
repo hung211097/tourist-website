@@ -22,10 +22,6 @@ export default class extends React.Component {
         }
     }
 
-    componentDidMount(){
-      document.scrollTop = 0
-    }
-
     constructor(props) {
         super(props)
     }

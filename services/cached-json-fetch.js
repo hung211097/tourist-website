@@ -34,7 +34,7 @@ export default async function(url, force = false) {
   // That way if users refresh the page they always get fresh data.
 
   let token = getAccessToken()
-  let authorization = (token) ? ('JWT ' + token) : null;
+  let authorization = (token) ? token : null;
   let options = {
     method: 'GET',
     headers: {
@@ -48,7 +48,7 @@ export default async function(url, force = false) {
 
 export async function httpPost(url, data) {
   let token = getAccessToken()
-  let authorization = (token) ? ('JWT ' + token) : null;
+  let authorization = (token) ? token : null;
   return fetch(url, {
       method: 'POST',
       headers: {
@@ -63,7 +63,7 @@ export async function httpPost(url, data) {
 export async function httpPut(url, data) {
 
   let token = getAccessToken()
-  let authorization = (token) ? ('JWT ' + token) : '';
+  let authorization = (token) ? token : '';
   return fetch(url, {
       method: 'PUT',
       headers: {
@@ -80,7 +80,7 @@ export async function httpPostForm(url, form) {
   return fetch(url, {
       method: 'POST',
       headers: {
-        Authorization: 'JWT ' + token
+        Authorization: token
       },
       body: form
     })
@@ -93,7 +93,7 @@ export async function httpPutForm(url, form) {
   return fetch(url, {
       method: 'PUT',
       headers: {
-        Authorization: 'JWT ' + token
+        Authorization: token
       },
       body: form
     })
@@ -107,7 +107,7 @@ export async function httpDelete(url) {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'JWT ' + token
+        Authorization: token
       }
     })
     .then(checkStatus)

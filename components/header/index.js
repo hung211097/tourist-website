@@ -4,7 +4,7 @@ import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import _ from 'lodash'
-// import ApiService from 'services/api.service'
+import ApiService from 'services/api.service'
 import { ClickOutside } from 'components'
 import { FaSearch, FaTimesCircle, FaSignOutAlt, FaSignInAlt, FaEnvelope, FaPhone } from "react-icons/fa"
 import { MdLocationOn } from "react-icons/md"
@@ -40,7 +40,7 @@ class Header extends React.Component {
 
   constructor(props) {
     super(props)
-    // this.apiService = ApiService()
+    this.apiService = ApiService()
     this.state = {
       showSidebar: false,
       showSearchBox: false,
@@ -71,7 +71,9 @@ class Header extends React.Component {
   handleLogout(){
     this.props.logout && this.props.logout()
     this.props.saveRedirectUrl && this.props.saveRedirectUrl(Router.asPath)
-    Router.pushRoute("login")
+    this.apiService.logout(() => {
+      Router.pushRoute("login")
+    })
   }
 
   handleOnScroll(){
@@ -175,13 +177,25 @@ class Header extends React.Component {
                         </div>
                       </form>
                     </li>
+                    {!_.isEmpty(this.props.user) &&
+                      <li>
+                        <Link route="profile">
+                          <a className="w-100 effect-hover">
+                            <div className="account-zone-responsive">
+                              <img alt="avatar" src={this.props.user.avatar ? this.props.user.avatar : "/static/images/avatar.jpg"} />
+                              <p>{this.props.user.fullname}</p>
+                            </div>
+                          </a>
+                        </Link>
+                      </li>
+                    }
                     <li>
                       <Link route="home">
-                        <a>HOME</a>
+                        <a className="effect-hover">HOME</a>
                       </Link>
                     </li>
                     <li>
-                        <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/">PACKAGES</a>
+                        <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/" className="effect-hover">PACKAGES</a>
                         <ul className="sub-menu">
                           <li>
                             <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/">Search</a>
@@ -195,7 +209,7 @@ class Header extends React.Component {
                         </ul>
                       </li>
                     <li>
-                        <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/">SHOP</a>
+                        <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/" className="effect-hover">SHOP</a>
                         <ul className="sub-menu">
                           <li>
                             <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/">Shop</a>
@@ -212,10 +226,10 @@ class Header extends React.Component {
                         </ul>
                       </li>
                     <li>
-                        <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/about-us/">ABOUT US</a>
+                        <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/about-us/" className="effect-hover">ABOUT US</a>
                       </li>
                     <li>
-                        <a href="#">PAGES</a>
+                        <a href="#" className="effect-hover">PAGES</a>
                         <ul className="sub-menu">
                           <li>
                             <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/agency-destinations/">Best Destinations</a>
@@ -249,7 +263,7 @@ class Header extends React.Component {
                         </ul>
                       </li>
                     <li>
-                        <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/our-news/">NEWS</a>
+                        <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/our-news/" className="effect-hover">NEWS</a>
                         <ul className="sub-menu">
                           <li>
                             <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/our-news/">Archive</a>
@@ -271,7 +285,7 @@ class Header extends React.Component {
                         </ul>
                       </li>
                     <li>
-                        <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-1/">CONTACT</a>
+                        <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-1/" className="effect-hover">CONTACT</a>
                         <ul className="sub-menu">
                           <li>
                             <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-1/">Contact 1</a>
@@ -282,7 +296,7 @@ class Header extends React.Component {
                         </ul>
                       </li>
                     <li>
-                        <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/">BOOK NOW</a>
+                        <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/" className="effect-hover">BOOK NOW</a>
                       </li>
                   </ul>
                 </div>

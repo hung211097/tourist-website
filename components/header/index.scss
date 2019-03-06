@@ -1,6 +1,24 @@
 @import 'styles/variables.scss';
 
 .header{
+  .account-zone-responsive{
+    img{
+      border-radius: 50%;
+      width: 25%;
+      float: left;
+    }
+    p{
+      font-size: 14px;
+      color: white;
+      line-height: 3.8;
+      margin-left: 70px;
+    }
+  }
+
+  .w-100{
+    width: 100%;
+  }
+
   .navigation_responsive{
     background-color: $main-bg-color;
     right: 0px;
@@ -25,11 +43,20 @@
       display: inline-block;
       width: 100%;
       padding: 0px 0px 20px 0px;
+      &:hover{
+        .effect-hover{
+          font-weight: 600;
+        }
+        .effect-hover-bold{
+          font-weight: 700;
+        }
+      }
       a {
         padding: 10px 0px;
         display: inline-block;
         font-size: 24px;
         color: #fff;
+        transition: 0.2s all;
       }
       ul.sub-menu {
         margin: 0px;
@@ -60,7 +87,7 @@
         .left-header {
           color: white;
           padding: 0px 15px;
-          width: 45%;
+          width: 36%;
           float: left;
           display: inline;
           box-sizing: border-box;
@@ -80,7 +107,7 @@
           color: white;
           padding: 0px 15px;
           text-align: right;
-          width: 55%;
+          width: 64%;
           float: left;
           display: inline;
           box-sizing: border-box;
