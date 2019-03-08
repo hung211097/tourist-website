@@ -4,12 +4,14 @@ import PropTypes from 'prop-types'
 import { Layout, PopupInfo } from 'components'
 import { Link, Router } from 'routes'
 import { connect } from 'react-redux'
-// import { isServer } from 'services/utils.service'
 import { FaFacebookF, FaCheck } from "react-icons/fa"
 import validateEmail from '../../services/validates/email.js'
 import validatePhone from '../../services/validates/phone.js'
 import ApiService from '../../services/api.service'
 import { authLogin } from 'actions'
+import { setLocalStorage } from '../../services/local-storage.service'
+import { KEY } from '../../constants/local-storage'
+import { checkAfterLogin } from '../../services/auth.service'
 
 const mapStateToProps = state => {
   return {
@@ -49,18 +51,12 @@ class Register extends React.Component {
   }
 
   componentDidMount() {
+    checkAfterLogin(this.props.link_redirect)
   }
 
   componentWillUnmount(){
     this.timeout && clearTimeout(this.timeout)
   }
-
-  // static getDerivedStateFromProps(props) {
-  //     if (props.user && !isServer()) {
-  //         Router.pushRoute(props.link_redirect || 'home')
-  //     }
-  //     return null
-  // }
 
   handleLoginFB(e){
     e.preventDefault()
@@ -115,6 +111,7 @@ class Register extends React.Component {
       email: this.state.email,
       phone: this.state.phone
     }).then((data) => {
+      setLocalStorage(KEY.TOKEN, data.token)
       this.props.authLogin && this.props.authLogin(data)
       this.setState({
         showPopup: true
@@ -277,7 +274,7 @@ class Register extends React.Component {
                     }
                     <div className="form-row">
                       <button type="submit" className="woocommerce-Button button" name="login" onClick={this.handleSubmit.bind(this)}>
-                        Login
+                        Register
                       </button>
                     </div>
                     <p className="co-break">OR</p>

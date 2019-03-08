@@ -3,15 +3,20 @@ import { Layout } from 'components'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { Router, Link } from 'routes'
-import { logout } from 'actions'
+import { logout, saveRedirectUrl } from 'actions'
 import { connect } from 'react-redux'
 import ApiService from 'services/api.service'
 import { FaUserAlt, FaCog, FaShoppingCart, FaKey } from "react-icons/fa"
 import { IoIosUndo } from "react-icons/io"
+import _ from 'lodash'
+import { checkLogin } from 'services/auth.service'
+import { removeItem } from '../../services/local-storage.service'
+import { KEY } from '../../constants/local-storage'
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logout: () => {dispatch(logout())}
+    logout: () => {dispatch(logout())},
+    saveRedirectUrl: (url) => {dispatch(saveRedirectUrl(url))},
   }
 }
 
@@ -34,8 +39,16 @@ class LayoutProfile extends React.Component {
         }
     }
 
+    componentDidMount(){
+      if (!checkLogin()) {
+          return
+      }
+    }
+
     handleLogout(){
       this.props.logout && this.props.logout()
+      removeItem(KEY.TOKEN)
+      this.props.saveRedirectUrl && this.props.saveRedirectUrl(Router.asPath)
       this.apiService.logout(() => {})
       Router.pushRoute("login")
     }
@@ -93,14 +106,16 @@ class LayoutProfile extends React.Component {
                                       </a>
                                     </Link>
                                   </li>
-                                  <li className={this.props.tabName === "change-password" ? "active" : ""}>
-                                    <Link route="change-password">
-                                      <a>
-                                        <FaKey style={{fontSize: '16px', marginRight: '10px'}}/>
-                                        Change password
-                                      </a>
-                                    </Link>
-                                  </li>
+                                  {!_.isEmpty(this.props.user) && this.props.user.type === 'local' &&
+                                    <li className={this.props.tabName === "change-password" ? "active" : ""}>
+                                      <Link route="change-password">
+                                        <a>
+                                          <FaKey style={{fontSize: '16px', marginRight: '10px'}}/>
+                                          Change password
+                                        </a>
+                                      </Link>
+                                    </li>
+                                  }
                                   <li>
                                     <a href="javascript:;" onClick={this.handleLogout.bind(this)}>
                                       <IoIosUndo style={{fontSize: '16px', marginRight: '10px'}}/>

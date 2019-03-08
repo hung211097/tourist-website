@@ -1,6 +1,9 @@
 @import 'styles/variables';
 
 .profile-detail {
+  .capitalize{
+    text-transform: capitalize;
+  }
   ul{
     padding-left: 0;
     margin-bottom: 0;

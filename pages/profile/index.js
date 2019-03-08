@@ -3,6 +3,8 @@ import { LayoutProfile } from 'components'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { formatDate } from '../../services/time.service'
+import _ from 'lodash'
 
 const mapStateToProps = (state) => {
     return {
@@ -30,24 +32,24 @@ class Profile extends React.Component {
                     </div>
                     <div className="row content">
                       <div className="col-md-6">
-                        {this.props.user &&
+                        {!_.isEmpty(this.props.user) &&
                           <ul>
                             <li className="d-md-none d-block"><span>Avatar:</span>
-                            <img alt="avatar" src={this.props.user.avatar ? this.props.user.avatar : "/static/images/default-avatar.png"} />
+                            <img alt="avatar" src={this.props.user.avatar ? (this.props.user.avatar) : "/static/images/default-avatar.png"} />
                             &nbsp;
                             </li>
                             <li><span>Fullname:</span>{this.props.user.fullname}&nbsp;</li>
-                            <li><span>Email:</span> {this.props.user.email}</li>
+                            <li title={this.props.user.email}><span>Email:</span> {this.props.user.email}</li>
                             <li><span>Phone number:</span>{this.props.user.phone}&nbsp;</li>
-                            <li><span>Gender:</span> {this.props.user.gender} &nbsp;</li>
-                            <li><span>Birthdate:</span> {this.props.user.birthdate} &nbsp;</li>
+                            <li className="capitalize"><span>Gender:</span> {this.props.user.sex} &nbsp;</li>
+                            <li><span>Birthdate:</span> {this.props.user.birthdate ? formatDate(this.props.user.birthdate) : ''} &nbsp;</li>
                           </ul>
                         }
                       </div>
                       <div className="col-md-6 d-none d-md-block">
                         <div className="avatar-contain">
                           {this.props.user &&
-                            <img alt="avatar" src={this.props.user.avatar ? this.props.user.avatar : "/static/images/default-avatar.png"} />
+                            <img alt="avatar" src={this.props.user.avatar ? (this.props.user.avatar) : "/static/images/default-avatar.png"} />
                           }
                         </div>
                       </div>

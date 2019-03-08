@@ -15,6 +15,11 @@ export default (state = {isShowTour: false}, action) => {
             location: action.payload,
             error: action.error
           }
+      case actionTypes.SAVE_PROFILE:
+          return {
+              ...state,
+              user: action.payload
+          }
         case actionTypes.TOGGLE_SHOW_TOUR:
           return {
             ...state,

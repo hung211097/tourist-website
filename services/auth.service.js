@@ -1,5 +1,6 @@
 import { Router } from 'routes'
 const CONST_KEY = 'persist:tourist-v1'
+import { KEY } from '../constants/local-storage'
 
 export function checkLogin(pass) {
 	if (_notSupportOrSSL()) {
@@ -14,11 +15,25 @@ export function checkLogin(pass) {
 	return true
 }
 
+export function checkAfterLogin(alternative_link){
+  if (_notSupportOrSSL()) {
+		return false
+	}
+	if (getAccessToken()) {
+		Router.pushRoute(alternative_link || '/')
+	}
+	return true
+}
+
 export function getAccessToken() {
 	if (_notSupportOrSSL()) {
 		return
 	}
-	const item = window.localStorage.getItem(CONST_KEY)
+  const token = window.localStorage.getItem(KEY.TOKEN)
+  if(token){
+    return token
+  }
+  const item = window.localStorage.getItem(CONST_KEY)
 	return item && JSON.parse(item).token && JSON.parse(JSON.parse(item).token);
 }
 

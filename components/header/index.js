@@ -8,13 +8,13 @@ import ApiService from 'services/api.service'
 import { ClickOutside } from 'components'
 import { FaSearch, FaTimesCircle, FaSignOutAlt, FaSignInAlt, FaEnvelope, FaPhone } from "react-icons/fa"
 import { MdLocationOn } from "react-icons/md"
-import { saveLocation, logout, saveRedirectUrl } from '../../actions'
-import { setLocalStorage, getLocalStorage } from '../../services/local-storage.service'
+import { saveLocation, logout, saveRedirectUrl, saveProfile } from '../../actions'
+import { setLocalStorage, getLocalStorage, removeItem } from '../../services/local-storage.service'
 import { KEY } from '../../constants/local-storage'
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user
+    user: state.user,
   }
 }
 
@@ -22,6 +22,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     saveLocation: (location, err) => {dispatch(saveLocation(location, err))},
     saveRedirectUrl: (url) => {dispatch(saveRedirectUrl(url))},
+    saveProfile: () => {dispatch(saveProfile())},
     logout: () => {dispatch(logout())}
   }
 }
@@ -34,6 +35,7 @@ class Header extends React.Component {
     page: PropTypes.string,
     saveLocation: PropTypes.func,
     saveRedirectUrl: PropTypes.func,
+    saveProfile: PropTypes.func,
     user: PropTypes.object,
     logout: PropTypes.func
   }
@@ -49,6 +51,7 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
+    this.loadProfile()
     window.addEventListener('scroll', this.handleOnScroll.bind(this))
     const objLocation = getLocalStorage(KEY.LOCATION)
     if(objLocation || objLocation === ''){
@@ -57,6 +60,19 @@ class Header extends React.Component {
     else{
       this.requestGeolocation()
     }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.user && !prevProps.user) {
+      this.loadProfile()
+    }
+  }
+
+  loadProfile() {
+      if (!this.props.user) {
+          return
+      }
+      this.props.saveProfile && this.props.saveProfile()
   }
 
   componentWillUnmount(){
@@ -70,10 +86,10 @@ class Header extends React.Component {
 
   handleLogout(){
     this.props.logout && this.props.logout()
+    removeItem(KEY.TOKEN)
     this.props.saveRedirectUrl && this.props.saveRedirectUrl(Router.asPath)
-    this.apiService.logout(() => {
-      Router.pushRoute("login")
-    })
+    this.apiService.logout(() => {})
+    Router.pushRoute("login")
   }
 
   handleOnScroll(){
@@ -182,7 +198,7 @@ class Header extends React.Component {
                         <Link route="profile">
                           <a className="w-100 effect-hover">
                             <div className="account-zone-responsive">
-                              <img alt="avatar" src={this.props.user.avatar ? this.props.user.avatar : "/static/images/avatar.jpg"} />
+                              <img alt="avatar" src={this.props.user.avatar ? (this.props.user.avatar) : "/static/images/avatar.jpg"} />
                               <p>{this.props.user.fullname}</p>
                             </div>
                           </a>
@@ -355,7 +371,7 @@ class Header extends React.Component {
                             </div>
                             :
                             <div>
-                              <img alt="avatar" src={this.props.user.avatar ? this.props.user.avatar : "/static/images/avatar.jpg"} width={30} />
+                              <img alt="avatar" src={this.props.user.avatar ? (this.props.user.avatar) : "/static/images/avatar.jpg"} width={30} />
                               <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
                                 <p className="fullname">{this.props.user.fullname}</p>
                               </div>

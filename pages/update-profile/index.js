@@ -7,9 +7,11 @@ import { connect } from 'react-redux'
 import validateEmail from 'services/validates/email'
 import validatePhone from 'services/validates/phone'
 import Select from 'react-select'
-import { checkLogin, getUserAuth } from 'services/auth.service'
+import { getUserAuth } from 'services/auth.service'
 import { moveToElementId } from '../../services/utils.service'
 import tinifyImage from 'services/images'
+import { saveProfile } from '../../actions'
+import { formatDate } from '../../services/time.service'
 
 const mapStateToProps = (state) => {
     return {
@@ -17,13 +19,19 @@ const mapStateToProps = (state) => {
     }
 }
 
-class Profile extends React.Component {
-    displayName = 'Profile'
+const mapDispatchToProps = (dispatch) => {
+  return {
+    saveProfile: () => {dispatch(saveProfile())},
+  }
+}
+
+class UpdateProfile extends React.Component {
+    displayName = 'Update Profile'
     static propTypes = {
-        dispatch: PropTypes.func,
         account: PropTypes.object,
         store: PropTypes.any,
-        user: PropTypes.object
+        user: PropTypes.object,
+        saveProfile: PropTypes.func,
     }
 
     constructor(props) {
@@ -50,17 +58,14 @@ class Profile extends React.Component {
     }
 
     componentDidMount() {
-        if (!checkLogin()) {
-            return
-        }
         let user = getUserAuth()
         if (user) {
             this.setState({
                 fullname: user.fullname ? user.fullname : '',
                 email: user.email ? user.email : '',
                 phone: user.phone ?  user.phone : '',
-                birthdate: user.birthdate ? user.birthdate : '',
-                gender: user.gender ? user.gender : '',
+                birthdate: user.birthdate ? formatDate(user.birthdate, 'yyyy-MM-dd') : '',
+                gender: user.sex ? user.sex : '',
                 action: false
             })
         }
@@ -117,13 +122,15 @@ class Profile extends React.Component {
         if (this.files_avatar.length) {
           form.append('avatar', this.files_avatar[0], 'file_avatar.jpg')
         }
-        // this.apiService.updateProfile(form).then(() => {
-        //     //dispatch(saveProfile(user))
-        //     this.setState({
-        //         action: true
-        //     })
-        // })
-        // this.setState({ action: false })
+        this.apiService.updateProfile(form).then(() => {
+            this.props.saveProfile && this.props.saveProfile()
+            this.files_avatar = []
+            this.setState({
+                action: true,
+                files_avatar: []
+            })
+        })
+        this.setState({ action: false })
     }
 
     handleUploadAvatar() {
@@ -229,7 +236,7 @@ class Profile extends React.Component {
                                   onChange={this.handleBirthdayChange.bind(this)}
                               />
                           </div>
-                          <div className="co-field" id="email">
+                          {/*<div className="co-field" id="email">
                               <p>
                                   <strong>Email*</strong>
                               </p>
@@ -270,7 +277,7 @@ class Profile extends React.Component {
                               <div className="notify-box">
                                   <p className="error">This phone number is not right</p>
                               </div>
-                          )}
+                          )}*/}
                         </div>
                         <div className="col-md-6">
                           <div className="co-field">
@@ -310,7 +317,7 @@ class Profile extends React.Component {
                               </div>
                           </div>
                         </div>
-                        <div className="confirm-zone">
+                        <div className="row w-100 text-center alert-zone">
                           {this.state.action == true && (
                             <AutoHide duration={10000}>
                               <div className="alert alert-custom" role="alert">
@@ -318,6 +325,8 @@ class Profile extends React.Component {
                               </div>
                             </AutoHide>
                           )}
+                        </div>
+                        <div className="confirm-zone row">
                           <div className="text-center comfirm-order-control">
                               <a className="co-btn" onClick={this.submitProfile.bind(this)}>
                                   Update
@@ -333,4 +342,4 @@ class Profile extends React.Component {
     }
 }
 
-export default connect(mapStateToProps)(Profile)
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateProfile)

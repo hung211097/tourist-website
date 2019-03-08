@@ -10,6 +10,8 @@ import { authLogin } from 'actions'
 import validateEmail from '../../services/validates/email.js'
 import validatePhone from '../../services/validates/phone.js'
 import ApiService from '../../services/api.service'
+import { setLocalStorage } from '../../services/local-storage.service'
+import { KEY } from '../../constants/local-storage'
 
 const mapStateToProps = state => {
   return {
@@ -95,6 +97,7 @@ class Login extends React.Component {
       username: this.state.username,
       password: this.state.password
     }).then((data) => {
+      setLocalStorage(KEY.TOKEN, data.token)
       this.props.authLogin && this.props.authLogin(data)
       Router.pushRoute(this.props.link_redirect || 'home')
     }).catch(e => {

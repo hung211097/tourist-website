@@ -65,7 +65,7 @@ passport.use(
             })
         }
 
-        fetch(process.env.API_URL + 'misc/signin', options)
+        fetch(process.env.API_URL + 'user/loginWithFacebook', options)
         .then(function(response) {
             if (response.status !== 200) {
                 throw new Error('Bad response from server');
