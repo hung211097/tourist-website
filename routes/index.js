@@ -7,7 +7,8 @@ module.exports = routes()                           // ----                   --
 .add('register', '/register')                       // register               register                /register
 .add('profile', '/profile')                         // profile                profile                 /profile
 .add('my-booking', '/profile/my-booking')           //my-booking              my-booking              /profile/my-booking
-.add('update-profile', '/profile/update', 'update-profile')   // update-profile         update-profile          /profile/update
+.add('detail-booked-tour', '/profile/my-booking/:id(\\d+)') //detail-booked-tour    detail-booked-tour              /profile/my-booking/:id
+.add('update-profile', '/profile/update')           // update-profile         update-profile          /profile/update
 .add('change-password', '/profile/change-password') // change-password        change-password         /profile/change-password
 .add('about')                                       // about                  about                   /about
 .add('post')                                       // post                    post                    /post

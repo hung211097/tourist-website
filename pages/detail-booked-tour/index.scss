@@ -1,0 +1,152 @@
+@import 'styles/variables';
+
+.profile-detail {
+  .content{
+    margin-top: 20px;
+    .finish{
+      .header-title {
+        color: #212121;
+        font-size: 23px;
+        font-weight: 600;
+        @media screen and (max-width: 767px){
+          font-size: 22px;
+          text-align: center;
+        }
+        @media screen and (max-width: 320px){
+          font-size: 20px;
+        }
+        &.has-top-border{
+          padding-top: 10px;
+          border-top: 1px dashed #ebebeb;
+        }
+      }
+      .contact-info, .checkout-info{
+        font-size: 14px;
+        color: #474848;
+        margin-top: 30px;
+        .booking-contact, .checkout-contact {
+          margin-top: 10px;
+          .item-row{
+            color: #222222;
+            .item-label{
+              font-weight: 400;
+              font-size: 14px;
+              min-width: 160px;
+              display: inline-block;
+              line-height: 30px;
+            }
+            .value{
+              font-weight: bold;
+              line-height: 24px;
+              &.responsive{
+                @media screen and (max-width: 767px){
+                  display: block;
+                  margin-bottom: 10px;
+                }
+              }
+            }
+          }
+        }
+      }
+      .pax-info{
+        margin-top: 30px;
+        .table-responsive{
+          max-height: 225px;
+          overflow: auto;
+        }
+        .passenger-info{
+          margin-top: 30px;
+          .passenger-table {
+            width: 100%;
+            thead{
+              th{
+                border-bottom: 1px solid #ddd;
+                border-top: 0;
+                font-weight: normal;
+                // border: none;
+                vertical-align: bottom;
+                padding: 8px;
+                line-height: 1.42857143;
+                font-weight: 700;
+              }
+              @media screen and (max-width: 767px){
+                th{
+                  white-space: nowrap;
+                }
+              }
+            }
+            tbody{
+              td{
+                @media screen and (max-width: 767px){
+                  white-space: nowrap;
+                }
+                padding: 8px;
+                line-height: 1.42857143;
+                vertical-align: top;
+                border-top: 1px solid #ddd;
+                a{
+                  transition: all 0.3s ease-in-out;
+                  color: #ff891e;
+                  &:hover, &:focus{
+                    opacity: 0.8;
+                    outline: 0;
+                    color: #23527c;
+                  }
+                }
+                &.action{
+                  &.danger{
+                    a{
+                      background: #D9534F;
+                    }
+                  }
+                  a{
+                    display: inline-block;
+                    padding: 3px 9px;
+                    color: #fff;
+                    background-color: #337ab7;
+                    &:hover{
+                      opacity: 0.8;
+                      outline: 0;
+                    }
+                  }
+                }
+                &.code{
+                  a{
+                    font-weight: bold;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .title{
+    @media screen and (max-width: 767px){
+      margin-top: 50px;
+    }
+    .my-profile__title{
+      font-weight: 600;
+    }
+    .back{
+      float: left;
+      padding-top: 5px;
+    }
+  }
+  .icon{
+    margin-left: 10px;
+    @media screen and (max-width: 767px){
+      margin-left: 0;
+      display: block;
+      text-align: center;
+    }
+  }
+  .booking-status{
+    color: #212121;
+    span{
+      color: $main-bg-color;
+      font-weight: bold;
+    }
+  }
+}

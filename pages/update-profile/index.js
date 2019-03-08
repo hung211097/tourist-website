@@ -28,8 +28,6 @@ const mapDispatchToProps = (dispatch) => {
 class UpdateProfile extends React.Component {
     displayName = 'Update Profile'
     static propTypes = {
-        account: PropTypes.object,
-        store: PropTypes.any,
         user: PropTypes.object,
         saveProfile: PropTypes.func,
     }
