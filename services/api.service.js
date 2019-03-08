@@ -1,4 +1,4 @@
-import fetchCached, { httpPost } from './cached-json-fetch'
+import fetchCached, { httpPost, httpPutForm, httpPut} from './cached-json-fetch'
 const baseURL = process.env.API_URL
 
 export default () => {
@@ -19,6 +19,33 @@ export default () => {
     getRouteByTour: (id) => {
       let url = baseURL + `route/getByTour/${id}`
       return fetchCached(url)
+    },
+    getCurrentProfile: () => {
+      return fetchCached(baseURL + `user/me`)
+    },
+    getStatisticNumber: () => {
+      let url = baseURL + `getNumOfTourAndLocation`
+      return fetchCached(url)
+    },
+    register: (data) => {
+      let url = baseURL + `user/register`
+      return httpPost(url, data)
+    },
+    login: (data) => {
+      let url = baseURL + `user/login`
+      return httpPost(url, data)
+    },
+    logout: () => {
+      let url = baseURL + `user/logout`
+      return fetchCached(url)
+    },
+    updateProfile: (data) => {
+      let url = baseURL + `user/update`
+      return httpPutForm(url, data)
+    },
+    updatePassword: (data) => {
+      let url = baseURL + `user/updatePassword`
+      return httpPut(url, data)
     }
   }
 

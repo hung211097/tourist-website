@@ -4,8 +4,8 @@ import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { Router } from 'routes'
 import { connect } from 'react-redux'
-import { isServer } from 'services/utils.service'
 import { saveRedirectUrl } from 'actions'
+import ApiService from 'services/api.service'
 
 const mapStateToProps = state => {
   return {
@@ -15,11 +15,17 @@ const mapStateToProps = state => {
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    saveRedirectUrl: (url) => {dispatch(saveRedirectUrl(url))}
+  }
+}
+
 class Home extends React.Component {
   displayName = 'Home Page'
 
   static propTypes = {
-    dispatch: PropTypes.func,
+    saveRedirectUrl: PropTypes.func,
     user: PropTypes.object,
     location: PropTypes.any,
     errorPermission: PropTypes.string
@@ -49,21 +55,21 @@ class Home extends React.Component {
         featured_img: '/static/images/asia.jpg'
       }
     ]
+    this.apiService = ApiService()
+    this.state = {
+      num_tours: '',
+      num_locations: ''
+    }
   }
 
   componentDidMount() {
-    const {dispatch} = this.props
-    dispatch(saveRedirectUrl(''))
-  }
-
-  saveCurrentUrl(){
-    const { dispatch } = this.props
-
-    let { user } = this.props
-    if (!user && !isServer()) {
-        dispatch(saveRedirectUrl(Router.asPath))
-        Router.pushRoute('login')
-    }
+    this.props.saveRedirectUrl && this.props.saveRedirectUrl(Router.asPath)
+    this.apiService.getStatisticNumber().then((data) => {
+      this.setState({
+        num_tours: data.num_of_tours,
+        num_locations: data.num_of_locations
+      })
+    })
   }
 
   render() {
@@ -114,7 +120,7 @@ class Home extends React.Component {
                 <div className="inner">
                   <div className="wrapper">
                     <div className="nd_options_height_20" />
-                    <h1>75</h1>
+                    <h1>{this.state.num_locations}</h1>
                     <div className="nd_options_height_20" />
                     <div className="nd_options_section text-center">
                       <a className="yellow-bg">DESTINATIONS</a>
@@ -127,7 +133,7 @@ class Home extends React.Component {
                 <div className="inner">
                   <div className="wrapper">
                     <div className="nd_options_height_20" />
-                    <h1>149</h1>
+                    <h1>{this.state.num_tours}</h1>
                     <div className="nd_options_height_20" />
                     <div className="nd_options_section text-center">
                       <a className="green-bg">TOURS PACK</a>
@@ -194,4 +200,4 @@ class Home extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

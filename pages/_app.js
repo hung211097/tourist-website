@@ -12,7 +12,6 @@ class TouristApp extends App {
         if (ctx.req && ctx.req.cookies && ctx.req.cookies.user) {
             user = JSON.parse(ctx.req.cookies.user)
             ctx.res.clearCookie('user')
-
             await ctx.store.dispatch(authLogin(user))
         }
 

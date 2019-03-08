@@ -1,0 +1,249 @@
+@import 'styles/variables';
+
+.profile-detail {
+  ul{
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+    margin-top: 5px;
+    padding-left: 60px;
+    @media screen and (max-width: 768px){
+      padding-left: 0px;
+    }
+    li{
+      position: relative;
+      padding-left: 150px;
+      padding-top: 15px;
+      color: #333333;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      span{
+        position: absolute;
+        color: #999999;
+        font-weight: 600;
+        left: 0;
+      }
+      img{
+        width: 60%;
+      }
+    }
+  }
+  .title{
+    @media screen and (max-width: 767px){
+      margin-top: 50px;
+    }
+  }
+  .title-contain{
+    display: block;
+    width: 100%;
+    .my-profile__title {
+      margin-bottom: 0;
+      margin-top: 0;
+      color: #111111;
+      font-weight: 600;
+    }
+  }
+  .content{
+    margin-top: 35px;
+    .avatar-contain{
+      text-align: center;
+      @media screen and (max-width: 768px){
+        text-align: right;
+      }
+      img{
+        width: 40%;
+        margin-top: 16px;
+      }
+    }
+  }
+}
+
+.sub-bg {
+	background: #fce5eb;
+    padding: 20px;
+	margin-bottom: 30px;
+}
+
+.profile-info {
+	.sub {
+		font-weight: normal;
+		text-transform: none;
+		font-size: 1.3rem;
+		padding-top: 10px;
+		color: $search-border-color;
+	}
+}
+
+.co-field {
+    margin: 0px 0px 20px 0px;
+    p {
+        margin: 0px 0px 10px 0px;
+        text-transform: uppercase;
+        font-weight: 700;
+        span {
+            color: $red;
+        }
+        strong {
+            font-weight: 700;
+            text-transform: none;
+            font-size: 1.5rem;
+        }
+    }
+    &.padding-right {
+        padding-right: 30px;
+        @media(max-width: 991px) {
+            padding: 0px;
+        }
+    }
+    input.co-text {
+        height: 40px;
+        padding: 0px 10px;
+        border: 1px solid $border-color;
+        display: block;
+        width: 100%;
+        &.low {
+            height: 35px;
+        }
+    }
+    .co-select {
+        height: 35px;
+        padding: 0px 0px 0px 10px;
+        border: 1px solid $border-color;
+        display: block;
+        width: 100%;
+    }
+    .co-textarea {
+        height: 70px;
+        padding: 10px 10px 10px 10px;
+        border: 1px solid $border-color;
+        display: block;
+        width: 100%;
+        &.h160 {
+
+            height: 160px;
+        }
+    }
+}
+
+.comfirm-order-control {
+    .co-btn {
+        font-size: 1.2rem;
+    }
+}
+
+.alert-custom {
+    padding: 20px;
+    background: #dff0d8;
+    margin: auto;
+    margin-top: 20px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    border-color: #d0e9c6;
+    color: #3c763d;
+}
+
+.alert-danger{
+  padding: 20px;
+  margin: auto;
+  margin-top: 20px;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.w-100{
+  width: 100%;
+}
+
+.alert-zone{
+  @media screen and (max-width: 576px){
+    margin: 0 !important;
+  }
+  .alert-custom{
+    @media screen and (max-width: 576px){
+      margin-top: 0;
+    }
+  }
+}
+
+.confirm-zone{
+  display: block;
+  width: 25%;
+  margin: auto;
+  margin-top: 20px;
+  @media screen and (max-width: 768px){
+    width: 40%;
+  }
+  @media screen and (max-width: 576px){
+    width: 60%;
+  }
+}
+
+.error{
+  color: red;
+  font-weight: normal !important;
+  text-transform: none !important;
+}
+
+.nrr-image-upload {
+  margin: 0;
+  padding: 0px 0px 0px 130px;
+  min-height: 110px;
+  .nrr-updload-zone {
+      width: 110px;
+      height: 110px;
+      float: left;
+      margin: 0px 0px 0px -130px;
+      background-image: url(/static/svg/upload-photo.svg);
+      background-repeat: no-repeat;
+      background-size: 110px 110px;
+      cursor: pointer;
+  }
+  p {
+      color: $text-color;
+      font-style: italic;
+      margin: 0px;
+      padding: 20px 0px 0px 0px;
+  }
+  .nrr-updload-file{
+      display: none;
+  }
+}
+
+.nrr-image-box{
+    display: inline-block;
+    .upload-img{
+        width: 120px;
+        height: 120px;
+        display: inline-block;
+        margin: 5px 20px 0px 0px;
+        position: relative;
+        &:hover{
+            .icon-delete{
+                opacity: 1;
+            }
+        }
+        .icon-delete{
+          position: absolute;
+          top: 3px;
+          right: 2px;
+          cursor: pointer;
+          opacity: 0;
+          -webkit-transition: opacity 0.4s ease-out;
+          transition: opacity 0.4s ease-out;
+          font-size: 18px;
+          color: $white;
+          background-color: $black;
+          border-radius: 50%;
+          padding: 0px 9px;
+          font-weight: bold;
+          .x{
+            position: relative;
+            top: -1px;
+          }
+        }
+        img{
+            width: 100%;
+            height: 100%;
+        }
+    }
+}

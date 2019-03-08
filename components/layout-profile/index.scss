@@ -1,0 +1,99 @@
+@import 'styles/variables';
+
+.main-wrapper {
+    padding-top: 137px;
+    @media screen and (max-width: 768px){
+      padding-top: 123px;
+    }
+    .pageTitle{
+      position: relative;
+      background: url(/static/images/background_profile.jpg);
+      width: 100%;
+      background-size: cover;
+      background-position: center;
+      color: #ffffff;
+      height: 330px;
+      .overlay{
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: #00000080;
+        width: 100%;
+        height: inherit;
+      }
+      .titleTable{
+        margin-top: 70px;
+        display: table;
+        height: 200px;
+        width: 100%;
+        .titleTableInner{
+          display: table-cell;
+          text-align: center;
+          vertical-align: middle;
+          .pageTitleInfo {
+            text-align: center;
+            h1{
+              color: #ffffff;
+              font-size: 30px;
+              text-transform: uppercase;
+              font-weight: bold;
+            }
+            .under-border {
+              width: 60px;
+              height: 3px;
+              background-color: #ffffff;
+              margin: 16px auto 0;
+            }
+          }
+        }
+      }
+    }
+    .profile {
+      padding-top: 40px;
+      background: #fff;
+      .user-profile {
+        margin-right: 30px;
+        @media screen and (max-width: 767px){
+          margin-right: 0;
+        }
+        padding-bottom: 20px;
+
+        .user-profile__navigation {
+          background-color: #f2f2f2;
+          list-style: none;
+          padding-left: 0;
+          margin-bottom: 0;
+          padding-top: 1px;
+          li{
+            padding: 0px 10px;
+            transition: all .25s ease;
+            list-style-type: none;
+            border-top: 1px solid #e3e3e3;
+            &.active{
+              background-color: $main-bg-color;
+              a{
+                color: white;
+              }
+            }
+            &:hover{
+              background-color: $main-bg-color;
+              a{
+                color: white;
+              }
+            }
+            a{
+              font-size: 16px;
+              color: #333333;
+              display: block;
+              text-decoration: none;
+              padding: 15px 0;
+              transition: all .25s ease;
+            }
+          }
+          .user-profile__navigation li.active {
+            background-color: #fff;
+          }
+        }
+      }
+    }
+}

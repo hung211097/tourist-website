@@ -9,9 +9,13 @@ const defaultNoSSR = {
 }
 
 import Layout from './layout'
+import LayoutProfile from './layout-profile'
 import Header from './header'
 import Footer from './footer'
 import ClickOutside from './click-outside'
+import PopupInfo from './popup-info'
+import AutoHide from './auto-hide'
+
 // import Modal from './modal/index'
 
 const MyMap = dynamic(import('./mymap'), defaultLoading)
@@ -28,5 +32,8 @@ export {
     MyMap,
     MapComponent,
     MarkerComponent,
-    TopPromotionItem
+    TopPromotionItem,
+    PopupInfo,
+    LayoutProfile,
+    AutoHide
 }
