@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import { Router } from 'routes'
 import { connect } from 'react-redux'
 import { saveRedirectUrl } from 'actions'
+import ApiService from 'services/api.service'
 
 const mapStateToProps = state => {
   return {
@@ -54,10 +55,21 @@ class Home extends React.Component {
         featured_img: '/static/images/asia.jpg'
       }
     ]
+    this.apiService = ApiService()
+    this.state = {
+      num_tours: '',
+      num_locations: ''
+    }
   }
 
   componentDidMount() {
     this.props.saveRedirectUrl && this.props.saveRedirectUrl(Router.asPath)
+    this.apiService.getStatisticNumber().then((data) => {
+      this.setState({
+        num_tours: data.num_of_tours,
+        num_locations: data.num_of_locations
+      })
+    })
   }
 
   render() {
@@ -108,7 +120,7 @@ class Home extends React.Component {
                 <div className="inner">
                   <div className="wrapper">
                     <div className="nd_options_height_20" />
-                    <h1>75</h1>
+                    <h1>{this.state.num_locations}</h1>
                     <div className="nd_options_height_20" />
                     <div className="nd_options_section text-center">
                       <a className="yellow-bg">DESTINATIONS</a>
@@ -121,7 +133,7 @@ class Home extends React.Component {
                 <div className="inner">
                   <div className="wrapper">
                     <div className="nd_options_height_20" />
-                    <h1>149</h1>
+                    <h1>{this.state.num_tours}</h1>
                     <div className="nd_options_height_20" />
                     <div className="nd_options_section text-center">
                       <a className="green-bg">TOURS PACK</a>

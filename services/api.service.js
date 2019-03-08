@@ -23,6 +23,10 @@ export default () => {
     getCurrentProfile: () => {
       return fetchCached(baseURL + `user/me`)
     },
+    getStatisticNumber: () => {
+      let url = baseURL + `getNumOfTourAndLocation`
+      return fetchCached(url)
+    },
     register: (data) => {
       let url = baseURL + `user/register`
       return httpPost(url, data)
