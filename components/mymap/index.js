@@ -63,6 +63,10 @@ class MyMap extends React.Component {
     }
   }
 
+  componentWillUnmount(){
+    this.props.toggleShowTour && this.props.toggleShowTour(false)
+  }
+
   onToggleShowTour(value){
     this.props.toggleShowTour && this.props.toggleShowTour(value)
   }

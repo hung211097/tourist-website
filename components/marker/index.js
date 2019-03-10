@@ -91,7 +91,7 @@ class MarkerComponent extends React.Component{
           <div className="info-box animated fadeIn">
             <div className="info-content">
               {this.props.infoLocation.featured_img &&
-                <img alt="feature_img" src={ENV === 'development' ? 'http://' + this.props.infoLocation.featured_img : this.props.infoLocation.featured_img}/>
+                <img alt="feature_img" src={ENV === 'development' ? this.props.infoLocation.featured_img : this.props.infoLocation.featured_img}/>
               }
               {this.props.isMe &&
                 <p className="bold">Bạn ở đây!</p>
