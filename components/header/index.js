@@ -52,7 +52,7 @@ class Header extends React.Component {
 
   componentDidMount() {
     this.loadProfile()
-    window.addEventListener('scroll', this.handleOnScroll.bind(this))
+    window.addEventListener('scroll', this.handleOnScroll)
     const objLocation = getLocalStorage(KEY.LOCATION)
     if(objLocation || objLocation === ''){
       return
@@ -76,7 +76,7 @@ class Header extends React.Component {
   }
 
   componentWillUnmount(){
-    window.removeEventListener('scroll', this.handleOnScroll.bind(this))
+    window.removeEventListener('scroll', this.handleOnScroll)
     document.body.style.overflow =  'auto'
     // if (this.watchID != null) {
     //   navigator.geolocation.clearWatch(this.watchID);
@@ -92,7 +92,7 @@ class Header extends React.Component {
     Router.pushRoute("login")
   }
 
-  handleOnScroll(){
+  handleOnScroll = () => {
     const winScroll = document.body.scrollTop || document.documentElement.scrollTop
     if(winScroll > 730){
       this.setState({

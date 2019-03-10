@@ -23,6 +23,7 @@ const MapComponent = dynamic(import('./map-component'), defaultLoading)
 
 const MarkerComponent = dynamic(import('./marker'), defaultNoSSR)
 const TopPromotionItem = dynamic(import('./top-promotion-item'), defaultNoSSR)
+const CustomCheckbox = dynamic(import('./custom-checkbox'), defaultNoSSR)
 
 export {
     Header,
@@ -35,5 +36,6 @@ export {
     TopPromotionItem,
     PopupInfo,
     LayoutProfile,
-    AutoHide
+    AutoHide,
+    CustomCheckbox
 }

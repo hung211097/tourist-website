@@ -3,9 +3,13 @@ import styles from './index.scss'
 import PropTypes from 'prop-types'
 import Popup from 'reactjs-popup'
 
-const customStyles = {
+let customStyles = {
     width: '90%',
     maxWidth: '400px'
+}
+
+let customStyleOverlay = {
+
 }
 
 export default class extends React.Component {
@@ -16,7 +20,9 @@ export default class extends React.Component {
         circle: PropTypes.bool,
         onClose: PropTypes.func,
         children: PropTypes.any,
-        contributor: PropTypes.bool
+        contributor: PropTypes.bool,
+        customContent: PropTypes.object,
+        customOverlay: PropTypes.object
     }
 
     constructor(props) {
@@ -28,12 +34,22 @@ export default class extends React.Component {
     }
 
     render() {
+        if(this.props.customContent){
+          customStyles = this.props.customContent
+        }
+        if(this.props.customOverlay){
+          customStyleOverlay = this.props.customOverlay
+        }
         let localStyles = customStyles
-
+        let overlayStyles = customStyleOverlay
         return (
             <div>
                 <style jsx>{styles}</style>
-                <Popup onClose={this.handleClose.bind(this)} open={this.props.show} contentStyle={localStyles} modal closeOnDocumentClick>
+                <Popup onClose={this.handleClose.bind(this)} open={this.props.show}
+                  contentStyle={localStyles}
+                  overlayStyle={overlayStyles}
+                  modal
+                  closeOnDocumentClick>
                     {close => (
                     <>
                         <div className="close-modal" data-dismiss="modal" aria-label="Close" onClick={close}/>

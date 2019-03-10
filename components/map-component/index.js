@@ -5,10 +5,18 @@ import { SearchBox } from "react-google-maps/lib/components/places/SearchBox"
 import _ from 'lodash'
 import PropTypes from 'prop-types'
 import Geocode from "react-geocode"
-import { mapOption, mapDistance } from '../../constants/map-option'
+import { mapOption, mapDistance, filter } from '../../constants/map-option'
 import { MarkerComponent } from 'components'
 import ApiService from '../../services/api.service'
-import { FaEyeSlash } from "react-icons/fa"
+import { FaEyeSlash, FaFilter } from "react-icons/fa"
+import { PopupInfo, CustomCheckbox } from 'components'
+
+const customStyles = {
+    width: '90%',
+    maxWidth: '800px',
+    maxHeight: '500px',
+    overflow: 'auto'
+}
 
 class MapComponent extends React.Component{
 
@@ -37,6 +45,7 @@ class MapComponent extends React.Component{
     this.googleMap = React.createRef()
     this.searchBox = React.createRef()
     this.traceAddedLocation = []
+    this.filterOptions = filter
     this.apiService = ApiService()
     this.state = {
       bounds: null,
@@ -48,11 +57,16 @@ class MapComponent extends React.Component{
       isChangeCenter: false,
       idTourChosen: null,
       locationsInTour: [],
-      directions: null
+      directions: null,
+      showFilter: false,
+      filterOptions: []
     }
   }
 
   componentDidMount(){
+    this.filterOptions.forEach((item) => {
+      item.isCheck = false
+    })
     if(this.props.myLocation && this.props.myLocation.position){
       const body = {
         lat: this.props.myLocation.position.latitude,
@@ -270,6 +284,45 @@ class MapComponent extends React.Component{
     this.resetMarker()
   }
 
+  onFilterTour(){
+    this.setState({
+      showFilter: true
+    })
+  }
+
+  handleClose(){
+    this.setState({
+      showFilter: false
+    })
+  }
+
+  handleCheck(value, isCheck){
+    if(isCheck){
+      this.setState({
+        filterOptions: [...this.state.filterOptions, value]
+      })
+      let temp = this.filterOptions.find((item) => {return item.value === value})
+      temp.isCheck = true
+    }
+    else{
+      this.setState({
+        filterOptions: this.state.filterOptions.filter((item) => {return item !== value})
+      })
+      let temp = this.filterOptions.find((item) => {return item.value === value})
+      temp.isCheck = false
+    }
+  }
+
+  handleShowAll(){
+    this.filterOptions.forEach((item) => {
+      item.isCheck = false
+    })
+    this.setState({
+      filterOptions: [],
+      showFilter: false
+    })
+  }
+
   render(){
     return(
       <div className="map-content">
@@ -292,6 +345,7 @@ class MapComponent extends React.Component{
                 <input
                   type="text"
                   placeholder="Search location"
+                  className="search-box-map"
                   style={{
                     boxSizing: `border-box`,
                     border: `1px solid transparent`,
@@ -324,20 +378,55 @@ class MapComponent extends React.Component{
                     address: this.state.address}}/>
                 }
                 {this.state.locationNearCenter.length && this.state.locationNearCenter.map((item) => {
-                  return(
-                    <MarkerComponent infoLocation={item} key={item.id}
-                      onDrawDirection={this.onDrawDirection.bind(this)}
-                      tourChosen={this.state.idTourChosen}/>
-                  )
+                  if(!this.state.filterOptions.length){
+                    return(
+                      <MarkerComponent infoLocation={item} key={item.id}
+                        onDrawDirection={this.onDrawDirection.bind(this)}
+                        tourChosen={this.state.idTourChosen}/>
+                    )
+                  }
+                  let temp = this.state.filterOptions.find((findItem) => {return findItem === item.type.marker})
+                  if(temp || item.isInTour === true){
+                    return(
+                      <MarkerComponent infoLocation={item} key={item.id}
+                        onDrawDirection={this.onDrawDirection.bind(this)}
+                        tourChosen={this.state.idTourChosen}/>
+                    )
+                  }
+                  return null
                 })
               }
               {this.state.directions && <DirectionsRenderer directions={this.state.directions} />}
-            </GoogleMap>
-            {this.props.isShowTour &&
-              <a className="hide-tour" title="Hide tour's direction on map" onClick={this.onToggleShowTour.bind(this)}>
-                <FaEyeSlash style={{fontSize: '20px'}}/>
-              </a>
+        </GoogleMap>
+        {this.props.isShowTour &&
+          <a className="hide-tour" title="Hide tour's direction on map" onClick={this.onToggleShowTour.bind(this)}>
+            <FaEyeSlash style={{fontSize: '20px'}}/>
+          </a>
+        }
+        <a className="filter" title="Filter" onClick={this.onFilterTour.bind(this)}>
+          <FaFilter style={{fontSize: '20px'}}/>
+        </a>
+        <PopupInfo show={this.state.showFilter} onClose={this.handleClose.bind(this)} customContent={customStyles}>
+          <div className="popup-title-filter">
+            <h1 className="bold">LOCATION FILTER</h1>
+            <span className="underline-popup"/>
+          </div>
+          <div className="row">
+            {this.filterOptions.map((item, key) => {
+                return(
+                  <div className="col-6 col-sm-3 text-left mb-4" key={key}>
+                    <CustomCheckbox item={item} onCheck={this.handleCheck.bind(this)} />
+                  </div>
+                )
+              })
             }
+          </div>
+          <p className="caption">
+            Choose location&apos;s type you would like to display on the map or&nbsp;
+            <a onClick={this.handleShowAll.bind(this)} className="show-all">Show all</a>
+          </p>
+          <button type="button" className="co-btn" style={{width: '30%', marginTop: '20px'}} onClick={this.handleClose.bind(this)}>OK</button>
+        </PopupInfo>
       </div>
     )
   }

@@ -51,7 +51,9 @@ class UpdateProfile extends React.Component {
             files_avatar: [],
             birthdate: '',
             gender: '',
-            isSubmit: false
+            isSubmit: false,
+            error: '',
+            actionError: false
         }
     }
 
@@ -127,6 +129,12 @@ class UpdateProfile extends React.Component {
                 action: true,
                 files_avatar: []
             })
+        }).catch(() => {
+          let error = 'There is a problem, please try again!'
+          this.setState({
+            error: error,
+            actionError: true
+          })
         })
         this.setState({ action: false })
     }
@@ -216,6 +224,7 @@ class UpdateProfile extends React.Component {
                                   <strong>Gender</strong>
                               </p>
                               <Select
+                                  instanceId="gender"
                                   value={this.state.gender}
                                   onChange={this.handleGenderChange.bind(this)}
                                   placeholder={this.state.gender ? this.state.gender : 'Choose your gender'}
@@ -320,6 +329,13 @@ class UpdateProfile extends React.Component {
                             <AutoHide duration={10000}>
                               <div className="alert alert-custom" role="alert">
                                 Update profile successfully!
+                              </div>
+                            </AutoHide>
+                          )}
+                          {this.state.actionError == true && this.state.error &&(
+                            <AutoHide duration={10000}>
+                              <div className="alert alert-danger" role="alert">
+                                {this.state.error}
                               </div>
                             </AutoHide>
                           )}
