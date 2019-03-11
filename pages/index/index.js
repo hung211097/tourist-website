@@ -2,7 +2,7 @@ import React from 'react'
 import { Layout, MyMap, TopPromotionItem } from 'components'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
-import { Router } from 'routes'
+import { Router, Link } from 'routes'
 import { connect } from 'react-redux'
 import { saveRedirectUrl } from 'actions'
 import ApiService from 'services/api.service'
@@ -58,7 +58,8 @@ class Home extends React.Component {
     this.apiService = ApiService()
     this.state = {
       num_tours: '',
-      num_locations: ''
+      num_locations: '',
+      topTours: []
     }
   }
 
@@ -68,6 +69,11 @@ class Home extends React.Component {
       this.setState({
         num_tours: data.num_of_tours,
         num_locations: data.num_of_locations
+      })
+    })
+    this.apiService.getTours(1, 6).then((res) => {
+      this.setState({
+        topTours: res.data
       })
     })
   }
@@ -101,17 +107,19 @@ class Home extends React.Component {
                   </div>
                 </div>
                 <div className="row top-promotion-item">
-                  {[1,2,3,4,5,6].map((item, key) => {
+                  {!!this.state.topTours.length && this.state.topTours.map((item, key) => {
                       return(
                         <div className="col-sm-4 no-padding" key={key}>
-                          <TopPromotionItem />
+                          <TopPromotionItem item={item} index={key}/>
                         </div>
                       )
                     })
                   }
                 </div>
                 <div className="row text-center show-more-area">
-                  <a className="show-more">ALL PACKAGES</a>
+                  <Link route="tours">
+                    <a className="show-more">ALL TOURS</a>
+                  </Link>
                 </div>
               </div>
             </div>

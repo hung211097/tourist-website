@@ -11,8 +11,11 @@ module.exports = routes()                           // ----                   --
 .add('update-profile', '/profile/update')           // update-profile         update-profile          /profile/update
 .add('change-password', '/profile/change-password') // change-password        change-password         /profile/change-password
 .add('forget-password', '/forget-password')         // forget-password        forget-password         /forget-password
-.add('about')                                       // about                  about                   /about
-.add('post')                                       // post                    post                    /post
+.add('about-us')                                    // about-us               about-us                /about-us
+.add('terms-condition')                             // terms-condition        terms-condition         /terms-condition
+.add('faq')                                         // faq                    faq                     /faq
+.add('contact')                                     // contact                contact                 /contact
+.add('tours')                                       // tours                  tours                   /tours
 // .add('user', '/user/:id', 'profile')                // user   profile   /user/:id
 // .add('/:noname/:lang(en|es)/:wow+', 'complex')      // (none) complex   /:noname/:lang(en|es)/:wow+
 // .add({name: 'beta', pattern: '/v3', page: 'v3'})    // beta   v3        /v3
