@@ -10,7 +10,7 @@ export const mapOption = {
             ]
         }
     ],
-    minZoom: 8,
+    minZoom: 6,
     maxZoom: 20
 };
 
@@ -18,6 +18,8 @@ export const mapOption = {
   zoomLevel: Distance (km)
 } */
 export const mapDistance = {
+  "6": 800,
+  "7": 500,
   "8": 250,
   "9": 150,
   "10": 80,
