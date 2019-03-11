@@ -15,11 +15,14 @@ import Footer from './footer'
 import ClickOutside from './click-outside'
 import PopupInfo from './popup-info'
 import AutoHide from './auto-hide'
+import BtnViewMore from './btn-view-more/index'
 
 // import Modal from './modal/index'
 
 const MyMap = dynamic(import('./mymap'), defaultLoading)
 const MapComponent = dynamic(import('./map-component'), defaultLoading)
+const TourItem = dynamic(import('./tour-item'), defaultLoading)
+const RatingStar = dynamic(import('./rating-star'), defaultLoading)
 
 const MarkerComponent = dynamic(import('./marker'), defaultNoSSR)
 const TopPromotionItem = dynamic(import('./top-promotion-item'), defaultNoSSR)
@@ -37,5 +40,8 @@ export {
     PopupInfo,
     LayoutProfile,
     AutoHide,
-    CustomCheckbox
+    CustomCheckbox,
+    TourItem,
+    RatingStar,
+    BtnViewMore
 }

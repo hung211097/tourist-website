@@ -1,8 +1,8 @@
 import React from 'react'
 import styles from './index.scss'
 import { Layout } from 'components'
-import { Link } from 'routes'
 import ApiService from '../../services/api.service'
+import { TourItem, BtnViewMore } from 'components'
 
 class Tours extends React.Component {
   displayName = 'Tours Page'
@@ -11,12 +11,27 @@ class Tours extends React.Component {
     super(props)
     this.apiService = ApiService()
     this.state = {
-      tours: []
+      tours: [],
+      nextPage: 1,
+      isLoading: false
     }
   }
 
   componentDidMount() {
+    this.onLoadMore()
+  }
 
+  onLoadMore(){
+    this.setState({
+      isLoading: true
+    })
+    this.apiService.getTours(this.state.nextPage, 4).then((res) => {
+      this.setState({
+        tours: [...this.state.tours, ...res.data],
+        nextPage: res.next_page,
+        isLoading: false
+      })
+    })
   }
 
   render() {
@@ -43,7 +58,21 @@ class Tours extends React.Component {
               </div>
             </div>
             <div className="nd_options_container nd_options_clearfix content">
-              <p>asdsakdjh</p>
+              <div className="row list-tour">
+                {!!this.state.tours && this.state.tours.map((item, key) => {
+                    return(
+                      <div className="col-sm-6 col-md-4 col-lg-3" key={key}>
+                        <TourItem item={item}/>
+                      </div>
+                    )
+                  })
+                }
+              </div>
+              <BtnViewMore
+                isLoading={this.state.isLoading}
+                show={this.state.nextPage > 0}
+                onClick={this.onLoadMore.bind(this)}
+              />
             </div>
           </section>
         </Layout>

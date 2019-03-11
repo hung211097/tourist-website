@@ -34,3 +34,7 @@ function _getElementOffset(el) {
     left
   }
 }
+
+export function processMathRoundFix(number, fractionDigits = 1) {
+	return parseFloat(number).toFixed(fractionDigits)
+}

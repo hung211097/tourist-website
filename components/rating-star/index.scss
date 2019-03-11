@@ -1,0 +1,85 @@
+@import "styles/variables.scss";
+
+.large{
+    .rating_star {
+        width: 25px;
+        height: 25px;
+    }
+    .rating_star{
+        font-size: 25px;
+    }
+    .rating-number{
+        font-size: 2rem;
+    }
+}
+
+.medium{
+  .rating_star {
+      width: 21px;
+      height: 21px;
+  }
+  .rating_star{
+      font-size: 21px;
+  }
+  .rating-number{
+      font-size: 1.8rem;
+  }
+}
+.rating_star {
+    cursor: pointer;
+    color: $text-color;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    background: url(/static/svg/ico-star-grey.svg) no-repeat;
+    background-size: cover;
+    margin-right: 2px;
+}
+
+.rating_star{
+    position: relative;
+    font-size: 16px;
+}
+
+.rating_star .rate_progress.full_star, .rating_star .rate_progress.progressing {
+    color: $main-bg-color;
+}
+
+.rating_star .rate_progress.full_star {
+    width: 100%;
+}
+
+.rating-number{
+	font-size: 1.4rem;
+  &.small-text{
+    font-size: 13px;
+    color:  #7e7e7e;
+  }
+	padding-left: 10px;
+    color: black;
+    display: inline-block;
+    line-height: 18px;
+    height: 18px;
+    position: relative;
+    top: -2px;
+    font-style: normal;
+    margin: 0px 0px 0px 2px;
+
+}
+
+.rating_star .rate_progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    display: block;
+    overflow: hidden;
+    background: url(/static/svg/ico-star-main.svg) no-repeat;
+    background-size: cover;
+}
+
+.title{
+  line-height: 2.14;
+  margin-bottom: -3px;
+  margin-left: 2px;
+}
