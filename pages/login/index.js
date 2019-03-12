@@ -200,7 +200,9 @@ class Login extends React.Component {
                           <span> Remember me</span>
                         </label>*/}
                         <span className="woocommerce-LostPassword lost_password">
-                          <a>Lost your password?</a>
+                          <Link route="forget-password">
+                            <a>Lost your password?</a>
+                          </Link>
                         </span>
                       </div>
                       <button type="submit" className="woocommerce-Button button" name="login" onClick={this.handleSubmit.bind(this)}>

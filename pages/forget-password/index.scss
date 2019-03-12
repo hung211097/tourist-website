@@ -160,6 +160,18 @@
     }
   }
 
+  .caption{
+    font-style: italic;
+    color: grey;
+    text-align: left;
+    margin-top: 20px;
+    .active{
+      color: #0659ff !important;
+      &:hover{
+        text-decoration: underline !important;
+      }
+    }
+  }
   .co-break{
     display: inline-block;
     z-index: 1;

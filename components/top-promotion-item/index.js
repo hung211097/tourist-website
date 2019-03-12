@@ -1,17 +1,20 @@
 import React from 'react'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
-// import { Router } from 'routes'
+import { Link } from 'routes'
 
 class TopPromotionItem extends React.Component {
   displayName = 'Top Promotion Item'
 
   static propTypes = {
-    item: PropTypes.object,
+    item: PropTypes.object.isRequired,
+    index: PropTypes.number
   }
 
   constructor(props) {
     super(props)
+    this.maxDes = 110
+    this.colorClass = ['purple', 'blue', 'red', 'green', 'orange', 'yellow']
   }
 
   componentDidMount() {
@@ -19,22 +22,37 @@ class TopPromotionItem extends React.Component {
   }
 
   render() {
+    const { item } = this.props
     return (
       <div className="promotion-item">
         <style jsx>{styles}</style>
         <div className="wrapper-item">
           <div className="content-item">
-            <a>
-              <span>700 $</span>
+            <Link route="home">
+              <a>
+                <div className="contain-price">
+                  <span>{item.price.toLocaleString()} VND</span>
+                </div>
+              </a>
+            </Link>
+            <a href={item.featured_img}>
+              <img alt="tour_img" src={item.featured_img} />
             </a>
-            <img alt="tour_img" src="/static/images/image_demo.jpg" />
           </div>
           <div className="name-item">
-            <a><h3>Berlin</h3></a>
+            <Link route="home">
+              <a>
+                <h3 style={item.name.length > 30 ? {fontSize: '16px'} : null}>
+                  {item.name}
+                </h3>
+              </a>
+            </Link>
           </div>
           <div className="description-item">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ut efficitur ante. Donec dapibus dictum scelerisque.</p>
-            <a>DETAILS</a>
+            <p>{item.description.substring(0, this.maxDes) + '...'}</p>
+            <Link route="home">
+              <a>DETAILS</a>
+            </Link>
           </div>
         </div>
       </div>
