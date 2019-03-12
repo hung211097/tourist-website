@@ -196,6 +196,10 @@ p {
   padding: 0 !important;
 }
 
+.no-margin{
+  margin: 0 !important;
+}
+
 .nd_options_cursor_pointer {
   cursor: pointer;
 }
@@ -299,9 +303,6 @@ p {
   }
   @media screen and (min-width: 320px) and (max-width: 479px){
     width: 300px;
-  }
-  @media screen and (max-width: 320px){
-    margin-right: 50px
   }
 }
 
