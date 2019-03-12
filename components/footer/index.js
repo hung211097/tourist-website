@@ -3,6 +3,7 @@ import styles from './index.scss'
 import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa"
 import { FaArrowCircleUp } from "react-icons/fa"
 import * as Scroll from 'react-scroll'
+import { Link } from 'routes'
 const scroll = Scroll.animateScroll
 
 class Footer extends React.Component {
@@ -62,12 +63,20 @@ class Footer extends React.Component {
                       <div className="col-sm-4">
                         <div className="row addition-page">
                           <div className="col-sm-6">
-                            <a href="javascript:;"><h3>About Us</h3></a>
-                            <a href="javascript:;"><h3>FAQ</h3></a>
+                            <Link route="about-us">
+                              <a><h3>About Us</h3></a>
+                            </Link>
+                            <Link route="faq">
+                              <a><h3>FAQ</h3></a>
+                            </Link>
                           </div>
                           <div className="col-sm-6">
-                            <a href="javascript:;"><h3>Contact</h3></a>
-                            <a href="javascript:;"><h3>Term Conditions</h3></a>
+                            <Link route="contact">
+                              <a><h3>Contact</h3></a>
+                            </Link>
+                            <Link route="terms-condition">
+                              <a><h3>Terms Condition</h3></a>
+                            </Link>
                           </div>
                         </div>
                       </div>

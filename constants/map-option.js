@@ -55,3 +55,8 @@ export const filter = [
   {label: 'Temple', value: 'temple', isCheck: false},
   {label: 'Tourist Area', value: 'tourist_area', isCheck: false},
 ]
+
+export const companyPosition = {
+  lat: 10.772150,
+  lng: 106.674838
+}

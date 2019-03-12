@@ -46,7 +46,8 @@ class Header extends React.Component {
     this.state = {
       showSidebar: false,
       showSearchBox: false,
-      isSticky: false
+      isSticky: false,
+      keyword: ''
     }
   }
 
@@ -172,6 +173,17 @@ class Header extends React.Component {
     })
   }
 
+  handleChangeKeyword(e){
+    this.setState({
+      keyword: e.target.value
+    })
+  }
+
+  handleSubmit(e){
+    e.preventDefault()
+    alert('ok')
+  }
+
   render() {
     return (
       <div itemScope="itemScope" itemType="http://schema.org/WPHeader">
@@ -185,11 +197,13 @@ class Header extends React.Component {
               <div className="nd_options_navigation_2_sidebar">
                 <div className="menu-menu-1-container">
                   <ul className="menu">
-                    <li>
-                      <form className="search-box-responsive">
+                    <li style={_.isEmpty(this.props.user) ? {paddingBottom: '30px'} : null}>
+                      <form className="search-box-responsive" onSubmit={this.handleSubmit.bind(this)}>
                         <div className="icon-search-container active">
                           <span className="fa-search"><FaSearch style={{color: 'white', fontSize: '18px'}}/></span>
-                          <input type="text" className="search-input" data-ic-class="search-input" placeholder="Search tour" />
+                          <input type="text" className="search-input"
+                            value={this.state.keyword} onChange={this.handleChangeKeyword.bind(this)}
+                            data-ic-class="search-input" placeholder="Search tour" />
                         </div>
                       </form>
                     </li>
@@ -205,115 +219,87 @@ class Header extends React.Component {
                         </Link>
                       </li>
                     }
-                    <li>
+                    <li className={this.props.page === 'home' ? 'active' : ''}>
                       <Link route="home">
                         <a className="effect-hover">HOME</a>
                       </Link>
                     </li>
-                    <li>
-                        <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/" className="effect-hover">PACKAGES</a>
-                        <ul className="sub-menu">
-                          <li>
-                            <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/">Search</a>
-                          </li>
-                          <li>
-                            <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/packages/london/">Single Package</a>
-                          </li>
-                          <li>
-                            <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/destinations/europe/">Destination</a>
-                          </li>
-                        </ul>
+                    <li className={this.props.page === 'tours' ? 'active' : ''}>
+                      <Link route="tours">
+                        <a className="effect-hover">TOURS</a>
+                      </Link>
+                    </li>
+                    {/*<li>
+                      <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/" className="effect-hover">SHOP</a>
+                      <ul className="sub-menu">
+                        <li>
+                          <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/">Shop</a>
+                        </li>
+                        <li>
+                          <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/cart/">Cart</a>
+                        </li>
+                        <li>
+                          <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/checkout/">Checkout</a>
+                        </li>
+                        <li>
+                          <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/my-account/">My account</a>
+                        </li>
+                      </ul>
+                    </li>*/}
+                    <li className={this.props.page === 'about-us' ? 'active' : ''}>
+                      <Link route="about-us">
+                        <a className="effect-hover">ABOUT US</a>
+                      </Link>
+                    </li>
+                    <li className={this.props.page === 'contact' ? 'active' : ''}>
+                      <Link route="contact">
+                        <a className="effect-hover">CONTACT</a>
+                      </Link>
+                    </li>
+                    <li className="no-padding">
+                      <div className="apart" />
+                    </li>
+                    {!_.isEmpty(this.props.user) ?
+                      <li>
+                        <a onClick={this.handleLogout.bind(this)} href="javascript:;">
+                          LOGOUT <FaSignOutAlt style={{fontSize: '18px', color: 'white', marginLeft: '8px'}}/>
+                        </a>
                       </li>
-                    <li>
-                        <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/" className="effect-hover">SHOP</a>
-                        <ul className="sub-menu">
-                          <li>
-                            <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/">Shop</a>
-                          </li>
-                          <li>
-                            <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/cart/">Cart</a>
-                          </li>
-                          <li>
-                            <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/checkout/">Checkout</a>
-                          </li>
-                          <li>
-                            <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/my-account/">My account</a>
-                          </li>
-                        </ul>
+                      :
+                      <li>
+                        <Link route="login">
+                          <a>
+                            LOG IN
+                            <FaSignInAlt style={{fontSize: '18px', color: 'white', marginLeft: '8px'}}/>
+                          </a>
+                        </Link>
                       </li>
-                    <li>
-                        <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/about-us/" className="effect-hover">ABOUT US</a>
-                      </li>
-                    <li>
-                        <a href="#" className="effect-hover">PAGES</a>
-                        <ul className="sub-menu">
-                          <li>
-                            <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/agency-destinations/">Best Destinations</a>
-                          </li>
-                          <li>
-                            <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/staff/">Staff</a>
-                          </li>
-                          <li>
-                            <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/services/">Services</a>
-                          </li>
-                          <li>
-                            <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/prices/">Prices</a>
-                          </li>
-                          <li>
-                            <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/faq/">Faq</a>
-                          </li>
-                          <li>
-                            <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-1/">Contact 1</a>
-                            <ul className="sub-menu">
-                              <li>
-                                <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-1/">Contact 1</a>
-                              </li>
-                              <li>
-                                <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-2/">Contact 2</a>
-                              </li>
-                            </ul>
-                          </li>
-                          <li>
-                            <a target="_blank" rel="noopener noreferrer" href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/coming-soon/">Coming Soon</a>
-                          </li>
-                        </ul>
-                      </li>
-                    <li>
-                        <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/our-news/" className="effect-hover">NEWS</a>
-                        <ul className="sub-menu">
-                          <li>
-                            <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/our-news/">Archive</a>
-                          </li>
-                          <li>
-                            <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/new-routes/">Single Post</a>
-                            <ul className="sub-menu">
-                              <li>
-                                <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/new-routes/">Full Width</a>
-                              </li>
-                              <li>
-                                <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/love-travel/">Right Sidebar</a>
-                              </li>
-                              <li>
-                                <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/alternative-trips/">Left Sidebar</a>
-                              </li>
-                            </ul>
-                          </li>
-                        </ul>
-                      </li>
-                    <li>
-                        <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-1/" className="effect-hover">CONTACT</a>
-                        <ul className="sub-menu">
-                          <li>
-                            <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-1/">Contact 1</a>
-                          </li>
-                          <li>
-                            <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-2/">Contact 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                    <li>
-                        <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/" className="effect-hover">BOOK NOW</a>
-                      </li>
+                    }
+                    {/*<li>
+                      <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/" className="effect-hover">BOOK NOW</a>
+                    </li>*/}
+                    <li className="contact-sidebar-zone">
+                      <div className="contact-sidebar">
+                        <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
+                          <a href="mailto:traveltour@gmail.com" className="nd_options_margin_right_10 nd_options_float_left">
+                            <FaEnvelope style={{color: 'white', fontSize: '16px'}}/>
+                          </a>
+                        </div>
+                        <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
+                          <a className="nd_options_margin_right_20" href="mailto:traveltour@gmail.com">traveltour@gmail.com</a>
+                        </div>
+                      </div>
+                      <div className="contact-sidebar">
+                        <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
+                          <a href="tel:0963186896" className="nd_options_margin_right_10 nd_options_float_left">
+                            <FaPhone style={{color: 'white', fontSize: '16px'}}/>
+                          </a>
+                        </div>
+                        <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
+                          <a className="nd_options_margin_right_20" href="tel:0963186896">Hotline: 0963186896</a>
+                        </div>
+                      </div>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -386,10 +372,12 @@ class Header extends React.Component {
                         <a className="nd_options_margin_left_10" href="#">Add Your Review</a>
                       </div>
                     </div>
-                    <form className="search-box">
+                    <form className="search-box" onSubmit={this.handleSubmit.bind(this)}>
                       <div className={this.state.showSearchBox ? "icon-search-container active" : "icon-search-container"}>
                         <span className="fa-search" onClick={this.onShowSearchBox.bind(this)}><FaSearch style={{color: 'white', fontSize: '18px'}}/></span>
-                        <input type="text" className="search-input" data-ic-class="search-input" placeholder="Search tour" />
+                        <input type="text" className="search-input"
+                          value={this.state.keyword} onChange={this.handleChangeKeyword.bind(this)}
+                          data-ic-class="search-input" placeholder="Search tour" />
                         <span className="fa-times-circle" onClick={this.onHideSearchBox.bind(this)}><FaTimesCircle /></span>
                       </div>
                     </form>
@@ -422,37 +410,28 @@ class Header extends React.Component {
                                 <a>HOME</a>
                               </Link>
                             </li>
-                            <li>
-                              <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/">PACKAGES</a>
-                              <ul className="sub-menu">
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/">Search</a></li>
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/packages/london/">Single Package</a></li>
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/destinations/europe/">Destination</a></li>
-                              </ul>
+                            <li className={this.props.page === 'tours' ? 'active' : ''}>
+                              <Link route="tours">
+                                <a>TOURS</a>
+                              </Link>
                             </li>
-                            <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/">SHOP</a>
+                            {/*<li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/">SHOP</a>
                               <ul className="sub-menu">
                                 <li ><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/">Shop</a></li>
                                 <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/cart/">Cart</a></li>
                                 <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/checkout/">Checkout</a></li>
                                 <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/my-account/">My account</a></li>
                               </ul>
+                            </li>*/}
+                            <li className={this.props.page === 'about-us' ? 'active' : ''}>
+                              <Link route="about-us">
+                                <a>ABOUT US</a>
+                              </Link>
                             </li>
-                            <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/about-us/">ABOUT US</a></li>
-                            <li><a href="#">PAGES</a>
-                              <ul className="sub-menu">
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/agency-destinations/">Best Destinations</a></li>
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/staff/">Staff</a></li>
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/services/">Services</a></li>
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/prices/">Prices</a></li>
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/faq/">Faq</a></li>
-                              </ul>
-                            </li>
-                            <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-1/">CONTACT</a>
-                              <ul className="sub-menu">
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-1/">Contact 1</a></li>
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-2/">Contact 2</a></li>
-                              </ul>
+                            <li className={this.props.page === 'contact' ? 'active' : ''}>
+                              <Link route="contact">
+                                <a>CONTACT</a>
+                              </Link>
                             </li>
                             <li className="nd_options_book_now_btn">
                               <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/">BOOK NOW</a>
@@ -511,37 +490,28 @@ class Header extends React.Component {
                                 <a>HOME</a>
                               </Link>
                             </li>
-                            <li>
-                              <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/">PACKAGES</a>
-                              <ul className="sub-menu">
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/">Search</a></li>
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/packages/london/">Single Package</a></li>
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/destinations/europe/">Destination</a></li>
-                              </ul>
+                            <li className={this.props.page === 'tours' ? 'active' : ''}>
+                              <Link route="tours">
+                                <a>TOURS</a>
+                              </Link>
                             </li>
-                            <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/">SHOP</a>
+                            {/*<li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/">SHOP</a>
                               <ul className="sub-menu">
                                 <li ><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/">Shop</a></li>
                                 <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/cart/">Cart</a></li>
                                 <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/checkout/">Checkout</a></li>
                                 <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/my-account/">My account</a></li>
                               </ul>
+                            </li>*/}
+                            <li className={this.props.page === 'about-us' ? 'active' : ''}>
+                              <Link route="about-us">
+                                <a>ABOUT US</a>
+                              </Link>
                             </li>
-                            <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/about-us/">ABOUT US</a></li>
-                            <li><a href="#">PAGES</a>
-                              <ul className="sub-menu">
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/agency-destinations/">Best Destinations</a></li>
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/staff/">Staff</a></li>
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/services/">Services</a></li>
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/prices/">Prices</a></li>
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/faq/">Faq</a></li>
-                              </ul>
-                            </li>
-                            <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-1/">CONTACT</a>
-                              <ul className="sub-menu">
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-1/">Contact 1</a></li>
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/contact-2/">Contact 2</a></li>
-                              </ul>
+                            <li className={this.props.page === 'contact' ? 'active' : ''}>
+                              <Link route="contact">
+                                <a>CONTACT</a>
+                              </Link>
                             </li>
                             <li className="nd_options_book_now_btn">
                               <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/">BOOK NOW</a>

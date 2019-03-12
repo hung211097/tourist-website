@@ -1,0 +1,163 @@
+@import 'styles/variables.scss';
+
+.middle{
+  padding-top: 137px;
+  @media screen and (max-width: 1112px){
+    padding-top: 124px;
+  }
+  .content-title{
+    background-size: cover;
+    background-position: center bottom;
+    background-image: url('/static/images/p-8.jpg');
+    .overlay{
+      background-color: rgba(67, 74, 84, 0.3);
+      .title-contain{
+        box-sizing: border-box;
+        padding: 15px;
+        text-align: center;
+        h1{
+          font-weight: normal;
+          color: #fff !important;
+          font-size: 30px;
+          line-height: 30px;
+          span{
+            display: block;
+            font-weight: bold;
+          }
+          .underline{
+            display: inline-block;
+            background-color: #ffffff;
+            width: 80px;
+            height: 4px;
+          }
+        }
+      }
+    }
+  }
+  .content{
+    margin-top: 50px;
+    .inner{
+      box-sizing: border-box;
+      padding-left: 15px;
+      padding-right: 15px;
+      width: 100%;
+      padding-top: 10px !important;
+      padding-bottom: 10px !important;
+      .wrapper{
+        h3{
+          font-weight: normal;
+          color: #5e6d81;
+          font-size: 20px;
+          line-height: 20px;
+        }
+        .underline-zone{
+          line-height: 0;
+          .underline{
+            height: 2px;
+            width: 30px;
+            background-color: #f1f1f1;
+            display: inline-block;
+            line-height: 0px;
+          }
+        }
+        .wpb_content_element{
+          margin-bottom: 0px;
+          .wpb_text_column:last-child{
+            margin-bottom: 0px;
+          }
+          p{
+            margin-bottom: 0;
+            color: #a4a4a4;
+            font-size: 14px;
+            line-height: 27px;
+          }
+        }
+        .form-msg{
+          .input-field{
+            padding: 0px 10px 15px 0px;
+            width: 100%;
+            p{
+              color: #a4a4a4;
+            }
+            span{
+              position: relative;
+              input, textarea{
+                background-color: #f9f9f9;
+                border-width: 1px;
+                border-color: #f1f1f1;
+                border-radius: 0px;
+                border-style: solid;
+                width: 100%;
+                -webkit-appearance: none;
+                color: #a3a3a3;
+                border-width: 0px !important;
+                padding: 10px 20px !important;
+                margin-top: 10px;
+              }
+              textarea{
+                resize: vertical;
+              }
+            }
+          }
+          .confirm-field{
+            padding: 0px 0px 0px 0px;
+            width: 100%;
+            button{
+              background-color: #1bbc9b;
+              border-width: 0px;
+              border-radius: 0px;
+              border-style: solid;
+              -webkit-appearance: none;
+              cursor: pointer;padding: 15px 30px !important;
+              display: inline-block;
+              color: #fff !important;
+              width: 40%;
+              @media screen and (max-width: 576px){
+                width: 60%;
+                margin-bottom: 30px;
+              }
+            }
+          }
+        }
+      }
+    }
+    .col-12{
+      p{
+        color: #5e6d81;
+      }
+    }
+    .table-cell-left, .table-cell-right{
+      vertical-align: middle;
+      display: table-cell;
+      box-sizing: border-box;
+      padding: 10px;
+      width: 50%;
+      padding-left: 17px;
+      p{
+        color: #5e6d81;
+        padding: 0px;
+        font-size: 14px;
+        line-height: 27px;
+      }
+    }
+    .table-cell-left{
+      text-align: left;
+    }
+    .table-cell-right{
+      text-align: right;
+    }
+    .error{
+      background-color: #ef606b;
+      border-width: 0px;
+      border-color: #fff;
+      border-radius: 0px;
+      border-style: solid;
+      padding: 10px 20px;
+      color: white !important;
+      margin: 0px;
+      margin-top: 10px;
+      font-size: 13px;
+      line-height: 20px;
+    }
+  }
+}

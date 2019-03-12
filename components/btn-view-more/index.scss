@@ -1,0 +1,13 @@
+@import "styles/variables.scss";
+
+.btn-view-more {
+    width: 20%;
+    margin: auto;
+    display: block;
+    @media screen and (max-width: 768px){
+      width: 25%;
+    }
+    @media screen and (max-width: 576px){
+      width: 80%;
+    }
+}
