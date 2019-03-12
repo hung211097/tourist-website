@@ -3,6 +3,7 @@ import styles from './index.scss'
 import { Layout } from 'components'
 import ApiService from '../../services/api.service'
 import { TourItem, BtnViewMore } from 'components'
+import ContentLoader from "react-content-loader"
 
 class Tours extends React.Component {
   displayName = 'Tours Page'
@@ -13,7 +14,8 @@ class Tours extends React.Component {
     this.state = {
       tours: [],
       nextPage: 1,
-      isLoading: false
+      isLoading: false,
+      isLoadContent: true
     }
   }
 
@@ -29,7 +31,8 @@ class Tours extends React.Component {
       this.setState({
         tours: [...this.state.tours, ...res.data],
         nextPage: res.next_page,
-        isLoading: false
+        isLoading: false,
+        isLoadContent: false
       })
     })
   }
@@ -63,6 +66,25 @@ class Tours extends React.Component {
                     return(
                       <div className="col-sm-6 col-md-4 col-lg-3" key={key}>
                         <TourItem item={item}/>
+                      </div>
+                    )
+                  })
+                }
+                {!this.state.tours.length && this.state.isLoadContent && [1,2,3,4].map((item, key) => {
+                    return(
+                      <div className="col-sm-6 col-md-4 col-lg-3" key={key}>
+                        <ContentLoader
+                          height={340}
+                          width={270}
+                          speed={2}
+                          primaryColor="#f3f3f3"
+                          secondaryColor="#ecebeb">
+                          <rect x="2.14" y="1.67" rx="0" ry="0" width="266.98" height="194.22" />
+                          <rect x="1.31" y="216.08" rx="0" ry="0" width="217.46" height="27.93" />
+                          <rect x="2.41" y="255.67" rx="0" ry="0" width="123.09" height="24.96" />
+                          <rect x="4.27" y="294.67" rx="0" ry="0" width="115.1" height="37.6" />
+                          <rect x="136.23" y="293.67" rx="0" ry="0" width="112.86" height="40" />
+                        </ContentLoader>
                       </div>
                     )
                   })

@@ -23,6 +23,7 @@ const MyMap = dynamic(import('./mymap'), defaultLoading)
 const MapComponent = dynamic(import('./map-component'), defaultLoading)
 const TourItem = dynamic(import('./tour-item'), defaultLoading)
 const RatingStar = dynamic(import('./rating-star'), defaultLoading)
+const MapContact = dynamic(import('./map-contact'), defaultLoading)
 
 const MarkerComponent = dynamic(import('./marker'), defaultNoSSR)
 const TopPromotionItem = dynamic(import('./top-promotion-item'), defaultNoSSR)
@@ -43,5 +44,6 @@ export {
     CustomCheckbox,
     TourItem,
     RatingStar,
-    BtnViewMore
+    BtnViewMore,
+    MapContact
 }
