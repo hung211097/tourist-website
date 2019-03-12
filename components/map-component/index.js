@@ -130,10 +130,6 @@ class MapComponent extends React.Component{
       lng: this.googleMap.current.getCenter().lng(),
       distance: mapDistance[this.googleMap.current.getZoom().toString()]
     }
-    this.setState({
-      latCenter: body.lat,
-      lngCenter: body.lng
-    })
     this.apiService.getLocationsNearCenter(body, {tour: true}).then((res) => {
       this.setState({
         locationNearCenter: this.addMarker(res.data),
@@ -455,13 +451,6 @@ class MapComponent extends React.Component{
                 }
                 return null
               })
-            }
-            {this.state.latCenter && this.state.lngCenter &&
-              <MarkerComponent
-                infoLocation={{
-                  latitude: this.state.latCenter,
-                  longitude: this.state.lngCenter}}/>
-              }
             }
             {!!this.state.directions.length && this.state.directions.map((item, key) => {
                 return(

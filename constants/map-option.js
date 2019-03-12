@@ -18,10 +18,10 @@ export const mapOption = {
   zoomLevel: Distance (km)
 } */
 export const mapDistance = {
-  "6": 800,
-  "7": 500,
-  "8": 250,
-  "9": 150,
+  "6": 600,
+  "7": 400,
+  "8": 200,
+  "9": 120,
   "10": 80,
   "11": 50,
   "12": 30,

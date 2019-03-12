@@ -9,7 +9,6 @@ import validatePhone from 'services/validates/phone'
 import Select from 'react-select'
 import { getUserAuth } from 'services/auth.service'
 import { moveToElementId } from '../../services/utils.service'
-import tinifyImage from 'services/images'
 import { saveProfile } from '../../actions'
 import { formatDate } from '../../services/time.service'
 
@@ -53,7 +52,8 @@ class UpdateProfile extends React.Component {
             gender: '',
             isSubmit: false,
             error: '',
-            actionError: false
+            actionError: false,
+            imagePreviewUrl: ''
         }
     }
 
@@ -127,7 +127,8 @@ class UpdateProfile extends React.Component {
             this.files_avatar = []
             this.setState({
                 action: true,
-                files_avatar: []
+                files_avatar: [],
+                imagePreviewUrl: ''
             })
         }).catch(() => {
           let error = 'There is a problem, please try again!'
@@ -144,22 +145,27 @@ class UpdateProfile extends React.Component {
     }
 
     handleOnSelectFileAvatar(event) {
-        let files = event.target.files
-        if(files[0].size > 10240){
+        let file = event.target.files[0]
+        if(file.size > 10240){
           return
         }
-        tinifyImage(files, this.limitUpload, this.files_avatar.length).then((data) => {
-            this.files_avatar = [...this.files_avatar, ...data.preFiles]
-            this.setState({
-                files_avatar: [...this.state.files_avatar, ...data.tempFiles]
-            })
-        })
+
+        let reader = new FileReader();
+        reader.onloadend = () => {
+          this.files_avatar = [file]
+          this.setState({
+            files_avatar: [file],
+            imagePreviewUrl: reader.result
+          });
+        }
+        reader.readAsDataURL(file)
     }
 
-    handleRemoveImageAvatar(index) {
-        this.files_avatar.splice(index, 1)
+    handleRemoveImageAvatar() {
+        this.files_avatar = []
         this.setState({
-            files_avatar: this.state.files_avatar.filter((item, key) => key !== index)
+            files_avatar: [],
+            imagePreviewUrl: ''
         })
     }
 
@@ -310,17 +316,16 @@ class UpdateProfile extends React.Component {
                                   </div>
                               </div>
                               <div className="nrr-image-box">
-                                  {!!this.state.files_avatar &&
-                                      this.state.files_avatar.map((item, key) => (
-                                          <div key={key} className="upload-img">
-                                              <div
-                                                  onClick={this.handleRemoveImageAvatar.bind(this, key)}
-                                                  className="icon-delete">
-                                                  <span className="x">x</span>
-                                              </div>
-                                              <img src={item} alt="preview_img"/>
-                                          </div>
-                                      ))}
+                                {this.state.imagePreviewUrl &&
+                                  <div className="upload-img">
+                                    <div
+                                      onClick={this.handleRemoveImageAvatar.bind(this)}
+                                      className="icon-delete">
+                                      <span className="x">x</span>
+                                    </div>
+                                    <img src={this.state.imagePreviewUrl} alt="preview_img"/>
+                                  </div>
+                                }
                               </div>
                           </div>
                         </div>
