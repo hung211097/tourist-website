@@ -1,0 +1,210 @@
+@import 'styles/variables.scss';
+
+.middle{
+  padding-top: 137px;
+  @media screen and (max-width: 1112px){
+    padding-top: 124px;
+  }
+  .content-title{
+    background-size: cover;
+    background-position: center;
+    background-image: url('/static/images/p-3.jpg');
+    .overlay{
+      background-color: rgba(67, 74, 84, 0.3);
+      .title-contain{
+        box-sizing: border-box;
+        padding: 15px;
+        text-align: center;
+        h1{
+          font-weight: normal;
+          color: #fff !important;
+          font-size: 30px;
+          line-height: 30px;
+          span{
+            display: block;
+            font-weight: bold;
+          }
+          .underline{
+            display: inline-block;
+            background-color: #ffffff;
+            width: 80px;
+            height: 4px;
+          }
+        }
+      }
+    }
+  }
+  .content{
+    margin-top: 60px;
+    .faq{
+      .inner{
+        h3{
+          color: #5e6d81;
+          font-size: 20px;
+          line-height: 20px;
+        }
+        .underline-zone{
+          line-height: 0;
+          .underline{
+            height: 2px;
+            width: 30px;
+            background-color: #f1f1f1;
+            display: inline-block;
+            line-height: 0px;
+          }
+        }
+        .question{
+          box-sizing: border-box;
+          p{
+            color: #a4a4a4;
+            position: relative;
+            padding-right: 20px;
+            padding-left: 45px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            font-size: 17px;
+            line-height: 17px;
+            .toggleBtn{
+              background-color: $main-bg-color;
+              display: block;
+              cursor: pointer;
+              top: 0;
+              left: 0;
+              position: absolute;
+              width: 25px;
+              height: 25px;
+              text-align: center;
+              img{
+                margin-top: 5px;
+                width: 65%;
+              }
+            }
+          }
+        }
+        .collapse-content{
+          box-sizing: border-box;
+          padding: 20px;
+          padding-left: 45px;
+        }
+        .nd_options_toogles_faq{
+          margin-bottom: 20px;
+        }
+      }
+      .inner-msg{
+        padding-right: 30px !important;
+        padding-left: 30px !important;
+        box-sizing: border-box;
+        width: 100%;
+        .custom{
+          width: 100%;
+          padding: 30px;
+          background-color: $main-bg-color;
+          .wrapper-title{
+            h2{
+              color: #ffffff;
+              text-align: center;
+              font-size: 25px;
+              line-height: 25px;
+              font-weight: normal;
+            }
+            .underline-zone{
+              line-height: 0px;
+              text-align: center;
+              .underline{
+                height: 2px;
+                width: 30px;
+                background-color: #f1f1f1;
+                display: inline-block;
+              }
+            }
+            .form-msg{
+              .input-field{
+                padding: 0px 10px 15px 0px;
+                width: 100%;
+                span{
+                  position: relative;
+                  input, textarea{
+                    width: 100%;
+                    border-color: #f1f1f1;
+                    border-radius: 0px;
+                    border-style: solid;
+                    -webkit-appearance: none;
+                    color: #a3a3a3;
+                    background-color: #4a515b !important;
+                    border-width: 0px !important;
+                    padding: 10px 20px !important;
+                    margin-top: 10px;
+                  }
+                  textarea{
+                    resize: vertical;
+                  }
+                }
+              }
+              .confirm-field{
+                padding: 0px 0px 0px 0px;
+                width: 100%;
+                button{
+                  background-color: #1bbc9b;
+                  border-width: 0px;
+                  border-radius: 0px;
+                  border-style: solid;
+                  -webkit-appearance: none;
+                  cursor: pointer;padding: 15px 30px !important;
+                  display: inline-block;
+                  color: #fff !important;
+                  width: 100%;
+                }
+              }
+            }
+          }
+        }
+        .best-package{
+          margin-top: 35px !important;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+          background-image: url(/static/images/destination-16.jpg);
+          .custom{
+            box-sizing: border-box;
+            width: 100%;
+            padding-top: 82px;
+            padding-right: 30px;
+            padding-bottom: 82px;
+            padding-left: 30px;
+            background-color: rgba(114,116,117,0.29);
+            .wrapper-custom{
+              h5{
+                color: #ffffff;
+                text-align: center;
+                font-size: 12px;
+                line-height: 12px;
+                letter-spacing: 1px;
+                font-weight: normal;
+              }
+              h2{
+                color: #ffffff;
+                text-align: center;
+                font-size: 25px;
+                line-height: 25px;
+                font-weight: normal;
+              }
+            }
+          }
+        }
+      }
+    }
+    .error{
+      background-color: #ef606b;
+      border-width: 0px;
+      border-color: #fff;
+      border-radius: 0px;
+      border-style: solid;
+      padding: 10px 20px;
+      color: #ffffff;
+      margin: 0px;
+      margin-top: 10px;
+      font-size: 13px;
+      line-height: 20px;
+    }
+  }
+}

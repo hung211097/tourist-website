@@ -2,8 +2,8 @@ import React from 'react'
 import styles from './index.scss'
 import { Layout } from 'components'
 
-class AboutUs extends React.Component {
-  displayName = 'About Us'
+class TermsCondition extends React.Component {
+  displayName = 'Terms Condition'
 
   constructor(props) {
     super(props)
@@ -16,7 +16,7 @@ class AboutUs extends React.Component {
   render() {
     return (
       <>
-        <Layout page="about-us" {...this.props}>
+        <Layout page="terms-condition" {...this.props}>
           <style jsx>{styles}</style>
           <section className='middle'>
             {/* section box*/}
@@ -26,7 +26,7 @@ class AboutUs extends React.Component {
                   <div className="nd_options_section nd_options_height_110"/>
                   <div className="nd_options_section title-contain">
                     <h1>
-                      <span>ABOUT US</span>
+                      <span>TERMS CONDITION</span>
                       <div className="nd_options_section">
                         <span className="underline"></span>
                       </div>
@@ -93,7 +93,7 @@ class AboutUs extends React.Component {
                       <div className="row">
                         <div className="col-12">
                           <div className="box-img no-margin responsive">
-                            <img alt="featured_img" src="/static/images/sqb-2.jpg"/>
+                            <img alt="featured_img" src="/static/images/sqb-4.jpg"/>
                             <div className="box-title">
                               <div className="title">
                                 <h3>CITY TOURS</h3>
@@ -105,7 +105,7 @@ class AboutUs extends React.Component {
                         </div>
                         <div className="col-12">
                           <div className="box-img">
-                            <img alt="featured_img" src="/static/images/sqb-3.jpg"/>
+                            <img alt="featured_img" src="/static/images/sqb-5.jpg"/>
                             <div className="box-title">
                               <div className="title">
                                 <h3>HONEYMOON</h3>
@@ -117,7 +117,7 @@ class AboutUs extends React.Component {
                         </div>
                         <div className="col-12">
                           <div className="box-img">
-                            <img alt="featured_img" src="/static/images/sqb-1.jpg"/>
+                            <img alt="featured_img" src="/static/images/sqb-6.jpg"/>
                             <div className="box-title">
                               <div className="title">
                                 <h3>ADVENTURE</h3>
@@ -133,116 +133,6 @@ class AboutUs extends React.Component {
                 </div>
               </div>
             </div>
-            <div className="row parallax-area">
-              <div className="col-sm-12 col-lg-8">
-                <div className="inner">
-                  <div className="wrapper">
-                    <div className="nd_options_section nd_options_position_relative nd_options_about_us_service">
-                      <div className="parallax-title">
-                        <h1><strong>Doing the right thing,<br/>at the right time.</strong></h1>
-                      </div>
-                    </div>
-                    <div style={{height: '70px'}}/>
-                    <div className="row">
-                      <div className="col-md-6 col-lg-3">
-                        <div className="inner-statistic">
-                          <div className="wrapper-statistic">
-                            <h1>15</h1>
-                            <div className="nd_options_height_20"/>
-                            <p>BRANCHES</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-6 col-lg-3">
-                        <div className="inner-statistic">
-                          <div className="wrapper-statistic">
-                            <h1>100</h1>
-                            <div className="nd_options_height_20"/>
-                            <p>TOURS</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-6 col-lg-3">
-                        <div className="inner-statistic">
-                          <div className="wrapper-statistic">
-                            <h1>47</h1>
-                            <div className="nd_options_height_20"/>
-                            <p>DESTINATIONS</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-6 col-lg-3">
-                        <div className="inner-statistic">
-                          <div className="wrapper-statistic">
-                            <h1>10</h1>
-                            <div className="nd_options_height_20"/>
-                            <p>STAFF</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-sm-12 col-lg-4"></div>
-              <div className="vc_parallax-inner skrollable skrollable-before"></div>
-            </div>
-            <div className="nd_options_container nd_options_clearfix content">
-              <div className="content">
-                <div className="row services">
-                  <div className="col-sm-1"></div>
-                  <div className="col-sm-5">
-                    <div className="inner">
-                      <div className="wrapper">
-                        <div className="nd_options_section nd_options_position_relative service-contain">
-                          <img alt="icon" src="/static/images/icon-support.png" />
-                          <div className="service-item">
-                            <p>
-                              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                              Aenean egestas magna at porttitor vehicula nullam augue ipsum dolor.
-                            </p>
-                            <a className="yellow">SUPPORT</a>
-                          </div>
-                        </div>
-                        <div className="nd_options_section nd_options_position_relative service-contain">
-                          <img alt="icon" src="/static/images/icon-island.png" />
-                          <div className="service-item">
-                            <p>
-                              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                              Aenean egestas magna at porttitor vehicula nullam augue ipsum dolor.
-                            </p>
-                            <a className="red">RESORTS</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-sm-5">
-                    <div className="nd_options_section nd_options_position_relative service-contain">
-                      <img alt="icon" src="/static/images/icon-landmark.png" />
-                      <div className="service-item">
-                        <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                          Aenean egestas magna at porttitor vehicula nullam augue ipsum dolor.
-                        </p>
-                        <a className="blue">BEST TOURS</a>
-                      </div>
-                    </div>
-                    <div className="nd_options_section nd_options_position_relative service-contain">
-                      <img alt="icon" src="/static/images/icon-map.png" />
-                      <div className="service-item">
-                        <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                          Aenean egestas magna at porttitor vehicula nullam augue ipsum dolor.
-                        </p>
-                        <a className="green">MAP GUIDES</a>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-sm-1"></div>
-                </div>
-              </div>
-            </div>
           </section>
         </Layout>
       </>
@@ -250,4 +140,4 @@ class AboutUs extends React.Component {
   }
 }
 
-export default AboutUs
+export default TermsCondition
