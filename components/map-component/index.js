@@ -1,15 +1,16 @@
 import React from 'react'
 import { compose } from "recompose"
-import { withScriptjs, withGoogleMap, DirectionsRenderer, GoogleMap } from "react-google-maps"
+import { withScriptjs, withGoogleMap, DirectionsRenderer, GoogleMap, Polyline } from "react-google-maps"
 import { SearchBox } from "react-google-maps/lib/components/places/SearchBox"
 import _ from 'lodash'
 import PropTypes from 'prop-types'
 import Geocode from "react-geocode"
-import { mapOption, mapDistance, filter } from '../../constants/map-option'
+import { mapOption, mapDistance, filter, transports } from '../../constants/map-option'
 import { MarkerComponent } from 'components'
 import ApiService from '../../services/api.service'
 import { FaEyeSlash, FaFilter } from "react-icons/fa"
 import { PopupInfo, CustomCheckbox } from 'components'
+import { getAirportPoint } from '../../services/utils.service'
 
 const customStyles = {
     width: '90%',
@@ -49,7 +50,7 @@ class MapComponent extends React.Component{
     this.apiService = ApiService()
     this.state = {
       bounds: null,
-      markerChoose: null,
+      markerChoose: null, //Điểm marker click trên map
       locationNearCenter: [],
       zoom: 15,
       address: '',
@@ -59,7 +60,8 @@ class MapComponent extends React.Component{
       locationsInTour: [],
       directions: [],
       showFilter: false,
-      filterOptions: []
+      filterOptions: [],
+      airport: []
     }
   }
 
@@ -207,7 +209,9 @@ class MapComponent extends React.Component{
           }
         })
         this.setState({
-          locationNearCenter: temp
+          locationNearCenter: temp,
+          directions: [],
+          airport: []
         }, () => {
           this.changeTourToDisplay(routes, idTour)
         })
@@ -241,8 +245,38 @@ class MapComponent extends React.Component{
         this.traceAddedLocation[addItem.id] = true
       }
     })
-    // console.log(routes);
+    this.setState({
+      locationsInTour: routes,
+      locationNearCenter: temp,
+      idTourChosen: idTour
+    }, () => {
+      let airport = getAirportPoint(routes)
+      if(!airport.length){  //Nếu không xuất hiện các điểm sân bay thì vẽ đường đi bằng xe bình thường
+        this.setDirections(routes)
+      }
+      else{   //Nếu có xuất hiện các điểm sân bay thì tách các đoạn đi bằng xe ra vẽ riêng, đi bằng đường hàng không vẽ riêng
+        let directionRoutes = []
+        let tempPoint = []
+        routes.forEach((item) => {
+          if(item.transport.name_en === transports.AIRWAY){
+            directionRoutes.push(tempPoint)
+            tempPoint = []
+          }
+          else{
+            tempPoint.push(item)
+          }
+        })
+        directionRoutes.forEach(item => {
+          this.setDirections(item)
+        })
+        this.setState({
+          airport: airport
+        })
+      }
+    })
+  }
 
+  setDirections(routes){
     const DirectionsService = new google.maps.DirectionsService();
     let maximumWaypoints = 22 //actually is 23, index from 0
     if(routes.length <= maximumWaypoints + 1){  //Số điểm trung gian ít hơn 23 (giới hạn api google map)
@@ -252,56 +286,47 @@ class MapComponent extends React.Component{
         else if (i == routes.length - 1) request.destination = new google.maps.LatLng(item.location.latitude, item.location.longitude);
         else {
           if (!request.waypoints) request.waypoints = [];
-          request.waypoints.push({
-            location:  new google.maps.LatLng(item.location.latitude, item.location.longitude),
-            stopover: true
-          });
+          if(routes[i].location.id != 72){
+            request.waypoints.push({
+              location:  new google.maps.LatLng(routes[i].location.latitude, routes[i].location.longitude),
+              stopover: true
+            });
+          }
         }
       })
       request.travelMode = google.maps.TravelMode.DRIVING
-      request.optimizeWaypoints = true
+      // request.optimizeWaypoints = true
       DirectionsService.route(request, (result, status) => {
         if (status === google.maps.DirectionsStatus.OK) {
           this.setState({
-            directions: [...this.state.directions, result],
-            locationsInTour: routes,
-            locationNearCenter: temp,
-            idTourChosen: idTour
+            directions: [...this.state.directions, result]
           });
         }
       })
     }
     else{
-      this.setState({
-        locationsInTour: routes,
-        locationNearCenter: temp,
-        idTourChosen: idTour
-      });
       let numRequests = parseInt(routes.length / (maximumWaypoints + 1))
       if(routes.length % maximumWaypoints !== 0){
         numRequests = numRequests + 1
       }
-      // maximumWaypoints = 3
-      for(let i = 1; i < numRequests; i++){
+      for(let i = 0; i < numRequests; i++){
         let request = {}
         request.travelMode = google.maps.TravelMode.DRIVING
-        for(let j = maximumWaypoints * i; j <= maximumWaypoints * (i + 1) && j < routes.length - 8; j++){
-          // console.log("J = ", j);
-          // console.log("LOcATION", routes[j]);
+        for(let j = maximumWaypoints * i; j <= maximumWaypoints * (i + 1) && j < routes.length; j++){
           if (j == maximumWaypoints * i){
-            // console.log("FIRST", routes[j]);
             request.origin = new google.maps.LatLng(routes[j].location.latitude, routes[j].location.longitude);
           }
-          else if (j == maximumWaypoints * (i + 1) || j == routes.length - 9){
-            // console.log("LAST", routes[j]);
+          else if (j == maximumWaypoints * (i + 1) || j == routes.length - 1){
             request.destination = new google.maps.LatLng(routes[j].location.latitude, routes[j].location.longitude);
           }
           else {
             if (!request.waypoints) request.waypoints = [];
-            request.waypoints.push({
-              location:  new google.maps.LatLng(routes[j].location.latitude, routes[j].location.longitude),
-              stopover: true
-            });
+            if(routes[j].location.id != 72){
+              request.waypoints.push({
+                location:  new google.maps.LatLng(routes[j].location.latitude, routes[j].location.longitude),
+                stopover: true
+              });
+            }
           }
         }
         DirectionsService.route(request, (result, status) => {
@@ -330,7 +355,8 @@ class MapComponent extends React.Component{
         locationsInTour: [],
         locationNearCenter: temp,
         idTourChosen: null,
-        directions: []
+        directions: [],
+        airport: []
       })
     })
   }
@@ -454,7 +480,60 @@ class MapComponent extends React.Component{
             }
             {!!this.state.directions.length && this.state.directions.map((item, key) => {
                 return(
-                  <DirectionsRenderer directions={item} key={key} options={{suppressMarkers: true}}/>
+                  <DirectionsRenderer directions={item} key={key} options={{
+                      suppressMarkers: true
+                    }} />
+                )
+              })
+            }
+            {!!this.state.airport.length && this.state.airport.map((item, key) => {
+                let temp = []
+                item.forEach(place => {
+                  temp.push({lat: place.location.latitude, lng: place.location.longitude })
+                })
+                return(
+                  <Polyline
+                      path={temp}
+                      key={key}
+                      geodesic={true}
+                      options={{
+                          strokeColor: "#ff3232",
+                          strokeOpacity: 0.75,
+                          strokeWeight: 7,
+                          icons: [
+                            {
+                              icon: {
+                                path: google.maps.SymbolPath.CIRCLE,
+                                strokeColor: '#ff3232',
+                                fillColor: '#ff3232',
+                                fillOpacity: 1,
+                                scale: 4
+                              },
+                              offset: '0%',
+                            },
+                            {
+                              icon: {
+                                path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                                strokeColor: '#f1ff19',
+                                fillColor: '#f1ff19',
+                                fillOpacity: 1,
+                                scale: 3
+                              },
+                              offset: '50px',
+                              repeat: "20%"
+                            },
+                            {
+                              icon: {
+                                path: google.maps.SymbolPath.CIRCLE,
+                                strokeColor: '#ff3232',
+                                fillColor: '#ff3232',
+                                fillOpacity: 1,
+                                scale: 4
+                              },
+                              offset: '100%'
+                            }
+                          ]
+                      }}/>
                 )
               })
             }

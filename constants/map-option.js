@@ -62,3 +62,10 @@ export const companyPosition = {
   lat: 10.772150,
   lng: 106.674838
 }
+
+export const transports = {
+  ROADWAY: 'roadway',
+  WATERWAY: 'waterway',
+  AIRWAY: 'airway',
+  RAILWAY: 'railway'
+}
