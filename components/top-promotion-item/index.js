@@ -31,7 +31,7 @@ class TopPromotionItem extends React.Component {
             <Link route="home">
               <a>
                 <div className="contain-price">
-                  <span>{item.price.toLocaleString()} VND</span>
+                  {/*<span>{item.price.toLocaleString()} VND</span>*/}
                 </div>
               </a>
             </Link>

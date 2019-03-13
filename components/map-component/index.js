@@ -1,15 +1,16 @@
 import React from 'react'
 import { compose } from "recompose"
-import { withScriptjs, withGoogleMap, DirectionsRenderer, GoogleMap } from "react-google-maps"
+import { withScriptjs, withGoogleMap, DirectionsRenderer, GoogleMap, Polyline } from "react-google-maps"
 import { SearchBox } from "react-google-maps/lib/components/places/SearchBox"
 import _ from 'lodash'
 import PropTypes from 'prop-types'
 import Geocode from "react-geocode"
-import { mapOption, mapDistance, filter } from '../../constants/map-option'
+import { mapOption, mapDistance, filter, transports } from '../../constants/map-option'
 import { MarkerComponent } from 'components'
 import ApiService from '../../services/api.service'
 import { FaEyeSlash, FaFilter } from "react-icons/fa"
 import { PopupInfo, CustomCheckbox } from 'components'
+import { getAirportPoint } from '../../services/utils.service'
 
 const customStyles = {
     width: '90%',
@@ -49,7 +50,7 @@ class MapComponent extends React.Component{
     this.apiService = ApiService()
     this.state = {
       bounds: null,
-      markerChoose: null,
+      markerChoose: null, //Điểm marker click trên map
       locationNearCenter: [],
       zoom: 15,
       address: '',
@@ -57,9 +58,10 @@ class MapComponent extends React.Component{
       isChangeCenter: false,
       idTourChosen: null,
       locationsInTour: [],
-      directions: null,
+      directions: [],
       showFilter: false,
-      filterOptions: []
+      filterOptions: [],
+      airport: []
     }
   }
 
@@ -192,72 +194,150 @@ class MapComponent extends React.Component{
 
   onDrawDirection(routes, idTour){
     if(!this.state.idTourChosen || this.state.idTourChosen != idTour){  //Xét tồn tại tour đã chọn chưa hoặc chọn hiển thị tour khác
-      if(!this.state.idTourChosen){
+      if(!this.state.idTourChosen){ //Chưa chọn tour nào để hiển thị
         this.changeTourToDisplay(routes, idTour)
       }
       else{
         let temp = this.state.locationNearCenter
-        this.state.locationsInTour.forEach((item) => {
+        this.state.locationsInTour.forEach((item) => { //Tắt những marker trong tour cũ đã hiển thị
           let tempItem = temp.find((filterItem) => {
             return item.location.id === filterItem.id
           })
           if(tempItem){
             tempItem.isInTour = false
+            tempItem.order = null
           }
         })
         this.setState({
-          locationNearCenter: temp
+          locationNearCenter: temp,
+          directions: [],
+          airport: []
         }, () => {
           this.changeTourToDisplay(routes, idTour)
         })
       }
     }
-    else{
+    else{ //Tắt hiển thị
       this.resetMarker()
     }
   }
 
   changeTourToDisplay(routes, idTour){
     let temp = this.state.locationNearCenter
-    routes.forEach((item) => {
+    routes.forEach((item, key) => {
       let tempItem = temp.find((filterItem) => {
         return item.location.id === filterItem.id
       })
       if(tempItem){
         tempItem.isInTour = true
+        if(tempItem.order){
+          tempItem.order = tempItem.order + ', ' + (key + 1).toString()
+        }
+        else{
+          tempItem.order = (key + 1).toString()
+        }
       }
       else{
         let addItem = item.location
         addItem.isInTour = true
+        addItem.order = (key + 1).toString()
         temp.push(addItem)
         this.traceAddedLocation[addItem.id] = true
       }
     })
-    const DirectionsService = new google.maps.DirectionsService();
-    let request = {}
-    routes.forEach((item, i) => {
-      if (i == 0) request.origin = new google.maps.LatLng(item.location.latitude, item.location.longitude);
-      else if (i == routes.length - 1) request.destination = new google.maps.LatLng(item.location.latitude, item.location.longitude);
-      else {
-        if (!request.waypoints) request.waypoints = [];
-        request.waypoints.push({
-          location:  new google.maps.LatLng(item.location.latitude, item.location.longitude),
-          stopover: true
-        });
+    this.setState({
+      locationsInTour: routes,
+      locationNearCenter: temp,
+      idTourChosen: idTour
+    }, () => {
+      let airport = getAirportPoint(routes)
+      if(!airport.length){  //Nếu không xuất hiện các điểm sân bay thì vẽ đường đi bằng xe bình thường
+        this.setDirections(routes)
       }
-    })
-    request.travelMode = google.maps.TravelMode.DRIVING
-    // request.optimizeWaypoints = true
-    DirectionsService.route(request, (result, status) => {
-      if (status === google.maps.DirectionsStatus.OK) {
+      else{   //Nếu có xuất hiện các điểm sân bay thì tách các đoạn đi bằng xe ra vẽ riêng, đi bằng đường hàng không vẽ riêng
+        let directionRoutes = []
+        let tempPoint = []
+        routes.forEach((item) => {
+          if(item.transport.name_en === transports.AIRWAY){
+            directionRoutes.push(tempPoint)
+            tempPoint = []
+          }
+          else{
+            tempPoint.push(item)
+          }
+        })
+        directionRoutes.forEach(item => {
+          this.setDirections(item)
+        })
         this.setState({
-          directions: result,
-          locationsInTour: routes,
-          locationNearCenter: temp,
-          idTourChosen: idTour
-        });
+          airport: airport
+        })
       }
     })
+  }
+
+  setDirections(routes){
+    const DirectionsService = new google.maps.DirectionsService();
+    let maximumWaypoints = 22 //actually is 23, index from 0
+    if(routes.length <= maximumWaypoints + 1){  //Số điểm trung gian ít hơn 23 (giới hạn api google map)
+      let request = {}
+      routes.forEach((item, i) => {
+        if (i == 0) request.origin = new google.maps.LatLng(item.location.latitude, item.location.longitude);
+        else if (i == routes.length - 1) request.destination = new google.maps.LatLng(item.location.latitude, item.location.longitude);
+        else {
+          if (!request.waypoints) request.waypoints = [];
+          if(routes[i].location.id != 72){
+            request.waypoints.push({
+              location:  new google.maps.LatLng(routes[i].location.latitude, routes[i].location.longitude),
+              stopover: true
+            });
+          }
+        }
+      })
+      request.travelMode = google.maps.TravelMode.DRIVING
+      // request.optimizeWaypoints = true
+      DirectionsService.route(request, (result, status) => {
+        if (status === google.maps.DirectionsStatus.OK) {
+          this.setState({
+            directions: [...this.state.directions, result]
+          });
+        }
+      })
+    }
+    else{
+      let numRequests = parseInt(routes.length / (maximumWaypoints + 1))
+      if(routes.length % maximumWaypoints !== 0){
+        numRequests = numRequests + 1
+      }
+      for(let i = 0; i < numRequests; i++){
+        let request = {}
+        request.travelMode = google.maps.TravelMode.DRIVING
+        for(let j = maximumWaypoints * i; j <= maximumWaypoints * (i + 1) && j < routes.length; j++){
+          if (j == maximumWaypoints * i){
+            request.origin = new google.maps.LatLng(routes[j].location.latitude, routes[j].location.longitude);
+          }
+          else if (j == maximumWaypoints * (i + 1) || j == routes.length - 1){
+            request.destination = new google.maps.LatLng(routes[j].location.latitude, routes[j].location.longitude);
+          }
+          else {
+            if (!request.waypoints) request.waypoints = [];
+            if(routes[j].location.id != 72){
+              request.waypoints.push({
+                location:  new google.maps.LatLng(routes[j].location.latitude, routes[j].location.longitude),
+                stopover: true
+              });
+            }
+          }
+        }
+        DirectionsService.route(request, (result, status) => {
+          if (status === google.maps.DirectionsStatus.OK) {
+            this.setState({
+              directions: [...this.state.directions, result]
+            });
+          }
+        })
+      }
+    }
   }
 
   resetMarker(){
@@ -268,13 +348,15 @@ class MapComponent extends React.Component{
       })
       if(tempItem){
         tempItem.isInTour = false
+        tempItem.order = null
       }
 
       this.setState({
         locationsInTour: [],
         locationNearCenter: temp,
         idTourChosen: null,
-        directions: null
+        directions: [],
+        airport: []
       })
     })
   }
@@ -369,34 +451,92 @@ class MapComponent extends React.Component{
                   latitude: this.props.myLocation.position.latitude,
                   longitude: this.props.myLocation.position.longitude,
                   address: this.props.myLocation.address}}/>
-              }
-              {this.state.markerChoose &&
-                <MarkerComponent
-                  infoLocation={{
-                    latitude: this.state.markerChoose.latitude,
-                    longitude: this.state.markerChoose.longitude,
-                    address: this.state.address}}/>
+            }
+            {this.state.markerChoose &&
+              <MarkerComponent
+                infoLocation={{
+                  latitude: this.state.markerChoose.latitude,
+                  longitude: this.state.markerChoose.longitude,
+                  address: this.state.address}}/>
+            }
+            {this.state.locationNearCenter.length && this.state.locationNearCenter.map((item) => {
+                if(!this.state.filterOptions.length){
+                  return(
+                    <MarkerComponent infoLocation={item} key={item.id}
+                      onDrawDirection={this.onDrawDirection.bind(this)}
+                      tourChosen={this.state.idTourChosen}/>
+                  )
                 }
-                {this.state.locationNearCenter.length && this.state.locationNearCenter.map((item) => {
-                  if(!this.state.filterOptions.length){
-                    return(
-                      <MarkerComponent infoLocation={item} key={item.id}
-                        onDrawDirection={this.onDrawDirection.bind(this)}
-                        tourChosen={this.state.idTourChosen}/>
-                    )
-                  }
-                  let temp = this.state.filterOptions.find((findItem) => {return findItem === item.type.marker})
-                  if(temp || item.isInTour === true){
-                    return(
-                      <MarkerComponent infoLocation={item} key={item.id}
-                        onDrawDirection={this.onDrawDirection.bind(this)}
-                        tourChosen={this.state.idTourChosen}/>
-                    )
-                  }
-                  return null
+                let temp = this.state.filterOptions.find((findItem) => {return findItem === item.type.marker})
+                if(temp || item.isInTour === true){
+                  return(
+                    <MarkerComponent infoLocation={item} key={item.id}
+                      onDrawDirection={this.onDrawDirection.bind(this)}
+                      tourChosen={this.state.idTourChosen}/>
+                  )
+                }
+                return null
+              })
+            }
+            {!!this.state.directions.length && this.state.directions.map((item, key) => {
+                return(
+                  <DirectionsRenderer directions={item} key={key} options={{
+                      suppressMarkers: true
+                    }} />
+                )
+              })
+            }
+            {!!this.state.airport.length && this.state.airport.map((item, key) => {
+                let temp = []
+                item.forEach(place => {
+                  temp.push({lat: place.location.latitude, lng: place.location.longitude })
                 })
-              }
-              {this.state.directions && <DirectionsRenderer directions={this.state.directions} />}
+                return(
+                  <Polyline
+                      path={temp}
+                      key={key}
+                      geodesic={true}
+                      options={{
+                          strokeColor: "#ff3232",
+                          strokeOpacity: 0.75,
+                          strokeWeight: 7,
+                          icons: [
+                            {
+                              icon: {
+                                path: google.maps.SymbolPath.CIRCLE,
+                                strokeColor: '#ff3232',
+                                fillColor: '#ff3232',
+                                fillOpacity: 1,
+                                scale: 4
+                              },
+                              offset: '0%',
+                            },
+                            {
+                              icon: {
+                                path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                                strokeColor: '#f1ff19',
+                                fillColor: '#f1ff19',
+                                fillOpacity: 1,
+                                scale: 3
+                              },
+                              offset: '50px',
+                              repeat: "20%"
+                            },
+                            {
+                              icon: {
+                                path: google.maps.SymbolPath.CIRCLE,
+                                strokeColor: '#ff3232',
+                                fillColor: '#ff3232',
+                                fillOpacity: 1,
+                                scale: 4
+                              },
+                              offset: '100%'
+                            }
+                          ]
+                      }}/>
+                )
+              })
+            }
         </GoogleMap>
         {this.props.isShowTour &&
           <a className="hide-tour" title="Hide tour's direction on map" onClick={this.onToggleShowTour.bind(this)}>

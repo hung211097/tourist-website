@@ -25,7 +25,8 @@ module.exports = {
       "google": true,
       "clearInterval": true,
       "navigator": true,
-      "JSON": true
+      "JSON": true,
+      "FileReader": true
   },
   "extends": ["eslint:recommended", "plugin:react/recommended"]
 };

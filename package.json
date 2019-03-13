@@ -28,7 +28,6 @@
     "dotenv": "^6.2.0",
     "emit-file-loader": "0.0.2",
     "express": "^4.16.4",
-    "image-compressor.js": "^1.1.4",
     "isomorphic-fetch": "^2.2.1",
     "isomorphic-unfetch": "^3.0.0",
     "lodash": "^4.17.11",

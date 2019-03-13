@@ -1,4 +1,5 @@
 const APP_URL = process.env.APP_URL
+import { transports } from '../constants/map-option'
 
 export function isServer() {
   return typeof window === 'undefined'
@@ -37,4 +38,14 @@ function _getElementOffset(el) {
 
 export function processMathRoundFix(number, fractionDigits = 1) {
 	return parseFloat(number).toFixed(fractionDigits)
+}
+
+export function getAirportPoint(routes){
+  let airport = []
+  for(let i = 0; i < routes.length; i++){
+    if(i < routes.length - 1 && routes[i].transport.name_en === transports.AIRWAY){
+      airport.push([routes[i], routes[++i]])
+    }
+  }
+  return airport
 }

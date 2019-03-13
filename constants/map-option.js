@@ -10,7 +10,7 @@ export const mapOption = {
             ]
         }
     ],
-    minZoom: 8,
+    minZoom: 6,
     maxZoom: 20
 };
 
@@ -18,8 +18,10 @@ export const mapOption = {
   zoomLevel: Distance (km)
 } */
 export const mapDistance = {
-  "8": 250,
-  "9": 150,
+  "6": 600,
+  "7": 400,
+  "8": 200,
+  "9": 120,
   "10": 80,
   "11": 50,
   "12": 30,
@@ -59,4 +61,11 @@ export const filter = [
 export const companyPosition = {
   lat: 10.772150,
   lng: 106.674838
+}
+
+export const transports = {
+  ROADWAY: 'roadway',
+  WATERWAY: 'waterway',
+  AIRWAY: 'airway',
+  RAILWAY: 'railway'
 }

@@ -35,7 +35,7 @@ class TourItem extends React.Component {
           <RatingStar hideNumber rate={3}/>
         </div>
         <div className="price">
-          <span className="amout">{item.price.toLocaleString()} VND</span>
+          {/*<span className="amout">{item.price.toLocaleString()} VND</span>*/}
         </div>
         <div className="action">
           <Link route="home">
