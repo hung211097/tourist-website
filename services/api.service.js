@@ -20,6 +20,10 @@ export default () => {
       let url = baseURL + `tour/getAll?page=${page}&per_page=${limit}`
       return fetchCached(url)
     },
+    getToursTurn: (page = 1, limit = 10, params = {}) => {
+      let url = baseURL + `tour_turn/getAll?page=${page}&per_page=${limit}`
+      return fetchCached(url)
+    },
     getRouteByTour: (id) => {
       let url = baseURL + `route/getByTour/${id}`
       return fetchCached(url)

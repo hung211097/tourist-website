@@ -17,7 +17,7 @@
         padding: 10px 20px;
         background-color: #fff;
         span{
-          color: #a4a4a4;
+          color: $main-bg-color;
         }
       }
       img{
@@ -60,6 +60,12 @@
           }
           &.green{
             background-color: #32C3A5;
+          }
+          p{
+            color: white;
+            font-size: 13px;
+            margin-top: 15px;
+            display: inline-block;
           }
         }
       }

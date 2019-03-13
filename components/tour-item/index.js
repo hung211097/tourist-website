@@ -3,6 +3,8 @@ import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { RatingStar } from 'components'
 import { Link } from 'routes'
+import { FaRegCalendarAlt } from "react-icons/fa"
+import { formatDate } from '../../services/time.service'
 
 class TourItem extends React.Component {
   displayName = 'Tour Item'
@@ -27,15 +29,16 @@ class TourItem extends React.Component {
         <style jsx>{styles}</style>
         <Link route="home">
           <a>
-            <img alt="featured_image" src={item.featured_img}/>
-            <h2>{item.name}</h2>
+            <img alt="featured_image" src={item.tour.featured_img}/>
+            <h2>{item.tour.name}</h2>
+            <p><FaRegCalendarAlt style={{fontSize: '15px', position: 'relative', top: '-1px'}} /> {formatDate(item.start_date)}</p>
           </a>
         </Link>
         <div className="rating-star">
           <RatingStar hideNumber rate={3}/>
         </div>
         <div className="price">
-          {/*<span className="amout">{item.price.toLocaleString()} VND</span>*/}
+          <span className="amout">{item.price.toLocaleString()} VND</span>
         </div>
         <div className="action">
           <Link route="home">
