@@ -54,6 +54,10 @@ export default () => {
     updatePassword: (data) => {
       let url = baseURL + `user/updatePassword`
       return httpPut(url, data)
+    },
+    sendRequest: (data) => {
+      let url = baseURL + `request/create`
+      return httpPost(url, data)
     }
   }
 

@@ -1,8 +1,10 @@
 import React from 'react'
 import styles from './index.scss'
-import { Layout } from 'components'
+import { Layout, PopupInfo} from 'components'
 import {UnmountClosed} from 'react-collapse'
 import validateEmail from '../../services/validates/email.js'
+import ApiService from 'services/api.service'
+import { FaCheck } from "react-icons/fa"
 
 class FAQ extends React.Component {
   displayName = 'FAQ'
@@ -43,11 +45,13 @@ class FAQ extends React.Component {
         Maecenas nec purus sed sapien maximus pellentesque.`
       },
     ]
+    this.apiService = ApiService()
     this.state = {
       questions: this.questions,
       name: '',
       email: '',
       message: '',
+      showPopup: false,
       isSubmit: false
     }
   }
@@ -75,6 +79,22 @@ class FAQ extends React.Component {
     if(!this.validate()){
       return
     }
+
+    this.apiService.sendRequest({name: this.state.name, email: this.state.email, message: this.state.message}).then(() => {
+      this.setState({
+        name: '',
+        email: '',
+        message: '',
+        showPopup: true,
+        isSubmit: false
+      })
+    }).catch(e => {
+      if(e.status !== 200){
+        this.setState({
+          error: 'There is an error, please try again!'
+        })
+      }
+    })
   }
 
   handleChangeName(e){
@@ -95,6 +115,12 @@ class FAQ extends React.Component {
     })
   }
 
+  handleClose(){
+    this.setState({
+      showPopup: false
+    })
+  }
+
   validate(){
     if(!this.state.name){
       return false
@@ -107,6 +133,8 @@ class FAQ extends React.Component {
     if(!this.state.message){
       return false
     }
+
+    return true
   }
 
   render() {
@@ -240,6 +268,9 @@ class FAQ extends React.Component {
                                     </div>
                                     <div className="confirm-field">
                                       <button type="submit" onClick={this.handleSubmit.bind(this)}>SEND NOW</button>
+                                      {this.state.error &&
+                                        <p className="error">{this.state.error}</p>
+                                      }
                                     </div>
                                   </form>
                                 </div>
@@ -265,6 +296,14 @@ class FAQ extends React.Component {
               </div>
             </div>
           </section>
+          <PopupInfo show={this.state.showPopup} onClose={this.handleClose.bind(this)}>
+            <FaCheck size={100} style={{color: 'rgb(67, 74, 84)'}}/>
+            <h1>Successfully!</h1>
+            <div className="nd_options_height_10" />
+            <p>Your message is sent to us.</p>
+            <p>Please check your email in a few day.</p>
+            <button className="co-btn mt-5" onClick={this.handleClose.bind(this)}>OK</button>
+          </PopupInfo>
         </Layout>
       </>
     )
