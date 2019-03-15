@@ -3,7 +3,7 @@ import { LayoutProfile } from 'components'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { formatDate } from '../../services/time.service'
+import { formatDate, isValidDate } from '../../services/time.service'
 import _ from 'lodash'
 
 const mapStateToProps = (state) => {
@@ -42,7 +42,7 @@ class Profile extends React.Component {
                             <li title={this.props.user.email}><span>Email:</span> {this.props.user.email}</li>
                             <li><span>Phone number:</span>{this.props.user.phone}&nbsp;</li>
                             <li className="capitalize"><span>Gender:</span> {this.props.user.sex} &nbsp;</li>
-                            <li><span>Birthdate:</span> {this.props.user.birthdate ? formatDate(this.props.user.birthdate) : ''} &nbsp;</li>
+                            <li><span>Birthdate:</span> {this.props.user.birthdate && isValidDate(this.props.user.birthdate) ? formatDate(this.props.user.birthdate) : ''} &nbsp;</li>
                           </ul>
                         }
                       </div>

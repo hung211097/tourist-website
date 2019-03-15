@@ -27,7 +27,7 @@ class Tours extends React.Component {
     this.setState({
       isLoading: true
     })
-    this.apiService.getTours(this.state.nextPage, 4).then((res) => {
+    this.apiService.getToursTurn(this.state.nextPage, 4).then((res) => {
       this.setState({
         tours: [...this.state.tours, ...res.data],
         nextPage: res.next_page,

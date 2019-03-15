@@ -20,6 +20,9 @@
 @import 'node_modules/pretty-checkbox/src/scss/states/focus';
 @import 'node_modules/pretty-checkbox/src/scss/states/indeterminate';
 
+@import "node_modules/slick-carousel/slick/slick.scss";
+@import "node_modules/slick-carousel/slick/slick-theme.scss";
+
 
 html {
   font-size: 10px;
@@ -119,7 +122,7 @@ p {
   padding: 15px 20px;
   -webkit-appearance: none;
   cursor: pointer;
-  background-color: $main-bg-color !important;
+  background-color: $main-bg-color;
   border-radius: 0px;
   text-transform: uppercase;
   font-family: 'Open Sans',sans-serif;
@@ -128,6 +131,12 @@ p {
   transition: 0.2s ease-in-out;
   &:hover{
     background: #5a6069 !important;
+  }
+  &.green{
+    background: #1BBC9B;
+    &:hover{
+      background: #1BBC9B !important;
+    }
   }
 }
 
@@ -348,7 +357,6 @@ p {
   padding: 20px 15px;
   background: white;
   position: relative;
-  overflow: auto;
   max-height: 40vh;
   .info-content{
     padding-bottom: 20px;

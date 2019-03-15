@@ -1,20 +1,24 @@
 import React from 'react'
 import styles from './index.scss'
-import { Layout, MapContact } from 'components'
+import { Layout, MapContact, PopupInfo } from 'components'
 import validateEmail from '../../services/validates/email.js'
 import { companyPosition } from '../../constants/map-option'
+import ApiService from 'services/api.service'
+import { FaCheck } from "react-icons/fa"
 
 class Contact extends React.Component {
   displayName = 'Contact'
 
   constructor(props) {
     super(props)
+    this.apiService = ApiService()
     this.state = {
-      questions: this.questions,
       name: '',
       email: '',
       message: '',
-      isSubmit: false
+      isSubmit: false,
+      error: '',
+      showPopup: false
     }
   }
 
@@ -27,6 +31,22 @@ class Contact extends React.Component {
     if(!this.validate()){
       return
     }
+
+    this.apiService.sendRequest({name: this.state.name, email: this.state.email, message: this.state.message}).then(() => {
+      this.setState({
+        name: '',
+        email: '',
+        message: '',
+        showPopup: true,
+        isSubmit: false
+      })
+    }).catch(e => {
+      if(e.status !== 200){
+        this.setState({
+          error: 'There is an error, please try again!'
+        })
+      }
+    })
   }
 
   handleChangeName(e){
@@ -59,6 +79,14 @@ class Contact extends React.Component {
     if(!this.state.message){
       return false
     }
+
+    return true
+  }
+
+  handleClose(){
+    this.setState({
+      showPopup: false
+    })
   }
 
   render() {
@@ -99,11 +127,19 @@ class Contact extends React.Component {
                         <div className="wpb_text_column wpb_content_element">
                           <div className="wpb_wrapper">
                             <p>
-                              Vivamus volutpat eros pulvinar velit laoreet, sit amet egestas erat dignissim.
-                              Sed quis rutrum tellus, sit amet viverra felis. Cras sagittis sem sit amet urna feugiat rutrum.
-                              Nam nulla ipsum, venenatis malesuada felis quis, ultricies convallis neque.
-                              Pellentesque tristique fringilla tempus. Vivamus bibendum nibh in dolor pharetra, a euismod nulla dignissim.
+                              Hãy liên hệ với chúng tôi để được tư vấn, giải đáp thắc mắc và đạt được những gì bạn mong đợi về một kì nghỉ mơ ước.
                             </p>
+                            <h3>LIÊN HỆ TRỰC TIẾP</h3>
+                            <p>Nếu bạn có vấn đề cần được giải đáp hãy liên hệ trực tiếp với chúng tôi, vui lòng xem thông tin bên dưới:</p>
+                            <h3>LIÊN HỆ QUA HỆ THỐNG WEBSITE</h3>
+                            <ul>
+                              <li>Chúng tôi luôn đón nhận mọi sự góp ý, những vấn đề của quý khách cần được giải đáp.</li>
+                              <li>
+                                Vui lòng sử dụng diễn đàn để đặt câu hỏi khi quý khách có vấn đề không giải quyết được.
+                                Đội ngũ nhân viên của chúng tôi sẽ giải đáp vấn đề của quý khách một cách nhanh chóng.
+                              </li>
+                              <li>Để thực hiện việc liên hệ các bạn vui lòng điền vào theo form bên dưới.</li>
+                            </ul>
                           </div>
                         </div>
                         <div className="nd_options_section nd_options_height_20"/>
@@ -144,6 +180,9 @@ class Contact extends React.Component {
                               </div>
                               <div className="confirm-field">
                                 <button type="submit" onClick={this.handleSubmit.bind(this)}>SEND NOW</button>
+                                {this.state.error &&
+                                  <p className="error">{this.state.error}</p>
+                                }
                               </div>
                             </form>
                           </div>
@@ -219,6 +258,14 @@ class Contact extends React.Component {
               </div>
             </div>
           </section>
+          <PopupInfo show={this.state.showPopup} onClose={this.handleClose.bind(this)}>
+            <FaCheck size={100} style={{color: 'rgb(67, 74, 84)'}}/>
+            <h1>Successfully!</h1>
+            <div className="nd_options_height_10" />
+            <p>Your message is sent to us.</p>
+            <p>Please check your email in a few day.</p>
+            <button className="co-btn mt-5" onClick={this.handleClose.bind(this)}>OK</button>
+          </PopupInfo>
         </Layout>
       </>
     )

@@ -1,18 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import styles from './index.scss'
 import Geocode from "react-geocode"
 import { MapComponent } from 'components'
 import { getLocalStorage } from '../../services/local-storage.service'
 import { KEY } from '../../constants/local-storage'
 import { connect } from 'react-redux'
 import { toggleShowTour } from '../../actions'
+import ApiService from '../../services/api.service'
 
 const KEY_GOOGLE_MAP = process.env.KEY_GOOGLE_MAP
 Geocode.setApiKey(KEY_GOOGLE_MAP);
 
 const mapStateToProps = (state) => {
   return {
-    isShowTour: state.isShowTour
+    isShowTour: state.isShowTour,
+    location: state.location
   }
 }
 
@@ -27,27 +30,32 @@ class MyMap extends React.Component {
 
   static defaultProps = {
     isMarkerShown: false,
-    isSearchBox: false
+    isSearchBox: false,
+    isSetTour: false
   }
 
   static propTypes = {
-    userLocation: PropTypes.any,
+    location: PropTypes.any,
     isMarkerShown: PropTypes.bool,
     isSearchBox: PropTypes.bool,
     toggleShowTour: PropTypes.func,
-    isShowTour: PropTypes.bool
+    isShowTour: PropTypes.bool,
+    isSetTour: PropTypes.bool,
+    idTourSet: PropTypes.number,
+    customStyles: PropTypes.any
   }
 
   constructor(props) {
     super(props)
+    this.apiService = ApiService()
     this.state = {
-      myLocation: ''
+      myLocation: '',
     }
   }
 
   componentDidMount() {
-    if(this.props.userLocation){
-      Geocode.fromLatLng(this.props.userLocation.latitude, this.props.userLocation.longitude).then((result) => {
+    if(this.props.location){
+      Geocode.fromLatLng(this.props.location.latitude, this.props.location.longitude).then((result) => {
         this.setState({
           myLocation: result.results[0].formatted_address
         })
@@ -73,7 +81,8 @@ class MyMap extends React.Component {
 
   render() {
     return (
-      <div className="custom-map">
+      <div className="custom-map" style={this.props.customStyles}>
+        <style jsx>{styles}</style>
         <MapComponent
           isMarkerShown={this.props.isMarkerShown}
           isSearchBox={this.props.isSearchBox}
@@ -81,9 +90,11 @@ class MyMap extends React.Component {
           loadingElement={<div style={{ height: `100%` }} />}
           containerElement={<div style={{ height: `100%` }} />}
           mapElement={<div style={{ height: `100%` }} />}
-          myLocation={{position: this.props.userLocation, address: this.state.myLocation}}
+          myLocation={{position: this.props.location, address: this.state.myLocation}}
           toggleShowTour={this.onToggleShowTour.bind(this)}
-          isShowTour={this.props.isShowTour}/>
+          isShowTour={this.props.isShowTour}
+          isSetTour={this.props.isSetTour}
+          idTourSet={this.props.idTourSet}/>
       </div>
     )
   }

@@ -23,6 +23,16 @@ class MapContact extends React.Component {
     super(props)
   }
 
+
+  shouldComponentUpdate(nextProps){
+   if(this.props.location.lat === nextProps.location.lat){
+     return false
+   }
+   else{
+     return true
+   }
+  }
+
   render() {
     const MapWithControlledZoom = compose(
       withProps({

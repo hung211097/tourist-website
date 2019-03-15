@@ -17,11 +17,15 @@ export default class AutoHide extends React.Component {
     }
 
     componentDidMount() {
-        setTimeout(() => {
+        this.timeout = setTimeout(() => {
             this.setState({
                 status: 'hide'
             })
         }, this.props.duration)
+    }
+
+    componentWillUnmount(){
+      this.timeout && clearTimeout(this.timeout)
     }
 
     render() {

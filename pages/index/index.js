@@ -71,7 +71,11 @@ class Home extends React.Component {
         num_locations: data.num_of_locations
       })
     })
-    this.apiService.getTours(1, 6).then((res) => {
+    this.loadTour()
+  }
+
+  loadTour(){
+    this.apiService.getToursTurn(1, 6).then((res) => {
       this.setState({
         topTours: res.data
       })
@@ -87,8 +91,7 @@ class Home extends React.Component {
             {/* section box*/}
             <MyMap
                 isMarkerShown={true}
-                isSearchBox={true}
-                userLocation={this.props.location ? this.props.location : null}/>
+                isSearchBox={true}/>
             <div className="contain nd_options_container nd_options_clearfix">
               <div className="page-content">
                 <div className="row top-promotion">
@@ -110,7 +113,7 @@ class Home extends React.Component {
                   {!!this.state.topTours.length && this.state.topTours.map((item, key) => {
                       return(
                         <div className="col-sm-4 no-padding" key={key}>
-                          <TopPromotionItem item={item} index={key}/>
+                          <TopPromotionItem item={item} index={key} onLoadTour={this.loadTour.bind(this)}/>
                         </div>
                       )
                     })

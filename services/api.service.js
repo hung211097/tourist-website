@@ -20,8 +20,20 @@ export default () => {
       let url = baseURL + `tour/getAll?page=${page}&per_page=${limit}`
       return fetchCached(url)
     },
+    getToursTurn: (page = 1, limit = 10, params = {}) => {
+      let url = baseURL + `tour_turn/getAll?page=${page}&per_page=${limit}`
+      return fetchCached(url)
+    },
+    getToursTurnId: (id) => {
+      let url = baseURL + `tour_turn/getById/${id}`
+      return fetchCached(url)
+    },
     getRouteByTour: (id) => {
       let url = baseURL + `route/getByTour/${id}`
+      return fetchCached(url)
+    },
+    getImageByTour: (id) => {
+      let url = baseURL + `tour_image/getByTour/${id}`
       return fetchCached(url)
     },
     getCurrentProfile: () => {
@@ -50,6 +62,10 @@ export default () => {
     updatePassword: (data) => {
       let url = baseURL + `user/updatePassword`
       return httpPut(url, data)
+    },
+    sendRequest: (data) => {
+      let url = baseURL + `request/create`
+      return httpPost(url, data)
     }
   }
 

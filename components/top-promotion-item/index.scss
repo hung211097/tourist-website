@@ -17,13 +17,26 @@
         padding: 10px 20px;
         background-color: #fff;
         span{
-          color: #a4a4a4;
+          color: $main-bg-color;
         }
       }
       img{
         height: 250px;
         object-fit: cover;
         width: 100%;
+      }
+      .discount-price{
+        text-decoration: line-through;
+      }
+      .discount-mark{
+        background-color: #434a54;
+        right: -70px;
+        top: 20px;
+        position: absolute;
+        text-align: center;
+        transform: rotate(45deg);
+        width: 200px;
+        color: #fff !important;
       }
     }
     .name-item{
@@ -60,6 +73,12 @@
           }
           &.green{
             background-color: #32C3A5;
+          }
+          p{
+            color: white;
+            font-size: 13px;
+            margin-top: 15px;
+            display: inline-block;
           }
         }
       }
