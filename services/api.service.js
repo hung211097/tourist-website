@@ -24,8 +24,16 @@ export default () => {
       let url = baseURL + `tour_turn/getAll?page=${page}&per_page=${limit}`
       return fetchCached(url)
     },
+    getToursTurnId: (id) => {
+      let url = baseURL + `tour_turn/getById/${id}`
+      return fetchCached(url)
+    },
     getRouteByTour: (id) => {
       let url = baseURL + `route/getByTour/${id}`
+      return fetchCached(url)
+    },
+    getImageByTour: (id) => {
+      let url = baseURL + `tour_image/getByTour/${id}`
       return fetchCached(url)
     },
     getCurrentProfile: () => {

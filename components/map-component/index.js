@@ -1,5 +1,6 @@
 import React from 'react'
 import { compose } from "recompose"
+import styles from './index.scss'
 import { withScriptjs, withGoogleMap, DirectionsRenderer, GoogleMap, Polyline } from "react-google-maps"
 import { SearchBox } from "react-google-maps/lib/components/places/SearchBox"
 import _ from 'lodash'
@@ -22,7 +23,6 @@ const customStyles = {
 class MapComponent extends React.Component{
 
   static propTypes = {
-    userLocation: PropTypes.object,
     isMarkerShown: PropTypes.bool,
     isSearchBox: PropTypes.bool,
     googleMapURL: PropTypes.string,
@@ -32,20 +32,23 @@ class MapComponent extends React.Component{
     center: PropTypes.object,
     myLocation: PropTypes.object,
     toggleShowTour: PropTypes.func,
-    isShowTour: PropTypes.bool
+    isShowTour: PropTypes.bool,
+    isSetTour: PropTypes.bool,
+    idTourSet: PropTypes.number,
   }
 
   static defaultProps = {
     center: { lat: 10.762622, lng: 106.660172 }, //Vietnam
     // center: {lat: 10.758989, lng: 106.669403},
-    myLocation: null
+    myLocation: null,
+    isSetTour: false
   }
 
   constructor(props){
     super(props)
     this.googleMap = React.createRef()
     this.searchBox = React.createRef()
-    this.traceAddedLocation = []
+    this.traceAddedLocation = []  //Đánh dấu các điểm có trên map sẽ ko add render lại
     this.filterOptions = filter
     this.apiService = ApiService()
     this.state = {
@@ -77,13 +80,13 @@ class MapComponent extends React.Component{
       }
       this.apiService.getLocationsNearCenter(body, {tour: true}).then((res) => {
         this.setState({
-          locationNearCenter: this.addMarker(res.data),
+          locationNearCenter: this.addMarker(res.data)
         })
       })
     }
     else{
       this.setState({
-        zoom: 9
+        zoom: this.props.isSetTour ? 14 : 9
       }, () => {
         const body = {
           lat: this.props.center.lat,
@@ -92,9 +95,14 @@ class MapComponent extends React.Component{
         }
         this.apiService.getLocationsNearCenter(body, {tour: true}).then((res) => {
           this.setState({
-            locationNearCenter: this.addMarker(res.data),
+            locationNearCenter: this.addMarker(res.data)
           })
         })
+      })
+    }
+    if(this.props.isSetTour && this.props.idTourSet){
+      this.apiService.getRouteByTour(this.props.idTourSet).then((res) => {
+        this.onDrawDirection(res.data, this.props.idTourSet)
       })
     }
   }
@@ -406,10 +414,13 @@ class MapComponent extends React.Component{
   }
 
   render(){
+    // console.log(styles);
     return(
       <div className="map-content">
+        <style jsx>{styles}</style>
         <GoogleMap
           ref={this.googleMap}
+          defaultZoom={15}
           center={this.props.myLocation && this.props.myLocation.position && !this.state.isChangeCenter ?
             {lat: this.props.myLocation.position.latitude, lng: this.props.myLocation.position.longitude}
             : this.state.center}
@@ -459,12 +470,12 @@ class MapComponent extends React.Component{
                   longitude: this.state.markerChoose.longitude,
                   address: this.state.address}}/>
             }
-            {this.state.locationNearCenter.length && this.state.locationNearCenter.map((item) => {
+            {!!this.state.locationNearCenter.length && this.state.locationNearCenter.map((item) => {
                 if(!this.state.filterOptions.length){
                   return(
                     <MarkerComponent infoLocation={item} key={item.id}
                       onDrawDirection={this.onDrawDirection.bind(this)}
-                      tourChosen={this.state.idTourChosen}/>
+                      tourChosen={this.state.idTourChosen} isSetTour={this.props.isSetTour}/>
                   )
                 }
                 let temp = this.state.filterOptions.find((findItem) => {return findItem === item.type.marker})
@@ -472,7 +483,7 @@ class MapComponent extends React.Component{
                   return(
                     <MarkerComponent infoLocation={item} key={item.id}
                       onDrawDirection={this.onDrawDirection.bind(this)}
-                      tourChosen={this.state.idTourChosen}/>
+                      tourChosen={this.state.idTourChosen} isSetTour={this.props.isSetTour}/>
                   )
                 }
                 return null
@@ -481,7 +492,7 @@ class MapComponent extends React.Component{
             {!!this.state.directions.length && this.state.directions.map((item, key) => {
                 return(
                   <DirectionsRenderer directions={item} key={key} options={{
-                      suppressMarkers: true
+                      suppressMarkers: true,
                     }} />
                 )
               })
@@ -538,12 +549,12 @@ class MapComponent extends React.Component{
               })
             }
         </GoogleMap>
-        {this.props.isShowTour &&
+        {this.props.isShowTour && !this.props.isSetTour &&
           <a className="hide-tour" title="Hide tour's direction on map" onClick={this.onToggleShowTour.bind(this)}>
             <FaEyeSlash style={{fontSize: '20px'}}/>
           </a>
         }
-        <a className="filter" title="Filter" onClick={this.onFilterTour.bind(this)}>
+        <a className={this.props.isSetTour ? "filter detail" : "filter"} title="Filter" onClick={this.onFilterTour.bind(this)}>
           <FaFilter style={{fontSize: '20px'}}/>
         </a>
         <PopupInfo show={this.state.showFilter} onClose={this.handleClose.bind(this)} customContent={customStyles}>

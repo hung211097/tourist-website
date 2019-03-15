@@ -1,0 +1,14 @@
+.filter{
+  &.detail{
+    top: 87%;
+    left: 2%;
+    @media screen and (max-width: 768px){
+      top: 87%;
+      left: 3%;
+    }
+    @media screen and (max-width: 576px){
+      left: 7%;
+      top: 89%;
+    }
+  }
+}

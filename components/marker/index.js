@@ -25,12 +25,14 @@ class MarkerComponent extends React.Component{
     onDrawDirection: PropTypes.func,
     tourChosen: PropTypes.number,
     toggleShowTour: PropTypes.func,
-    isShowTour: PropTypes.bool
+    isShowTour: PropTypes.bool,
+    isSetTour: PropTypes.bool
   }
 
   static defaultProps = {
     isMe: false,
-    infoLocation: null
+    infoLocation: null,
+    isSetTour: false
   }
 
   constructor(props){
@@ -82,7 +84,7 @@ class MarkerComponent extends React.Component{
         onClick={this.toggleOpen.bind(this)}
         icon={this.props.isMe ? '/static/images/person.png' :
           this.props.infoLocation.isInTour ? {url: '/static/images/location.png', labelOrigin: new google.maps.Point(20, 16)} :
-          this.props.infoLocation.type ? `static/images/${this.props.infoLocation.type.marker}.png` : null}
+          this.props.infoLocation.type ? `/static/images/${this.props.infoLocation.type.marker}.png` : null}
         animation={google.maps.Animation.DROP}
         label={this.props.infoLocation.isInTour && this.props.infoLocation.order.indexOf(',') < 0 ?
                 {color: "black", text: this.props.infoLocation.order, fontWeight: '600'} :
@@ -112,7 +114,7 @@ class MarkerComponent extends React.Component{
               {this.props.infoLocation.address &&
                 <p><span className="bold">Address: </span> {this.props.infoLocation.address}</p>
               }
-              {this.props.infoLocation.tours && !!this.props.infoLocation.tours.length &&
+              {this.props.infoLocation.tours && !!this.props.infoLocation.tours.length && !this.props.isSetTour &&
                 <div>
                   <p className="bold">Some tours pass over: </p>
                   <ol className="tour-list">

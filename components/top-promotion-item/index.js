@@ -44,17 +44,23 @@ class TopPromotionItem extends React.Component {
         <style jsx>{styles}</style>
         <div className="wrapper-item">
           <div className="content-item">
-            <Link route="home">
+            <Link route="detail-tour" params={{id: item.id}}>
               <a>
                 <div className="contain-price">
-                  <span>{item.price.toLocaleString()} VND</span>
+                  {!!item.discount &&
+                    <span className="discount-price">{item.price.toLocaleString()}</span>
+                  }
+                  <span>{!item.discount ? item.price.toLocaleString() : ' ' + (item.price * item.discount).toLocaleString()} VND</span>
                 </div>
+                {!!item.discount &&
+                  <span className="discount-mark">SALE</span>
+                }
                 <img alt="tour_img" src={item.tour.featured_img} />
               </a>
             </Link>
           </div>
           <div className="name-item">
-            <Link route="home">
+            <Link route="detail-tour" params={{id: item.id}}>
               <a>
                 <h3 style={item.tour.name.length > 30 ? {fontSize: '16px'} : null}>
                   {item.tour.name}
@@ -70,7 +76,7 @@ class TopPromotionItem extends React.Component {
           </div>
           <div className="description-item">
             <p>{item.tour.description.substring(0, this.maxDes) + '...'}</p>
-            <Link route="home">
+            <Link route="detail-tour" params={{id: item.id}}>
               <a>DETAILS</a>
             </Link>
           </div>

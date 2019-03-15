@@ -91,8 +91,7 @@ class Home extends React.Component {
             {/* section box*/}
             <MyMap
                 isMarkerShown={true}
-                isSearchBox={true}
-                userLocation={this.props.location ? this.props.location : null}/>
+                isSearchBox={true}/>
             <div className="contain nd_options_container nd_options_clearfix">
               <div className="page-content">
                 <div className="row top-promotion">

@@ -62,20 +62,22 @@ export default class extends React.Component {
             ? 'rating medium'
             : 'rating'}>
           {
-            [0, 1, 2, 3, 4].map((item) => <span key={item} className="icon_star rating_star" onClick={this.handleSelect.bind(this, item + 1)}>
+            [0, 1, 2, 3, 4].map((item) =>
+            <span key={item} className="icon_star rating_star" onClick={this.handleSelect.bind(this, item + 1)}>
               <span className="icon_star rate_progress full_star" style={{
                   width: process[item] + '%'
                 }}/>
             </span>)
           }
           {
-            !this.props.hideNumber && (<span className={this.props.smallTextReview
+            !this.props.hideNumber &&
+            (<span className={this.props.smallTextReview
                 ? "rating-number small-text"
                 : "rating-number"}>
               {processMathRoundFix(this.state.rate, 1)}
             </span>)
           }
-      </div>
+        </div>
       </div>
     )
   }

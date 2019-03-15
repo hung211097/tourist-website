@@ -25,6 +25,19 @@
         object-fit: cover;
         width: 100%;
       }
+      .discount-price{
+        text-decoration: line-through;
+      }
+      .discount-mark{
+        background-color: #434a54;
+        right: -70px;
+        top: 20px;
+        position: absolute;
+        text-align: center;
+        transform: rotate(45deg);
+        width: 200px;
+        color: #fff !important;
+      }
     }
     .name-item{
       a{
