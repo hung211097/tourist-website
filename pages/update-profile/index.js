@@ -4,13 +4,11 @@ import styles from './index.scss'
 import PropTypes from 'prop-types'
 import ApiService from 'services/api.service'
 import { connect } from 'react-redux'
-import validateEmail from 'services/validates/email'
-import validatePhone from 'services/validates/phone'
 import Select from 'react-select'
 import { getUserAuth } from 'services/auth.service'
 import { moveToElementId } from '../../services/utils.service'
 import { saveProfile } from '../../actions'
-import { formatDate } from '../../services/time.service'
+import { formatDate, isValidDate } from '../../services/time.service'
 
 const mapStateToProps = (state) => {
     return {
@@ -64,8 +62,8 @@ class UpdateProfile extends React.Component {
                 fullname: user.fullname ? user.fullname : '',
                 email: user.email ? user.email : '',
                 phone: user.phone ?  user.phone : '',
-                birthdate: user.birthdate ? formatDate(user.birthdate, 'yyyy-MM-dd') : '',
-                gender: user.sex ? user.sex : '',
+                birthdate: user.birthdate && isValidDate(user.birthdate) ? formatDate(user.birthdate, 'yyyy-MM-dd') : '',
+                gender: user.sex ? user.sex.charAt(0).toUpperCase() + user.sex.substr(1) : '',
                 action: false
             })
         }
@@ -105,7 +103,8 @@ class UpdateProfile extends React.Component {
         this.setState({
             isSubmit: true
         })
-        const validList = ['fullname', 'email', 'email-format', 'phone', 'phone-format']
+        // const validList = ['fullname', 'email', 'email-format', 'phone', 'phone-format']
+        const validList = ['fullname']
         for (var i = validList.length - 1; i >= 0; i--) {
             if (!this.onValidated(validList[i], true)) {
                 return moveToElementId(validList[i])
@@ -113,12 +112,14 @@ class UpdateProfile extends React.Component {
         }
         let form = new FormData()
         form.append('fullname', this.state.fullname)
-        form.append('email', this.state.email)
-        form.append('phone', this.state.phone)
-        if(this.state.birthdate !== "None"){
+        // form.append('email', this.state.email)
+        // form.append('phone', this.state.phone)
+        if(isValidDate(this.state.birthdate)){
           form.append('birthdate', this.state.birthdate)
         }
-        form.append('sex', this.state.gender)
+        if(this.state.gender){
+          form.append('sex', this.state.gender)
+        }
         if (this.files_avatar.length) {
           form.append('avatar', this.files_avatar[0], 'file_avatar.jpg')
         }
@@ -178,21 +179,21 @@ class UpdateProfile extends React.Component {
             return !!this.state.fullname
         }
 
-        if (name == 'phone-format') {
-            return !this.state.phone || validatePhone(this.state.phone)
-        }
-
-        if (name == 'email') {
-            return !!this.state.email
-        }
-
-        if (name == 'phone') {
-            return !!this.state.phone
-        }
-
-        if (name == 'email-format') {
-            return !this.state.email || validateEmail(this.state.email)
-        }
+        // if (name == 'phone-format') {
+        //     return !this.state.phone || validatePhone(this.state.phone)
+        // }
+        //
+        // if (name == 'email') {
+        //     return !!this.state.email
+        // }
+        //
+        // if (name == 'phone') {
+        //     return !!this.state.phone
+        // }
+        //
+        // if (name == 'email-format') {
+        //     return !this.state.email || validateEmail(this.state.email)
+        // }
 
         return false
     }

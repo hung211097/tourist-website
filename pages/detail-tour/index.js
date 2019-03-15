@@ -212,7 +212,7 @@ class DetailTour extends React.Component {
                             <Link route="home">
                               <a className="co-btn green w-auto mt-4">BOOK NOW</a>
                             </Link>
-                            <div className="product_meta">
+                            {/*<div className="product_meta">
                               <span className="posted-in">
                                 Category:&nbsp;
                                 <a href="javascript:;" rel="tag">Travel</a>
@@ -221,7 +221,7 @@ class DetailTour extends React.Component {
                                 Tag:&nbsp;
                                 <a href="javascript:;" rel="tag">Promotion</a>
                               </span>
-                            </div>
+                            </div>*/}
                           </div>
                       </div>
                     </div>

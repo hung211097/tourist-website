@@ -79,7 +79,7 @@ class Contact extends React.Component {
     if(!this.state.message){
       return false
     }
-    
+
     return true
   }
 
@@ -127,11 +127,19 @@ class Contact extends React.Component {
                         <div className="wpb_text_column wpb_content_element">
                           <div className="wpb_wrapper">
                             <p>
-                              Vivamus volutpat eros pulvinar velit laoreet, sit amet egestas erat dignissim.
-                              Sed quis rutrum tellus, sit amet viverra felis. Cras sagittis sem sit amet urna feugiat rutrum.
-                              Nam nulla ipsum, venenatis malesuada felis quis, ultricies convallis neque.
-                              Pellentesque tristique fringilla tempus. Vivamus bibendum nibh in dolor pharetra, a euismod nulla dignissim.
+                              Hãy liên hệ với chúng tôi để được tư vấn, giải đáp thắc mắc và đạt được những gì bạn mong đợi về một kì nghỉ mơ ước.
                             </p>
+                            <h3>LIÊN HỆ TRỰC TIẾP</h3>
+                            <p>Nếu bạn có vấn đề cần được giải đáp hãy liên hệ trực tiếp với chúng tôi, vui lòng xem thông tin bên dưới:</p>
+                            <h3>LIÊN HỆ QUA HỆ THỐNG WEBSITE</h3>
+                            <ul>
+                              <li>Chúng tôi luôn đón nhận mọi sự góp ý, những vấn đề của quý khách cần được giải đáp.</li>
+                              <li>
+                                Vui lòng sử dụng diễn đàn để đặt câu hỏi khi quý khách có vấn đề không giải quyết được.
+                                Đội ngũ nhân viên của chúng tôi sẽ giải đáp vấn đề của quý khách một cách nhanh chóng.
+                              </li>
+                              <li>Để thực hiện việc liên hệ các bạn vui lòng điền vào theo form bên dưới.</li>
+                            </ul>
                           </div>
                         </div>
                         <div className="nd_options_section nd_options_height_20"/>

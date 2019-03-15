@@ -42,7 +42,7 @@ class MyMap extends React.Component {
     isShowTour: PropTypes.bool,
     isSetTour: PropTypes.bool,
     idTourSet: PropTypes.number,
-    customStyle: PropTypes.any
+    customStyles: PropTypes.any
   }
 
   constructor(props) {
