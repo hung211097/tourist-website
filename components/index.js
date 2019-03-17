@@ -16,6 +16,7 @@ import ClickOutside from './click-outside'
 import PopupInfo from './popup-info'
 import AutoHide from './auto-hide'
 import BtnViewMore from './btn-view-more/index'
+import WizardStep from './wizard-step'
 
 // import Modal from './modal/index'
 
@@ -51,4 +52,5 @@ export {
     MapContact,
     SlickItem,
     Lightbox,
+    WizardStep
 }

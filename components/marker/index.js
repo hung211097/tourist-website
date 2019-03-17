@@ -5,6 +5,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa"
 import ApiService from '../../services/api.service'
 import { connect } from 'react-redux'
 import { toggleShowTour } from '../../actions'
+import { Link } from 'routes'
 
 const mapStateToProps = (state) => {
   return {
@@ -121,7 +122,10 @@ class MarkerComponent extends React.Component{
                     {this.props.infoLocation.tours.map((item) => {
                         return(
                           <li className="tour-item" key={item.id}>
-                            <a>{item.name}</a>&nbsp;&nbsp;&nbsp;
+                            <Link route="detail-tour" params={{id: item.tour_turns.id}}>
+                              <a>{item.name}</a>
+                            </Link>
+                            &nbsp;&nbsp;&nbsp;
                             <a className="display-tour" onClick={this.onShowRoute.bind(this, item.id)}>
                               {this.props.tourChosen && this.props.tourChosen === item.id && this.props.isShowTour ?
                                 <FaEyeSlash style={{fontSize: '19px'}}/>
