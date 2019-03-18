@@ -78,13 +78,8 @@
           background: #ccc;
           top: 100%;
           left: 27%;
-          @media screen and (max-width: 768px){
-            left: 26%;
-          }
           @media screen and (max-width: 576px){
-            width: 68px;
-            top: 13%;
-            left: 25%;
+            left: 23%;
           }
         }
       }

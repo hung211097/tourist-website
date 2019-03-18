@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './index.scss'
+import PropTypes from 'prop-types'
 import { Layout } from 'components'
 import ApiService from 'services/api.service'
 import { Router, Link } from 'routes'
@@ -12,6 +13,16 @@ import validateEmail from '../../services/validates/email.js'
 class DetailTour extends React.Component {
   displayName = 'Detail Tour'
 
+  static propTypes = {
+    tourInfo: PropTypes.object,
+  }
+
+  static async getInitialProps({ query }) {
+      let apiService = ApiService()
+      let tourTurn = await apiService.getToursTurnId(query.id)
+      return { tourInfo: tourTurn.data };
+  }
+
   constructor(props) {
     super(props)
     this.apiService = ApiService()
@@ -21,7 +32,7 @@ class DetailTour extends React.Component {
       'Reviews'
     ]
     this.state = {
-      tourTurn: null,
+      tourTurn: this.props.tourInfo,
       tabId: 0,
       isLoading: false,
       nextPage: 1,
@@ -36,18 +47,16 @@ class DetailTour extends React.Component {
   }
 
   componentDidMount(){
-    const id = Router.query.id
-    this.apiService.getToursTurnId(id).then((res) => {
-      this.setState({
-        tourTurn: res.data
-      }, () => {
-        this.apiService.getImageByTour(this.state.tourTurn.tour.id).then(imgs => {
-          this.setState({
-            images: imgs.data
-          })
+    if(!this.state.tourTurn){
+      Router.pushRoute("home")
+    }
+    if(this.state.tourTurn){
+      this.apiService.getImageByTour(this.state.tourTurn.tour.id).then(imgs => {
+        this.setState({
+          images: imgs.data
         })
       })
-    })
+    }
     this.apiService.getToursTurn(1, 4).then((res) => {
       this.setState({
         tourLike: res.data

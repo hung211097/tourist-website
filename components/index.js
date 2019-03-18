@@ -32,6 +32,7 @@ const Lightbox = dynamic(import('./lightbox'), defaultLoading)
 const MarkerComponent = dynamic(import('./marker'), defaultNoSSR)
 const TopPromotionItem = dynamic(import('./top-promotion-item'), defaultNoSSR)
 const CustomCheckbox = dynamic(import('./custom-checkbox'), defaultNoSSR)
+const PassengerInfo = dynamic(import('./passenger-info'), defaultNoSSR)
 
 export {
     Header,
@@ -52,5 +53,6 @@ export {
     MapContact,
     SlickItem,
     Lightbox,
-    WizardStep
+    WizardStep,
+    PassengerInfo
 }
