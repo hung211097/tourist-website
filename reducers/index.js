@@ -25,6 +25,11 @@ export default (state = {isShowTour: false}, action) => {
             ...state,
             isShowTour: action.payload
           }
+      case actionTypes.USE_MODAL:
+          return {
+            ...state,
+            modal: action.modal
+          }
         case actionTypes.LOGOUT:
           let {user, token, ...remain} = state
           return remain

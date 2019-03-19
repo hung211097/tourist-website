@@ -9,8 +9,6 @@ import validateEmail from '../../services/validates/email.js'
 import validatePhone from '../../services/validates/phone.js'
 import ApiService from '../../services/api.service'
 import { authLogin } from 'actions'
-import { setLocalStorage } from '../../services/local-storage.service'
-import { KEY } from '../../constants/local-storage'
 import { checkAfterLogin } from '../../services/auth.service'
 
 const mapStateToProps = state => {
@@ -46,7 +44,8 @@ class Register extends React.Component {
       confirmPassword: '',
       email: '',
       showPopup: false,
-      error: ''
+      error: '',
+      loading: false
     }
   }
 
@@ -105,32 +104,38 @@ class Register extends React.Component {
       return
     }
 
+    this.setState({
+      loading: true
+    })
+
     this.apiService.register({
       fullname: this.state.fullname,
       password: this.state.password,
       email: this.state.email,
       phone: this.state.phone
-    }).then((data) => {
-      setLocalStorage(KEY.TOKEN, data.token)
-      this.props.authLogin && this.props.authLogin(data)
+    }).then(() => {
+      // setLocalStorage(KEY.TOKEN, data.token)
+      // this.props.authLogin && this.props.authLogin(data)
       this.setState({
-        showPopup: true
+        showPopup: true,
+        fullname: '',
+        password: '',
+        confirmPassword: '',
+        email: '',
+        phone: '',
+        isSubmit: false,
+        loading: false
       }, () => {
         this.timeout = setTimeout(() => {
           this.setState({
             showPopup: false
-          }, () => {
-            Router.pushRoute(this.props.link_redirect || 'home')
           })
         }, 5000)
       })
     }).catch(e => {
-      let error = 'There is an error, please try again!'
-      if(e.status == 400){
-        error = 'Email or phone number already exists'
-      }
+      // let error = 'There is an error, please try again!'
       this.setState({
-        error: error
+        error: e.result
       })
     })
   }
@@ -160,7 +165,9 @@ class Register extends React.Component {
   }
 
   handleClose(){
-    Router.pushRoute(this.props.link_redirect || 'home')
+    this.setState({
+      showPopup: false
+    })
   }
 
   render() {
@@ -272,6 +279,11 @@ class Register extends React.Component {
                     {this.state.error &&
                       <p className="error">{this.state.error}</p>
                     }
+                    {this.state.loading &&
+                      <div className="text-center mt-3 mb-3">
+                        <img alt="loading" src="/static/svg/loading.svg" />
+                      </div>
+                    }
                     <div className="form-row">
                       <button type="submit" className="woocommerce-Button button" name="login" onClick={this.handleSubmit.bind(this)}>
                         Register
@@ -295,12 +307,9 @@ class Register extends React.Component {
             <h1>Congratulations!</h1>
             <div className="nd_options_height_10" />
             <p>You register an account successfully!</p>
+            <p>Please check your email to verify the account!</p>
             <div className="nd_options_height_10" />
-            <Link route="home">
-              <a>
-                <button className="co-btn">Back to Homepage</button>
-              </a>
-            </Link>
+            <a className="co-btn" onClick={this.handleClose.bind(this)}>OK</a>
           </PopupInfo>
         </Layout>
       </>

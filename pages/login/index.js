@@ -102,11 +102,8 @@ class Login extends React.Component {
       Router.pushRoute(this.props.link_redirect || 'home')
     }).catch(e => {
       let error = 'There is an error, please try again!'
-      if(e.status == 404){
-        error = 'Email or phone number does not exists'
-      }
-      else if(e.status == 402){
-        error = 'Password is not correct'
+      if(e.result === 'Password is not corect' || e.result === 'This email does not verify'){
+        error = e.result
       }
       this.setState({
         error: error

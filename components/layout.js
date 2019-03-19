@@ -1,6 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
-import { Header, Footer } from 'components'
+import { Header, Footer, Modal } from 'components'
 import indexStyles from 'styles/global.scss'
 import PropTypes from 'prop-types'
 import { convertFullUrl } from 'services/utils.service'
@@ -75,7 +75,7 @@ export default class extends React.Component {
                 <style jsx global>
                     {style}
                 </style>
-                {/*<Modal />*/}
+                <Modal />
                 <Header page={this.props.page}/>
                 <ReactCSSTransitionGroup
                     transitionName="fade"
