@@ -127,7 +127,7 @@ class DetailBookedTour extends React.Component {
                                         <th>Phone number</th>
                                         <th>Birthdate</th>
                                         <th>Gender</th>
-                                        <th>Address</th>
+                                        <th>Age</th>
                                         <th>Identity card / Passport</th>
                                       </tr>
                                     </thead>
@@ -139,7 +139,7 @@ class DetailBookedTour extends React.Component {
                                               <td>1234567890</td>
                                               <td>08/03/2019</td>
                                               <td>Nam</td>
-                                              <td>Ho Chi Minh City</td>
+                                              <td>Adult</td>
                                               <td>3523354654</td>
                                             </tr>
                                           )

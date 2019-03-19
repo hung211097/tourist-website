@@ -66,6 +66,20 @@
         }
       }
       &.current{
+        &.last{
+          &:after{
+            position: absolute;
+            content: "";
+            width: 45px;
+            height: 3px;
+            background: #ccc;
+            top: 100%;
+            left: 38%;
+            @media screen and (max-width: 576px){
+              left: 23%;
+            }
+          }
+        }
         outline: none;
         position: relative;
         padding-bottom: 3px;

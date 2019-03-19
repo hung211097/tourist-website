@@ -13,15 +13,11 @@ import { formatDate, distanceFromDays } from '../../services/time.service'
 import { getUserAuth } from 'services/auth.service'
 import { setSessionStorage, removeItem } from '../../services/session-storage.service'
 import { KEY } from '../../constants/session-storage'
+import { getCodeTour } from '../../services/utils.service'
 
 const mapStateToProps = state => {
   return {
     user: state.user,
-  }
-}
-
-const mapDispatchToProps = () => {
-  return {
   }
 }
 
@@ -133,7 +129,7 @@ class CheckOutPassengers extends React.Component {
       num_child: this.state.child,
       passengers: this.state.passengers
     }))
-    
+
     Router.pushRoute("checkout-payment", {tourId: this.state.tourInfo.id})
   }
 
@@ -365,7 +361,7 @@ class CheckOutPassengers extends React.Component {
                                 <li>
                                   <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
                                   Code:&nbsp;
-                                  <span>STN084-2019-00396</span>
+                                  <span>{getCodeTour(tourInfo.id)}</span>
                                 </li>
                                 <li>
                                   <i className="fa fa-calendar-minus-o" aria-hidden="true"><FaRegCalendarMinus /></i>
@@ -432,4 +428,4 @@ class CheckOutPassengers extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CheckOutPassengers)
+export default connect(mapStateToProps)(CheckOutPassengers)
