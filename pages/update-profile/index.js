@@ -51,7 +51,8 @@ class UpdateProfile extends React.Component {
             isSubmit: false,
             error: '',
             actionError: false,
-            imagePreviewUrl: ''
+            imagePreviewUrl: '',
+            address: ''
         }
     }
 
@@ -64,6 +65,7 @@ class UpdateProfile extends React.Component {
                 phone: user.phone ?  user.phone : '',
                 birthdate: user.birthdate && isValidDate(user.birthdate) ? formatDate(user.birthdate, 'yyyy-MM-dd') : '',
                 gender: user.sex ? user.sex.charAt(0).toUpperCase() + user.sex.substr(1) : '',
+                address: user.address ? user.address : '',
                 action: false
             })
         }
@@ -93,6 +95,12 @@ class UpdateProfile extends React.Component {
         })
     }
 
+    handleAddressChange(event){
+      this.setState({
+          address: event.target.value
+      })
+    }
+
     handleGenderChange(event) {
         this.setState({
             gender: event.value
@@ -117,6 +125,9 @@ class UpdateProfile extends React.Component {
         if(isValidDate(this.state.birthdate)){
           form.append('birthdate', this.state.birthdate)
         }
+        if(this.state.address){
+          form.append('address', this.state.address)
+        }
         if(this.state.gender){
           form.append('sex', this.state.gender)
         }
@@ -129,7 +140,8 @@ class UpdateProfile extends React.Component {
             this.setState({
                 action: true,
                 files_avatar: [],
-                imagePreviewUrl: ''
+                imagePreviewUrl: '',
+                isSubmit: false
             })
         }).catch(() => {
           let error = 'There is a problem, please try again!'
@@ -248,6 +260,17 @@ class UpdateProfile extends React.Component {
                                   placeholder=""
                                   value={this.state.birthdate}
                                   onChange={this.handleBirthdayChange.bind(this)}
+                              />
+                          </div>
+                          <div className="co-field">
+                              <p>
+                                  <strong>Address</strong>
+                              </p>
+                              <textarea
+                                  className="co-textarea"
+                                  placeholder=""
+                                  value={this.state.address}
+                                  onChange={this.handleAddressChange.bind(this)}
                               />
                           </div>
                           {/*<div className="co-field" id="email">

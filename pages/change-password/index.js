@@ -81,7 +81,8 @@ class ChangePassword extends React.Component {
                 action: true,
                 password: '',
                 confirmPassword: '',
-                newPassword: ''
+                newPassword: '',
+                isSubmit: false
             })
         }).catch(e => {
           let error = 'There is a problem, please try again!'

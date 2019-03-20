@@ -1,7 +1,9 @@
 import fetch from 'isomorphic-fetch'
-import Router from 'next/router'
 import { isServer } from 'services/utils.service'
 import ApiService from 'services/api.service'
+import Router from 'next/router'
+import { removeItem } from '../services/local-storage.service'
+import { KEY } from '../constants/local-storage'
 
 export const actionTypes = {
   SET_USER: 'SET_USER',
@@ -9,7 +11,8 @@ export const actionTypes = {
   SAVE_LOCATION: 'SAVE_LOCATION',
   TOGGLE_SHOW_TOUR: 'TOGGLE_SHOW_TOUR',
   LOGOUT: 'LOGOUT',
-  SAVE_PROFILE: 'SAVE_PROFILE'
+  SAVE_PROFILE: 'SAVE_PROFILE',
+  USE_MODAL: 'USE_MODAL',
 }
 
 export const storeKEY = 'tourist-v1'
@@ -69,6 +72,17 @@ export const saveProfile = () => {
             type: actionTypes.SAVE_PROFILE,
             payload: user.profile
         })
+    }).catch(() => {
+      dispatch(logout())
+      removeItem(KEY.TOKEN)
+      dispatch(useModal({type: 'EXPIRED', isOpen: true, data: ''}))
     })
   }
+}
+
+export const useModal = (data) => {
+    return {
+        type: actionTypes.USE_MODAL,
+        modal: data
+    }
 }

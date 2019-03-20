@@ -66,6 +66,10 @@ export default () => {
     sendRequest: (data) => {
       let url = baseURL + `request/create`
       return httpPost(url, data)
+    },
+    forgetPassword: (data) => {
+      let url = baseURL + `user/forgetPassword`
+      return httpPost(url, data)
     }
   }
 
