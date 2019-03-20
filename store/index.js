@@ -15,7 +15,7 @@ export const initStore = (initialState = actionDefault, {isServer, req, debug, s
         const persistConfig = {
             key: storeKEY,
             storage,
-            blacklist: ['isShowTour']
+            blacklist: ['isShowTour', 'modal']
         }
         const persistedReducer = persistReducer(persistConfig, reducers)
         const store = makeConfiguredStore(persistedReducer, initialState)

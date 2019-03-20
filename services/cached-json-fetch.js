@@ -21,10 +21,10 @@ function checkStatus(response) {
     return response
   }
   return response.json().then((data) => {
-    let error = new Error(data.message)
+    let error = new Error(data.msg)
     error.response = response
     error.status = response.status
-    error.result = data.result
+    error.result = data.msg
     throw error
   })
 }

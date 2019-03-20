@@ -2,19 +2,20 @@ import React from 'react'
 import styles from './index.scss'
 import { Layout } from 'components'
 import validateEmail from '../../services/validates/email.js'
-// import ApiService from '../../services/api.service'
+import ApiService from '../../services/api.service'
 
 class ForgetPassword extends React.Component {
   displayName = 'Forget Password'
 
   constructor(props) {
     super(props)
-    // this.apiService = ApiService()
+    this.apiService = ApiService()
     this.state = {
       isSubmit: false,
       email: '',
       isSend: false,
-      error: ''
+      error: '',
+      loading: false
     }
   }
 
@@ -24,7 +25,8 @@ class ForgetPassword extends React.Component {
 
   handleChangeEmail(e){
     this.setState({
-      email: e.target.value
+      email: e.target.value,
+      error: ''
     })
   }
 
@@ -38,6 +40,28 @@ class ForgetPassword extends React.Component {
       return
     }
 
+    this.setState({
+      loading: true
+    })
+
+    this.apiService.forgetPassword({
+      email: this.state.email
+    }).then(() => {
+      this.setState({
+        isSend: true,
+        loading: false,
+        isSubmit: false
+      })
+    }).catch(e => {
+      let error = "There is an error, please try again!"
+      if(e.result === 'Email is not exists'){
+        error = 'Email does not exist'
+      }
+      this.setState({
+        error: error,
+        loading: false
+      })
+    })
   }
 
   validate(){
@@ -95,6 +119,11 @@ class ForgetPassword extends React.Component {
                        {this.state.isSubmit && this.state.email && (!validateEmail(this.state.email)) &&
                          <p className="error">Email must be in right format!</p>
                        }
+                       {this.state.loading &&
+                         <div className="text-center d-block w-100 mt-4">
+                           <img alt="loading" src="/static/svg/loading.svg"/>
+                         </div>
+                       }
                     </div>
                     {this.state.isSend &&
                       <div className="inform">
@@ -102,7 +131,8 @@ class ForgetPassword extends React.Component {
                           Your request is accepted and we will send you a new password, please check your incoming email!
                         </p>
                         <p className="caption">
-                          If you don&apos;t receive anything, please <a className="active">resend this request</a>
+                          If you don&apos;t receive anything, please <a className="active" onClick={this.handleSubmit.bind(this)}>
+                          resend this request</a>
                         </p>
                       </div>
                     }

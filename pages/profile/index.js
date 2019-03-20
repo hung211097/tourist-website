@@ -43,6 +43,7 @@ class Profile extends React.Component {
                             <li><span>Phone number:</span>{this.props.user.phone}&nbsp;</li>
                             <li className="capitalize"><span>Gender:</span> {this.props.user.sex} &nbsp;</li>
                             <li><span>Birthdate:</span> {this.props.user.birthdate && isValidDate(this.props.user.birthdate) ? formatDate(this.props.user.birthdate) : ''} &nbsp;</li>
+                            <li><span>Address:</span>{this.props.user.address}&nbsp;</li>
                           </ul>
                         }
                       </div>
