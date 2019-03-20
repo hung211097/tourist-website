@@ -135,7 +135,8 @@ class Register extends React.Component {
     }).catch(e => {
       // let error = 'There is an error, please try again!'
       this.setState({
-        error: e.result
+        error: e.result,
+        loading: false
       })
     })
   }
