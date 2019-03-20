@@ -17,21 +17,21 @@ class PassengerInfo extends React.Component {
   constructor(props) {
     super(props)
     this.genders = [
-      { value: 'Male', label: 'Male' },
-      { value: 'Female', label: 'Female' },
-      { value: 'Other', label: 'Other' }
+      { value: 'male', label: 'Male' },
+      { value: 'female', label: 'Female' },
+      { value: 'other', label: 'Other' }
     ]
-    this.olds = [
-      { value: 'Adult', label: 'Adult' },
-      { value: 'Children', label: 'Children' },
-    ]
+    this.olds = {
+      'adults': 'Adult',
+      'children': 'Children'
+    }
     this.state = {
-      name: '',
+      fullname: '',
       phone: '',
-      identity: '',
-      gender: '',
+      passport: '',
+      sex: '',
       birthdate: '',
-      olds: this.props.age
+      type: this.props.age
     }
   }
 
@@ -44,7 +44,7 @@ class PassengerInfo extends React.Component {
 
   handleChangeName(e){
     this.setState({
-      name: e.target.value
+      fullname: e.target.value
     }, () => {
       this.changePassengerInfo()
     })
@@ -58,17 +58,17 @@ class PassengerInfo extends React.Component {
     })
   }
 
-  handleChangeIdentity(e){
+  handleChangePassport(e){
     this.setState({
-      identity: e.target.value
+      passport: e.target.value
     }, () => {
       this.changePassengerInfo()
     })
   }
 
-  handleChangeGender(e){
+  handleChangeSex(e){
     this.setState({
-      gender: e.value
+      sex: e.value
     }, () => {
       this.changePassengerInfo()
     })
@@ -95,11 +95,11 @@ class PassengerInfo extends React.Component {
   }
 
   validate(){
-    if(!this.state.name){
+    if(!this.state.fullname){
       return false
     }
 
-    if(!this.state.gender){
+    if(!this.state.sex){
       return false
     }
 
@@ -126,10 +126,10 @@ class PassengerInfo extends React.Component {
             <div className="form-group col-sm-6 col-12">
               <div className="form-group">
                 <label htmlFor={"name" + this.props.index}>Fullname (*)</label>
-                <input type="text" name="name" id={"name" + this.props.index} value={this.state.name}
+                <input type="text" name="name" id={"name" + this.props.index} value={this.state.fullname}
                   onChange={this.handleChangeName.bind(this)} data-validation="required"
-                  className={this.props.isSubmit && !this.state.name ? "error" : ""} />
-                  {this.props.isSubmit && !this.state.name &&
+                  className={this.props.isSubmit && !this.state.fullname ? "error" : ""} />
+                  {this.props.isSubmit && !this.state.fullname &&
                     <p className="error">This field is required!</p>
                   }
               </div>
@@ -150,7 +150,7 @@ class PassengerInfo extends React.Component {
             <div className="form-group col-sm-6 col-12">
               <div className="form-group">
                 <label htmlFor="age">Age (*)</label>
-                <input className="disabled" type="text" name="age" id="age" value={this.state.olds} disabled />
+                <input className="disabled" type="text" name="age" id="age" value={this.olds[this.state.type]} disabled />
               </div>
             </div>
             <div className="form-group col-sm-6 col-12">
@@ -159,13 +159,13 @@ class PassengerInfo extends React.Component {
                 <div className="booking-drop">
                 <Select
                     instanceId="gender"
-                    value={this.state.gender}
-                    onChange={this.handleChangeGender.bind(this)}
-                    placeholder={this.state.gender ? this.state.gender : 'Choose your gender'}
+                    value={this.state.sex}
+                    onChange={this.handleChangeSex.bind(this)}
+                    placeholder={this.state.sex ? this.state.sex : 'Choose your gender'}
                     options={this.genders}
                 />
                 </div>
-                {this.props.isSubmit && !this.state.gender &&
+                {this.props.isSubmit && !this.state.sex &&
                   <p className="error">This field is required!</p>
                 }
               </div>
@@ -187,8 +187,8 @@ class PassengerInfo extends React.Component {
             <div className="form-group col-sm-6 col-12">
               <div className="form-group">
                 <label htmlFor={"passport" + this.props.index}>Identity number / Passport</label>
-                <input type="text" name="passport" id={"passport" + this.props.index} value={this.state.identity}
-                  onChange={this.handleChangeIdentity.bind(this)}/>
+                <input type="text" name="passport" id={"passport" + this.props.index} value={this.state.passport}
+                  onChange={this.handleChangePassport.bind(this)}/>
               </div>
             </div>
           </div>

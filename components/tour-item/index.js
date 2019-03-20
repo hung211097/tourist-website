@@ -47,7 +47,7 @@ class TourItem extends React.Component {
           <span className="amout">{!item.discount ? item.price.toLocaleString() : ' ' + (item.price * item.discount).toLocaleString()} VND</span>
         </div>
         <div className="action">
-          <Link route="home">
+          <Link route="checkout-passengers" params={{tourId: item.id}}>
             <a className="button">BOOK NOW</a>
           </Link>
           <Link route="detail-tour" params={{id: item.id}}>

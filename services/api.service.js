@@ -70,6 +70,10 @@ export default () => {
     forgetPassword: (data) => {
       let url = baseURL + `user/forgetPassword`
       return httpPost(url, data)
+    },
+    bookTour: (data) => {
+      let url = baseURL + `book_tour/book_new_tour`
+      return httpPost(url, data)
     }
   }
 

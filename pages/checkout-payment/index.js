@@ -100,6 +100,20 @@ class CheckOutPayment extends React.Component {
       return
     }
 
+    this.apiService.bookTour({
+      fullname: this.state.contactInfo.name,
+      phone: this.state.contactInfo.phone,
+      email: this.state.contactInfo.email,
+      address: this.state.contactInfo.address,
+      idTour_Turn: this.state.tourInfo.id,
+      total_pay: this.getTotalPrice(),
+      payment: this.state.method,
+      passengers: this.state.passengers
+    }).then((data) => {
+      console.log(data);
+    }).catch(e => {
+      console.log(e);
+    })
     Router.pushRoute("checkout-confirmation")
   }
 
@@ -195,9 +209,9 @@ class CheckOutPayment extends React.Component {
                           <p className="caption-text">Please choose one of below payment method:</p>
                           <div className="methods">
                             <div className="method">
-                              <input style={{display: 'none'}} value="cod"
+                              <input style={{display: 'none'}} value="Incash"
                                 type="radio" id="pament-method3" className="payment-method" name="method" ref={this.method_1}
-                                onChange={this.handleChangeMethod.bind(this)} checked={this.state.method === 'cod'}/>
+                                onChange={this.handleChangeMethod.bind(this)} checked={this.state.method === 'Incash'}/>
                               <div className="method-content">
                                 <label className={this.state.isShowMethod1 ? "title active" : "title"}
                                   onClick={this.handleChooseMethod_1.bind(this)}>
@@ -236,7 +250,7 @@ class CheckOutPayment extends React.Component {
                                   onClick={this.handleChooseMethod_2.bind(this)}>
                                   <h4 style={{margin: '0 0 10px'}}>
                                     Pay by transfer money through banking
-                                    <span><img alt="incash" src="/static/svg/bank.svg" className="transfer"/></span>
+                                    <span><img alt="transfer" src="/static/svg/bank.svg" className="transfer"/></span>
                                   </h4>
                                   <div className="description">
                                     After you transfer money successfully, our staff will contact you by email or telephone

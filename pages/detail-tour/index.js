@@ -218,7 +218,7 @@ class DetailTour extends React.Component {
                                 </div>
                               </div>
                             </div>
-                            <Link route="home">
+                            <Link route="checkout-passengers" params={{tourId: tourTurn.id}}>
                               <a className="co-btn green w-auto mt-4">BOOK NOW</a>
                             </Link>
                             {/*<div className="product_meta">

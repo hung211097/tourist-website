@@ -162,7 +162,7 @@ class CheckOutPassengers extends React.Component {
       if(!this.state.passengers[i]){
         return false
       }
-      if(!this.state.passengers[i].name || !this.state.passengers[i].gender || !this.state.passengers[i].birthdate){
+      if(!this.state.passengers[i].fullname || !this.state.passengers[i].sex || !this.state.passengers[i].birthdate){
         return false
       }
       if(this.state.passengers[i].phone && !validatePhone(this.state.passengers[i].phone)){
@@ -319,14 +319,14 @@ class CheckOutPassengers extends React.Component {
                           <div className="row passenger">
                             {[...Array(this.state.adult)].map((item, key) => {
                                 return(
-                                  <PassengerInfo index={key} age={"Adult"} isSubmit={this.state.isSubmit} key={key}
+                                  <PassengerInfo index={key} age={"adults"} isSubmit={this.state.isSubmit} key={key}
                                     onChangePassenger={this.handleChangePassenger.bind(this)}/>
                                 )
                               })
                             }
                             {[...Array(this.state.child)].map((item, key) => {
                                 return(
-                                  <PassengerInfo index={this.state.adult + key} age={"Children"}
+                                  <PassengerInfo index={this.state.adult + key} age={"children"}
                                     isSubmit={this.state.isSubmit} key={this.state.adult + key}
                                     onChangePassenger={this.handleChangePassenger.bind(this)}/>
                                 )
