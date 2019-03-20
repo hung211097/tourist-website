@@ -131,7 +131,8 @@ class ForgetPassword extends React.Component {
                           Your request is accepted and we will send you a new password, please check your incoming email!
                         </p>
                         <p className="caption">
-                          If you don&apos;t receive anything, please <a className="active">resend this request</a>
+                          If you don&apos;t receive anything, please <a className="active" onClick={this.handleSubmit.bind(this)}>
+                          resend this request</a>
                         </p>
                       </div>
                     }
