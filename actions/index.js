@@ -18,7 +18,6 @@ export const actionTypes = {
 export const storeKEY = 'tourist-v1'
 
 export const actionDefault = {
-    carts: [],
     userProfile: {}
 }
 

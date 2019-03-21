@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { PopupInfo } from 'components'
+import { PopupInfo, PopupLoading } from 'components'
 import { useModal } from '../../actions'
 import { Link, Router } from 'routes'
 
@@ -40,9 +40,10 @@ class Modal extends React.Component {
           return null;
         return (
           <>
-            <style jsx>{styles}</style>
+            <style jsx="true">{styles}</style>
             {this.props.modal.type === 'EXPIRED' ?
-              <PopupInfo show={true} onClose={this.handleClosePopup.bind(this)} customContent={{width: '90%', maxWidth: '430px'}}>
+              <PopupInfo show={this.props.modal.isOpen} onClose={this.handleClosePopup.bind(this)}
+                customContent={{width: '90%', maxWidth: '430px'}}>
                 <div className="content">
                   <h2>Oops!</h2>
                   <h4>
@@ -54,6 +55,8 @@ class Modal extends React.Component {
                   </Link>
                 </div>
               </PopupInfo>
+              : this.props.modal.type === 'LOADING' ?
+              <PopupLoading show={this.props.modal.isOpen} onClose={this.handleClosePopup.bind(this)} />
               : null
             }
           </>

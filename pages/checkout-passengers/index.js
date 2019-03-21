@@ -117,8 +117,7 @@ class CheckOutPassengers extends React.Component {
     if(!this.validate()){
       return
     }
-
-    setSessionStorage(KEY.PASSENGER, JSON.stringify({
+    const tourInfo = JSON.stringify({
       contactInfo: {
         name: this.state.name,
         email: this.state.email,
@@ -128,8 +127,9 @@ class CheckOutPassengers extends React.Component {
       num_adult: this.state.adult,
       num_child: this.state.child,
       passengers: this.state.passengers
-    }))
+    })
 
+    setSessionStorage(KEY.PASSENGER, tourInfo)
     Router.pushRoute("checkout-payment", {tourId: this.state.tourInfo.id})
   }
 

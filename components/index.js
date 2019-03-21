@@ -14,6 +14,7 @@ import Header from './header'
 import Footer from './footer'
 import ClickOutside from './click-outside'
 import PopupInfo from './popup-info'
+import PopupLoading from './popup-loading'
 import AutoHide from './auto-hide'
 import BtnViewMore from './btn-view-more/index'
 import WizardStep from './wizard-step'
@@ -28,7 +29,6 @@ const RatingStar = dynamic(import('./rating-star'), defaultLoading)
 const MapContact = dynamic(import('./map-contact'), defaultLoading)
 const SlickItem = dynamic(import('./slick-item'), defaultLoading)
 const Lightbox = dynamic(import('./lightbox'), defaultLoading)
-
 
 const MarkerComponent = dynamic(import('./marker'), defaultNoSSR)
 const TopPromotionItem = dynamic(import('./top-promotion-item'), defaultNoSSR)
@@ -56,5 +56,6 @@ export {
     Lightbox,
     WizardStep,
     PassengerInfo,
-    Modal
+    Modal,
+    PopupLoading
 }

@@ -13,10 +13,17 @@ import { getSessionStorage } from '../../services/session-storage.service'
 import { KEY } from '../../constants/session-storage'
 import { UnmountClosed } from 'react-collapse'
 import { getCodeTour } from '../../services/utils.service'
+import { useModal } from '../../actions'
 
 const mapStateToProps = state => {
   return {
     user: state.user,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    useModal: (data) => {dispatch(useModal(data))}
   }
 }
 
@@ -25,7 +32,8 @@ class CheckOutPayment extends React.Component {
 
   static propTypes = {
     user: PropTypes.object,
-    tourInfo: PropTypes.object
+    tourInfo: PropTypes.object,
+    useModal: PropTypes.func
   }
 
   static async getInitialProps({ query }) {
@@ -90,6 +98,10 @@ class CheckOutPayment extends React.Component {
     }*/}
   }
 
+  componentWillUnmount(){
+    this.timeout && clearTimeout(this.timeout)
+  }
+
   handleSubmit(e){
     e.preventDefault()
     this.setState({
@@ -99,6 +111,8 @@ class CheckOutPayment extends React.Component {
     if(!this.validate()){
       return
     }
+
+    this.props.useModal && this.props.useModal({type: "LOADING", isOpen: true, data: ''})
 
     this.apiService.bookTour({
       fullname: this.state.contactInfo.name,
@@ -110,11 +124,18 @@ class CheckOutPayment extends React.Component {
       payment: this.state.method,
       passengers: this.state.passengers
     }).then((data) => {
-      console.log(data);
-    }).catch(e => {
-      console.log(e);
+      this.timeout = setTimeout(() => {
+        this.props.useModal && this.props.useModal({type: "LOADING", isOpen: false, data: ''})
+        Router.pushRoute("checkout-confirmation")
+      }, 1000)
+    }).catch(() => {
+      this.timeout = setTimeout(() => {
+        this.props.useModal && this.props.useModal({type: "LOADING", isOpen: false, data: ''})
+        this.setState({
+          error: "There is an error, please try book tour again!"
+        })
+      }, 1000)
     })
-    Router.pushRoute("checkout-confirmation")
   }
 
   validate(){
@@ -319,6 +340,11 @@ class CheckOutPayment extends React.Component {
                               <p className="error">Please choose a payment method!</p>
                             </div>
                           }
+                          {this.state.error &&
+                            <div className="error-announce">
+                              <p className="error">{this.state.error}</p>
+                            </div>
+                          }
                           <div className="col-12 no-padding">
                             <div className="button-area">
                               <ul className="list-inline">
@@ -326,7 +352,7 @@ class CheckOutPayment extends React.Component {
                                   <a onClick={this.handleBack.bind(this)} className="co-btn">Back</a>
                                 </li>
                                 <li className="pull-right">
-                                  <a onClick={this.handleSubmit.bind(this)} className="co-btn">Next</a>
+                                  <a onClick={this.handleSubmit.bind(this)} className="co-btn">Book</a>
                                 </li>
                               </ul>
                             </div>
@@ -417,4 +443,4 @@ class CheckOutPayment extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(CheckOutPayment)
+export default connect(mapStateToProps, mapDispatchToProps)(CheckOutPayment)
