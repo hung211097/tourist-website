@@ -291,6 +291,9 @@
               font-size: 18px;
               position: relative;
               top: -2px;
+              @media screen and (max-width: 576px){
+                float: none;
+              }
               span{
                 &.active{
                   color: $main-bg-color;

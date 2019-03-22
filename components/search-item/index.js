@@ -3,16 +3,20 @@ import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { RatingStar } from 'components'
 import { Link } from 'routes'
-import { FaRegCommentDots, FaRegEye, FaBarcode, FaCalendarAlt, FaClock, FaUserAlt } from "react-icons/fa"
+import { FaRegCommentDots, FaRegEye, FaBarcode, FaCalendarAlt, FaClock, FaUserAlt, FaRegCalendarAlt } from "react-icons/fa"
 import { formatDate } from '../../services/time.service'
 
 class SearchItem extends React.Component {
   displayName = 'Search Item'
 
   static propTypes = {
-    item: PropTypes.object
+    item: PropTypes.object,
+    isGrid: PropTypes.bool
   }
 
+  static defaultProps = {
+    isGrid: false
+  }
   constructor(props) {
     super(props)
 
@@ -23,6 +27,66 @@ class SearchItem extends React.Component {
   }
 
   render() {
+    if(this.props.isGrid){
+      return(
+        <div className="col-sm-6 col-12">
+          <style jsx>{styles}</style>
+          <div className="item-tour-main">
+            <a title="Đà Lạt - Đường Hầm Điêu Khắc Đất Sét (Khách Sạn 3* cao cấp. Tour Tiết Kiệm)">
+              <div>
+                <div className="tour-img">
+                  <img src="/static/images/image_demo.jpg" className="img-responsive" alt="featured_image" />
+                  <span className="sale">SALE!</span>
+                  <div className="tour-statistic">
+                    <div className="row figure">
+                      <div className="col-sm-6 col-12 text-left no-padding">
+                        <i title="views"><FaRegEye /></i>&nbsp;&nbsp;
+                        <span style={{color: 'white'}} title="views">1,122</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <i title="comments"><FaRegCommentDots /></i>&nbsp;&nbsp;
+                        <span style={{color: 'white'}} title="comments">0</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                      </div>
+                      <div className="col-sm-6 col-12 no-padding ratingstar">
+                        <RatingStar isWhite rate={4} />
+                      </div>
+                    </div>
+                    <div className="row no-margin">
+                      <div className="col-6 text-left no-padding">
+                        <i><FaRegCalendarAlt style={{position: 'relative', top: '-2px'}}/></i>&nbsp;&nbsp;23/03/2019
+                      </div>
+                      <div className="col-6 text-right no-padding">
+                        <i><FaUserAlt style={{position: 'relative', top: '-2px'}}/></i>&nbsp;&nbsp;2 slots
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="tour-content">
+                  <div className="tour-title col-md-12 col-sm-12 col-12">
+                    <div style={{display: 'table-cell', verticalAlign: 'middle'}}>
+                      Đà Lạt - Đường Hầm Điêu Khắc Đất Sét (Khách Sạn 3* cao cấp. Tour Tiết Kiệm)
+                    </div>
+                  </div>
+                  <div className="tour-info row">
+                    <div className="date col-2">
+                      <div className="date-display">4</div>
+                      <div className="date-lang">DAYS</div>
+                    </div>
+                    <div className="price col-7">
+                      {/*<div className="price-discount f-left">3,190,000 VND</div>*/}
+                      <div className="price-new_n f-left">3,190,000 VND</div>
+                      <div className="clear" />
+                    </div>
+                    <div className="btn-book col-3">
+                      <span>DETAIL</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="clear" />
+              </div>
+            </a>
+          </div>
+        </div>
+      )
+    }
     return (
       <div className="search-item">
         <style jsx>{styles}</style>

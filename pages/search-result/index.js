@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './index.scss'
 import { Layout, RatingStar, SearchItem } from 'components'
 import Slider from 'react-rangeslider'
-import { FaFilter, FaChevronDown, FaChevronUp, FaList } from "react-icons/fa"
+import { FaFilter, FaChevronDown, FaChevronUp, FaChevronLeft, FaChevronRight, FaList } from "react-icons/fa"
 import { TiThSmallOutline } from "react-icons/ti"
 import { UnmountClosed } from 'react-collapse'
 import ReactPaginate from 'react-paginate'
@@ -450,10 +450,10 @@ class SearchResult extends React.Component {
                             <img alt="warning" src="/static/svg/icon-warning-white.svg" width="20" />
                             <h3>No results for this search</h3>
                           </div>
-                          <div className="search-list-item">
+                          <div className="search-list-item row no-margin">
                             {[1,2,3,4,5].map((item, key) => {
                                 return(
-                                  <SearchItem key={key}/>
+                                  <SearchItem key={key} isGrid={!this.state.isListView}/>
                                 )
                               })
                             }
@@ -461,8 +461,8 @@ class SearchResult extends React.Component {
                         </div>
                         <div className="pagination row text-center">
                           <ReactPaginate
-                            previousLabel={'Previous'}
-                            nextLabel={'Next'}
+                            previousLabel={<FaChevronLeft />}
+                            nextLabel={<FaChevronRight />}
                             previousClassName={'previous-pagination-li'}
                             nextClassName={'next-pagination-li'}
                             previousLinkClassName={'previous-pagination-a'}
