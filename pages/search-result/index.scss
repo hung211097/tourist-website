@@ -263,6 +263,12 @@
                 &:nth-child(2){
                   margin-left: 20px;
                 }
+                @media screen and (min-width: 577px) and (max-width: 768px){
+                  width: 45%;
+                  &:nth-child(2){
+                    margin-left: 10px;
+                  }
+                }
               }
             }
             input{
@@ -280,6 +286,21 @@
           }
           .search-zone{
             padding: 15px;
+            .change-view{
+              float: right;
+              font-size: 18px;
+              position: relative;
+              top: -2px;
+              span{
+                &.active{
+                  color: $main-bg-color;
+                }
+                color: silver;
+                &:nth-child(2){
+                  margin-left: 10px;
+                }
+              }
+            }
             .search-content{
               .no-result{
                 margin-top: 20px;
@@ -305,6 +326,10 @@
         }
       }
     }
+  }
+  .pagination{
+    justify-content: center;
+    margin-top: 40px;
   }
   .break{
     background-color: #eaeaea;

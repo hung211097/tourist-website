@@ -1,9 +1,11 @@
 import React from 'react'
 import styles from './index.scss'
-import { Layout, RatingStar } from 'components'
+import { Layout, RatingStar, SearchItem } from 'components'
 import Slider from 'react-rangeslider'
-import { FaFilter, FaChevronDown, FaChevronUp } from "react-icons/fa"
+import { FaFilter, FaChevronDown, FaChevronUp, FaList } from "react-icons/fa"
+import { TiThSmallOutline } from "react-icons/ti"
 import { UnmountClosed } from 'react-collapse'
+import ReactPaginate from 'react-paginate'
 
 class SearchResult extends React.Component {
   displayName = 'Search Result'
@@ -15,7 +17,8 @@ class SearchResult extends React.Component {
       date: '',
       price: 0,
       rate: 0,
-      filterShow: true
+      filterShow: true,
+      isListView: true
     }
   }
 
@@ -63,6 +66,22 @@ class SearchResult extends React.Component {
       date: '',
       price: 0,
       rate: 0
+    })
+  }
+
+  handlePageClick(value){
+    // console.log(value);
+  }
+
+  offListView(){
+    this.setState({
+      isListView: false
+    })
+  }
+
+  onListView(){
+    this.setState({
+      isListView: true
     })
   }
 
@@ -414,8 +433,16 @@ class SearchResult extends React.Component {
                       <div className="col-sm-8 search-zone">
                           <div className="break d-sm-none d-block mb-5" />
                         <div className="search-for">
-                          <div className="title">
+                          <div className="title d-inline-block">
                             <h2>Search&apos;s result for: &quot;ABC&quot;</h2>
+                          </div>
+                          <div className="change-view">
+                            <span className={this.state.isListView ? "active" : ''}>
+                              <a onClick={this.onListView.bind(this)}><FaList /></a>
+                            </span>
+                            <span className={!this.state.isListView ? "active" : ''}>
+                              <a onClick={this.offListView.bind(this)}><TiThSmallOutline /></a>
+                            </span>
                           </div>
                         </div>
                         <div className="search-content">
@@ -423,6 +450,35 @@ class SearchResult extends React.Component {
                             <img alt="warning" src="/static/svg/icon-warning-white.svg" width="20" />
                             <h3>No results for this search</h3>
                           </div>
+                          <div className="search-list-item">
+                            {[1,2,3,4,5].map((item, key) => {
+                                return(
+                                  <SearchItem key={key}/>
+                                )
+                              })
+                            }
+                          </div>
+                        </div>
+                        <div className="pagination row text-center">
+                          <ReactPaginate
+                            previousLabel={'Previous'}
+                            nextLabel={'Next'}
+                            previousClassName={'previous-pagination-li'}
+                            nextClassName={'next-pagination-li'}
+                            previousLinkClassName={'previous-pagination-a'}
+                            nextLinkClassName={'next-pagination-a'}
+                            disabledClassName={'disabled-navigate'}
+                            breakLabel={'...'}
+                            breakClassName={'break-me'}
+                            pageCount={10}
+                            marginPagesDisplayed={1}
+                            pageRangeDisplayed={1}
+                            onPageChange={this.handlePageClick.bind(this)}
+                            containerClassName={'pagination'}
+                            subContainerClassName={'pages pagination'}
+                            activeClassName={'active'}
+                            pageClassName={'custom-pagination-li'}
+                            pageLinkClassName={'custom-pagination-a'}/>
                         </div>
                       </div>
                     </div>

@@ -205,7 +205,7 @@ class DetailTour extends React.Component {
                                     <span>Last in {distanceFromDays(new Date(tourTurn.start_date), new Date(tourTurn.end_date))} days</span>
                                   </div>
                                   <div className="col-lg-3 col-md-6 col-sm-3 col-6"> {distanceFromDays(Date.now(), new Date(tourTurn.start_date))} days left</div>
-                                  <div className="col-lg-5 col-md-12 col-sm-5 col-12  mg-bot15">{tourTurn.num_max_people - tourTurn.num_current_people} slots left</div>
+                                  <div className="col-lg-5 col-md-12 col-sm-5 col-12  mg-bot15">{tourTurn.num_max_people - tourTurn.num_current_people} vacancies left</div>
                                 </div>
                               </div>
                             </div>
