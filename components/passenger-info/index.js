@@ -82,18 +82,6 @@ class PassengerInfo extends React.Component {
     })
   }
 
-  handleSubmit(e){
-    e.preventDefault()
-    this.setState({
-      isSubmit: true
-    })
-
-    if(!this.validate()){
-      return
-    }
-
-  }
-
   validate(){
     if(!this.state.fullname){
       return false
@@ -116,7 +104,7 @@ class PassengerInfo extends React.Component {
 
   render() {
     return (
-      <div className="passenger-info">
+      <div className="passenger-info" id={"passenger-" + this.props.index}>
         <style jsx>{styles}</style>
         <div className="col-md-12 col-sm-12 col-12">
           <div className="title">

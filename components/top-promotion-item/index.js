@@ -50,7 +50,7 @@ class TopPromotionItem extends React.Component {
                   {!!item.discount &&
                     <span className="discount-price">{item.price.toLocaleString()}</span>
                   }
-                  <span>{!item.discount ? item.price.toLocaleString() : ' ' + (item.price * item.discount).toLocaleString()} VND</span>
+                  <span>{!item.discount ? item.price.toLocaleString() : ' ' + (item.price - item.price * item.discount).toLocaleString()} VND</span>
                 </div>
                 {!!item.discount &&
                   <span className="discount-mark">SALE</span>

@@ -12,7 +12,7 @@ import { formatDate, distanceFromDays } from '../../services/time.service'
 import { getSessionStorage } from '../../services/session-storage.service'
 import { KEY } from '../../constants/session-storage'
 import { UnmountClosed } from 'react-collapse'
-import { getCodeTour } from '../../services/utils.service'
+import { getCode } from '../../services/utils.service'
 import { useModal } from '../../actions'
 
 const mapStateToProps = state => {
@@ -38,10 +38,10 @@ class CheckOutPayment extends React.Component {
 
   static async getInitialProps({ query }) {
       let apiService = ApiService()
-      if(!query.tourId){
+      if(!query.tour_id){
         return { tourInfo: null }
       }
-      let tourInfo = await apiService.getToursTurnId(query.tourId)
+      let tourInfo = await apiService.getToursTurnId(query.tour_id)
       return { tourInfo: tourInfo.data };
   }
 
@@ -73,7 +73,7 @@ class CheckOutPayment extends React.Component {
 
     let passengerInfo = getSessionStorage(KEY.PASSENGER)
     if(!passengerInfo){
-      Router.pushRoute("checkout-passengers", {tourId: this.state.tourInfo.id})
+      Router.pushRoute("checkout-passengers", {tour_id: this.state.tourInfo.id})
     }
     else{
       passengerInfo = JSON.parse(passengerInfo)
@@ -126,13 +126,17 @@ class CheckOutPayment extends React.Component {
     }).then((data) => {
       this.timeout = setTimeout(() => {
         this.props.useModal && this.props.useModal({type: "LOADING", isOpen: false, data: ''})
-        Router.pushRoute("checkout-confirmation")
+        Router.pushRoute("checkout-confirmation", {book_code: data.book_tour.id})
       }, 1000)
-    }).catch(() => {
+    }).catch((e) => {
+      let error = "There is an error, please try book tour again!"
       this.timeout = setTimeout(() => {
         this.props.useModal && this.props.useModal({type: "LOADING", isOpen: false, data: ''})
+        if(e.result === 'This tour is full'){
+          error = 'This tour is full slot'
+        }
         this.setState({
-          error: "There is an error, please try book tour again!"
+          error: error
         })
       }, 1000)
     })
@@ -147,14 +151,28 @@ class CheckOutPayment extends React.Component {
   }
 
   getTotalPrice(){
-    const { tourInfo } = this.state
-    const adultPrice = tourInfo.discount ? tourInfo.price * tourInfo.discount : tourInfo.price
-    const childPrice = tourInfo.discount ? tourInfo.price * tourInfo.discount : tourInfo.price
+    const adultPrice = this.getPriceByAge("adults")
+    const childPrice = this.getPriceByAge("children")
     return this.state.num_adult * adultPrice + this.state.num_child * childPrice
   }
 
+  getPriceByAge(age){
+    let price = 0
+    let res = null
+    if(this.state.tourInfo){
+      res = this.state.tourInfo.price_passengers.find((item) => {
+        return item.type === age
+      })
+    }
+
+    if(res){
+      price = res.price
+    }
+    return price
+  }
+
   handleBack(){
-    Router.pushRoute("checkout-passengers", {tourId: this.state.tourInfo.id})
+    Router.pushRoute("checkout-passengers", {tour_id: this.state.tourInfo.id})
   }
 
   handleChooseMethod_1(){
@@ -230,9 +248,9 @@ class CheckOutPayment extends React.Component {
                           <p className="caption-text">Please choose one of below payment method:</p>
                           <div className="methods">
                             <div className="method">
-                              <input style={{display: 'none'}} value="Incash"
+                              <input style={{display: 'none'}} value="incash"
                                 type="radio" id="pament-method3" className="payment-method" name="method" ref={this.method_1}
-                                onChange={this.handleChangeMethod.bind(this)} checked={this.state.method === 'Incash'}/>
+                                onChange={this.handleChangeMethod.bind(this)} checked={this.state.method === 'incash'}/>
                               <div className="method-content">
                                 <label className={this.state.isShowMethod1 ? "title active" : "title"}
                                   onClick={this.handleChooseMethod_1.bind(this)}>
@@ -365,70 +383,73 @@ class CheckOutPayment extends React.Component {
                     {tourInfo &&
                       <aside>
                         <div className="book-info">
-                          <img alt="featured_img" src={tourInfo.tour.featured_img}/>
-                            <div className="info-area">
-                              <h3>
-                                <Link route="detail-tour" params={{id: tourInfo.id}}>
-                                  <a>{tourInfo.tour.name}</a>
-                                </Link>
-                              </h3>
-                              <ul className="list-unstyled">
-                                <li>
-                                  <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
-                                  Code:&nbsp;
-                                  <span>{getCodeTour(tourInfo.id)}</span>
+                          <div className="img-zone">
+                            <img alt="featured_img" src={tourInfo.tour.featured_img}/>
+                              {!!tourInfo.discount &&
+                                <span className="sale">SALE!</span>
+                              }
+                          </div>
+                          <div className="info-area">
+                            <h3>
+                              <Link route="detail-tour" params={{id: tourInfo.id}}>
+                                <a>{tourInfo.tour.name}</a>
+                              </Link>
+                            </h3>
+                            <ul className="list-unstyled">
+                              <li>
+                                <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
+                                Code:&nbsp;
+                                <span>{getCode(tourInfo.id)}</span>
+                              </li>
+                              <li>
+                                <i className="fa fa-calendar-minus-o" aria-hidden="true"><FaRegCalendarMinus /></i>
+                                Start date:&nbsp;
+                                <span>{formatDate(tourInfo.start_date)}</span>
+                              </li>
+                              <li>
+                                <i className="fa fa-calendar-plus-o" aria-hidden="true"><FaRegCalendarPlus /></i>
+                                End date:&nbsp;
+                                <span>{formatDate(tourInfo.end_date)}</span>
+                              </li>
+                              <li>
+                                <i className="fa fa-calendar" aria-hidden="true"><FaRegCalendarAlt /></i>
+                                Lasting:&nbsp;
+                                <span>{distanceFromDays(new Date(tourInfo.start_date), new Date(tourInfo.end_date))} days</span>
+                              </li>
+                              {!!this.state.num_adult && !!this.getPriceByAge('adults') &&
+                                <li id="liAdult" className="display-hidden" style={{display: 'list-item'}}>
+                                  <i className="fa fa-user-secret" aria-hidden="true"><FaUserSecret /></i>
+                                  Adult price:&nbsp;
+                                  <span>
+                                    <strong>
+                                      {this.getPriceByAge('adults').toLocaleString()}
+                                    </strong> VND
+                                  </span>
+                                  <span id="adult"> X {this.state.num_adult}</span>
                                 </li>
-                                <li>
-                                  <i className="fa fa-calendar-minus-o" aria-hidden="true"><FaRegCalendarMinus /></i>
-                                  Start date:&nbsp;
-                                  <span>{formatDate(tourInfo.start_date)}</span>
+                              }
+                              {!!this.state.num_child && this.getPriceByAge('children') &&
+                                <li id="liChild" className="display-hidden" style={{display: 'list-item'}}>
+                                  <i className="fa fa-child" aria-hidden="true"><FaChild /></i>
+                                  Children price:&nbsp;
+                                  <span>
+                                    <strong>
+                                      {this.getPriceByAge('children').toLocaleString()}
+                                    </strong> VND
+                                  </span>
+                                  <span id="child"> X {this.state.num_child}</span>
                                 </li>
-                                <li>
-                                  <i className="fa fa-calendar-plus-o" aria-hidden="true"><FaRegCalendarPlus /></i>
-                                  End date:&nbsp;
-                                  <span>{formatDate(tourInfo.end_date)}</span>
-                                </li>
-                                <li>
-                                  <i className="fa fa-calendar" aria-hidden="true"><FaRegCalendarAlt /></i>
-                                  Lasting:&nbsp;
-                                  <span>{distanceFromDays(new Date(tourInfo.start_date), new Date(tourInfo.end_date))} days</span>
-                                </li>
-                                {!!this.state.adult &&
-                                  <li id="liAdult" className="display-hidden" style={{display: 'list-item'}}>
-                                    <i className="fa fa-user-secret" aria-hidden="true"><FaUserSecret /></i>
-                                    Adult price:&nbsp;
-                                    <span>
-                                      <strong>
-                                        {tourInfo.discount ? (tourInfo.price * tourInfo.discount).toLocaleString() :
-                                        tourInfo.price.toLocaleString()}
-                                      </strong> VND
-                                    </span>
-                                    <span id="adult"> X {this.state.adult}</span>
-                                  </li>
-                                }
-                                {!!this.state.child &&
-                                  <li id="liChild" className="display-hidden" style={{display: 'list-item'}}>
-                                    <i className="fa fa-child" aria-hidden="true"><FaChild /></i>
-                                    Children price:&nbsp;
-                                    <span>
-                                      <strong>
-                                        {tourInfo.discount ? (tourInfo.price * tourInfo.discount).toLocaleString() :
-                                        tourInfo.price.toLocaleString()}
-                                      </strong> VND
-                                    </span>
-                                    <span id="child"> X {this.state.child}</span>
-                                  </li>
-                                }
-                                {/*<li id="liExtraServices" className="display-hidden" style={{display: 'none'}}>
-                                  <i className="fa fa-cart-plus" aria-hidden="true" />
-                                  Dịch vụ cộng thêm:
-                                  <span><strong id="priceExtraServices">0</strong> đ</span>
-                                </li>*/}
-                              </ul>
-                              <div className="price-total">
-                                <h2>Total price: <span>{this.getTotalPrice().toLocaleString()}</span> VND</h2>
-                              </div>
+                              }
+                              {/*<li id="liExtraServices" className="display-hidden" style={{display: 'none'}}>
+                                <i className="fa fa-cart-plus" aria-hidden="true" />
+                                Dịch vụ cộng thêm:
+                                <span><strong id="priceExtraServices">0</strong> đ</span>
+                              </li>*/}
+                            </ul>
+                            <div className="price-total">
+                              <h2>Total price: <span>{this.getTotalPrice().toLocaleString()}</span> VND</h2>
                             </div>
+                          </div>
                         </div>
                       </aside>
                     }

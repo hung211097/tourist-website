@@ -22,6 +22,7 @@ export default () => {
     },
     getToursTurn: (page = 1, limit = 10, params = {}) => {
       let url = baseURL + `tour_turn/getAll?page=${page}&per_page=${limit}`
+      url += params.isUnique ? "&isUniqueTour=true" : ''
       return fetchCached(url)
     },
     getToursTurnId: (id) => {
@@ -41,6 +42,19 @@ export default () => {
     },
     getStatisticNumber: () => {
       let url = baseURL + `getNumOfTourAndLocation`
+      return fetchCached(url)
+    },
+    getBookTourHistoryById: (id, params = {}) => {
+      let url = baseURL + `book_tour/getHistoryBookTourById/${id}`
+      url += params.isTour ? "?tour=true" : ''
+      return fetchCached(url)
+    },
+    getPassengersInBookTour: (id, page = 1, limit = 5) => {
+      let url = baseURL + `book_tour/getPassengerInBookTourHistory/${id}?page=${page}&per_page=${limit}`
+      return fetchCached(url)
+    },
+    getBookToursHistory: (page = 1, limit = 5) => {
+      let url = baseURL + `book_tour/getHistoryBookTourByUser?page=${page}&per_page=${limit}`
       return fetchCached(url)
     },
     register: (data) => {

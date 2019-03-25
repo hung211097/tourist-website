@@ -11,9 +11,9 @@ import { wizardStep } from '../../constants'
 import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaUserSecret, FaChild, FaRegCalendarAlt } from "react-icons/fa"
 import { formatDate, distanceFromDays } from '../../services/time.service'
 import { getUserAuth } from 'services/auth.service'
-import { setSessionStorage, removeItem } from '../../services/session-storage.service'
+import { getSessionStorage, setSessionStorage, removeItem } from '../../services/session-storage.service'
 import { KEY } from '../../constants/session-storage'
-import { getCodeTour } from '../../services/utils.service'
+import { getCode, moveToElementId } from '../../services/utils.service'
 
 const mapStateToProps = state => {
   return {
@@ -31,10 +31,10 @@ class CheckOutPassengers extends React.Component {
 
   static async getInitialProps({ query }) {
       let apiService = ApiService()
-      if(!query.tourId){
+      if(!query.tour_id){
         return { tourInfo: null }
       }
-      let tourInfo = await apiService.getToursTurnId(query.tourId)
+      let tourInfo = await apiService.getToursTurnId(query.tour_id)
       return { tourInfo: tourInfo.data };
   }
 
@@ -50,7 +50,8 @@ class CheckOutPassengers extends React.Component {
       tourInfo: this.props.tourInfo,
       adult: 1,
       child: 0,
-      passengers: []
+      passengers: [],
+      loading: false
     }
   }
 
@@ -69,8 +70,13 @@ class CheckOutPassengers extends React.Component {
             name: user.fullname ? user.fullname : '',
             email: user.email ? user.email : '',
             phone: user.phone ?  user.phone : '',
+            address: user.address ?  user.address : ''
         })
     }
+  }
+
+  componentWillUnmount(){
+    this.interval && clearInterval(this.interval)
   }
 
   handleChangeName(e){
@@ -117,6 +123,10 @@ class CheckOutPassengers extends React.Component {
     if(!this.validate()){
       return
     }
+
+    this.setState({
+      loading: true
+    })
     const tourInfo = JSON.stringify({
       contactInfo: {
         name: this.state.name,
@@ -130,7 +140,15 @@ class CheckOutPassengers extends React.Component {
     })
 
     setSessionStorage(KEY.PASSENGER, tourInfo)
-    Router.pushRoute("checkout-payment", {tourId: this.state.tourInfo.id})
+    this.interval = setInterval(() => {
+      if(getSessionStorage(KEY.PASSENGER)){
+        this.setState({
+          loading: false
+        })
+        clearInterval(this.interval)
+        Router.pushRoute("checkout-payment", {tour_id: this.state.tourInfo.id})
+      }
+    }, 1000)
   }
 
   validate(){
@@ -139,33 +157,41 @@ class CheckOutPassengers extends React.Component {
     }
 
     if(!this.state.name){
+      moveToElementId('fullname')
       return false
     }
 
     if(!this.state.address){
+      moveToElementId('address')
       return false
     }
 
     if(!this.state.phone || !validatePhone(this.state.phone)){
+      moveToElementId('phone')
       return false
     }
 
     if(!this.state.email || !validateEmail(this.state.email)){
+      moveToElementId('email')
       return false
     }
 
     if(!this.state.passengers.length){
+      moveToElementId('passenger-0')
       return false
     }
 
-    for(let i = 0; i < this.state.passengers.length; i++){
+    for(let i = 0; i < this.state.adult + this.state.child; i++){
       if(!this.state.passengers[i]){
+        moveToElementId('passenger-' + i)
         return false
       }
       if(!this.state.passengers[i].fullname || !this.state.passengers[i].sex || !this.state.passengers[i].birthdate){
+        moveToElementId('passenger-' + i)
         return false
       }
       if(this.state.passengers[i].phone && !validatePhone(this.state.passengers[i].phone)){
+        moveToElementId('passenger-' + i)
         return false
       }
     }
@@ -174,9 +200,8 @@ class CheckOutPassengers extends React.Component {
   }
 
   getTotalPrice(){
-    const { tourInfo } = this.state
-    const adultPrice = tourInfo.discount ? tourInfo.price * tourInfo.discount : tourInfo.price
-    const childPrice = tourInfo.discount ? tourInfo.price * tourInfo.discount : tourInfo.price
+    const adultPrice = this.getPriceByAge("adults")
+    const childPrice = this.getPriceByAge("children")
     return this.state.adult * adultPrice + this.state.child * childPrice
   }
 
@@ -186,6 +211,32 @@ class CheckOutPassengers extends React.Component {
     this.setState({
       passengers: temp
     })
+  }
+
+  findAgePassenger(age){
+    let res = null
+    if(this.state.tourInfo){
+      res = this.state.tourInfo.price_passengers.find((item) => {
+        return item.type === age
+      })
+    }
+
+    return res
+  }
+
+  getPriceByAge(age){
+    let price = 0
+    let res = null
+    if(this.state.tourInfo){
+      res = this.state.tourInfo.price_passengers.find((item) => {
+        return item.type === age
+      })
+    }
+
+    if(res){
+      price = res.price
+    }
+    return price
   }
 
   render() {
@@ -225,41 +276,46 @@ class CheckOutPassengers extends React.Component {
                           <div className="title">
                             <h3>NUMBER OF PASSENGERS</h3>
                           </div>
-                          <div className="row adult-zone">
-                            <div className="col-md-5 col-sm-5 col-12">
-                              <div className="form-group">
-                                <label htmlFor="adult">Adult (*)</label>
-                                <input type="number" name="adult" className={this.state.isSubmit && !+this.state.adult ? "error" : ""}
-                                  id="adult" value={this.state.adult} min={1} pattern="^\d+$"
-                                  onChange={this.handleChangeAdult.bind(this)}/>
-                                {this.state.isSubmit && !this.state.adult &&
-                                  <p className="error">This field is required minimum 1</p>
-                                }
+                          {this.findAgePassenger('adults') &&
+                            <div className="row adult-zone">
+                              <div className="col-md-5 col-sm-5 col-12">
+                                <div className="form-group">
+                                  <label htmlFor="adult">Adult (*)</label>
+                                  <input type="number" name="adult" className={this.state.isSubmit && !+this.state.adult ? "error" : ""}
+                                    id="adult" value={this.state.adult} min={1} pattern="^\d+$"
+                                    onChange={this.handleChangeAdult.bind(this)}/>
+                                  {this.state.isSubmit && !this.state.adult &&
+                                    <p className="error">This field is required minimum 1</p>
+                                  }
+                                </div>
                               </div>
-                            </div>
-                            <div className="col-md-7 col-sm-7 col-12">
-                            </div>
-                          </div>
-                          <div className="nd_options_height_10"/>
-                          <div className="row child-zone">
-                            <div className="col-md-5 col-sm-5 col-12">
-                              <div className="form-group">
-                                <label>Children </label>
-                                <input type="number" name="child" value={this.state.child} min={0} pattern="^\d+$"
-                                  onChange={this.handleChangeChild.bind(this)}/>
-                                <span className="error" />
+                              <div className="col-md-7 col-sm-7 col-12">
                               </div>
+                              <div className="nd_options_height_10"/>
                             </div>
-                            <div className="col-md-7 col-sm-7 col-12">
-                              <p className="caption-text">For children under 12 years old</p>
+                          }
+                          {this.findAgePassenger('children') &&
+                            <div className="row child-zone">
+                              <div className="col-md-5 col-sm-5 col-12">
+                                <div className="form-group">
+                                  <label>Children </label>
+                                  <input type="number" name="child" value={this.state.child} min={0} pattern="^\d+$"
+                                    onChange={this.handleChangeChild.bind(this)}/>
+                                  <span className="error" />
+                                </div>
+                              </div>
+                              <div className="col-md-7 col-sm-7 col-12">
+                                <p className="caption-text">For children under 12 years old</p>
+                              </div>
+                              <div className="nd_options_height_10"/>
                             </div>
-                          </div>
+                          }
                           <div className="nd_options_height_30"/>
                           <div className="title">
                             <h3>CONTACT INFORMATION</h3>
                           </div>
                           <div className="row contact-zone">
-                            <div className="form-group col-sm-6 col-12">
+                            <div className="form-group col-sm-6 col-12" id="fullname">
                               <div className="form-group">
                                 <label htmlFor="name">Fullname (*)</label>
                                 <input type="text" name="name" id="name" value={this.state.name}
@@ -270,7 +326,7 @@ class CheckOutPassengers extends React.Component {
                                   }
                               </div>
                             </div>
-                            <div className="form-group col-sm-6 col-12">
+                            <div className="form-group col-sm-6 col-12" id="phone">
                               <div className="form-group">
                                 <label htmlFor="phone">Phone number (*)</label>
                                 <input type="text" name="phone" id="phone" value={this.state.phone}
@@ -288,7 +344,7 @@ class CheckOutPassengers extends React.Component {
                             </div>
                           </div>
                           <div className="row contact-zone">
-                            <div className="form-group col-sm-6 col-xs-12">
+                            <div className="form-group col-sm-6 col-xs-12" id="email">
                               <div className="form-group has-success">
                                 <label htmlFor="email">Email (*)</label>
                                 <input type="email" id="email" name="email" data-validation="required email"
@@ -303,7 +359,7 @@ class CheckOutPassengers extends React.Component {
                                 }
                               </div>
                             </div>
-                            <div className="form-group col-sm-6 col-xs-12">
+                            <div className="form-group col-sm-6 col-xs-12" id="address">
                               <div className="form-group has-success">
                                 <label htmlFor="address">Address (*)</label>
                                 <input type="text" id="address" name="address" data-validation="required"
@@ -340,6 +396,9 @@ class CheckOutPassengers extends React.Component {
                                   <a onClick={this.handleSubmit.bind(this)} className="co-btn">Next</a>
                                 </li>
                               </ul>
+                              {this.state.loading &&
+                                <img src="/static/svg/loading.svg"/>
+                              }
                             </div>
                           </div>
                         </div>
@@ -350,70 +409,73 @@ class CheckOutPassengers extends React.Component {
                     {tourInfo &&
                       <aside>
                         <div className="book-info">
-                          <img alt="featured_img" src={tourInfo.tour.featured_img}/>
-                            <div className="info-area">
-                              <h3>
-                                <Link route="detail-tour" params={{id: tourInfo.id}}>
-                                  <a>{tourInfo.tour.name}</a>
-                                </Link>
-                              </h3>
-                              <ul className="list-unstyled">
-                                <li>
-                                  <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
-                                  Code:&nbsp;
-                                  <span>{getCodeTour(tourInfo.id)}</span>
+                          <div className="img-zone">
+                            <img alt="featured_img" src={tourInfo.tour.featured_img}/>
+                            {!!tourInfo.discount &&
+                              <span className="sale">SALE!</span>
+                            }
+                          </div>
+                          <div className="info-area">
+                            <h3>
+                              <Link route="detail-tour" params={{id: tourInfo.id}}>
+                                <a>{tourInfo.tour.name}</a>
+                              </Link>
+                            </h3>
+                            <ul className="list-unstyled">
+                              <li>
+                                <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
+                                Code:&nbsp;
+                                <span>{getCode(tourInfo.id)}</span>
+                              </li>
+                              <li>
+                                <i className="fa fa-calendar-minus-o" aria-hidden="true"><FaRegCalendarMinus /></i>
+                                Start date:&nbsp;
+                                <span>{formatDate(tourInfo.start_date)}</span>
+                              </li>
+                              <li>
+                                <i className="fa fa-calendar-plus-o" aria-hidden="true"><FaRegCalendarPlus /></i>
+                                End date:&nbsp;
+                                <span>{formatDate(tourInfo.end_date)}</span>
+                              </li>
+                              <li>
+                                <i className="fa fa-calendar" aria-hidden="true"><FaRegCalendarAlt /></i>
+                                Lasting:&nbsp;
+                                <span>{distanceFromDays(new Date(tourInfo.start_date), new Date(tourInfo.end_date))} days</span>
+                              </li>
+                              {!!this.state.adult && !!this.getPriceByAge('adults') &&
+                                <li id="liAdult" className="display-hidden" style={{display: 'list-item'}}>
+                                  <i className="fa fa-user-secret" aria-hidden="true"><FaUserSecret /></i>
+                                  Adult price:&nbsp;
+                                  <span>
+                                    <strong>
+                                      {this.getPriceByAge('adults').toLocaleString()}
+                                    </strong> VND
+                                  </span>
+                                  <span id="adult"> X {this.state.adult}</span>
                                 </li>
-                                <li>
-                                  <i className="fa fa-calendar-minus-o" aria-hidden="true"><FaRegCalendarMinus /></i>
-                                  Start date:&nbsp;
-                                  <span>{formatDate(tourInfo.start_date)}</span>
+                              }
+                              {!!this.state.child && this.getPriceByAge('children') &&
+                                <li id="liChild" className="display-hidden" style={{display: 'list-item'}}>
+                                  <i className="fa fa-child" aria-hidden="true"><FaChild /></i>
+                                  Children price:&nbsp;
+                                  <span>
+                                    <strong>
+                                      {this.getPriceByAge('children').toLocaleString()}
+                                    </strong> VND
+                                  </span>
+                                  <span id="child"> X {this.state.child}</span>
                                 </li>
-                                <li>
-                                  <i className="fa fa-calendar-plus-o" aria-hidden="true"><FaRegCalendarPlus /></i>
-                                  End date:&nbsp;
-                                  <span>{formatDate(tourInfo.end_date)}</span>
-                                </li>
-                                <li>
-                                  <i className="fa fa-calendar" aria-hidden="true"><FaRegCalendarAlt /></i>
-                                  Lasting:&nbsp;
-                                  <span>{distanceFromDays(new Date(tourInfo.start_date), new Date(tourInfo.end_date))} days</span>
-                                </li>
-                                {!!this.state.adult &&
-                                  <li id="liAdult" className="display-hidden" style={{display: 'list-item'}}>
-                                    <i className="fa fa-user-secret" aria-hidden="true"><FaUserSecret /></i>
-                                    Adult price:&nbsp;
-                                    <span>
-                                      <strong>
-                                        {tourInfo.discount ? (tourInfo.price * tourInfo.discount).toLocaleString() :
-                                        tourInfo.price.toLocaleString()}
-                                      </strong> VND
-                                    </span>
-                                    <span id="adult"> X {this.state.adult}</span>
-                                  </li>
-                                }
-                                {!!this.state.child &&
-                                  <li id="liChild" className="display-hidden" style={{display: 'list-item'}}>
-                                    <i className="fa fa-child" aria-hidden="true"><FaChild /></i>
-                                    Children price:&nbsp;
-                                    <span>
-                                      <strong>
-                                        {tourInfo.discount ? (tourInfo.price * tourInfo.discount).toLocaleString() :
-                                        tourInfo.price.toLocaleString()}
-                                      </strong> đ
-                                    </span>
-                                    <span id="child"> X {this.state.child}</span>
-                                  </li>
-                                }
-                                {/*<li id="liExtraServices" className="display-hidden" style={{display: 'none'}}>
-                                  <i className="fa fa-cart-plus" aria-hidden="true" />
-                                  Dịch vụ cộng thêm:
-                                  <span><strong id="priceExtraServices">0</strong> đ</span>
-                                </li>*/}
-                              </ul>
-                              <div className="price-total">
-                                <h2>Total price: <span>{this.getTotalPrice().toLocaleString()}</span> VND</h2>
-                              </div>
+                              }
+                              {/*<li id="liExtraServices" className="display-hidden" style={{display: 'none'}}>
+                                <i className="fa fa-cart-plus" aria-hidden="true" />
+                                Dịch vụ cộng thêm:
+                                <span><strong id="priceExtraServices">0</strong> đ</span>
+                              </li>*/}
+                            </ul>
+                            <div className="price-total">
+                              <h2>Total price: <span>{this.getTotalPrice().toLocaleString()}</span> VND</h2>
                             </div>
+                          </div>
                         </div>
                       </aside>
                     }

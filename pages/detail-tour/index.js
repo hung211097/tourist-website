@@ -5,8 +5,8 @@ import { Layout } from 'components'
 import ApiService from 'services/api.service'
 import { Router, Link } from 'routes'
 import { RatingStar, BtnViewMore, MyMap, TourItem, Lightbox } from 'components'
-import { getCodeTour } from '../../services/utils.service'
-import { FaRegCalendarAlt } from "react-icons/fa"
+import { getCode } from '../../services/utils.service'
+import { FaRegCalendarAlt, FaEye, FaSuitcase } from "react-icons/fa"
 import { formatDate, distanceFromDays } from '../../services/time.service'
 import validateEmail from '../../services/validates/email.js'
 
@@ -29,8 +29,13 @@ class DetailTour extends React.Component {
     this.tabs = [
       'Description',
       'Detailed',
+      'Additional Information',
       'Reviews'
     ]
+    this.olds = {
+      'adults': 'Adult',
+      'children': 'Children'
+    }
     this.state = {
       tourTurn: this.props.tourInfo,
       tabId: 0,
@@ -179,7 +184,13 @@ class DetailTour extends React.Component {
                         <div className="summary">
                           <h1 className="product_title entry-title">{tourTurn.tour.name}</h1>
                           <div className="rating-zone">
-                            <RatingStar hideNumber rate={3}/>
+                            <RatingStar rate={3}/>
+                          </div>
+                          <div className="views-zone">
+                            <span>
+                              <i><FaEye /></i>
+                              1,000 views
+                            </span>
                           </div>
                           <p className="price">
                             {!!tourTurn.discount &&
@@ -189,7 +200,7 @@ class DetailTour extends React.Component {
                             }
                             <ins>
                               <span className="amount">
-                                {tourTurn.discount ? (tourTurn.discount * tourTurn.price).toLocaleString() : tourTurn.price.toLocaleString()} VND
+                                {tourTurn.discount ? (tourTurn.price - tourTurn.discount * tourTurn.price).toLocaleString() : tourTurn.price.toLocaleString()} VND
                               </span>
                             </ins>
                           </p>
@@ -197,7 +208,7 @@ class DetailTour extends React.Component {
                             <div className="col-12">
                               <div className="row" style={{marginBottom: '15px', marginTop: '30px'}}>
                                 <div className="col-md-4 col-sm-4 col-6">Tour code:</div>
-                                <div className="col-md-8 col-sm-8 col-6">{getCodeTour(tourTurn.id)}</div>
+                                <div className="col-md-8 col-sm-8 col-6">{getCode(tourTurn.id)}</div>
                               </div>
                               <div className="row">
                                 <div className="col-lg-4 col-md-6 col-sm-4 col-6 mg-10">Start date:</div>
@@ -218,7 +229,7 @@ class DetailTour extends React.Component {
                                 </div>
                               </div>
                             </div>
-                            <Link route="checkout-passengers" params={{tourId: tourTurn.id}}>
+                            <Link route="checkout-passengers" params={{tour_id: tourTurn.id}}>
                               <a className="co-btn green w-auto mt-4">BOOK NOW</a>
                             </Link>
                             {/*<div className="product_meta">
@@ -297,6 +308,42 @@ class DetailTour extends React.Component {
                       </div>
                     }
                     {this.state.tabId === 2 &&
+                      <div className="tab-panel">
+                        <div className="row">
+                          <div className="col-12">
+                            <div className="wrapper">
+                              <div className="addtional-info">
+                                <p>
+                                  <i><FaSuitcase style={{position: 'relative', top: '-2px'}}/></i> Price of tour
+                                </p>
+                                {!!tourTurn.price_passengers.length &&
+                                  <table className="table table-bordered">
+                                    <thead>
+                                      <tr>
+                                        <td>Age of Passsenger</td>
+                                        <td>Price</td>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {tourTurn.price_passengers.map((item, key) => {
+                                          return(
+                                            <tr key={key}>
+                                              <td>{this.olds[item.type]}</td>
+                                              <td>{item.price.toLocaleString()} VND</td>
+                                            </tr>
+                                          )
+                                        })
+                                      }
+                                    </tbody>
+                                  </table>
+                                }
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    }
+                    {this.state.tabId === 3 &&
                       <div className="tab-panel">
                         <div className="reviews">
                           <div className="comments">

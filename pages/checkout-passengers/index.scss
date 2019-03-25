@@ -56,8 +56,30 @@
       box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.4);
       width: 100%;
       margin-bottom: 0;
-      img{
-        width: 100%
+      .img-zone{
+        position: relative;
+        img{
+          width: 100%
+        }
+        .sale{
+          top: 20px !important;
+          right: 20px !important;
+          left: initial !important;
+          margin: -.5em -.5em 0 0;
+          border-radius: 0px;
+          min-width: initial;
+          min-height: initial;
+          padding: 8px;
+          line-height: 13px;
+          font-size: 13px;
+          text-transform: uppercase;
+          font-weight: normal;
+          background-color: #1bbc9b;
+          position: absolute;
+          text-align: center;
+          color: #fff;
+          z-index: 9;
+        }
       }
       .info-area{
         padding: 20px;
@@ -101,11 +123,11 @@
           h2{
             text-transform: capitalize;
             color: #222222;
-            font-size: 26px;
+            font-size: 22px;
             font-weight: 400;
             span{
               color: #ff891e;
-              font-size: 25px;
+              font-size: 23px;
               font-weight: 700;
             }
           }
@@ -146,8 +168,14 @@
         }
       }
       .button-area{
-        text-align: left;
+        text-align: center;
         padding: 60px 0;
+        img{
+          margin-left: 100px;
+        }
+        @media screen and (max-width: 576px){
+          padding: 20px 0;
+        }
         width: 100%;
         display: block;
         .list-inline{

@@ -100,9 +100,21 @@
       }
       .rating-zone{
         margin-top: -15px;
-        margin-bottom: 1.618em;
+        margin-bottom: 1.1em;
         line-height: 2;
-        display: block;
+        display: inline-block;
+      }
+      .views-zone{
+        margin-left: 30px;
+        display: inline-block;
+        font-size: 15px;
+        position: relative;
+        top: -1px;
+        i{
+          position: relative;
+          top: -2px;
+          margin-right: 5px;
+        }
       }
       .price{
         font-size: 30px;
@@ -222,6 +234,27 @@
           font-weight: normal;
           margin-bottom: 20px;
           color: #5e6d81;
+        }
+        .addtional-info{
+          p{
+            text-transform: uppercase;
+            color: #333;
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 15px;
+            margin-top: 10px;
+          }
+          table{
+            thead{
+              tr{
+                font-weight: 700;
+                font-size: 16px;
+              }
+            }
+            tbody{
+              font-size: 15px;
+            }
+          }
         }
       }
     }
