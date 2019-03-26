@@ -11,7 +11,7 @@ import { wizardStep } from '../../constants'
 import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaUserSecret, FaChild, FaRegCalendarAlt } from "react-icons/fa"
 import { formatDate, distanceFromDays } from '../../services/time.service'
 import { getUserAuth } from 'services/auth.service'
-import { getSessionStorage, setSessionStorage, removeItem } from '../../services/session-storage.service'
+import { setSessionStorage, removeItem } from '../../services/session-storage.service'
 import { KEY } from '../../constants/session-storage'
 import { getCode, moveToElementId } from '../../services/utils.service'
 
@@ -76,7 +76,7 @@ class CheckOutPassengers extends React.Component {
   }
 
   componentWillUnmount(){
-    this.interval && clearInterval(this.interval)
+    this.timeout && clearTimeout(this.timeout)
   }
 
   handleChangeName(e){
@@ -140,14 +140,12 @@ class CheckOutPassengers extends React.Component {
     })
 
     setSessionStorage(KEY.PASSENGER, tourInfo)
-    this.interval = setInterval(() => {
-      if(getSessionStorage(KEY.PASSENGER)){
-        this.setState({
-          loading: false
-        })
-        clearInterval(this.interval)
-        Router.pushRoute("checkout-payment", {tour_id: this.state.tourInfo.id})
-      }
+    this.timeout = setTimeout(() => {
+      this.setState({
+        loading: false
+      })
+      clearTimeout(this.timeout)
+      Router.pushRoute("checkout-payment", {tour_id: this.state.tourInfo.id})
     }, 1000)
   }
 

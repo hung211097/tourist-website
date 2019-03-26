@@ -20,7 +20,7 @@
           border-top: 1px dashed #ebebeb;
         }
       }
-      .contact-info, .checkout-info{
+      .contact-info, .checkout-info, .tour-info{
         font-size: 14px;
         color: #474848;
         margin-top: 30px;
@@ -48,72 +48,103 @@
           }
         }
       }
+      .tour-info{
+        margin-top: 20px;
+        .title{
+          margin-bottom: 20px;
+        }
+        .content-tour{
+          margin-top: 20px;
+          h3{
+            margin: 0;
+            font-weight: 600;
+            @media screen and (max-width: 576px){
+              margin: 15px 0;
+            }
+          }
+          p{
+            margin: 5px 0;
+            i{
+              margin-right: 5px;
+            }
+            &.total{
+              font-weight: 600;
+              span{
+                font-weight: 600;
+              }
+            }
+          }
+        }
+      }
       .pax-info{
         margin-top: 30px;
         .table-responsive{
-          max-height: 225px;
-          overflow: auto;
-        }
-        .passenger-info{
-          margin-top: 30px;
-          .passenger-table {
+          overflow-y: auto;
+          overflow-x: hidden;
+          max-height: 300px;
+          @media screen and (max-width: 767px){
             width: 100%;
-            thead{
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+          }
+        }
+        .passenger-table {
+          width: 100%;
+          thead{
+            th{
+              border-bottom: 1px solid #ddd;
+              border-top: 0;
+              font-weight: normal;
+              // border: none;
+              vertical-align: bottom;
+              padding: 8px;
+              line-height: 1.42857143;
+              font-weight: 700;
+            }
+            @media screen and (max-width: 768px){
               th{
-                border-bottom: 1px solid #ddd;
-                border-top: 0;
-                font-weight: normal;
-                // border: none;
-                vertical-align: bottom;
-                padding: 8px;
-                line-height: 1.42857143;
-                font-weight: 700;
-              }
-              @media screen and (max-width: 768px){
-                th{
-                  white-space: nowrap;
-                }
+                white-space: nowrap;
               }
             }
-            tbody{
-              td{
-                @media screen and (max-width: 768px){
-                  white-space: nowrap;
+          }
+          tbody{
+            td{
+              @media screen and (max-width: 768px){
+                white-space: nowrap;
+              }
+              padding: 8px;
+              line-height: 1.42857143;
+              vertical-align: top;
+              border-top: 1px solid #ddd;
+              a{
+                transition: all 0.3s ease-in-out;
+                color: #ff891e;
+                &:hover, &:focus{
+                  opacity: 0.8;
+                  outline: 0;
+                  color: #23527c;
                 }
-                padding: 8px;
-                line-height: 1.42857143;
-                vertical-align: top;
-                border-top: 1px solid #ddd;
+              }
+              &.action{
+                &.danger{
+                  a{
+                    background: #D9534F;
+                  }
+                }
                 a{
-                  transition: all 0.3s ease-in-out;
-                  color: #ff891e;
-                  &:hover, &:focus{
+                  display: inline-block;
+                  padding: 3px 9px;
+                  color: #fff;
+                  background-color: #337ab7;
+                  &:hover{
                     opacity: 0.8;
                     outline: 0;
-                    color: #23527c;
                   }
                 }
-                &.action{
-                  &.danger{
-                    a{
-                      background: #D9534F;
-                    }
-                  }
-                  a{
-                    display: inline-block;
-                    padding: 3px 9px;
-                    color: #fff;
-                    background-color: #337ab7;
-                    &:hover{
-                      opacity: 0.8;
-                      outline: 0;
-                    }
-                  }
-                }
-                &.code{
-                  a{
-                    font-weight: bold;
-                  }
+              }
+              &.code{
+                a{
+                  font-weight: bold;
                 }
               }
             }

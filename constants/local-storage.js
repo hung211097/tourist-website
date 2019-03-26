@@ -1,4 +1,5 @@
 export const KEY = {
   LOCATION: 'location',
-  TOKEN: 'accessToken'
+  TOKEN: 'accessToken',
+  PASSENGER: 'passenger_info'
 }

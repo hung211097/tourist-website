@@ -3,11 +3,16 @@ import { LayoutProfile } from 'components'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-// import ApiService from 'services/api.service'
-// import { formatDate } from '../../services/time.service'
+import ApiService from 'services/api.service'
+import { formatDate } from '../../services/time.service'
 // import _ from 'lodash'
 import { Link } from 'routes'
 import InfiniteScroll from 'react-infinite-scroller'
+import ReactTable from 'react-table'
+import { getCode, shrinkCode, capitalize } from '../../services/utils.service'
+import matchSorter from 'match-sorter'
+import { useModal } from '../../actions'
+import { modal } from '../../constants'
 
 const mapStateToProps = (state) => {
     return {
@@ -15,24 +20,56 @@ const mapStateToProps = (state) => {
     }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return{
+    useModal: (data) => {dispatch(useModal(data))}
+  }
+}
+
 class MyBooking extends React.Component {
     displayName = 'My Booking'
     static propTypes = {
-        dispatch: PropTypes.func,
+        useModal: PropTypes.func,
         user: PropTypes.object
     }
 
     constructor(props) {
       super(props)
-      // this.apiService = ApiService()
+      this.apiService = ApiService()
       this.state = {
         page: 1,
-        hasMore: false
+        hasMore: true,
+        bookTours: [],
       }
     }
 
     loadMore(){
+      if(this.state.page > 0){
+        this.apiService.getBookToursHistory(this.state.page, 6).then((res) => {
+          this.setState({
+            bookTours: [...this.state.bookTours, ...res.data],
+            page: res.next_page,
+            hasMore: res.next_page > 0
+          })
+        })
+      }
+    }
 
+    componentDidMount(){
+      this.loadMore()
+    }
+
+    handleCancelTour(value){
+      this.props.useModal && this.props.useModal({type: modal.CANCEL, isOpen: true, data: this.getTourById(value)})
+    }
+
+    getTourById(id){
+      let res = null
+      res = this.state.bookTours.find((item) => {
+        return item.id === id
+      })
+
+      return res
     }
 
     render() {
@@ -50,50 +87,101 @@ class MyBooking extends React.Component {
                           <InfiniteScroll
                             pageStart={0}
                             loadMore={this.loadMore.bind(this)}
-                            hasMore={this.state.hasMore}
+                            hasMore={this.state.page > 0}
                             useWindow={false}
-                            threshold={10}>
-                            <table id="list-booking" className="table">
-                              <thead>
-                                <tr>
-                                  <th>Code</th>
-                                  <th>Booking Day</th>
-                                  <th>Total slot</th>
-                                  <th>Total money</th>
-                                  <th>Status</th>
-                                  <th width="100"></th>
-                                  <th width="100"></th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {[1,2,3,4,5,6].map((item, key) => {
-                                    return(
-                                      <tr className="post" key={key}>
-                                        <td className="code">
-                                          <Link route="detail-booked-tour" params={{id: 9522}}>
-                                            <a>0009522</a>
-                                          </Link>
-                                        </td>
-                                        <td>08/03/2019 10:04</td>
-                                        <td className="seats">
-                                            1
-                                        </td>
-                                        <td>2.179.000 VNĐ</td>
-                                        <td>Mới</td>
-                                        <td className="action">
-                                          <Link route="detail-booked-tour" params={{id: 9522}}>
-                                            <a>Chi tiết</a>
-                                          </Link>
-                                        </td>
-                                        <td className="action danger">
-                                            <a href="/vi/my-booking/9522">Hủy tour</a>
-                                        </td>
-                                      </tr>
-                                    )
-                                  })
+                            threshold={400}
+                            initialLoad={false}>
+                            <ReactTable
+                              data={this.state.bookTours}
+                              className="-striped -highlight"
+                              showPagination={false}
+                              filterable={true}
+                              columns={[
+                                {
+                                  Header: 'Code',
+                                  accessor: d => getCode(d.id),
+                                  id: 'id',
+                                  className: "text-center",
+                                  style: {fontWeight: '700', color: '#ff891e'},
+                                  filterAll: true,
+                                  filterMethod: (filter, rows) =>
+                                    matchSorter(rows, filter.value, { keys: ["id"] }),
+                                  Cell: props => <div
+                                    style={{
+                                      width: "100%",
+                                      height: "100%",
+                                      textAlign: 'center'
+                                    }}>
+                                    <Link route="detail-booked-tour" params={{id: shrinkCode(props.value)}}>
+                                      <a>{props.value}</a>
+                                    </Link>
+                                  </div>
+                                },
+                                {
+                                  Header: 'Booking day',
+                                  accessor: d => formatDate(d.book_time, "dd/MM/yyyy HH:mm"),
+                                  id: 'date',
+                                  filterAll: true,
+                                  filterMethod: (filter, rows) =>
+                                    matchSorter(rows, filter.value, { keys: ["date"] }),
+                                },
+                                {
+                                  Header: 'Total slot',
+                                  accessor: 'num_passenger',
+                                  className: "text-center"
+                                },
+                                {
+                                  Header: 'Total money',
+                                  accessor: d => d.total_pay.toLocaleString() + " VND",
+                                  id: 'total_money',
+                                  filterAll: true,
+                                  filterMethod: (filter, rows) =>
+                                    matchSorter(rows, filter.value.toLocaleString(), { keys: ["total_money"] }),
+                                },
+                                {
+                                  Header: 'Status',
+                                  accessor: d => capitalize(d.status),
+                                  id: 'status',
+                                  className: "text-center",
+                                  filterAll: true,
+                                  filterMethod: (filter, rows) =>
+                                    matchSorter(rows, filter.value, { keys: ["status"] }),
+                                },
+                                {
+                                  Header: '',
+                                  id: 'Detail',
+                                  accessor: 'id',
+                                  sortable: false,
+                                  filterable: false,
+                                  Cell: props => <div
+                                    style={{
+                                      width: "100%",
+                                      height: "100%",
+                                      textAlign: 'center'
+                                    }}>
+                                    <Link route="detail-booked-tour" params={{id: props.value}}>
+                                      <a className="detail-btn">Detail</a>
+                                    </Link>
+                                  </div>
+                                },
+                                {
+                                  Header: '',
+                                  id: 'Cancel',
+                                  accessor: 'id',
+                                  sortable: false,
+                                  filterable: false,
+                                  Cell: props => <div
+                                    style={{
+                                      width: "100%",
+                                      height: "100%",
+                                      textAlign: 'center'
+                                    }}>
+                                    <a href="javascript:;" onClick={this.handleCancelTour.bind(this, props.value)}
+                                      className="cancel-btn">Cancel</a>
+                                  </div>
                                 }
-                              </tbody>
-                            </table>
+                              ]}
+                            />
                           </InfiniteScroll>
                         </div>
                       </div>
@@ -105,4 +193,4 @@ class MyBooking extends React.Component {
     }
 }
 
-export default connect(mapStateToProps)(MyBooking)
+export default connect(mapStateToProps, mapDispatchToProps)(MyBooking)

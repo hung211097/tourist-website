@@ -215,7 +215,7 @@ class DetailTour extends React.Component {
                                 <div className="col-lg-3 col-md-6 col-sm-3 col-6">{formatDate(tourTurn.start_date)}</div>
                                 <div className="col-lg-5 col-md-12 col-sm-5 col-12">
                                   <a style={{color: '#333'}}>
-                                    <FaRegCalendarAlt style={{fontSize: '16px', color: 'rgb(67, 74, 84)'}}/>&nbsp;&nbsp;
+                                    <FaRegCalendarAlt style={{fontSize: '16px', color: 'rgb(67, 74, 84)', position: 'relative', top: '-2px'}}/>&nbsp;&nbsp;
                                       <span style={{color: '#fc6600'}}>Other day</span>
                                     </a>
                                   </div>

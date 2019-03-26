@@ -4,6 +4,7 @@ import locale from 'date-fns/locale/vi'
 import differenceInHours from 'date-fns/differenceInHours'
 import differenceInDays from 'date-fns/differenceInDays'
 import isValid from 'date-fns/isValid'
+import compareAsc from 'date-fns/compareAsc'
 
 export default function fromNow(date) {
 	return formatDistance(new Date(date), new Date(), {addSuffix: true, locale: locale})
@@ -23,4 +24,8 @@ export function distanceFromDays(dateEarlier, dateLater){
 
 export function isValidDate(date){
   return isValid(new Date(date))
+}
+
+export function compareDate(dateLeft, dateRight){
+  return compareAsc(new Date(dateLeft), new Date(dateRight))
 }

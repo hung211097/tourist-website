@@ -7,12 +7,16 @@ import { connect } from 'react-redux'
 import ApiService from '../../services/api.service'
 import { wizardStep } from '../../constants'
 import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaUserSecret, FaChild, FaRegCalendarAlt, FaPlaneDeparture, FaMoneyBill } from "react-icons/fa"
-import { formatDate, distanceFromDays } from '../../services/time.service'
+import { formatDate, distanceFromDays, compareDate } from '../../services/time.service'
 // import { getUserAuth } from 'services/auth.service'
 // import { getSessionStorage, removeItem } from '../../services/session-storage.service'
 // import { KEY } from '../../constants/session-storage'
-import { getCode, capitalize } from '../../services/utils.service'
+import { getCode } from '../../services/utils.service'
+import ReactTable from 'react-table'
+import matchSorter from 'match-sorter'
 import InfiniteScroll from 'react-infinite-scroller'
+import { removeItem } from '../../services/session-storage.service'
+import { KEY } from '../../constants/session-storage'
 
 const mapStateToProps = state => {
   return {
@@ -73,6 +77,7 @@ class CheckOutConfirmation extends React.Component {
       Router.pushRoute("home")
     }
 
+    removeItem(KEY.PASSENGER)
     this.loadMore()
 
     // let passengerInfo = getSessionStorage(KEY.PASSENGER)
@@ -100,19 +105,6 @@ class CheckOutConfirmation extends React.Component {
     //         phone: user.phone ?  user.phone : '',
     //     })
     // }
-  }
-
-  getTotalPrice(){
-    const { bookInfo } = this.state
-    let sum = 0
-    bookInfo.type_passenger_detail.forEach((item) => {
-      sum += item.num_passenger * item.price
-    })
-    return sum
-  }
-
-  handleClick(){
-
   }
 
   render() {
@@ -257,41 +249,72 @@ class CheckOutConfirmation extends React.Component {
                           </div>
                           <div className="content-contact row">
                             <div className="col-12">
-                              <div className="table-responsive">
+                              <div className="table-responsive mt-5">
                                 <InfiniteScroll
                                   pageStart={0}
                                   loadMore={this.loadMore.bind(this)}
                                   hasMore={this.state.hasMore}
                                   useWindow={false}
-                                  threshold={10}
+                                  threshold={400}
                                   initialLoad={false}>
-                                  <table className="table passenger-table">
-                                    <thead>
-                                      <tr>
-                                        <th>Fullname</th>
-                                        <th>Phone number</th>
-                                        <th>Birthdate</th>
-                                        <th>Gender</th>
-                                        <th>Age</th>
-                                        <th>Identity card / Passport</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      {!!this.state.passengers.length && this.state.passengers.map((item, key) => {
-                                          return(
-                                            <tr key={key}>
-                                              <td>{item.fullname ? item.fullname : ''}</td>
-                                              <td>{item.phone ? item.phone : ''}</td>
-                                              <td>{item.birthdate ? item.birthdate : ''}</td>
-                                              <td>{item.type_passenger ? this.ages[item.type_passenger.name] : ''}</td>
-                                              <td>{item.sex ? capitalize(item.sex) : ''}</td>
-                                              <td>{item.passport ? item.passport : ''}</td>
-                                            </tr>
-                                          )
-                                        })
+                                  <ReactTable
+                                    data={this.state.passengers}
+                                    className="-striped -highlight"
+                                    showPagination={false}
+                                    filterable={true}
+                                    columns={[
+                                      {
+                                        Header: 'Fullname',
+                                        accessor: 'fullname',
+                                        id: 'fullname',
+                                        filterAll: true,
+                                        filterMethod: (filter, rows) =>
+                                          matchSorter(rows, filter.value, { keys: ["fullname"] }),
+                                      },
+                                      {
+                                        Header: '	Phone number',
+                                        accessor: 'phone',
+                                        id: 'phone',
+                                        filterAll: true,
+                                        filterMethod: (filter, rows) =>
+                                          matchSorter(rows, filter.value, { keys: ["phone"] }),
+                                      },
+                                      {
+                                        Header: 'Birthdate',
+                                        accessor: d => formatDate(d.birthdate),
+                                        id: 'birthdate',
+                                        filterAll: true,
+                                        filterMethod: (filter, rows) =>
+                                          matchSorter(rows, filter.value, { keys: ["birthdate"] }),
+                                        sortMethod: (a, b) =>
+                                          compareDate(a, b)
+                                      },
+                                      {
+                                        Header: 'Gender',
+                                        accessor: 'sex',
+                                        id: 'gender',
+                                        filterAll: true,
+                                        filterMethod: (filter, rows) =>
+                                          matchSorter(rows, filter.value.toLocaleString(), { keys: ["gender"] }),
+                                      },
+                                      {
+                                        Header: 'Age',
+                                        accessor: d => this.ages[d.type_passenger.name],
+                                        id: 'age',
+                                        filterAll: true,
+                                        filterMethod: (filter, rows) =>
+                                          matchSorter(rows, filter.value, { keys: ["age"] }),
+                                      },
+                                      {
+                                        Header: 'Identity card / Passport',
+                                        id: 'passport',
+                                        accessor: 'passport',
+                                        filterAll: true,
+                                        filterMethod: (filter, rows) =>
+                                          matchSorter(rows, filter.value, { keys: ["passport"] }),
                                       }
-                                    </tbody>
-                                  </table>
+                                    ]}
+                                  />
                                 </InfiniteScroll>
                               </div>
                             </div>

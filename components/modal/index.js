@@ -2,9 +2,10 @@ import React from 'react'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { PopupInfo, PopupLoading } from 'components'
-import { useModal } from '../../actions'
+import { PopupInfo, PopupLoading, PopupCancelTour } from 'components'
+import { useModal, saveRedirectUrl } from '../../actions'
 import { Link, Router } from 'routes'
+import { modal } from '../../constants'
 
 const mapStateToProps = (state) => {
     return {
@@ -27,11 +28,11 @@ class Modal extends React.Component {
     }
 
 
-    handleClosePopup(isPushRoute = false) {
+    handleClosePopup(isRedirect = false) {
       const { dispatch } = this.props
       dispatch(useModal({type: '', isOpen: false, data: ''}))
-      if(isPushRoute === true){
-        Router.pushRoute('login')
+      if(isRedirect === true){
+        dispatch(saveRedirectUrl(Router.asPath))
       }
     }
 
@@ -41,8 +42,8 @@ class Modal extends React.Component {
         return (
           <>
             <style jsx="true">{styles}</style>
-            {this.props.modal.type === 'EXPIRED' ?
-              <PopupInfo show={this.props.modal.isOpen} onClose={this.handleClosePopup.bind(this)}
+            {this.props.modal.type === modal.EXPIRED ?
+              <PopupInfo show={this.props.modal.isOpen} onClose={this.handleClosePopup.bind(this, true)}
                 customContent={{width: '90%', maxWidth: '430px'}}>
                 <div className="content">
                   <h2>Oops!</h2>
@@ -55,8 +56,10 @@ class Modal extends React.Component {
                   </Link>
                 </div>
               </PopupInfo>
-              : this.props.modal.type === 'LOADING' ?
+              : this.props.modal.type === modal.LOADING ?
               <PopupLoading show={this.props.modal.isOpen} onClose={this.handleClosePopup.bind(this)} />
+              : this.props.modal.type === modal.CANCEL ?
+              <PopupCancelTour show={this.props.modal.isOpen} onClose={this.handleClosePopup.bind(this)} tour={this.props.modal.data}/>
               : null
             }
           </>

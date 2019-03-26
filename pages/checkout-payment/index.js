@@ -14,6 +14,7 @@ import { KEY } from '../../constants/session-storage'
 import { UnmountClosed } from 'react-collapse'
 import { getCode } from '../../services/utils.service'
 import { useModal } from '../../actions'
+import { modal } from '../../constants'
 
 const mapStateToProps = state => {
   return {
@@ -72,6 +73,7 @@ class CheckOutPayment extends React.Component {
     }
 
     let passengerInfo = getSessionStorage(KEY.PASSENGER)
+    // console.log(passengerInfo);
     if(!passengerInfo){
       Router.pushRoute("checkout-passengers", {tour_id: this.state.tourInfo.id})
     }
@@ -112,7 +114,7 @@ class CheckOutPayment extends React.Component {
       return
     }
 
-    this.props.useModal && this.props.useModal({type: "LOADING", isOpen: true, data: ''})
+    this.props.useModal && this.props.useModal({type: modal.LOADING, isOpen: true, data: ''})
 
     this.apiService.bookTour({
       fullname: this.state.contactInfo.name,
@@ -125,13 +127,13 @@ class CheckOutPayment extends React.Component {
       passengers: this.state.passengers
     }).then((data) => {
       this.timeout = setTimeout(() => {
-        this.props.useModal && this.props.useModal({type: "LOADING", isOpen: false, data: ''})
+        this.props.useModal && this.props.useModal({type: modal.LOADING, isOpen: false, data: ''})
         Router.pushRoute("checkout-confirmation", {book_code: data.book_tour.id})
       }, 1000)
     }).catch((e) => {
       let error = "There is an error, please try book tour again!"
       this.timeout = setTimeout(() => {
-        this.props.useModal && this.props.useModal({type: "LOADING", isOpen: false, data: ''})
+        this.props.useModal && this.props.useModal({type: modal.LOADING, isOpen: false, data: ''})
         if(e.result === 'This tour is full'){
           error = 'This tour is full slot'
         }
@@ -168,6 +170,7 @@ class CheckOutPayment extends React.Component {
     if(res){
       price = res.price
     }
+
     return price
   }
 

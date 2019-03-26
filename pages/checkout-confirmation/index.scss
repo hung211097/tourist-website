@@ -125,8 +125,14 @@
       .passenger-info{
         margin-top: 30px;
         .table-responsive{
-          max-height: 225px;
-          overflow: auto;
+          overflow-y: auto;
+          overflow-x: hidden;
+          max-height: 300px;
+          @media screen and (max-width: 767px){
+            width: 100%;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+          }
         }
         .passenger-table {
           margin-top: 20px;

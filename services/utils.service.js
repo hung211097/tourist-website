@@ -67,6 +67,10 @@ export function getCode(id){
   return id
 }
 
+export function shrinkCode(string){
+  return string.replace(/^0+/, '')
+}
+
 export function capitalize(string){
   return string.charAt(0).toUpperCase() + string.substr(1)
 }

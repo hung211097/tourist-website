@@ -15,6 +15,7 @@ import Footer from './footer'
 import ClickOutside from './click-outside'
 import PopupInfo from './popup-info'
 import PopupLoading from './popup-loading'
+import PopupCancelTour from './popup-cancel-tour'
 import AutoHide from './auto-hide'
 import BtnViewMore from './btn-view-more/index'
 import WizardStep from './wizard-step'
@@ -57,5 +58,6 @@ export {
     WizardStep,
     PassengerInfo,
     Modal,
-    PopupLoading
+    PopupLoading,
+    PopupCancelTour
 }
