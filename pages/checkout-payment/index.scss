@@ -1,0 +1,278 @@
+@import 'styles/variables.scss';
+
+.middle{
+  padding-top: 137px;
+  @media screen and (max-width: 1112px){
+    padding-top: 124px;
+  }
+  .content-title{
+    background-size: cover;
+    background-position: center;
+    background-image: url('/static/images/p-14.jpg');
+    .overlay{
+      background-color: rgba(67, 74, 84, 0.3);
+      .title-contain{
+        box-sizing: border-box;
+        padding: 15px;
+        text-align: center;
+        h1{
+          font-weight: normal;
+          color: #fff !important;
+          font-size: 30px;
+          line-height: 30px;
+          span{
+            display: block;
+            font-weight: bold;
+          }
+          .underline{
+            display: inline-block;
+            background-color: #ffffff;
+            width: 80px;
+            height: 4px;
+          }
+        }
+      }
+    }
+  }
+  .content{
+    padding: 0px 15px;
+    box-sizing: border-box;
+    margin-top: 50px;
+    .underline-zone{
+      line-height: 0;
+      .underline{
+        height: 2px;
+        width: 30px;
+        background-color: #f1f1f1;
+        display: inline-block;
+        line-height: 0px;
+      }
+    }
+    .wizard-step-zone{
+      margin-bottom: 50px;
+    }
+    .book-info{
+      box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.4);
+      width: 100%;
+      margin-bottom: 0;
+      .img-zone{
+        position: relative;
+        img{
+          width: 100%
+        }
+        .sale{
+          top: 20px !important;
+          right: 20px !important;
+          left: initial !important;
+          margin: -.5em -.5em 0 0;
+          border-radius: 0px;
+          min-width: initial;
+          min-height: initial;
+          padding: 8px;
+          line-height: 13px;
+          font-size: 13px;
+          text-transform: uppercase;
+          font-weight: normal;
+          background-color: #1bbc9b;
+          position: absolute;
+          text-align: center;
+          color: #fff;
+          z-index: 9;
+        }
+      }
+      .info-area{
+        padding: 20px;
+        background-color: whitesmoke;
+        border-radius: 0 0 4px 4px;
+        h3{
+          margin-bottom: 15px;
+          font-size: 16px;
+          color: $main-bg-color;
+          text-transform: capitalize;
+          font-weight: 400;
+          a{
+            color: $main-bg-color;
+            font-weight: 500;
+            text-transform: uppercase;
+            line-height: 26px;
+            cursor: pointer;
+          }
+        }
+        ul{
+          margin-bottom: 20px;
+          padding-left: 0;
+          list-style: none;
+          li{
+            padding: 7px 0;
+            border-bottom: 0;
+            font-size: 14px;
+            color: #222222;
+            span{
+              font-weight: 600;
+              color: #000;
+            }
+            i{
+              margin-right: 5px;
+              position: relative;
+              top: -1px;
+            }
+          }
+        }
+        .price-total{
+          h2{
+            text-transform: capitalize;
+            color: #222222;
+            font-size: 22px;
+            font-weight: 400;
+            span{
+              color: #ff891e;
+              font-size: 23px;
+              font-weight: 700;
+            }
+          }
+        }
+      }
+    }
+    .payment-wrap{
+      margin-top: 0;
+      margin-bottom: 30px;
+      .title{
+        float: none;
+        margin: 10px 0;
+        width: 100%;
+        h3{
+          margin: 0;
+          text-transform: uppercase;
+          color: #262a2e;
+          font-weight: 700;
+          font-size: 24px;
+        }
+      }
+      .methods{
+        margin-top: 15px;
+        .method{
+          margin: 2px 0;
+          .method-content{
+            .title{
+              background: white;
+              border-radius: 10px;
+              color: #222222;
+              float: none;
+              margin: 10px 0;
+              width: 100%;
+              padding: 20px;
+              padding-right: 70px !important;
+              position: relative;
+              cursor: pointer;
+              border: 2px solid #ccc;
+              display: inline-block;
+              max-width: 100%;
+              font-weight: 700;
+              transition: 0.2s all;
+              &.active{
+                border-color: $main-bg-color;
+              }
+              i{
+                display: block;
+                position: absolute;
+                right: 10px;
+                top: 35%;
+                font-size: 20px;
+              }
+              h4{
+                margin: 0 0 10px;
+                color: #222222;
+                font-size: 18px;
+                .incash{
+                  width: 30px;
+                  position: relative;
+                  top: -3px;
+                  margin-left: 8px;
+                }
+                .transfer{
+                  width: 25px;
+                  margin-left: 10px;
+                  position: relative;
+                  top: -5px;
+                }
+              }
+              .description{
+                font-size: 13px;
+              }
+            }
+            .collapse-content{
+              display: block;
+              width: 100%;
+              font-size: 13px;
+              padding: 10px;
+              border: 1px solid #bfbfbf;
+              border-radius: 5px;
+              background: #f6f6f6;
+              box-sizing: border-box;
+              strong{
+                margin: 10px 0;
+              }
+              h2{
+                font-size: 14px;
+                font-weight: bold;
+              }
+            }
+          }
+        }
+      }
+      .red{
+        color: red;
+      }
+      input{
+        box-sizing: border-box;
+        width: 100%;
+        margin: 0;
+        outline: 0;
+        line-height: 1;
+        background-color: #f3f3f3;
+        border-width: 1px;
+        border-color: #f1f1f1;
+        border-radius: 0px;
+        border-style: solid;
+        padding: 10px 20px;
+        -webkit-appearance: none;
+        color: #2d2d2d;
+        &.error{
+          border-color: red;
+        }
+      }
+      .button-area{
+        text-align: left;
+        padding: 40px 0;
+        width: 100%;
+        display: block;
+        .list-inline{
+          padding-left: 0;
+          margin-left: -5px;
+          list-style: none;
+          li{
+            display: inline-block;
+            padding-right: 5px;
+            padding-left: 5px;
+          }
+        }
+      }
+    }
+    .pull-right{
+      float: right;
+    }
+    .caption-text{
+      // margin-left: 5px;
+      margin-top: 10px;
+      color: #444444;
+      font-size: 14px;
+      list-style-type: disc;
+    }
+    .error{
+      color: red;
+      display: block;
+      margin-top: 2px;
+      margin: 5px 0;
+    }
+  }
+}

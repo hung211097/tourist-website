@@ -566,7 +566,7 @@ class MapComponent extends React.Component{
             {this.filterOptions.map((item, key) => {
                 return(
                   <div className="col-6 col-sm-3 text-left mb-4" key={key}>
-                    <CustomCheckbox item={item} onCheck={this.handleCheck.bind(this)} />
+                    <CustomCheckbox item={item} onCheck={this.handleCheck.bind(this)} isNormal={false}/>
                   </div>
                 )
               })

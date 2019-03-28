@@ -97,4 +97,15 @@ footer{
       }
     }
   }
+  .margin-top-responsive{
+    @media screen and (max-width: 576px){
+      margin-top: 0;
+    }
+  }
+  .term-condition{
+    font-size: 1.73rem;
+    @media screen and (max-width: 576px){
+      font-size: 1.75rem;
+    }
+  }
 }

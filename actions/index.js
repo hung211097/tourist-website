@@ -4,6 +4,7 @@ import ApiService from 'services/api.service'
 import Router from 'next/router'
 import { removeItem } from '../services/local-storage.service'
 import { KEY } from '../constants/local-storage'
+import { modal } from '../constants'
 
 export const actionTypes = {
   SET_USER: 'SET_USER',
@@ -18,7 +19,6 @@ export const actionTypes = {
 export const storeKEY = 'tourist-v1'
 
 export const actionDefault = {
-    carts: [],
     userProfile: {}
 }
 
@@ -75,7 +75,7 @@ export const saveProfile = () => {
     }).catch(() => {
       dispatch(logout())
       removeItem(KEY.TOKEN)
-      dispatch(useModal({type: 'EXPIRED', isOpen: true, data: ''}))
+      dispatch(useModal({type: modal.EXPIRED, isOpen: true, data: ''}))
     })
   }
 }

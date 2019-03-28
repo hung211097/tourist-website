@@ -72,10 +72,10 @@ class Footer extends React.Component {
                           </div>
                           <div className="col-sm-6">
                             <Link route="contact">
-                              <a><h3>Contact</h3></a>
+                              <a><h3 className="margin-top-responsive">Contact</h3></a>
                             </Link>
                             <Link route="terms-condition">
-                              <a><h3>Terms Condition</h3></a>
+                              <a><h3 className="term-condition">Terms of condition</h3></a>
                             </Link>
                           </div>
                         </div>

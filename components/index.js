@@ -14,8 +14,11 @@ import Header from './header'
 import Footer from './footer'
 import ClickOutside from './click-outside'
 import PopupInfo from './popup-info'
+import PopupLoading from './popup-loading'
+import PopupCancelTour from './popup-cancel-tour'
 import AutoHide from './auto-hide'
 import BtnViewMore from './btn-view-more/index'
+import WizardStep from './wizard-step'
 import Modal from './modal/index'
 
 // import Modal from './modal/index'
@@ -32,6 +35,7 @@ const SearchItem = dynamic(import('./search-item'), defaultLoading)
 const MarkerComponent = dynamic(import('./marker'), defaultNoSSR)
 const TopPromotionItem = dynamic(import('./top-promotion-item'), defaultNoSSR)
 const CustomCheckbox = dynamic(import('./custom-checkbox'), defaultNoSSR)
+const PassengerInfo = dynamic(import('./passenger-info'), defaultNoSSR)
 
 export {
     Header,
@@ -52,6 +56,10 @@ export {
     MapContact,
     SlickItem,
     Lightbox,
+    WizardStep,
+    PassengerInfo,
     Modal,
-    SearchItem
+    SearchItem,
+    PopupLoading,
+    PopupCancelTour
 }
