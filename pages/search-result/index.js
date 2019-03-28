@@ -15,8 +15,11 @@ class SearchResult extends React.Component {
     this.state = {
       keyword: '',
       date: '',
+      sortBy: '',
+      sortType: '',
       price: 0,
       rate: 0,
+      lasting: 0,
       filterShow: true,
       isListView: true
     }
@@ -48,6 +51,12 @@ class SearchResult extends React.Component {
     })
   }
 
+  handleChangeLasting(value){
+    this.setState({
+      lasting: value
+    })
+  }
+
   handleChangeRate(e) {
       this.setState({
           rate: e.target.value
@@ -65,7 +74,10 @@ class SearchResult extends React.Component {
       keyword: '',
       date: '',
       price: 0,
-      rate: 0
+      rate: 0,
+      lasting: 0,
+      sortBy: '',
+      sortType: ''
     })
   }
 
@@ -82,6 +94,13 @@ class SearchResult extends React.Component {
   onListView(){
     this.setState({
       isListView: true
+    })
+  }
+
+  handleChangeSort(by, type){
+    this.setState({
+      sortBy: by,
+      sortType: type
     })
   }
 
@@ -119,24 +138,42 @@ class SearchResult extends React.Component {
                             <p>Price</p>
                             <img alt="down-arrow" src="/static/svg/icon-down-arrow-white.svg" width={13} />
                             <ul>
-                              <li><a>Lowest Price</a></li>
-                              <li><a>Highest Price</a></li>
+                              <li className={this.state.sortBy === "price" && this.state.sortType === "ASC" ? "active" : ''}
+                                onClick={this.handleChangeSort.bind(this, "price", "ASC")}>
+                                <a>Lowest Price</a>
+                              </li>
+                              <li className={this.state.sortBy === "price" && this.state.sortType === "DESC" ? "active" : ''}
+                                onClick={this.handleChangeSort.bind(this, "price", "DESC")}>
+                                <a>Highest Price</a>
+                              </li>
                             </ul>
                           </li>
                           <li className="sort-option">
                             <p>Date</p>
                             <img alt="down-arrow" src="/static/svg/icon-down-arrow-white.svg" width={13} />
                             <ul>
-                              <li><a>Asc</a></li>
-                              <li><a>Desc</a></li>
+                              <li className={this.state.sortBy === "date" && this.state.sortType === "ASC" ? "active" : ''}
+                                onClick={this.handleChangeSort.bind(this, "date", "ASC")}>
+                                <a>Asc</a>
+                              </li>
+                              <li className={this.state.sortBy === "date" && this.state.sortType === "DESC" ? "active" : ''}
+                                onClick={this.handleChangeSort.bind(this, "date", "DESC")}>
+                                <a>Desc</a>
+                              </li>
                             </ul>
                           </li>
                           <li className="sort-option">
                             <p>Rating</p>
                             <img alt="down-arrow" src="/static/svg/icon-down-arrow-white.svg" width={13} />
                             <ul>
-                              <li><a>Asc</a></li>
-                              <li><a>Desc</a></li>
+                              <li className={this.state.sortBy === "rating" && this.state.sortType === "ASC" ? "active" : ''}
+                                onClick={this.handleChangeSort.bind(this, "rating", "ASC")}>
+                                <a>Asc</a>
+                              </li>
+                              <li className={this.state.sortBy === "rating" && this.state.sortType === "DESC" ? "active" : ''}
+                                onClick={this.handleChangeSort.bind(this, "rating", "DESC")}>
+                                <a>Desc</a>
+                              </li>
                             </ul>
                           </li>
                         </ul>
@@ -203,6 +240,27 @@ class SearchResult extends React.Component {
                                           value={this.state.price}
                                           orientation="horizontal"
                                           onChange={this.handleChangePrice.bind(this)}
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="nd_options_height_10" />
+                                    <div className="break" />
+                                  </div>
+                                  <div className="lasting-range-box">
+                                    <div className="lasting-range-container">
+                                      <div className="nd_travel_section">
+                                        <h3>Lasting in:</h3>
+                                        <p><span>{this.state.lasting}</span> day</p>
+                                      </div>
+                                      <div className="nd_travel_section mt-50">
+                                        <Slider
+                                          min={0}
+                                          max={30}
+                                          step={1}
+                                          tooltip={false}
+                                          value={this.state.lasting}
+                                          orientation="horizontal"
+                                          onChange={this.handleChangeLasting.bind(this)}
                                         />
                                       </div>
                                     </div>
@@ -336,6 +394,27 @@ class SearchResult extends React.Component {
                                   value={this.state.price}
                                   orientation="horizontal"
                                   onChange={this.handleChangePrice.bind(this)}
+                                />
+                              </div>
+                            </div>
+                            <div className="nd_options_height_10" />
+                            <div className="break" />
+                          </div>
+                          <div className="lasting-range-box">
+                            <div className="lasting-range-container">
+                              <div className="nd_travel_section">
+                                <h3>Lasting in:</h3>
+                                <p><span>{this.state.lasting}</span> day</p>
+                              </div>
+                              <div className="nd_travel_section mt-50">
+                                <Slider
+                                  min={0}
+                                  max={30}
+                                  step={1}
+                                  tooltip={false}
+                                  value={this.state.lasting}
+                                  orientation="horizontal"
+                                  onChange={this.handleChangeLasting.bind(this)}
                                 />
                               </div>
                             </div>

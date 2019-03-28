@@ -102,6 +102,18 @@ export default () => {
       let url = baseURL + `tour_turn/increaseView/${id}`
       return fetchCached(url)
     },
+    search: (page = 1, limit = 5, params={}) => {
+      let url = baseURL + `tour_turn/search?page=${page}&limit=${limit}`
+      url += params.name ? `&name=${params.name}` : ''
+      url += params.price ? `&price=${params.price}` : ''
+      url += params.date ? `&date=${params.date}` : ''
+      url += params.rating ? `&rating=${params.rating}` : ''
+      url += params.lasting ? `&lasting=${params.lasting}` : ''
+
+      url += params.sortBy ? `&sortBy=${params.sortBy}` : ''
+      url += params.sortType ? `&sortType=${params.sortType}` : ''
+      return fetchCached(url)
+    },
   }
 
   return services
