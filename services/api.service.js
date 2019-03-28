@@ -98,6 +98,10 @@ export default () => {
       let url = baseURL + `request_cancel_booking/create`
       return httpPost(url, data)
     },
+    increaseView: (id) => {
+      let url = baseURL + `tour_turn/increaseView/${id}`
+      return fetchCached(url)
+    },
   }
 
   return services

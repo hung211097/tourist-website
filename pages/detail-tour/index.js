@@ -67,6 +67,7 @@ class DetailTour extends React.Component {
         tourLike: res.data
       })
     })
+    this.apiService.increaseView(this.state.tourTurn.id).then(() => {})
   }
 
   handleChangeTab(index){
@@ -189,7 +190,7 @@ class DetailTour extends React.Component {
                           <div className="views-zone">
                             <span>
                               <i><FaEye /></i>
-                              1,000 views
+                              {tourTurn.view.toLocaleString()} views
                             </span>
                           </div>
                           <p className="price">

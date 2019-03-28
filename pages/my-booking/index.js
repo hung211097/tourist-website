@@ -184,22 +184,41 @@ class MyBooking extends React.Component {
                                 {
                                   Header: 'Cancel',
                                   id: 'Cancel',
-                                  accessor: 'id',
+                                  accessor: props => ({
+                                    id: props.id,
+                                    statusCancel: props.statusCancel,
+                                    isCancelBooking: props.isCancelBooking,
+                                    request_cancel_bookings: props.request_cancel_bookings
+                                  }),
                                   sortable: false,
                                   filterable: false,
-                                  Cell: props => <div
-                                    style={{
-                                      width: "100%",
-                                      height: "100%",
-                                      textAlign: 'center'
-                                    }}>
-                                    {this.getTourById(props.value).statusCancel ?
-                                      <p style={{lineHeight: '2'}}>{this.getTourById(props.value).statusCancel}</p>
-                                      :
-                                      <a href="javascript:;" onClick={this.handleCancelTour.bind(this, props.value)}
-                                        className="cancel-btn">Cancel</a>
-                                    }
-                                  </div>
+                                  Cell: ({value: {
+                                    id,
+                                    statusCancel,
+                                    isCancelBooking,
+                                    request_cancel_bookings
+                                  }}) => {
+                                    return (
+                                      <div
+                                        style={{
+                                          width: "100%",
+                                          height: "100%",
+                                          textAlign: 'center'
+                                        }}>
+                                        {statusCancel &&
+                                          <p style={{lineHeight: '2'}}>{statusCancel}</p>
+                                        }
+                                        {!isCancelBooking && request_cancel_bookings ?
+                                            <p style={{lineHeight: '2'}}>{capitalize(request_cancel_bookings.status)}</p>
+                                          :
+                                          isCancelBooking && !request_cancel_bookings ?
+                                            <a href="javascript:;" onClick={this.handleCancelTour.bind(this, id)}
+                                              className="cancel-btn">Cancel</a>
+                                          : null
+                                        }
+                                      </div>
+                                    )
+                                  }
                                 }
                               ]}
                             />
