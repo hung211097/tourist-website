@@ -261,7 +261,7 @@
     }
     .confirm-zone{
       text-align: center;
-      margin: 40px 0 20px;
+      margin: 30px 0 20px;
     }
     .pull-right{
       float: right;
@@ -282,6 +282,16 @@
     .no-padding-res{
       @media screen and (max-width: 576px){
         padding: 0 !important;
+      }
+    }
+    .note-zone{
+      .note{
+        strong{
+          color: black;
+        }
+        margin: 10px 0;
+        font-style: italic;
+        color: #303030;
       }
     }
   }

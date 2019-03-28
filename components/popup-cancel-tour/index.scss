@@ -89,6 +89,7 @@
       }
     }
     .tour-info{
+      margin-top: 20px;
       ul{
         list-style-type: none;
         padding: 0;
@@ -104,6 +105,11 @@
         }
       }
     }
+}
+
+.error{
+  color: red;
+  margin: 5px 0;
 }
 
 .close-modal {

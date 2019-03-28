@@ -24,12 +24,12 @@ export default class extends React.Component {
 
     static propTypes = {
         show: PropTypes.bool,
-        circle: PropTypes.bool,
         onClose: PropTypes.func,
         children: PropTypes.any,
         customContent: PropTypes.object,
         customOverlay: PropTypes.object,
-        tour: PropTypes.any
+        tour: PropTypes.any,
+        changeStatus: PropTypes.func
     }
 
     constructor(props) {
@@ -40,16 +40,19 @@ export default class extends React.Component {
           reason: '',
           isAgree: false,
           isSubmit: false,
-          tourInfo: null
+          tourInfo: null,
+          error: ''
         }
     }
 
     componentDidMount(){
-      this.apiService.getToursTurnId(this.props.tour.fk_tour_turn).then((res) => {
-        this.setState({
-          tourInfo: res.data
+      if(this.props.tour){
+        this.apiService.getToursTurnId(this.props.tour.fk_tour_turn).then((res) => {
+          this.setState({
+            tourInfo: res.data
+          })
         })
-      })
+      }
     }
 
     handleClose() {
@@ -66,8 +69,18 @@ export default class extends React.Component {
         return
       }
 
-      this.setState({
-        isSend: true
+      this.apiService.cancelTour({
+        idBookTour: this.props.tour.id,
+        message: this.state.reason
+      }).then((data) => {
+        this.props.changeStatus && this.props.changeStatus(this.props.tour.id, data.status)
+        this.setState({
+          isSend: true
+        })
+      }).catch(() => {
+        this.setState({
+          error: 'There is an error, please try again!'
+        })
       })
     }
 
@@ -195,6 +208,9 @@ export default class extends React.Component {
                                         <div className="form-control-feedback mt-3">You haven&apos;t agreed with our terms of condition yet!</div>
                                       }
                                     </div>
+                                    {this.state.error &&
+                                      <p className="error">{this.state.error}</p>
+                                    }
                                     <div className="confirm-zone">
                                       <button type="submit" className="co-btn" onClick={this.handleSubmit.bind(this)}>SEND REQUEST</button>
                                     </div>

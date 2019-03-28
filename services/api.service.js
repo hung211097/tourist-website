@@ -49,6 +49,11 @@ export default () => {
       url += params.isTour ? "?tour=true" : ''
       return fetchCached(url)
     },
+    getBookTourHistoryByCode: (code, params = {}) => {
+      let url = baseURL + `book_tour/getHistoryBookTourByCode/${code}`
+      url += params.isTour ? "?tour=true" : ''
+      return fetchCached(url)
+    },
     getPassengersInBookTour: (id, page = 1, limit = 5) => {
       let url = baseURL + `book_tour/getPassengerInBookTourHistory/${id}?page=${page}&per_page=${limit}`
       return fetchCached(url)
@@ -88,7 +93,11 @@ export default () => {
     bookTour: (data) => {
       let url = baseURL + `book_tour/book_new_tour`
       return httpPost(url, data)
-    }
+    },
+    cancelTour: (data) => {
+      let url = baseURL + `request_cancel_booking/create`
+      return httpPost(url, data)
+    },
   }
 
   return services

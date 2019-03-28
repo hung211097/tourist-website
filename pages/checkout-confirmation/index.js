@@ -37,12 +37,17 @@ class CheckOutConfirmation extends React.Component {
       let res = {
         bookInfo: null
       }
-      if(!query.book_code){
+      if(!query.book_completed){
         res.bookInfo = null
       }
 
-      let bookInfo = await apiService.getBookTourHistoryById(query.book_code, {isTour: true})
-      res.bookInfo = bookInfo.data
+      try{
+        let bookInfo = await apiService.getBookTourHistoryByCode(query.book_completed, {isTour: true})
+        res.bookInfo = bookInfo.data
+      }
+      catch(e){
+        return res
+      }
       return res
   }
 
@@ -54,8 +59,8 @@ class CheckOutConfirmation extends React.Component {
       "children": "Children"
     }
     this.state = {
-      bookInfo: this.props.bookInfo,
-      tourInfo: this.props.bookInfo.tour_turn,
+      bookInfo: this.props.bookInfo ? this.props.bookInfo : null,
+      tourInfo: this.props.bookInfo ? this.props.bookInfo.tour_turn : null,
       passengers: [],
       page: 1,
       hasMore: true
@@ -63,13 +68,15 @@ class CheckOutConfirmation extends React.Component {
   }
 
   loadMore(){
-    this.apiService.getPassengersInBookTour(this.state.bookInfo.id, this.state.page).then((res) => {
-      this.setState({
-        passengers: [...this.state.passengers, ...res.data],
-        page: res.next_page,
-        hasMore: res.next_page > 0
+    if(this.state.bookInfo){
+      this.apiService.getPassengersInBookTour(this.state.bookInfo.id, this.state.page).then((res) => {
+        this.setState({
+          passengers: [...this.state.passengers, ...res.data],
+          page: res.next_page,
+          hasMore: res.next_page > 0
+        })
       })
-    })
+    }
   }
 
   componentDidMount() {
@@ -136,7 +143,7 @@ class CheckOutConfirmation extends React.Component {
               <div className="wizard-step-zone">
                 <WizardStep step={wizardStep.CONFIRMATION} />
               </div>
-              {this.state.tourInfo && this.state.bookInfo &&
+              {tourInfo && bookInfo &&
                 <div className="confirmation-info">
                   <div className="row">
                     <div className="col-12 col-sm-10 offset-sm-1 no-padding-res">
@@ -319,6 +326,12 @@ class CheckOutConfirmation extends React.Component {
                               </div>
                             </div>
                           </div>
+                        </div>
+                        <div className="note-zone">
+                          <p className="note">
+                            <strong>Note:</strong> If you don&apos;t login our website, after booking a tour you will
+                            see the confirmation at this step and receive the same content email for your usually checking.
+                          </p>
                         </div>
                         <div className="confirm-zone">
                           <Link route="home">

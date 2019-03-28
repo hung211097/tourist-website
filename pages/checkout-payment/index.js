@@ -128,7 +128,7 @@ class CheckOutPayment extends React.Component {
     }).then((data) => {
       this.timeout = setTimeout(() => {
         this.props.useModal && this.props.useModal({type: modal.LOADING, isOpen: false, data: ''})
-        Router.pushRoute("checkout-confirmation", {book_code: data.book_tour.id})
+        Router.pushRoute("checkout-confirmation", {book_completed: data.book_tour.code})
       }, 1000)
     }).catch((e) => {
       let error = "There is an error, please try book tour again!"

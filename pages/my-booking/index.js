@@ -1,5 +1,5 @@
 import React from 'react'
-import { LayoutProfile } from 'components'
+import { LayoutProfile, PopupCancelTour } from 'components'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
@@ -11,19 +11,11 @@ import InfiniteScroll from 'react-infinite-scroller'
 import ReactTable from 'react-table'
 import { getCode, shrinkCode, capitalize } from '../../services/utils.service'
 import matchSorter from 'match-sorter'
-import { useModal } from '../../actions'
-import { modal } from '../../constants'
 
 const mapStateToProps = (state) => {
     return {
         user: state.user
     }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return{
-    useModal: (data) => {dispatch(useModal(data))}
-  }
 }
 
 class MyBooking extends React.Component {
@@ -40,6 +32,8 @@ class MyBooking extends React.Component {
         page: 1,
         hasMore: true,
         bookTours: [],
+        showPopup: false,
+        dataPopup: null
       }
     }
 
@@ -60,7 +54,10 @@ class MyBooking extends React.Component {
     }
 
     handleCancelTour(value){
-      this.props.useModal && this.props.useModal({type: modal.CANCEL, isOpen: true, data: this.getTourById(value)})
+      this.setState({
+        showPopup: true,
+        dataPopup: this.getTourById(value)
+      })
     }
 
     getTourById(id){
@@ -70,6 +67,26 @@ class MyBooking extends React.Component {
       })
 
       return res
+    }
+
+    handleClosePopup() {
+      this.setState({
+        showPopup: false,
+        dataPopup: null
+      })
+    }
+
+    handleChangeStatus(id, status){
+      let arr = this.state.bookTours
+      let temp = arr.find((item) => {
+        return item.id === id
+      })
+      if(temp){
+        temp.statusCancel = capitalize(status)
+      }
+      this.setState({
+        bookTours: arr
+      })
     }
 
     render() {
@@ -148,7 +165,7 @@ class MyBooking extends React.Component {
                                     matchSorter(rows, filter.value, { keys: ["status"] }),
                                 },
                                 {
-                                  Header: '',
+                                  Header: 'Detail',
                                   id: 'Detail',
                                   accessor: 'id',
                                   sortable: false,
@@ -165,7 +182,7 @@ class MyBooking extends React.Component {
                                   </div>
                                 },
                                 {
-                                  Header: '',
+                                  Header: 'Cancel',
                                   id: 'Cancel',
                                   accessor: 'id',
                                   sortable: false,
@@ -176,8 +193,12 @@ class MyBooking extends React.Component {
                                       height: "100%",
                                       textAlign: 'center'
                                     }}>
-                                    <a href="javascript:;" onClick={this.handleCancelTour.bind(this, props.value)}
-                                      className="cancel-btn">Cancel</a>
+                                    {this.getTourById(props.value).statusCancel ?
+                                      <p style={{lineHeight: '2'}}>{this.getTourById(props.value).statusCancel}</p>
+                                      :
+                                      <a href="javascript:;" onClick={this.handleCancelTour.bind(this, props.value)}
+                                        className="cancel-btn">Cancel</a>
+                                    }
                                   </div>
                                 }
                               ]}
@@ -188,9 +209,13 @@ class MyBooking extends React.Component {
                     </div>
                   </div>
                 </div>
+                {this.state.showPopup &&
+                  <PopupCancelTour show={true} onClose={this.handleClosePopup.bind(this)} tour={this.state.dataPopup}
+                    changeStatus={this.handleChangeStatus.bind(this)}/>
+                }
             </LayoutProfile>
         )
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyBooking)
+export default connect(mapStateToProps)(MyBooking)
