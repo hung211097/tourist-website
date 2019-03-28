@@ -14,7 +14,8 @@
   }
   .table-responsive{
     overflow-y: auto;
-    max-height: 225px;
+    overflow-x: hidden;
+    max-height: 300px;
     @media screen and (max-width: 767px){
       width: 100%;
       margin-bottom: 15px;
@@ -77,6 +78,26 @@
           }
         }
       }
+    }
+  }
+  .detail-btn{
+    display: inline-block;
+    padding: 3px 9px;
+    color: #fff;
+    background-color: #337ab7;
+    &:hover{
+      opacity: 0.8;
+      outline: 0;
+    }
+  }
+  .cancel-btn{
+    display: inline-block;
+    padding: 3px 9px;
+    color: #fff;
+    background: #D9534F;
+    &:hover{
+      opacity: 0.8;
+      outline: 0;
     }
   }
 }

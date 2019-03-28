@@ -34,7 +34,7 @@ export default async function(url, force = false) {
   // That way if users refresh the page they always get fresh data.
 
   let token = getAccessToken()
-  let authorization = (token) ? token : null;
+  let authorization = (token) ? token : undefined;
   let options = {
     method: 'GET',
     headers: {
@@ -48,7 +48,7 @@ export default async function(url, force = false) {
 
 export async function httpPost(url, data) {
   let token = getAccessToken()
-  let authorization = (token) ? token : null;
+  let authorization = (token) ? token : undefined;
   return fetch(url, {
       method: 'POST',
       headers: {
@@ -61,9 +61,8 @@ export async function httpPost(url, data) {
 }
 
 export async function httpPut(url, data) {
-
   let token = getAccessToken()
-  let authorization = (token) ? token : '';
+  let authorization = (token) ? token : undefined;
   return fetch(url, {
       method: 'PUT',
       headers: {
@@ -77,10 +76,11 @@ export async function httpPut(url, data) {
 
 export async function httpPostForm(url, form) {
   let token = getAccessToken()
+  let authorization = (token) ? token : undefined;
   return fetch(url, {
       method: 'POST',
       headers: {
-        Authorization: token
+        Authorization: authorization
       },
       body: form
     })

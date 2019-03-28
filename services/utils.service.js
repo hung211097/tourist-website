@@ -30,6 +30,7 @@ function _getElementOffset(el) {
     element = element.offsetParent
   } while (element)
 
+  top -= 100
   return {
     top,
     left
@@ -50,7 +51,7 @@ export function getAirportPoint(routes){
   return airport
 }
 
-export function getCodeTour(id){
+export function getCode(id){
   if(id < 10){
     return '0000' + id;
   }
@@ -64,4 +65,12 @@ export function getCodeTour(id){
     return '0' + id
   }
   return id
+}
+
+export function shrinkCode(string){
+  return string.replace(/^0+/, '')
+}
+
+export function capitalize(string){
+  return string.charAt(0).toUpperCase() + string.substr(1)
 }

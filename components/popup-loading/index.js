@@ -13,7 +13,7 @@ let customStyleOverlay = {
 }
 
 export default class extends React.Component {
-    displayName = 'Popup Info'
+    displayName = 'Popup Loading'
 
     static propTypes = {
         show: PropTypes.bool,
@@ -47,13 +47,14 @@ export default class extends React.Component {
                 <Popup onClose={this.handleClose.bind(this)} open={this.props.show}
                   contentStyle={localStyles}
                   overlayStyle={overlayStyles}
-                  modal
-                  closeOnDocumentClick>
-                    {close => (
+                  modal>
+                    {() => (
                     <>
-                        <div className="close-modal" data-dismiss="modal" aria-label="Close" onClick={close}/>
                         <div className="modal-annouce-success">
-                            {this.props.children}
+                          <div className="content">
+                            <h2>Processing!</h2>
+                            <img alt='loading' src="/static/svg/loading.svg" />
+                          </div>
                         </div>
                     </>
                     )}

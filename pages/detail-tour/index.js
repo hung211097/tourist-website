@@ -1,16 +1,27 @@
 import React from 'react'
 import styles from './index.scss'
+import PropTypes from 'prop-types'
 import { Layout } from 'components'
 import ApiService from 'services/api.service'
 import { Router, Link } from 'routes'
 import { RatingStar, BtnViewMore, MyMap, TourItem, Lightbox } from 'components'
-import { getCodeTour } from '../../services/utils.service'
-import { FaRegCalendarAlt } from "react-icons/fa"
+import { getCode } from '../../services/utils.service'
+import { FaRegCalendarAlt, FaEye, FaSuitcase } from "react-icons/fa"
 import { formatDate, distanceFromDays } from '../../services/time.service'
 import validateEmail from '../../services/validates/email.js'
 
 class DetailTour extends React.Component {
   displayName = 'Detail Tour'
+
+  static propTypes = {
+    tourInfo: PropTypes.object,
+  }
+
+  static async getInitialProps({ query }) {
+      let apiService = ApiService()
+      let tourTurn = await apiService.getToursTurnId(query.id)
+      return { tourInfo: tourTurn.data };
+  }
 
   constructor(props) {
     super(props)
@@ -18,10 +29,15 @@ class DetailTour extends React.Component {
     this.tabs = [
       'Description',
       'Detailed',
+      'Additional Information',
       'Reviews'
     ]
+    this.olds = {
+      'adults': 'Adult',
+      'children': 'Children'
+    }
     this.state = {
-      tourTurn: null,
+      tourTurn: this.props.tourInfo,
       tabId: 0,
       isLoading: false,
       nextPage: 1,
@@ -36,23 +52,22 @@ class DetailTour extends React.Component {
   }
 
   componentDidMount(){
-    const id = Router.query.id
-    this.apiService.getToursTurnId(id).then((res) => {
-      this.setState({
-        tourTurn: res.data
-      }, () => {
-        this.apiService.getImageByTour(this.state.tourTurn.tour.id).then(imgs => {
-          this.setState({
-            images: imgs.data
-          })
+    if(!this.state.tourTurn){
+      Router.pushRoute("home")
+    }
+    if(this.state.tourTurn){
+      this.apiService.getImageByTour(this.state.tourTurn.tour.id).then(imgs => {
+        this.setState({
+          images: imgs.data
         })
       })
-    })
+    }
     this.apiService.getToursTurn(1, 4).then((res) => {
       this.setState({
         tourLike: res.data
       })
     })
+    this.apiService.increaseView(this.state.tourTurn.id).then(() => {})
   }
 
   handleChangeTab(index){
@@ -170,7 +185,13 @@ class DetailTour extends React.Component {
                         <div className="summary">
                           <h1 className="product_title entry-title">{tourTurn.tour.name}</h1>
                           <div className="rating-zone">
-                            <RatingStar hideNumber rate={3}/>
+                            <RatingStar rate={3}/>
+                          </div>
+                          <div className="views-zone">
+                            <span>
+                              <i><FaEye /></i>
+                              {tourTurn.view.toLocaleString()} views
+                            </span>
                           </div>
                           <p className="price">
                             {!!tourTurn.discount &&
@@ -180,7 +201,7 @@ class DetailTour extends React.Component {
                             }
                             <ins>
                               <span className="amount">
-                                {tourTurn.discount ? (tourTurn.discount * tourTurn.price).toLocaleString() : tourTurn.price.toLocaleString()} VND
+                                {tourTurn.discount ? (tourTurn.price - tourTurn.discount * tourTurn.price).toLocaleString() : tourTurn.price.toLocaleString()} VND
                               </span>
                             </ins>
                           </p>
@@ -188,14 +209,14 @@ class DetailTour extends React.Component {
                             <div className="col-12">
                               <div className="row" style={{marginBottom: '15px', marginTop: '30px'}}>
                                 <div className="col-md-4 col-sm-4 col-6">Tour code:</div>
-                                <div className="col-md-8 col-sm-8 col-6">{getCodeTour(tourTurn.id)}</div>
+                                <div className="col-md-8 col-sm-8 col-6">{getCode(tourTurn.id)}</div>
                               </div>
                               <div className="row">
                                 <div className="col-lg-4 col-md-6 col-sm-4 col-6 mg-10">Start date:</div>
                                 <div className="col-lg-3 col-md-6 col-sm-3 col-6">{formatDate(tourTurn.start_date)}</div>
                                 <div className="col-lg-5 col-md-12 col-sm-5 col-12">
                                   <a style={{color: '#333'}}>
-                                    <FaRegCalendarAlt style={{fontSize: '16px', color: 'rgb(67, 74, 84)'}}/>&nbsp;&nbsp;
+                                    <FaRegCalendarAlt style={{fontSize: '16px', color: 'rgb(67, 74, 84)', position: 'relative', top: '-2px'}}/>&nbsp;&nbsp;
                                       <span style={{color: '#fc6600'}}>Other day</span>
                                     </a>
                                   </div>
@@ -209,7 +230,7 @@ class DetailTour extends React.Component {
                                 </div>
                               </div>
                             </div>
-                            <Link route="home">
+                            <Link route="checkout-passengers" params={{tour_id: tourTurn.id}}>
                               <a className="co-btn green w-auto mt-4">BOOK NOW</a>
                             </Link>
                             {/*<div className="product_meta">
@@ -288,6 +309,42 @@ class DetailTour extends React.Component {
                       </div>
                     }
                     {this.state.tabId === 2 &&
+                      <div className="tab-panel">
+                        <div className="row">
+                          <div className="col-12">
+                            <div className="wrapper">
+                              <div className="addtional-info">
+                                <p>
+                                  <i><FaSuitcase style={{position: 'relative', top: '-2px'}}/></i> Price of tour
+                                </p>
+                                {!!tourTurn.price_passengers.length &&
+                                  <table className="table table-bordered">
+                                    <thead>
+                                      <tr>
+                                        <td>Age of Passsenger</td>
+                                        <td>Price</td>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {tourTurn.price_passengers.map((item, key) => {
+                                          return(
+                                            <tr key={key}>
+                                              <td>{this.olds[item.type]}</td>
+                                              <td>{item.price.toLocaleString()} VND</td>
+                                            </tr>
+                                          )
+                                        })
+                                      }
+                                    </tbody>
+                                  </table>
+                                }
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    }
+                    {this.state.tabId === 3 &&
                       <div className="tab-panel">
                         <div className="reviews">
                           <div className="comments">

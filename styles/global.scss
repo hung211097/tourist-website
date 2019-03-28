@@ -2,6 +2,7 @@
 @import 'styles/fonts.scss';
 @import 'styles/variables.scss';
 
+@import 'styles/react-table.scss';
 /* REQUIRED */
 @import 'node_modules/pretty-checkbox/src/scss/_variables';
 
@@ -440,6 +441,11 @@ p {
   width: 450px !important;
 }
 
+.gm-style-iw-d{
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
 .gm-ui-hover-effect{
   top: -4px !important;
   right: -4px !important;
@@ -449,4 +455,23 @@ p {
     width: 18px !important;
     height: 18px !important;
   }
+}
+.pretty{
+  @media screen and (max-width: 576px){
+    white-space: unset;
+    label{
+      text-indent: 1.6em;
+      &:before{
+        top: calc((0% - (100% - 3.2em)) - 8%) !important;
+      }
+    }
+    span{
+      width: 100%;
+      display: block;
+      line-height: 20px;
+    }
+  }
+}
+.rt-resizable-header-content{
+  font-weight: 700;
 }
