@@ -1,10 +1,14 @@
 @import 'styles/variables.scss';
 
 .search-item{
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   background: #fff;
   border-bottom: 1px solid silver;
-  padding-bottom: 10px;
+  padding: 10px 0;
+  i{
+    position: relative;
+    top: -1px;
+  }
   .search-container{
     padding: 15px;
     .featured_image-container{

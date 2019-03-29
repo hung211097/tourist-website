@@ -1,19 +1,46 @@
 import React from 'react'
 import styles from './index.scss'
+import PropTypes from 'prop-types'
 import { Layout, RatingStar, SearchItem } from 'components'
 import Slider from 'react-rangeslider'
 import { FaFilter, FaChevronDown, FaChevronUp, FaChevronLeft, FaChevronRight, FaList } from "react-icons/fa"
 import { TiThSmallOutline } from "react-icons/ti"
 import { UnmountClosed } from 'react-collapse'
 import ReactPaginate from 'react-paginate'
+import ApiService from 'services/api.service'
+import { calcTotalPage } from '../../services/utils.service'
 
 class SearchResult extends React.Component {
   displayName = 'Search Result'
 
+  static propTypes = {
+    searchResult: PropTypes.object,
+    query: PropTypes.object
+  }
+
+  static async getInitialProps({ query }) {
+    let apiService = ApiService()
+    let searchResult = null
+    try{
+      if(query.keyword){
+        searchResult = await apiService.search(1, 5, {name: query.keyword})
+      }
+      else{
+        searchResult = await apiService.search(1, 5)
+      }
+    }
+    catch(e){
+      return { searchResult: null }
+    }
+    return { searchResult: searchResult, query }
+  }
+
   constructor(props) {
     super(props)
+    this.apiService = ApiService()
     this.state = {
-      keyword: '',
+      keyword: props.query.keyword,
+      keywordDisplay: props.query.keyword,
       date: '',
       sortBy: '',
       sortType: '',
@@ -21,7 +48,11 @@ class SearchResult extends React.Component {
       rate: 0,
       lasting: 0,
       filterShow: true,
-      isListView: true
+      isListView: true,
+      searchResult: props.searchResult.data,
+      totalPage: calcTotalPage(props.searchResult.itemCount, 5),
+      page: 1,
+      isSubmit: false
     }
   }
 
@@ -29,8 +60,45 @@ class SearchResult extends React.Component {
 
   }
 
+  loadSearchItem(){
+    let params = {}
+    if(this.state.keyword){
+      params.name = this.state.keyword
+    }
+    if(this.state.price){
+      params.price = this.state.price
+    }
+    if(this.state.date){
+      params.date = this.state.date
+    }
+    // if(this.state.rate){
+    //   params.rate = this.state.rate
+    // }
+    if(this.state.lasting){
+      params.lasting = this.state.lasting
+    }
+    if(this.state.sortBy){
+      params.sortBy = this.state.sortBy
+    }
+    if(this.state.sortType){
+      params.sortType = this.state.sortType
+    }
+    this.apiService.search(this.state.page, this.state.isListView ? 5 : 6, params).then((res) => {
+      this.setState({
+        searchResult: res.data,
+        totalPage: calcTotalPage(res.itemCount, this.state.isListView ? 5 : 6),
+        keywordDisplay: this.state.keyword
+      })
+    })
+  }
+
   handleSubmit(e){
     e.preventDefault()
+    this.setState({
+      page: 1
+    }, () => {
+      this.loadSearchItem()
+    })
   }
 
   handleChangeKeyword(e){
@@ -82,25 +150,38 @@ class SearchResult extends React.Component {
   }
 
   handlePageClick(value){
-    // console.log(value);
+    this.setState({
+      page: value
+    }, () => {
+      this.loadSearchItem()
+    })
   }
 
   offListView(){
     this.setState({
-      isListView: false
+      isListView: false,
+      page: 1
+    }, () => {
+      this.loadSearchItem()
     })
   }
 
   onListView(){
     this.setState({
-      isListView: true
+      isListView: true,
+      page: 1
+    }, () => {
+      this.loadSearchItem()
     })
   }
 
   handleChangeSort(by, type){
     this.setState({
       sortBy: by,
-      sortType: type
+      sortType: type,
+      page: 1
+    }, () => {
+      this.loadSearchItem()
     })
   }
 
@@ -388,7 +469,7 @@ class SearchResult extends React.Component {
                               <div className="nd_travel_section mt-50">
                                 <Slider
                                   min={0}
-                                  max={100000000}
+                                  max={50000000}
                                   step={10000}
                                   tooltip={false}
                                   value={this.state.price}
@@ -513,7 +594,7 @@ class SearchResult extends React.Component {
                           <div className="break d-sm-none d-block mb-5" />
                         <div className="search-for">
                           <div className="title d-inline-block">
-                            <h2>Search&apos;s result for: &quot;ABC&quot;</h2>
+                            <h2>Search&apos;s result for: &quot;{this.state.keywordDisplay}&quot;</h2>
                           </div>
                           <div className="change-view">
                             <span className={this.state.isListView ? "active" : ''}>
@@ -525,40 +606,44 @@ class SearchResult extends React.Component {
                           </div>
                         </div>
                         <div className="search-content">
-                          <div className="no-result">
-                            <img alt="warning" src="/static/svg/icon-warning-white.svg" width="20" />
-                            <h3>No results for this search</h3>
-                          </div>
+                          {!this.state.searchResult.length &&
+                            <div className="no-result">
+                              <img alt="warning" src="/static/svg/icon-warning-white.svg" width="20" />
+                              <h3>No results for this search</h3>
+                            </div>
+                          }
                           <div className="search-list-item row no-margin">
-                            {[1,2,3,4,5].map((item, key) => {
+                            {!!this.state.searchResult.length && this.state.searchResult.map((item, key) => {
                                 return(
-                                  <SearchItem key={key} isGrid={!this.state.isListView}/>
+                                  <SearchItem key={key} isGrid={!this.state.isListView} item={item}/>
                                 )
                               })
                             }
                           </div>
                         </div>
-                        <div className="pagination row text-center">
-                          <ReactPaginate
-                            previousLabel={<FaChevronLeft />}
-                            nextLabel={<FaChevronRight />}
-                            previousClassName={'previous-pagination-li'}
-                            nextClassName={'next-pagination-li'}
-                            previousLinkClassName={'previous-pagination-a'}
-                            nextLinkClassName={'next-pagination-a'}
-                            disabledClassName={'disabled-navigate'}
-                            breakLabel={'...'}
-                            breakClassName={'break-me'}
-                            pageCount={10}
-                            marginPagesDisplayed={1}
-                            pageRangeDisplayed={1}
-                            onPageChange={this.handlePageClick.bind(this)}
-                            containerClassName={'pagination'}
-                            subContainerClassName={'pages pagination'}
-                            activeClassName={'active'}
-                            pageClassName={'custom-pagination-li'}
-                            pageLinkClassName={'custom-pagination-a'}/>
-                        </div>
+                        {!!this.state.searchResult.length &&
+                          <div className="pagination row text-center">
+                            <ReactPaginate
+                              previousLabel={<FaChevronLeft />}
+                              nextLabel={<FaChevronRight />}
+                              previousClassName={'previous-pagination-li'}
+                              nextClassName={'next-pagination-li'}
+                              previousLinkClassName={'previous-pagination-a'}
+                              nextLinkClassName={'next-pagination-a'}
+                              disabledClassName={'disabled-navigate'}
+                              breakLabel={'...'}
+                              breakClassName={'break-me'}
+                              pageCount={this.state.totalPage}
+                              marginPagesDisplayed={1}
+                              pageRangeDisplayed={1}
+                              onPageChange={this.handlePageClick.bind(this)}
+                              containerClassName={'pagination'}
+                              subContainerClassName={'pages pagination'}
+                              activeClassName={'active'}
+                              pageClassName={'custom-pagination-li'}
+                              pageLinkClassName={'custom-pagination-a'}/>
+                          </div>
+                        }
                       </div>
                     </div>
                   </div>

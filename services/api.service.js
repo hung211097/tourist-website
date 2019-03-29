@@ -103,7 +103,7 @@ export default () => {
       return fetchCached(url)
     },
     search: (page = 1, limit = 5, params={}) => {
-      let url = baseURL + `tour_turn/search?page=${page}&limit=${limit}`
+      let url = baseURL + `tour_turn/search?page=${page}&per_page=${limit}`
       url += params.name ? `&name=${params.name}` : ''
       url += params.price ? `&price=${params.price}` : ''
       url += params.date ? `&date=${params.date}` : ''

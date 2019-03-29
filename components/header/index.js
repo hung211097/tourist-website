@@ -181,7 +181,7 @@ class Header extends React.Component {
 
   handleSubmit(e){
     e.preventDefault()
-    alert('ok')
+    Router.pushRoute('search-result', {keyword: this.state.keyword})
   }
 
   render() {
@@ -366,7 +366,6 @@ class Header extends React.Component {
                         </div>
                       </a>
                     </Link>
-
                     <div className="add-review">
                       <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
                         <a className="nd_options_margin_left_10" href="#">Add Your Review</a>
@@ -434,7 +433,9 @@ class Header extends React.Component {
                               </Link>
                             </li>
                             <li className="nd_options_book_now_btn">
-                              <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/">BOOK NOW</a>
+                              <Link route="search-result">
+                                <a>BOOK NOW</a>
+                              </Link>
                             </li>
                           </ul>
                           <div className="access-location">

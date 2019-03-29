@@ -74,3 +74,7 @@ export function shrinkCode(string){
 export function capitalize(string){
   return string.charAt(0).toUpperCase() + string.substr(1)
 }
+
+export function calcTotalPage(total, per_page){
+  return total % per_page === 0 ? parseInt(total / per_page) : parseInt(total / per_page) + 1
+}
