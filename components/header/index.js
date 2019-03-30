@@ -11,6 +11,7 @@ import { MdLocationOn } from "react-icons/md"
 import { saveLocation, logout, saveRedirectUrl, saveProfile } from '../../actions'
 import { setLocalStorage, getLocalStorage, removeItem } from '../../services/local-storage.service'
 import { KEY } from '../../constants/local-storage'
+import { slugify } from '../../services/utils.service'
 
 const mapStateToProps = (state) => {
   return {
@@ -181,7 +182,10 @@ class Header extends React.Component {
 
   handleSubmit(e){
     e.preventDefault()
-    Router.pushRoute('search-result', {keyword: this.state.keyword})
+    Router.pushRoute('search-result', {keyword: slugify(this.state.keyword)})
+    this.setState({
+      keyword: '',
+    })
   }
 
   render() {
@@ -452,9 +456,11 @@ class Header extends React.Component {
                 {/*RESPONSIVE*/}
                 <div className="nd_options_section text-center d-none nd_options_display_block_responsive">
                   <div className="nd_options_section nd_options_height_20" />
-                  <a className="d-inline-block" href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel">
-                    <img alt="logo" className="nd_options_float_left" src="/static/images/logo.png" />
-                  </a>
+                  <Link route="home">
+                    <a className="d-inline-block">
+                      <img alt="logo" className="nd_options_float_left" src="/static/images/logo.png" />
+                    </a>
+                  </Link>
                   <div className="nd_options_section nd_options_height_10" />
                   <div className="nd_options_section">
                     <a className="nd_options_open_navigation_2_sidebar_content nd_options_open_navigation_2_sidebar_content"
@@ -515,7 +521,9 @@ class Header extends React.Component {
                               </Link>
                             </li>
                             <li className="nd_options_book_now_btn">
-                              <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/">BOOK NOW</a>
+                              <Link route="search-result">
+                                <a>BOOK NOW</a>
+                              </Link>
                             </li>
                           </ul>
                           <div className="access-location">

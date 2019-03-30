@@ -125,8 +125,11 @@
   .content{
     margin-top: 50px;
     .content-page{
-      margin-top: 60px !important;
-      margin-bottom: 60px !important;
+      margin-top: 60px;
+      margin-bottom: 60px;
+      @media screen and (max-width: 576px){
+        margin-top: 50px;
+      }
       .inner{
         padding-top: 0px;
         box-sizing: border-box;
@@ -141,7 +144,7 @@
             padding: 15px;
             .filter-zone{
               .title-filter{
-                margin-bottom: 20px;
+                margin-top: 30px;
                 cursor: pointer;
                 h3{
                   color: $main-bg-color;
@@ -282,7 +285,11 @@
               color: #a3a3a3;
               width: 100%;
             }
-
+            .title-filter-web{
+              margin-top: 30px;
+              padding-bottom: 10px;
+              border-bottom: 2px solid #eaeaea;
+            }
           }
           .search-zone{
             padding: 15px;

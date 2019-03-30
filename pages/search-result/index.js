@@ -8,7 +8,9 @@ import { TiThSmallOutline } from "react-icons/ti"
 import { UnmountClosed } from 'react-collapse'
 import ReactPaginate from 'react-paginate'
 import ApiService from 'services/api.service'
-import { calcTotalPage } from '../../services/utils.service'
+import { calcTotalPage, slugify } from '../../services/utils.service'
+import Autosuggest from 'react-autosuggest'
+import { Router } from 'routes'
 
 class SearchResult extends React.Component {
   displayName = 'Search Result'
@@ -30,8 +32,9 @@ class SearchResult extends React.Component {
       }
     }
     catch(e){
-      return { searchResult: null }
+      return { searchResult: null, query }
     }
+
     return { searchResult: searchResult, query }
   }
 
@@ -39,7 +42,7 @@ class SearchResult extends React.Component {
     super(props)
     this.apiService = ApiService()
     this.state = {
-      keyword: props.query.keyword,
+      keyword: '',
       keywordDisplay: props.query.keyword,
       date: '',
       sortBy: '',
@@ -47,12 +50,13 @@ class SearchResult extends React.Component {
       price: 0,
       rate: 0,
       lasting: 0,
-      filterShow: true,
-      isListView: true,
+      filterShow: true, //Show phần filter ở mobile hay không?
+      isListView: true, //Xem dạng list ngang hay grid ô
       searchResult: props.searchResult.data,
       totalPage: calcTotalPage(props.searchResult.itemCount, 5),
-      page: 1,
-      isSubmit: false
+      page: 0,
+      isSubmit: false,
+      autoSuggest: [],
     }
   }
 
@@ -60,10 +64,20 @@ class SearchResult extends React.Component {
 
   }
 
+  UNSAFE_componentWillReceiveProps(props){
+    this.setState({
+      searchResult: props.searchResult.data,
+      totalPage: calcTotalPage(props.searchResult.itemCount, 5),
+      keywordDisplay: props.query.keyword
+    })
+    this.handleReset()
+  }
+
+
   loadSearchItem(){
     let params = {}
-    if(this.state.keyword){
-      params.name = this.state.keyword
+    if(this.props.query.keyword){
+      params.name = this.props.query.keyword
     }
     if(this.state.price){
       params.price = this.state.price
@@ -83,21 +97,31 @@ class SearchResult extends React.Component {
     if(this.state.sortType){
       params.sortType = this.state.sortType
     }
-    this.apiService.search(this.state.page, this.state.isListView ? 5 : 6, params).then((res) => {
+    this.apiService.search(this.state.page + 1, this.state.isListView ? 5 : 6, params).then((res) => {
       this.setState({
         searchResult: res.data,
         totalPage: calcTotalPage(res.itemCount, this.state.isListView ? 5 : 6),
-        keywordDisplay: this.state.keyword
       })
     })
   }
 
-  handleSubmit(e){
+  handleSubmitFilter(e){
     e.preventDefault()
     this.setState({
-      page: 1
+      page: 0
     }, () => {
       this.loadSearchItem()
+    })
+  }
+
+  handleSubmitSearch(e){
+    e.preventDefault()
+    if(!this.state.keyword){
+      return
+    }
+    Router.pushRoute('search-result', { keyword: slugify(this.state.keyword) })
+    this.setState({
+      keyword: ''
     })
   }
 
@@ -145,13 +169,14 @@ class SearchResult extends React.Component {
       rate: 0,
       lasting: 0,
       sortBy: '',
-      sortType: ''
+      sortType: '',
+      flag: false
     })
   }
 
   handlePageClick(value){
     this.setState({
-      page: value
+      page: value.selected
     }, () => {
       this.loadSearchItem()
     })
@@ -160,7 +185,7 @@ class SearchResult extends React.Component {
   offListView(){
     this.setState({
       isListView: false,
-      page: 1
+      page: 0
     }, () => {
       this.loadSearchItem()
     })
@@ -169,7 +194,7 @@ class SearchResult extends React.Component {
   onListView(){
     this.setState({
       isListView: true,
-      page: 1
+      page: 0
     }, () => {
       this.loadSearchItem()
     })
@@ -179,9 +204,35 @@ class SearchResult extends React.Component {
     this.setState({
       sortBy: by,
       sortType: type,
-      page: 1
+      page: 0
     }, () => {
       this.loadSearchItem()
+    })
+  }
+
+  getSuggestionValue = (suggest) => {
+    return suggest.name
+  }
+
+  onSuggestionsFetchRequested = ({ value }) => {
+    this.apiService.getAutoSuggestTour(value).then((res) => {
+      this.setState({
+        autoSuggest: res.data
+      })
+    })
+  };
+
+  onSuggestionsClearRequested = () => {
+    if(this.state.autoSuggest.length){
+      this.setState({
+        autoSuggest: []
+      });
+    }
+  };
+
+  onSuggestionSelected = (e, {suggestionValue}) => {
+    this.setState({
+      keyword: suggestionValue
     })
   }
 
@@ -272,6 +323,32 @@ class SearchResult extends React.Component {
                       <div className="col-sm-4 form-filter">
                         <div className="d-sm-none d-block">         {/*Filter for responsive*/}
                           <div className="filter-zone">
+                            <form onSubmit={this.handleSubmitSearch.bind(this)}>
+                              <div className="search-name-box">
+                                <div className="title">
+                                  <h3>Search your destination:</h3>
+                                </div>
+                                <div className="input-name-container">
+                                  {/*<input type="text" name="name-tour" value={this.state.keyword} onChange={this.handleChangeKeyword.bind(this)}/>*/}
+                                    <Autosuggest
+                                      suggestions={this.state.autoSuggest}
+                                      onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                                      onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                                      getSuggestionValue={this.getSuggestionValue}
+                                      onSuggestionSelected={this.onSuggestionSelected}
+                                      renderSuggestion={(suggestion) =>
+                                        (<div>
+                                          {suggestion.name}
+                                        </div>)}
+                                      inputProps={{
+                                        value: this.state.keyword,
+                                        onChange: this.handleChangeKeyword.bind(this),
+                                        className: "react-autosuggest-search"
+                                      }}
+                                    />
+                                </div>
+                              </div>
+                            </form>
                             <div className="title-filter" onClick={this.handleToggleFilter.bind(this)}>
                               <h3>
                                 FILTER <FaFilter />
@@ -285,15 +362,7 @@ class SearchResult extends React.Component {
                             </div>
                             <UnmountClosed isOpened={this.state.filterShow} springConfig={{stiffness: 150, damping: 20}}>
                               <div className="collapse-content">
-                                <form onSubmit={this.handleSubmit.bind(this)}>
-                                  <div className="search-name-box">
-                                    <div className="title">
-                                      <h3>Search your destination:</h3>
-                                    </div>
-                                    <div className="input-name-container">
-                                      <input type="text" name="name-tour" value={this.state.keyword} onChange={this.handleChangeKeyword.bind(this)}/>
-                                    </div>
-                                  </div>
+                                <form onSubmit={this.handleSubmitFilter.bind(this)}>
                                   <div className="search-date-box">
                                     <div className="search-date-container">
                                       <div className="nd_options_height_10" />
@@ -430,7 +499,7 @@ class SearchResult extends React.Component {
                                   </div>
                                   <div className="confirm-zone">
                                     <div className="text-center">
-                                      <button type="submit" className="co-btn green" onClick={this.handleSubmit.bind(this)}>SEARCH</button>
+                                      <button type="submit" className="co-btn green" onClick={this.handleSubmitFilter.bind(this)}>APPLY</button>
                                       <button type="button" className="co-btn green" onClick={this.handleReset.bind(this)}>RESET</button>
                                     </div>
                                   </div>
@@ -439,14 +508,37 @@ class SearchResult extends React.Component {
                             </UnmountClosed>
                           </div>
                         </div>
-                        <form onSubmit={this.handleSubmit.bind(this)} className="d-sm-block d-none">
+                        <form onSubmit={this.handleSubmitSearch.bind(this)} className="d-sm-block d-none">
                           <div className="search-name-box">
                             <div className="title">
                               <h3>Search your destination:</h3>
                             </div>
                             <div className="input-name-container">
-                              <input type="text" name="name-tour" value={this.state.keyword} onChange={this.handleChangeKeyword.bind(this)}/>
+                              {/*<input type="text" name="name-tour" value={this.state.keyword} onChange={this.handleChangeKeyword.bind(this)}/>*/}
+                                <Autosuggest
+                                  suggestions={this.state.autoSuggest}
+                                  onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                                  onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                                  getSuggestionValue={this.getSuggestionValue}
+                                  onSuggestionSelected={this.onSuggestionSelected}
+                                  renderSuggestion={(suggestion) =>
+                                    (<div>
+                                      {suggestion.name}
+                                    </div>)}
+                                  inputProps={{
+                                    value: this.state.keyword,
+                                    onChange: this.handleChangeKeyword.bind(this),
+                                    className: "react-autosuggest-search"
+                                  }}
+                                />
                             </div>
+                          </div>
+                        </form>
+                        <form onSubmit={this.handleSubmitFilter.bind(this)} className="d-sm-block d-none">
+                          <div className="title-filter-web">
+                            <h3>
+                              FILTER <FaFilter />
+                            </h3>
                           </div>
                           <div className="search-date-box">
                             <div className="search-date-container">
@@ -584,7 +676,7 @@ class SearchResult extends React.Component {
                           </div>
                           <div className="confirm-zone">
                             <div className="text-center">
-                              <button type="submit" className="co-btn green" onClick={this.handleSubmit.bind(this)}>SEARCH</button>
+                              <button type="submit" className="co-btn green" onClick={this.handleSubmitFilter.bind(this)}>APPLY</button>
                               <button type="button" className="co-btn green" onClick={this.handleReset.bind(this)}>RESET</button>
                             </div>
                           </div>
@@ -641,7 +733,8 @@ class SearchResult extends React.Component {
                               subContainerClassName={'pages pagination'}
                               activeClassName={'active'}
                               pageClassName={'custom-pagination-li'}
-                              pageLinkClassName={'custom-pagination-a'}/>
+                              pageLinkClassName={'custom-pagination-a'}
+                              forcePage={this.state.page}/>
                           </div>
                         }
                       </div>

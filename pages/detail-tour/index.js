@@ -5,7 +5,7 @@ import { Layout } from 'components'
 import ApiService from 'services/api.service'
 import { Router, Link } from 'routes'
 import { RatingStar, BtnViewMore, MyMap, TourItem, Lightbox } from 'components'
-import { getCode } from '../../services/utils.service'
+import { getCode, slugify } from '../../services/utils.service'
 import { FaRegCalendarAlt, FaEye, FaSuitcase } from "react-icons/fa"
 import { formatDate, distanceFromDays } from '../../services/time.service'
 import validateEmail from '../../services/validates/email.js'
@@ -215,15 +215,18 @@ class DetailTour extends React.Component {
                                 <div className="col-lg-4 col-md-6 col-sm-4 col-6 mg-10">Start date:</div>
                                 <div className="col-lg-3 col-md-6 col-sm-3 col-6">{formatDate(tourTurn.start_date)}</div>
                                 <div className="col-lg-5 col-md-12 col-sm-5 col-12">
-                                  <a style={{color: '#333'}}>
-                                    <FaRegCalendarAlt style={{fontSize: '16px', color: 'rgb(67, 74, 84)', position: 'relative', top: '-2px'}}/>&nbsp;&nbsp;
+                                  <Link route="search-result" params={{keyword: slugify(tourTurn.tour.name)}}>
+                                    <a style={{color: '#333'}}>
+                                      <FaRegCalendarAlt style={{fontSize: '16px', color: 'rgb(67, 74, 84)', position: 'relative', top: '-2px'}}/>
+                                      &nbsp;&nbsp;
                                       <span style={{color: '#fc6600'}}>Other day</span>
                                     </a>
+                                  </Link>
                                   </div>
                                 </div>
                                 <div className="row" style={{marginTop: '15px'}}>
                                   <div className="col-lg-4 col-md-6 col-sm-4 col-6 mg-bot15">
-                                    <span>Last in {distanceFromDays(new Date(tourTurn.start_date), new Date(tourTurn.end_date))} days</span>
+                                    <span>Last in {distanceFromDays(new Date(tourTurn.start_date), new Date(tourTurn.end_date)) + 1} days</span>
                                   </div>
                                   <div className="col-lg-3 col-md-6 col-sm-3 col-6"> {distanceFromDays(Date.now(), new Date(tourTurn.start_date))} days left</div>
                                   <div className="col-lg-5 col-md-12 col-sm-5 col-12  mg-bot15">{tourTurn.num_max_people - tourTurn.num_current_people} vacancies left</div>

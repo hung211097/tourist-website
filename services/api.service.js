@@ -23,6 +23,8 @@ export default () => {
     getToursTurn: (page = 1, limit = 10, params = {}) => {
       let url = baseURL + `tour_turn/getAll?page=${page}&per_page=${limit}`
       url += params.isUnique ? "&isUniqueTour=true" : ''
+      url += params.sortBy ? `&sortBy=${params.sortBy}` : ''
+      url += params.sortType ? `&sortType=${params.sortType}` : ''
       return fetchCached(url)
     },
     getToursTurnId: (id) => {
@@ -114,6 +116,10 @@ export default () => {
       url += params.sortType ? `&sortType=${params.sortType}` : ''
       return fetchCached(url)
     },
+    getAutoSuggestTour: (name, limit = 10) => {
+      let url = baseURL + `tour/searchByName?name=${name}&per_page=${limit}`
+      return fetchCached(url)
+    }
   }
 
   return services

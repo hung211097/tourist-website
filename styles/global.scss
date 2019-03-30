@@ -517,3 +517,34 @@ p {
 .rt-resizable-header-content{
   font-weight: 700;
 }
+
+.react-autosuggest-search{
+  background-color: #f9f9f9;
+  border-width: 1px;
+  border-color: #f1f1f1;
+  border-radius: 0px;
+  border-style: solid;
+  padding: 10px 20px;
+  -webkit-appearance: none;
+  color: #a3a3a3;
+  width: 100%;
+}
+
+.react-autosuggest__suggestions-list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.react-autosuggest__suggestion {
+    cursor: pointer;
+    padding: 10px 20px;
+    background-color: #f9f9f9;
+    border-color: #f1f1f1;
+}
+
+.react-autosuggest__suggestion--highlighted {
+    background: $main-bg-color;
+    color: white;
+    border-color: white;
+}

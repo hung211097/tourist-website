@@ -74,7 +74,7 @@ class SearchItem extends React.Component {
                     </div>
                     <div className="tour-info row">
                       <div className="date col-2">
-                        <div className="date-display">{distanceFromDays(new Date(item.start_date), new Date(item.end_date))}</div>
+                        <div className="date-display">{distanceFromDays(new Date(item.start_date), new Date(item.end_date)) + 1}</div>
                         <div className="date-lang">DAYS</div>
                       </div>
                       <div className="price col-7">
@@ -151,7 +151,7 @@ class SearchItem extends React.Component {
                     <i><FaCalendarAlt /></i>&nbsp;&nbsp;Start date: {formatDate(item.start_date)}
                   </div>
                   <div className="col-lg-6 col-md-6 mg-bot10">
-                    <i><FaClock /></i>&nbsp;&nbsp;Lasting: {distanceFromDays(new Date(item.start_date), new Date(item.end_date))} days
+                    <i><FaClock /></i>&nbsp;&nbsp;Lasting: {distanceFromDays(new Date(item.start_date), new Date(item.end_date)) + 1} days
                   </div>
                   <div className="col-lg-6 col-md-6 mg-bot10">
                     <i><FaUserAlt /></i>&nbsp;&nbsp;Vacancy: {item.num_max_people - item.num_current_people}
