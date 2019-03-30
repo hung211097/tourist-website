@@ -104,8 +104,8 @@ export default class extends React.Component {
 					{
 						breakpoint: 576,
 						settings: {
-							slidesToShow: 2,
-							slidesToScroll: 2,
+							slidesToShow: 1,
+							slidesToScroll: 1,
 							arrows: false,
 							dots: true
 						}

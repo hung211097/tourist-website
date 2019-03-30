@@ -30,6 +30,7 @@ const RatingStar = dynamic(import('./rating-star'), defaultLoading)
 const MapContact = dynamic(import('./map-contact'), defaultLoading)
 const SlickItem = dynamic(import('./slick-item'), defaultLoading)
 const Lightbox = dynamic(import('./lightbox'), defaultLoading)
+const SearchItem = dynamic(import('./search-item'), defaultLoading)
 
 const MarkerComponent = dynamic(import('./marker'), defaultNoSSR)
 const TopPromotionItem = dynamic(import('./top-promotion-item'), defaultNoSSR)
@@ -58,6 +59,7 @@ export {
     WizardStep,
     PassengerInfo,
     Modal,
+    SearchItem,
     PopupLoading,
     PopupCancelTour
 }

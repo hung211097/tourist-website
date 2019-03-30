@@ -51,6 +51,10 @@
 
 .rating-number{
 	font-size: 1.4rem;
+  &.white{
+    color: white;
+    font-weight: 700;
+  }
   &.small-text{
     font-size: 13px;
     color:  #7e7e7e;
@@ -76,6 +80,10 @@
     overflow: hidden;
     background: url(/static/svg/ico-star-main.svg) no-repeat;
     background-size: cover;
+    &.white{
+      background: url(/static/svg/ico-star-white.svg) no-repeat;
+      background-size: cover;
+    }
 }
 
 .title{

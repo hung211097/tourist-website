@@ -1,0 +1,261 @@
+@import 'styles/variables.scss';
+
+.search-item{
+  margin-bottom: 5px;
+  background: #fff;
+  border-bottom: 1px solid silver;
+  padding: 10px 0;
+  i{
+    position: relative;
+    top: -1px;
+  }
+  .search-container{
+    padding: 15px;
+    .featured_image-container{
+      padding: 0;
+      .featured_image{
+        position: relative;
+        img{
+          height: 190px;
+          width: 100%;
+        }
+      }
+      .sale{
+        top: 20px !important;
+        right: 20px !important;
+        left: initial !important;
+        margin: -.5em -.5em 0 0;
+        border-radius: 0px;
+        min-width: initial;
+        min-height: initial;
+        padding: 8px;
+        line-height: 13px;
+        font-size: 13px;
+        text-transform: uppercase;
+        font-weight: normal;
+        background-color: #1bbc9b;
+        position: absolute;
+        text-align: center;
+        color: #fff;
+        z-index: 9;
+      }
+    }
+    .tour-info-new{
+      position: relative;
+      @media screen and (max-width: 576px){
+        padding: 0 !important;
+        margin-top: 20px;
+      }
+      .tour-name{
+        color: $main-bg-color;
+        font-size: 17px;
+        font-weight: bold;
+        line-height: 20px;
+        margin-bottom: 10px;
+        a{
+          color: $main-bg-color;
+        }
+      }
+      .star-rating{
+        margin-right: 15px;
+        margin-bottom: 15px;
+        .rateit{
+          float: left;
+          padding-top: 5px;
+          display: inline-block;
+          position: relative;
+        }
+        .statistic{
+          float: left;
+          padding-top: 3px;
+          padding-left: 15px;
+        }
+        .comments{
+          margin-left: 15px;
+        }
+      }
+      .statistic-content{
+        .mg-listtour{
+          margin-top: 15px;
+          margin-bottom: 10px;
+        }
+      }
+      .price-container{
+        .price-new{
+          color: #e82c0c;
+          font-size: 17px;
+          font-weight: bold;
+          display: inline-block;
+        }
+        a{
+          display: inline-block;
+          margin-left: 20px;
+          background: #fc6600;
+          color: #fff;
+          border-color: #fc6600;
+          border-radius: 0px !important;
+          padding: 5px 10px;
+          font-size: 12px;
+          line-height: 1.5;
+        }
+        .discount-price{
+          text-decoration: line-through;
+          color: #a4a4a4;
+        }
+      }
+    }
+  }
+  .mg-bot10{
+    margin-bottom: 10px;
+  }
+}
+
+.item-tour-main{
+  margin-top: 20px;
+  margin-bottom: 30px;
+  .tour-img{
+    position: relative;
+    img{
+      height: 253px;
+      width: 100%;
+    }
+    .tour-statistic{
+      position: absolute;
+      bottom: 0px;
+      right: 0px;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) , rgb(0, 0, 0));
+      padding: 7px;
+      width: 100%;
+      text-align: center;
+      font-size: 15px;
+      color: #fff;
+      .figure{
+        margin: 0;
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+        border-bottom: 1px dotted rgba(255, 255, 255, 0.5);
+        i, span{
+          color: white;
+        }
+      }
+      .ratingstar{
+        text-align: right;
+        @media screen and (max-width: 576px){
+          text-align: left;
+          margin-top: 5px;
+        }
+      }
+    }
+    .sale{
+      top: 20px !important;
+      right: 20px !important;
+      left: initial !important;
+      margin: -.5em -.5em 0 0;
+      border-radius: 0px;
+      min-width: initial;
+      min-height: initial;
+      padding: 8px;
+      line-height: 13px;
+      font-size: 13px;
+      text-transform: uppercase;
+      font-weight: normal;
+      background-color: #1bbc9b;
+      position: absolute;
+      text-align: center;
+      color: #fff;
+      z-index: 9;
+    }
+  }
+  .tour-content{
+    background: #f5f5f5;
+    padding: 10px;
+    padding-bottom: 0;
+    .tour-title{
+      text-align: center;
+      line-height: 20px;
+      display: table;
+      overflow: hidden;
+      font-size: 15px;
+      height: 100px;
+    }
+    .tour-info{
+      border-top: 1px solid #ccc;
+      margin: 0px -10px;
+      .date{
+        border-right: 1px solid #ccc;
+        height: 55px;
+        padding: 5px;
+        text-align: center;
+        color: #cd2c24;
+        .date-display{
+          font-weight: bold;
+          border-bottom: 1px solid #ccc;
+          font-size: 20px;
+        }
+        .date-lang{
+          padding-top: 1px;
+          font-size: 11px;
+        }
+      }
+      .price{
+        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        .price-discount{
+          font-size: 18px;
+          text-decoration: line-through;
+          color: #909090;
+          @media screen and (max-width: 576px){
+            font-size: 15px;
+          }
+        }
+        .price-new_n{
+          color: #cd2c24;
+          font-weight: bold;
+          font-size: 18px;
+          @media screen and (max-width: 576px){
+            font-size: 15px;
+          }
+        }
+      }
+      .btn-book{
+        height: 55px;
+        line-height: 55px;
+        background: #fc6600;
+        font-size: 14px;
+        padding: 0 10px 0 10px;
+        color: #fff;
+        text-align: center;
+        display: inline-block;
+        vertical-align: middle;
+        transform: perspective(1px) translateZ(0);
+        box-shadow: 0 0 1px transparent;
+        position: relative;
+        transition-property: color;
+        transition-duration: 0.3s;
+        &:hover{
+          &:before{
+            transform: scaleX(1);
+          }
+        }
+        &:before{
+          background: #f59331 !important;
+          content: "";
+          position: absolute;
+          z-index: -1;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          transform: scaleX(0);
+          transform-origin: 0 50%;
+          transition-property: transform;
+          transition-duration: 0.3s;
+          transition-timing-function: ease-out;
+        }
+      }
+    }
+  }
+}

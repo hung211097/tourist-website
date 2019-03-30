@@ -162,7 +162,7 @@ class DetailBookedTour extends React.Component {
                                         <p>
                                           <i className="fa fa-calendar" aria-hidden="true"><FaRegCalendarAlt /></i>
                                           Lasting:&nbsp;
-                                          <span>{distanceFromDays(new Date(tourInfo.start_date), new Date(tourInfo.end_date))} days</span>
+                                          <span>{distanceFromDays(new Date(tourInfo.start_date), new Date(tourInfo.end_date)) + 1} days</span>
                                         </p>
                                       </div>
                                       <div className="col-sm-6"></div>

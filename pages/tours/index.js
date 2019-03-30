@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './index.scss'
-import { Layout } from 'components'
+import { Layout, SlickItem } from 'components'
 import ApiService from '../../services/api.service'
 import { TourItem, BtnViewMore } from 'components'
 import ContentLoader from "react-content-loader"
@@ -12,9 +12,9 @@ class Tours extends React.Component {
     super(props)
     this.apiService = ApiService()
     this.state = {
-      tours: [],
-      nextPage: 1,
-      isLoading: false,
+      toursPopular: [],
+      toursView: [],
+      toursRating: [],
       isLoadContent: true
     }
   }
@@ -24,15 +24,22 @@ class Tours extends React.Component {
   }
 
   onLoadMore(){
-    this.setState({
-      isLoading: true
-    })
-    this.apiService.getToursTurn(this.state.nextPage, 4).then((res) => {
+    this.apiService.getToursTurn(1, 5, {sortBy: 'booking', sortType: "DESC"}).then((res) => {
       this.setState({
-        tours: [...this.state.tours, ...res.data],
-        nextPage: res.next_page,
-        isLoading: false,
+        toursPopular: [...this.state.toursPopular, ...res.data],
         isLoadContent: false
+      })
+    })
+
+    this.apiService.getToursTurn(1, 5, {sortBy: 'view', sortType: "DESC"}).then((res) => {
+      this.setState({
+        toursView: [...this.state.toursView, ...res.data],
+      })
+    })
+
+    this.apiService.getToursTurn(1, 5, {sortBy: 'price', sortType: "DESC"}).then((res) => {
+      this.setState({
+        toursRating: [...this.state.toursRating, ...res.data],
       })
     })
   }
@@ -61,16 +68,29 @@ class Tours extends React.Component {
               </div>
             </div>
             <div className="nd_options_container nd_options_clearfix content">
-              <div className="row list-tour">
-                {!!this.state.tours && this.state.tours.map((item, key) => {
-                    return(
-                      <div className="col-sm-6 col-md-4 col-lg-3" key={key}>
-                        <TourItem item={item}/>
-                      </div>
-                    )
-                  })
-                }
-                {!this.state.tours.length && this.state.isLoadContent && [1,2,3,4].map((item, key) => {
+              <div className="row list-tour top-popular">
+                <div className="col-sm-12 title">
+                  <div className="wrapper text-center">
+                    <h1>TOP POPULAR TOUR</h1>
+                    <div className="nd_options_height_10" />
+                    <div className="nd_options_section nd_options_line_height_0 text-center">
+                      <span className="underline-title"/>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-sm-12">
+                  <SlickItem small>
+                    {!!this.state.toursPopular && this.state.toursPopular.map((item, key) => {
+                        return(
+                          <div className="col-12" key={key}>
+                            <TourItem item={item}/>
+                          </div>
+                        )
+                      })
+                    }
+                  </SlickItem>
+                </div>
+                {!this.state.toursPopular.length && this.state.isLoadContent && [1,2,3,4].map((item, key) => {
                     return(
                       <div className="col-sm-6 col-md-4 col-lg-3" key={key}>
                         <ContentLoader
@@ -90,11 +110,59 @@ class Tours extends React.Component {
                   })
                 }
               </div>
-              <BtnViewMore
+              <div className="nd_options_height_20" />
+              <div className="row list-tour top-rating">
+                <div className="col-sm-12 title">
+                  <div className="wrapper text-center">
+                    <h1>TOP RATING TOUR</h1>
+                    <div className="nd_options_height_10" />
+                    <div className="nd_options_section nd_options_line_height_0 text-center">
+                      <span className="underline-title"/>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-sm-12">
+                  <SlickItem small>
+                    {!!this.state.toursRating && this.state.toursRating.map((item, key) => {
+                        return(
+                          <div className="col-12" key={key}>
+                            <TourItem item={item}/>
+                          </div>
+                        )
+                      })
+                    }
+                  </SlickItem>
+                </div>
+              </div>
+              <div className="nd_options_height_20" />
+              <div className="row list-tour top-view">
+                <div className="col-sm-12 title">
+                  <div className="wrapper text-center">
+                    <h1>TOP CONCERNED TOUR</h1>
+                    <div className="nd_options_height_10" />
+                    <div className="nd_options_section nd_options_line_height_0 text-center">
+                      <span className="underline-title"/>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-sm-12">
+                  <SlickItem small>
+                    {!!this.state.toursView && this.state.toursView.map((item, key) => {
+                        return(
+                          <div className="col-12" key={key}>
+                            <TourItem item={item}/>
+                          </div>
+                        )
+                      })
+                    }
+                  </SlickItem>
+                </div>
+              </div>
+              {/*<BtnViewMore
                 isLoading={this.state.isLoading}
                 show={this.state.nextPage > 0}
                 onClick={this.onLoadMore.bind(this)}
-              />
+              />*/}
             </div>
           </section>
         </Layout>

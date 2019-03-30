@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout, MyMap, TopPromotionItem } from 'components'
+import { Layout, MyMap, TopPromotionItem, SlickItem, RatingStar } from 'components'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { Router, Link } from 'routes'
@@ -204,6 +204,103 @@ class Home extends React.Component {
                 </div>
               </div>
             </div>
+            <section className="box">
+              <div className="row user-feedback no-margin">
+                <div className="col-sm-12 user-feedback-title">
+                  <div className="user-feedback-inner">
+                    <div className="wrapper text-center">
+                      <h1>TESTIMONIAL</h1>
+                      <div className="nd_options_height_20" />
+                      <h3>OUR PASSENGER SAY ABOUT US</h3>
+                      <div className="nd_options_height_20" />
+                      <div className="nd_options_section nd_options_line_height_0 text-center">
+                        <span className="underline-title"/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+             <div className="banner">
+               <SlickItem slideShow>
+                 <div className="testimonial-container">
+                   <div className="avatar">
+                     <img alt="avatar" src="/static/images/avatar_user_1.jpg"/>
+                   </div>
+                   <div className="comment">
+                     <div className="rating-contain">
+                       <RatingStar rate={5} hideNumber/>
+                     </div>
+                     <div className="comment-content">
+                       I&apos;ve tried a dozen maps plugins, but the Google Maps one from Elfsight was the most intuitive,
+                       with just the right features and was the quickest to build. Excellent job.
+                     </div>
+                   </div>
+                   <div className="author">
+                     <div className="info">
+                       <h3>Diane Pennebaker</h3>
+                     </div>
+                   </div>
+                 </div>
+                 <div className="testimonial-container">
+                   <div className="avatar">
+                     <img alt="avatar" src="/static/images/avatar_user_2.jpg"/>
+                   </div>
+                   <div className="comment">
+                     <div className="rating-contain">
+                       <RatingStar rate={5} hideNumber/>
+                     </div>
+                     <div className="comment-content">
+                       Plugin works flawlessly and very easy to use. Just input facebook url and put the code into the page
+                       and done! Thank you, Elfsight!
+                     </div>
+                   </div>
+                   <div className="author">
+                     <div className="info">
+                       <h3>Kevin Godwin</h3>
+                     </div>
+                   </div>
+                 </div>
+                 <div className="testimonial-container">
+                   <div className="avatar">
+                     <img alt="avatar" src="/static/images/avatar_user_3.jpg"/>
+                   </div>
+                   <div className="comment">
+                     <div className="rating-contain">
+                       <RatingStar rate={5} hideNumber/>
+                     </div>
+                     <div className="comment-content">
+                       The easiest pricing plugin I&apos;ve ever come across! The UI is absolutely intuitive, and it&apos;s super-easy
+                       to install, too! Thumbs up for Elfsight! 👍👍👍
+                     </div>
+                   </div>
+                   <div className="author">
+                     <div className="info">
+                       <h3>Marva Flores</h3>
+                     </div>
+                   </div>
+                 </div>
+                 <div className="testimonial-container">
+                   <div className="avatar">
+                     <img alt="avatar" src="/static/images/avatar_user_4.jpg"/>
+                   </div>
+                   <div className="comment">
+                     <div className="rating-contain">
+                       <RatingStar rate={5} hideNumber/>
+                     </div>
+                     <div className="comment-content">
+                       Yottie is highly configurable and works great! The whole team went above and beyond to help me fix an
+                       issue which ultimately had nothing to do with the app. Highly recommend this plugin and development team.
+                     </div>
+                   </div>
+                   <div className="author">
+                     <div className="info">
+                       <h3>Tony Johnson</h3>
+                     </div>
+                   </div>
+                 </div>
+               </SlickItem>
+             </div>
+           </section>
           </section>
         </Layout>
       </>

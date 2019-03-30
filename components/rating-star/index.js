@@ -9,7 +9,8 @@ export default class extends React.Component {
   static defaultProps = {
     rate: 0,
     reviewCount: 0,
-    smallTextReview: false
+    smallTextReview: false,
+    isWhite: false
   }
 
   static propTypes = {
@@ -22,7 +23,8 @@ export default class extends React.Component {
     rtChange: PropTypes.func,
     title: PropTypes.string,
     onWriteReview: PropTypes.func,
-    smallTextReview: PropTypes.bool
+    smallTextReview: PropTypes.bool,
+    isWhite: PropTypes.bool
   }
 
   constructor(props) {
@@ -64,16 +66,20 @@ export default class extends React.Component {
           {
             [0, 1, 2, 3, 4].map((item) =>
             <span key={item} className="icon_star rating_star" onClick={this.handleSelect.bind(this, item + 1)}>
-              <span className="icon_star rate_progress full_star" style={{
+              <span className={this.props.isWhite ? "icon_star rate_progress white full_star" : "icon_star rate_progress full_star"} style={{
                   width: process[item] + '%'
                 }}/>
             </span>)
           }
           {
             !this.props.hideNumber &&
-            (<span className={this.props.smallTextReview
-                ? "rating-number small-text"
-                : "rating-number"}>
+            (<span className={this.props.isWhite && !this.props.smallTextReview ?
+              "rating-number white" :
+              !this.props.isWhite && this.props.smallTextReview ?
+              "rating-number small-text" :
+              this.props.isWhite && this.props.smallTextReview ?
+              "rating-number small-text white"
+              : 'rating-number'}>
               {processMathRoundFix(this.state.rate, 1)}
             </span>)
           }

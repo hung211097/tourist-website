@@ -417,7 +417,7 @@ class CheckOutPayment extends React.Component {
                               <li>
                                 <i className="fa fa-calendar" aria-hidden="true"><FaRegCalendarAlt /></i>
                                 Lasting:&nbsp;
-                                <span>{distanceFromDays(new Date(tourInfo.start_date), new Date(tourInfo.end_date))} days</span>
+                                <span>{distanceFromDays(new Date(tourInfo.start_date), new Date(tourInfo.end_date)) + 1} days</span>
                               </li>
                               {!!this.state.num_adult && !!this.getPriceByAge('adults') &&
                                 <li id="liAdult" className="display-hidden" style={{display: 'list-item'}}>

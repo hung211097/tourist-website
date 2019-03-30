@@ -16,7 +16,8 @@ module.exports = routes()                           // ----                   --
 .add('faq')                                         // faq                    faq                     /faq
 .add('contact')                                     // contact                contact                 /contact
 .add('tours')                                       // tours                  tours                   /tours
-.add('detail-tour', '/tours/:id(\\d+)')             // detail-tour            detail-tour             /tours/:id
+.add('detail-tour', '/tours/:id(\\d+)')             // detail-tour            /detail-tour            /tours/:id
+.add('search-result', '/search')                    // search-result          /search                 /search-result?keyword=
 .add('checkout-passengers', '/checkout/passengers') // checkout               checkout-passengers     /checkout/passengers
 .add('checkout-payment', '/checkout/payment')       // checkout-payment       checkout-payment        /checkout/payment
 .add('checkout-confirmation', '/checkout/confirmation')// checkout-confirmation    checkout-confirmation        /checkout/confirmation
