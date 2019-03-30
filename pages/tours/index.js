@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './index.scss'
 import { Layout, SlickItem } from 'components'
 import ApiService from '../../services/api.service'
-import { TourItem, BtnViewMore } from 'components'
+import { TourItem } from 'components'
 import ContentLoader from "react-content-loader"
 
 class Tours extends React.Component {
