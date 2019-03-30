@@ -186,20 +186,53 @@ export default class extends React.Component {
                                       <span className="underline"></span>
                                     </div>
                                     <div className="condition-content">
-                                      <p>
-                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                        Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s
-                                         when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five
-                                         centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
-                                         with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like
-                                         Aldus PageMaker including versions of Lorem Ipsum.
-                                        <br/>
-                                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
-                                        The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using
-                                        &apos;Content here, content here&apos;, making it look like readable English. Many desktop publishing packages and web page editors
-                                        now use Lorem Ipsum as their default model text, and a search for &apos;lorem ipsum&apos; will uncover many web sites still in their
-                                        infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-                                      </p>
+                                      <h3>ĐIỀU KIỆN HỦY TOUR TRONG NƯỚC</h3>
+                                      <h4><strong>Đối với ngày thường:</strong></h4>
+                                      <ul>
+                                        <li>Hủy vé 5-7 ngày trước ngày khởi hành: phí hủy 40% tiền tour.</li>
+                                        <li>Hủy vé 3-4 ngày trước ngày khởi hành: phí hủy 60% tiền tour.</li>
+                                        <li>Hủy vé 2 ngày trước ngày khởi hành: phí hủy 70% tiền tour.</li>
+                                        <li>Hủy vé 1 ngày trước ngày khởi hành: phí hủy 100% tiền tour.</li>
+                                        <li>Trường hợp quý khách đến trễ giờ khởi hành được tính là hủy ngay trong ngày : phí phạt 100% tiền tour.</li>
+                                      </ul>
+                                      <br/>
+                                      <h4><strong>Đối với ngày lễ, Tết:</strong></h4>
+                                      <ul>
+                                        <li>Hủy tour từ 8-10 ngày trước ngày khởi hành: Phí huỷ tour là 30% trên tổng giá tour.</li>
+                                        <li>Hủy tour từ 5-7 ngày trước ngày khởi hành: Phí huỷ tour là 60% trên tổng giá tour.</li>
+                                        <li>Hủy tour từ 3-4 ngày trước ngày khởi hành: Phí huỷ tour là 90% trên tổng giá tour.</li>
+                                        <li>Hủy tour từ 1-2 ngày trước ngày khởi hành: Phí huỷ tour là 100% trên tổng giá tour.</li>
+                                        <li>Các tour ngày lễ, tết là các tour có thời gian diễn ra rơi vào một trong các ngày lễ, tết theo qui định.</li>
+                                      </ul>
+                                      <br/>
+                                      <h4><strong>Lưu ý khi chuyển/hủy tour</strong></h4>
+                                      <p>Thời gian hủy chuyến du lịch được tính cho ngày làm việc, không tính Thứ Bảy, Chủ Nhật & các ngày Lễ, Tết.</p>
+                                      <br/>
+                                      <h3>ĐIỀU KIỆN HỦY TOUR NƯỚC NGOÀI</h3>
+                                      <h4><strong>Đối với ngày thường:</strong></h4>
+                                      <ul>
+                                        <li>Nếu hủy hoặc chuyển sang các tuyến du lịch khác trước ngày khởi hành 30 ngày: Không bị mất chi phí.</li>
+                                        <li>Nếu hủy hoặc chuyển sang các chuyến du lịch khác từ 24-29 ngày trước ngày khởi hành: Phạt 50% tiền cọc tour.</li>
+                                        <li>Nếu hủy hoặc chuyển sang các chuyến du lịch khác từ 20-24 ngày trước ngày khởi hành: Phạt 100% tiền cọc tour.</li>
+                                        <li>Nếu hủy chuyến du lịch ngay sau khi Đại Sứ Quán, Lãnh Sự Quán đã cấp visa (đối với các nước cần visa): Phạt 100% tiền cọc tour.</li>
+                                        <li>Nếu hủy chuyến du lịch trong vòng từ 14-19 ngày trước ngày khởi hành: Phạt 50% trên giá tour du lịch.</li>
+                                        <li>Nếu hủy chuyến du lịch trong vòng từ 10-13 ngày trước ngày khởi hành: Phạt 70% trên giá tour du lịch.</li>
+                                        <li>Nếu hủy chuyến du lịch trong vòng từ 02-09 ngày trước ngày khởi hành: Phạt 90% trên giá vé du lịch.</li>
+                                        <li>Nếu hủy chuyến du lịch trong vòng 01 ngày trước ngày khởi hành : Phạt 100% trên giá vé du lịch.</li>
+                                      </ul>
+                                      <br/>
+                                      <h4><strong>Đối với ngày lễ, Tết:</strong></h4>
+                                      <ul>
+                                        <li>Hủy tour ngay sau khi Đại Sứ Quán, Lãnh Sự Quán đã cấp visa: Chi phí huỷ tour là 100% tiền cọc tour.</li>
+                                        <li>Hủy tour từ 30 – 45 ngày trước ngày khởi hành: Phí huỷ tour là 30% trên tổng giá tour.</li>
+                                        <li>Hủy tour từ 16 – 29 ngày trước ngày khởi hành: Phí huỷ tour là 60% trên tổng giá tour.</li>
+                                        <li>Hủy tour từ 08 – 15 ngày trước ngày khởi hành: Phí huỷ tour là 90% trên tổng giá tour.</li>
+                                        <li>Hủy tour từ 01 – 07 ngày trước ngày khởi hành: Phí huỷ tour là 100% trên tổng giá tour.</li>
+                                        <li>Các tour ngày lễ, tết là các tour có thời gian diễn ra rơi vào một trong các ngày lễ, tết theo qui định.</li>
+                                      </ul>
+                                      <br/>
+                                      <h4><strong>Lưu ý khi chuyển/hủy tour</strong></h4>
+                                      <p>Thời gian hủy chuyến du lịch được tính cho ngày làm việc, không tính Thứ Bảy, Chủ Nhật & các ngày Lễ, Tết.</p>
                                     </div>
                                     <div className="checkbox-zone">
                                       <CustomCheckbox isCheck={this.state.isAgree} onCheck={this.handleCheck.bind(this)}

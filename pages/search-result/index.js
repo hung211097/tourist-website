@@ -52,8 +52,8 @@ class SearchResult extends React.Component {
       lasting: 0,
       filterShow: true, //Show phần filter ở mobile hay không?
       isListView: true, //Xem dạng list ngang hay grid ô
-      searchResult: props.searchResult.data,
-      totalPage: calcTotalPage(props.searchResult.itemCount, 5),
+      searchResult: props.searchResult ? props.searchResult.data : null,
+      totalPage: props.searchResult ? calcTotalPage(props.searchResult.itemCount, 5) : 0,
       page: 0,
       isSubmit: false,
       autoSuggest: [],
@@ -64,10 +64,14 @@ class SearchResult extends React.Component {
 
   }
 
+  componentWillUnmount(){
+    this.timeout && clearTimeout(this.timeout)
+  }
+
   UNSAFE_componentWillReceiveProps(props){
     this.setState({
-      searchResult: props.searchResult.data,
-      totalPage: calcTotalPage(props.searchResult.itemCount, 5),
+      searchResult: props.searchResult ? props.searchResult.data : null,
+      totalPage: props.searchResult ? calcTotalPage(props.searchResult.itemCount, 5) : 0,
       keywordDisplay: props.query.keyword
     })
     this.handleReset()
@@ -215,11 +219,14 @@ class SearchResult extends React.Component {
   }
 
   onSuggestionsFetchRequested = ({ value }) => {
-    this.apiService.getAutoSuggestTour(value).then((res) => {
-      this.setState({
-        autoSuggest: res.data
+    this.timeout && clearTimeout(this.timeout)
+    this.timeout = setTimeout(() => {
+      this.apiService.getAutoSuggestTour(value).then((res) => {
+        this.setState({
+          autoSuggest: res.data
+        })
       })
-    })
+    }, 500)
   };
 
   onSuggestionsClearRequested = () => {
@@ -698,14 +705,14 @@ class SearchResult extends React.Component {
                           </div>
                         </div>
                         <div className="search-content">
-                          {!this.state.searchResult.length &&
+                          {this.state.searchResult && !this.state.searchResult.length || !this.state.searchResult &&
                             <div className="no-result">
                               <img alt="warning" src="/static/svg/icon-warning-white.svg" width="20" />
                               <h3>No results for this search</h3>
                             </div>
                           }
                           <div className="search-list-item row no-margin">
-                            {!!this.state.searchResult.length && this.state.searchResult.map((item, key) => {
+                            {this.state.searchResult && !!this.state.searchResult.length && this.state.searchResult.map((item, key) => {
                                 return(
                                   <SearchItem key={key} isGrid={!this.state.isListView} item={item}/>
                                 )
@@ -713,7 +720,7 @@ class SearchResult extends React.Component {
                             }
                           </div>
                         </div>
-                        {!!this.state.searchResult.length &&
+                        {this.state.searchResult && !!this.state.searchResult.length &&
                           <div className="pagination row text-center">
                             <ReactPaginate
                               previousLabel={<FaChevronLeft />}

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'routes'
 import { FaRegCalendarAlt, FaRegClock } from "react-icons/fa"
 import { formatDate } from '../../services/time.service'
-import Countdown from 'react-countdown-now'
+import Countdown, { zeroPad } from 'react-countdown-now'
 
 class TopPromotionItem extends React.Component {
   displayName = 'Top Promotion Item'
@@ -36,7 +36,7 @@ class TopPromotionItem extends React.Component {
         return <span></span>
       }
       else{
-        return <span>{days} days left {hours}:{minutes}:{seconds}</span>
+        return <span>{days} days left {zeroPad(hours)}:{zeroPad(minutes)}:{zeroPad(seconds)}</span>
       }
     }
     return (
@@ -68,7 +68,7 @@ class TopPromotionItem extends React.Component {
                   <p><FaRegCalendarAlt style={{fontSize: '15px', position: 'relative', top: '-1px'}} /> {formatDate(item.start_date)}</p>
                   <p className="float-right">
                     <FaRegClock style={{fontSize: '15px', position: 'relative', top: '-1px', marginRight: '5px'}} />
-                    <Countdown date={new Date(item.start_date)} key={item.id} renderer={renderTime} onComplete={this.handleComplete.bind(this)}/>
+                    <Countdown zeroPadTime={2} date={new Date(item.start_date)} key={item.id} renderer={renderTime} onComplete={this.handleComplete.bind(this)}/>
                   </p>
                 </h3>
               </a>

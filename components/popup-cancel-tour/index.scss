@@ -53,12 +53,17 @@
     .condition{
       margin-top: 20px;
       .condition-content{
-        height: 100px;
+        height: 200px;
         border: 1px solid #ccc;
         padding: 10px 20px;
         margin-top: 20px;
         overflow: auto;
         width: 100%;
+        h3{
+          margin-top: 0;
+          color: $main-bg-color;
+          font-weight: 700;
+        }
       }
     }
     .checkbox-zone{
