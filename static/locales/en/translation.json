@@ -1,4 +1,61 @@
 {
+  "header": {
+    "hotline": "Hotline",
+    "search_tour": "Search tour",
+    "login": "Login",
+    "logout": "Logout",
+    "home": "HOME",
+    "tours": "TOURS",
+    "about": "ABOUT US",
+    "contact": "CONTACT",
+    "booknow": "BOOK NOW"
+  },
+  "home": {
+    "topsale": "TOP SALE",
+    "sub_topsale": "BEST TRAVEL PACKAGES AVAILABLE",
+    "more": "MORE TOP TOURS",
+    "destination": "DESTINATIONS",
+    "tours": "TOURS PACK",
+    "support": "HOUR SUPPORT",
+    "our_destination": "YOUR DESTINATIONS",
+    "sub_our_destination": "CHOOSE YOUR NEXT DESTINATION",
+    "oceania": "OCEANIA",
+    "africa": "AFRICA",
+    "asia": "ASIA",
+    "america": "AMERICA",
+    "testimonial": "TESTIMONIAL",
+    "sub_testimonial": "OUR PASSENGER SAY ABOUT US",
+    "top_item": {
+      "detail": "DETAILS"
+    }
+  },
+  "footer":{
+    "phone_support": "Phone Support",
+    "hour": "HOURS A DAY",
+    "connect": "Connect With Us",
+    "social": "SOCIAL MEDIA CHANNELS",
+    "about": "About Us",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "terms": "Terms of condition",
+    "copyright": "© Copyright 2018 Travel Tour"
+  },
+  "login": {
+    "title": "LOGIN",
+    "email_phone": "Email or Phone number",
+    "password": "Password",
+    "lost_password": "Lost your password?",
+    "or": "OR",
+    "login_fb": "LOGIN WITH FACEBOOK",
+    "no_account": "You don't have an account?",
+    "register_here": "Register here",
+    "email_phone_required": "Email or Phone number is required!",
+    "format": "Email or Phone number must be in right format!",
+    "password_required": "Password is required!",
+    "Username is not exists": "Username is not exists",
+    "Password is not corect": "Password is not corect",
+    "This email does not verify": "This email does not verify"
+  },
   "title": "Welcome to react using react-i18next",
   "description": {
     "part1": "To get started, edit <1>src/App.js</1> and save to reload.",

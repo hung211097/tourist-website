@@ -279,7 +279,7 @@ class Header extends React.Component {
                           <span className="fa-search"><FaSearch style={{color: 'white', fontSize: '18px'}}/></span>
                           <input type="text" className="search-input"
                             value={this.state.keyword} onChange={this.handleChangeKeyword.bind(this)}
-                            data-ic-class="search-input" placeholder="Search tour" />
+                            data-ic-class="search-input" placeholder={t('header.search_tour')} />
                         </div>
                       </form>
                     </li>
@@ -297,12 +297,12 @@ class Header extends React.Component {
                     }
                     <li className={this.props.page === 'home' ? 'active' : ''}>
                       <Link route="home">
-                        <a className="effect-hover">HOME</a>
+                        <a className="effect-hover">{t('header.home')}</a>
                       </Link>
                     </li>
                     <li className={this.props.page === 'tours' ? 'active' : ''}>
                       <Link route="tours">
-                        <a className="effect-hover">TOURS</a>
+                        <a className="effect-hover">{t('header.tours')}</a>
                       </Link>
                     </li>
                     {/*<li>
@@ -324,12 +324,12 @@ class Header extends React.Component {
                     </li>*/}
                     <li className={this.props.page === 'about-us' ? 'active' : ''}>
                       <Link route="about-us">
-                        <a className="effect-hover">ABOUT US</a>
+                        <a className="effect-hover">{t('header.about')}</a>
                       </Link>
                     </li>
                     <li className={this.props.page === 'contact' ? 'active' : ''}>
                       <Link route="contact">
-                        <a className="effect-hover">CONTACT</a>
+                        <a className="effect-hover">{t('header.contact')}</a>
                       </Link>
                     </li>
                     <li className="no-padding">
@@ -338,14 +338,14 @@ class Header extends React.Component {
                     {!_.isEmpty(this.props.user) ?
                       <li>
                         <a onClick={this.handleLogout.bind(this)} href="javascript:;">
-                          LOGOUT <FaSignOutAlt style={{fontSize: '18px', color: 'white', marginLeft: '8px'}}/>
+                          {t('header.logout')} <FaSignOutAlt style={{fontSize: '18px', color: 'white', marginLeft: '8px'}}/>
                         </a>
                       </li>
                       :
                       <li>
                         <Link route="login">
                           <a>
-                            LOG IN
+                            {t('header.login')}
                             <FaSignInAlt style={{fontSize: '18px', color: 'white', marginLeft: '8px'}}/>
                           </a>
                         </Link>
@@ -372,7 +372,7 @@ class Header extends React.Component {
                           </a>
                         </div>
                         <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
-                          <a className="nd_options_margin_right_20" href="tel:0963186896">Hotline: 0963186896</a>
+                          <a className="nd_options_margin_right_20" href="tel:0963186896">{t('header.hotline')}: 0963186896</a>
                         </div>
                       </div>
                     </li>
@@ -405,7 +405,7 @@ class Header extends React.Component {
                         </a>
                       </div>
                       <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
-                        <a className="nd_options_margin_right_20" href="tel:0963186896">Hotline: 0963186896</a>
+                        <a className="nd_options_margin_right_20" href="tel:0963186896">{t('header.hotline')}: 0963186896</a>
                       </div>
                     </div>
                   </div>
@@ -415,9 +415,25 @@ class Header extends React.Component {
                     {!_.isEmpty(this.props.user) &&
                       <a onClick={this.handleLogout.bind(this)} href="javascript:;">
                         <div className="nd_options_display_table_cell nd_options_vertical_align_middle float-right logout">
-                          <p>Logout <FaSignOutAlt style={{fontSize: '16px', color: 'white', marginLeft: '5px'}}/></p>
+                          <p>{t('header.logout')} <FaSignOutAlt style={{fontSize: '16px', color: 'white', marginLeft: '5px'}}/></p>
                         </div>
                       </a>
+                    }
+                    {_.isEmpty(this.props.user) &&
+                      <Link route="login">
+                        <a>
+                          <div className="account-zone">
+                            <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
+                              <h6 className="nd_options_font_size_10 nd_options_text_align_left nd_options_color_white nd_options_second_font">
+                                <p className="nd_options_color_white">
+                                  {t('header.login')}
+                                  <FaSignInAlt style={{fontSize: '16px', color: 'white', marginLeft: '6px', position: 'relative', top: '-1px'}}/>
+                                </p>
+                              </h6>
+                            </div>
+                          </div>
+                        </a>
+                      </Link>
                     }
                     <ClickOutside onClickOutside={this.offShowChangeLng.bind(this)}>
                       <div className="multi-lng" onClick={this.toggleChangeLng.bind(this)}>
@@ -445,14 +461,28 @@ class Header extends React.Component {
                         </div>
                       </div>
                     </ClickOutside>
-                    <Link route={!_.isEmpty(this.props.user) ? "profile" : "login"}>
+                    {!_.isEmpty(this.props.user) &&
+                      <Link route="profile">
+                        <a>
+                          <div className="account-zone" style={{lineHeight: '2.6', padding: '11px 15px'}}>
+                            <div>
+                              <img alt="avatar" src={this.props.user.avatar ? (this.props.user.avatar) : "/static/images/avatar.jpg"} width={30} />
+                              <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
+                                <p className="fullname">{this.props.user.fullname}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </a>
+                      </Link>
+                    }
+                    {/*<Link route={!_.isEmpty(this.props.user) ? "profile" : "login"}>
                       <a>
                         <div className="account-zone" style={!_.isEmpty(this.props.user) ? {lineHeight: '2.6', padding: '11px 15px'} : null}>
                           {_.isEmpty(this.props.user) ?
                             <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
                               <h6 className="nd_options_font_size_10 nd_options_text_align_left nd_options_color_white nd_options_second_font">
                                 <p className="nd_options_color_white">
-                                  Log in
+                                  {t('header.login')}
                                   <FaSignInAlt style={{fontSize: '16px', color: 'white', marginLeft: '6px', position: 'relative', top: '-1px'}}/>
                                 </p>
                               </h6>
@@ -467,13 +497,13 @@ class Header extends React.Component {
                           }
                         </div>
                       </a>
-                    </Link>
+                    </Link>*/}
                     <form className="search-box" onSubmit={this.handleSubmit.bind(this)}>
                       <div className={this.state.showSearchBox ? "icon-search-container active" : "icon-search-container"}>
                         <span className="fa-search" onClick={this.onShowSearchBox.bind(this)}><FaSearch style={{color: 'white', fontSize: '18px'}}/></span>
                         <input type="text" className="search-input"
                           value={this.state.keyword} onChange={this.handleChangeKeyword.bind(this)}
-                          data-ic-class="search-input" placeholder="Search tour" />
+                          data-ic-class="search-input" placeholder={t('header.search_tour')}/>
                         <span className="fa-times-circle" onClick={this.onHideSearchBox.bind(this)}><FaTimesCircle /></span>
                       </div>
                     </form>
@@ -503,12 +533,12 @@ class Header extends React.Component {
                           <ul id="menu-menu-2" className="menu">
                             <li className={this.props.page === 'home' ? 'active' : ''}>
                               <Link route="home">
-                                <a>{t('title')}</a>
+                                <a>{t('header.home')}</a>
                               </Link>
                             </li>
                             <li className={this.props.page === 'tours' ? 'active' : ''}>
                               <Link route="tours">
-                                <a>TOURS</a>
+                                <a>{t('header.tours')}</a>
                               </Link>
                             </li>
                             {/*<li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/">SHOP</a>
@@ -521,17 +551,17 @@ class Header extends React.Component {
                             </li>*/}
                             <li className={this.props.page === 'about-us' ? 'active' : ''}>
                               <Link route="about-us">
-                                <a>ABOUT US</a>
+                                <a>{t('header.about')}</a>
                               </Link>
                             </li>
                             <li className={this.props.page === 'contact' ? 'active' : ''}>
                               <Link route="contact">
-                                <a>CONTACT</a>
+                                <a>{t('header.contact')}</a>
                               </Link>
                             </li>
                             <li className="nd_options_book_now_btn">
                               <Link route="search-result">
-                                <a>BOOK NOW</a>
+                                <a>{t('header.booknow')}</a>
                               </Link>
                             </li>
                           </ul>
@@ -587,12 +617,12 @@ class Header extends React.Component {
                           <ul id="menu-menu-2" className="menu">
                             <li className={this.props.page === 'home' ? 'active' : ''}>
                               <Link route="home">
-                                <a>HOME</a>
+                                <a>{t('header.home')}</a>
                               </Link>
                             </li>
                             <li className={this.props.page === 'tours' ? 'active' : ''}>
                               <Link route="tours">
-                                <a>TOURS</a>
+                                <a>{t('header.tours')}</a>
                               </Link>
                             </li>
                             {/*<li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/">SHOP</a>
@@ -605,17 +635,17 @@ class Header extends React.Component {
                             </li>*/}
                             <li className={this.props.page === 'about-us' ? 'active' : ''}>
                               <Link route="about-us">
-                                <a>ABOUT US</a>
+                                <a>{t('header.about')}</a>
                               </Link>
                             </li>
                             <li className={this.props.page === 'contact' ? 'active' : ''}>
                               <Link route="contact">
-                                <a>CONTACT</a>
+                                <a>{t('header.contact')}</a>
                               </Link>
                             </li>
                             <li className="nd_options_book_now_btn">
                               <Link route="search-result">
-                                <a>BOOK NOW</a>
+                                <a>{t('header.booknow')}</a>
                               </Link>
                             </li>
                           </ul>
@@ -633,9 +663,11 @@ class Header extends React.Component {
               {/*RESPONSIVE*/}
               <div className="nd_options_section text-center d-none nd_options_display_block_responsive">
                 <div className="nd_options_section nd_options_height_20" />
-                <a className="d-inline-block" href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel">
-                  <img alt="logo" className="nd_options_float_left" src="/static/images/logo.png" />
-                </a>
+                <Link route="home">
+                  <a className="d-inline-block">
+                    <img alt="logo" className="nd_options_float_left" src="/static/images/logo.png" />
+                  </a>
+                </Link>
                 <div className="nd_options_section nd_options_height_10" />
                 <div className="nd_options_section">
                   <a className="nd_options_open_navigation_2_sidebar_content nd_options_open_navigation_2_sidebar_content"

@@ -1,4 +1,61 @@
 {
+  "header": {
+    "hotline": "Đường dây nóng",
+    "search_tour": "Tìm kiếm tour",
+    "login": "Đăng nhập",
+    "logout": "Đăng xuất",
+    "home": "TRANG CHỦ",
+    "tours": "TOURS DU LỊCH",
+    "about": "THÔNG TIN",
+    "contact": "LIÊN HỆ",
+    "booknow": "ĐẶT TOUR NGAY"
+  },
+  "home": {
+    "topsale": "TOP KHUYẾN MÃI",
+    "sub_topsale": "NHỮNG GÓI TOUR TUYỆT VỜI",
+    "more": "XEM THÊM",
+    "destination": "ĐIỂM ĐẾN",
+    "tours": "GÓI TOUR",
+    "support": "GIỜ HỖ TRỢ",
+    "our_destination": "ĐIỂM ĐẾN CỦA BẠN",
+    "sub_our_destination": "HÃY CHỌN ĐIỂM ĐẾN CỦA BẠN",
+    "oceania": "VÙNG BIỂN",
+    "africa": "CHÂU PHI",
+    "asia": "CHÂU Á",
+    "america": "CHÂU ÂU",
+    "testimonial": "PHẢN HỒI",
+    "sub_testimonial": "KHÁCH HÀNG NÓI VỀ CHÚNG TÔI",
+    "top_item": {
+      "detail": "CHI TIẾT"
+    }
+  },
+  "footer":{
+    "phone_support": "Điện Thoại Hỗ Trợ",
+    "hour": "GIỜ",
+    "connect": "Kết Nối Với Chúng Tôi",
+    "social": "KÊNH TRUYỀN THÔNG",
+    "about": "Thông tin",
+    "faq": "Câu hỏi thường gặp",
+    "contact": "Liên hệ",
+    "terms": "Điều khoản",
+    "copyright": "© Bản quyền thuộc về 2018 Travel Tour"
+  },
+  "login": {
+    "title": "ĐĂNG NHẬP",
+    "email_phone": "Email hoặc Số điện thoại",
+    "password": "Mật khẩu",
+    "lost_password": "Quên mật khẩu?",
+    "or": "HOẶC",
+    "login_fb": "ĐĂNG NHẬP VỚI FACEBOOK",
+    "no_account": "Bạn không có tài khoản?",
+    "register_here": "Đăng ký ở đây",
+    "email_phone_required": "Email hoặc Số điện thoại còn trống!",
+    "format": "Email or Phone number chưa đúng định dạng!",
+    "password_required": "Password còn trống!",
+    "Username is not exists": "Tài khoản không tồn tại",
+    "Password is not corect": "Mật khẩu chưa đúng",
+    "This email does not verify": "Tài khoản chưa được xác thực"
+  },
   "title": "Chào mừng",
   "description": {
     "part1": "Tao nek",

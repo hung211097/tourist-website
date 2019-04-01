@@ -11,6 +11,7 @@ import validateEmail from '../../services/validates/email.js'
 import validatePhone from '../../services/validates/phone.js'
 import ApiService from '../../services/api.service'
 import { setLocalStorage } from '../../services/local-storage.service'
+import { withNamespaces } from "react-i18next"
 import { KEY } from '../../constants/local-storage'
 
 const mapStateToProps = state => {
@@ -32,7 +33,8 @@ class Login extends React.Component {
   static propTypes = {
     authLogin: PropTypes.func,
     user: PropTypes.object,
-    link_redirect: PropTypes.string
+    link_redirect: PropTypes.string,
+    t: PropTypes.func
   }
 
   constructor(props) {
@@ -102,7 +104,7 @@ class Login extends React.Component {
       Router.pushRoute(this.props.link_redirect || 'home')
     }).catch(e => {
       let error = 'There is an error, please try again!'
-      if(e.result === 'Password is not corect' || e.result === 'This email does not verify'){
+      if(e.result === "Username is not exists" || e.result === 'Password is not corect' || e.result === 'This email does not verify'){
         error = e.result
       }
       this.setState({
@@ -129,6 +131,7 @@ class Login extends React.Component {
   }
 
   render() {
+    const {t} = this.props
     return (
       <>
         <Layout page="login" {...this.props}>
@@ -141,7 +144,7 @@ class Login extends React.Component {
                   <div className="nd_options_section nd_options_height_110"/>
                   <div className="nd_options_section title-contain">
                     <h1>
-                      <span>LOGIN</span>
+                      <span>{t('login.title')}</span>
                       <div className="nd_options_section">
                         <span className="underline"></span>
                       </div>
@@ -157,7 +160,7 @@ class Login extends React.Component {
                   <form className="woocommerce-form woocommerce-form-login login" onSubmit={this.handleSubmit.bind(this)}>
                     <div className="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                       <label htmlFor="username">
-                        Email or Phone number
+                        {t('login.email_phone')}
                         <span className="required"> *</span>
                       </label>
                       <input id="username" type="text" name="username" value={this.state.username}
@@ -166,15 +169,15 @@ class Login extends React.Component {
                         "woocommerce-Input woocommerce-Input--text input-text"}
                          onChange={this.handleChangeUsername.bind(this)}/>
                        {this.state.isSubmit && !this.state.username &&
-                         <p className="error">Email or Phone number is required!</p>
+                         <p className="error">{t('login.email_phone_required')}</p>
                        }
                        {this.state.isSubmit && this.state.username && (!validateEmail(this.state.username) && !validatePhone(this.state.username)) &&
-                         <p className="error">Email or Phone number must be in right format!</p>
+                         <p className="error">{t('login.format')}</p>
                        }
                     </div>
                     <div className="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                       <label htmlFor="password">
-                        Password
+                        {t('login.password')}
                         <span className="required"> *</span>
                       </label>
                       <input id="password" type="password" name="password" value={this.state.password}
@@ -183,11 +186,11 @@ class Login extends React.Component {
                           "woocommerce-Input woocommerce-Input--text input-text"}
                         onChange={this.handleChangePassword.bind(this)}/>
                       {this.state.isSubmit && !this.state.password &&
-                        <p className="error">Password is required!</p>
+                        <p className="error">{t('login.password_required')}</p>
                       }
                     </div>
                     {this.state.error &&
-                      <p className="error">{this.state.error}</p>
+                      <p className="error">{t('login.' + this.state.error)}</p>
                     }
                     <div className="form-row">
                       <div className="wrapper">
@@ -198,21 +201,22 @@ class Login extends React.Component {
                         </label>*/}
                         <span className="woocommerce-LostPassword lost_password">
                           <Link route="forget-password">
-                            <a>Lost your password?</a>
+                            <a>{t('login.lost_password')}</a>
                           </Link>
                         </span>
                       </div>
                       <button type="submit" className="woocommerce-Button button" name="login" onClick={this.handleSubmit.bind(this)}>
-                        Login
+                        {t('login.title')}
                       </button>
                     </div>
-                    <p className="co-break">OR</p>
+                    <p className="co-break">{t('login.or')}</p>
                     <button type="button" className="woocommerce-Button button fb" name="loginFB" onClick={this.handleLoginFB.bind(this)}>
                       <span><FaFacebookF style={{fontSize: '18px', position: 'relative', top: '-2px'}}/></span>
-                      <span> Login with Facebook</span>
+                      <span> {t('login.login_fb')}</span>
                     </button>
-                    <p className="link-page">You don&apos;t have an account?&nbsp;
-                      <Link route="register"><a>Register here</a></Link>
+                    <p className="link-page">
+                      {t('login.no_account')}
+                      <Link route="register"><a> {t('login.register_here')}</a></Link>
                     </p>
                   </form>
                 </div>
@@ -225,4 +229,4 @@ class Login extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default withNamespaces('translation')(connect(mapStateToProps, mapDispatchToProps)(Login))

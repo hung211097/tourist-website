@@ -6,6 +6,7 @@ import { Router, Link } from 'routes'
 import { connect } from 'react-redux'
 import { saveRedirectUrl } from 'actions'
 import ApiService from 'services/api.service'
+import { withNamespaces  } from "react-i18next"
 
 const mapStateToProps = state => {
   return {
@@ -28,7 +29,9 @@ class Home extends React.Component {
     saveRedirectUrl: PropTypes.func,
     user: PropTypes.object,
     location: PropTypes.any,
-    errorPermission: PropTypes.string
+    errorPermission: PropTypes.string,
+    t: PropTypes.func,
+    lng: PropTypes.string
   }
 
   constructor(props) {
@@ -36,22 +39,22 @@ class Home extends React.Component {
     this.destinations = [
       {
         route: '',
-        title: 'OCEANIA',
+        title: 'oceania',
         featured_img: '/static/images/oceania.jpg'
       },
       {
         route: '',
-        title: 'AFRICA',
+        title: 'africa',
         featured_img: '/static/images/africa.jpg'
       },
       {
         route: '',
-        title: 'AMERICA',
+        title: 'america',
         featured_img: '/static/images/america.jpg'
       },
       {
         route: '',
-        title: 'ASIA',
+        title: 'asia',
         featured_img: '/static/images/asia.jpg'
       }
     ]
@@ -83,6 +86,7 @@ class Home extends React.Component {
   }
 
   render() {
+    const { t } = this.props
     return (
       <>
         <Layout page="home" {...this.props}>
@@ -98,9 +102,9 @@ class Home extends React.Component {
                   <div className="col-sm-12 top-promotion-title">
                     <div className="top-promotion-inner">
                       <div className="wrapper text-center">
-                        <h1>TOP PROMOTIONS</h1>
+                        <h1>{t('home.topsale')}</h1>
                         <div className="nd_options_height_20" />
-                        <h3>BEST TRAVEL PACKAGES AVAILABLE</h3>
+                        <h3>{t('home.sub_topsale')}</h3>
                         <div className="nd_options_height_20" />
                         <div className="nd_options_section nd_options_line_height_0 text-center">
                           <span className="underline-title"/>
@@ -113,7 +117,7 @@ class Home extends React.Component {
                   {!!this.state.topTours.length && this.state.topTours.map((item, key) => {
                       return(
                         <div className="col-sm-4 no-padding" key={key}>
-                          <TopPromotionItem item={item} index={key} onLoadTour={this.loadTour.bind(this)}/>
+                          <TopPromotionItem item={item} index={key} onLoadTour={this.loadTour.bind(this)} lng={this.props.lng} t={t}/>
                         </div>
                       )
                     })
@@ -121,7 +125,7 @@ class Home extends React.Component {
                 </div>
                 <div className="row text-center show-more-area">
                   <Link route="tours">
-                    <a className="show-more">ALL TOURS</a>
+                    <a className="show-more">{t('home.more')}</a>
                   </Link>
                 </div>
               </div>
@@ -134,7 +138,7 @@ class Home extends React.Component {
                     <h1>{this.state.num_locations}</h1>
                     <div className="nd_options_height_20" />
                     <div className="nd_options_section text-center">
-                      <a className="yellow-bg">DESTINATIONS</a>
+                      <a className="yellow-bg">{t('home.destination')}</a>
                     </div>
                     <div className="nd_options_height_20" />
                   </div>
@@ -147,7 +151,7 @@ class Home extends React.Component {
                     <h1>{this.state.num_tours}</h1>
                     <div className="nd_options_height_20" />
                     <div className="nd_options_section text-center">
-                      <a className="green-bg">TOURS PACK</a>
+                      <a className="green-bg">{t('home.tours')}</a>
                     </div>
                     <div className="nd_options_height_20" />
                   </div>
@@ -160,7 +164,7 @@ class Home extends React.Component {
                     <h1>24</h1>
                     <div className="nd_options_height_20" />
                     <div className="nd_options_section text-center">
-                      <a className="red-bg">HOUR SUPPORT</a>
+                      <a className="red-bg">{t('home.support')}</a>
                     </div>
                     <div className="nd_options_height_20" />
                   </div>
@@ -173,10 +177,10 @@ class Home extends React.Component {
                 <div className="row our-destination">
                   <div className="col-sm-12 our-destination-title">
                     <div className="our-destination-inner">
-                      <div className="wrapper text-center">
-                        <h1>OUR DESTINATIONS</h1>
+                      <div className="our_destination text-center">
+                        <h1>{t('home.our_destination')}</h1>
                         <div className="nd_options_height_20" />
-                        <h3>CHOOSE YOUR NEXT DESTINATION</h3>
+                        <h3>{t('home.sub_our_destination')}</h3>
                         <div className="nd_options_height_20" />
                         <div className="nd_options_section nd_options_line_height_0 text-center">
                           <span className="underline-title"/>
@@ -192,7 +196,7 @@ class Home extends React.Component {
                           <div className="destination-item-contain">
                             <div className="content">
                               <div className="title-item">
-                                <a>{item.title}</a>
+                                <a>{t('home.' + item.title)}</a>
                               </div>
                               <img alt="featured_img" src={item.featured_img} />
                             </div>
@@ -209,9 +213,9 @@ class Home extends React.Component {
                 <div className="col-sm-12 user-feedback-title">
                   <div className="user-feedback-inner">
                     <div className="wrapper text-center">
-                      <h1>TESTIMONIAL</h1>
+                      <h1>{t('home.testimonial')}</h1>
                       <div className="nd_options_height_20" />
-                      <h3>OUR PASSENGER SAY ABOUT US</h3>
+                      <h3>{t('home.sub_testimonial')}</h3>
                       <div className="nd_options_height_20" />
                       <div className="nd_options_section nd_options_line_height_0 text-center">
                         <span className="underline-title"/>
@@ -308,4 +312,4 @@ class Home extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home)
+export default withNamespaces('translation')(connect(mapStateToProps, mapDispatchToProps)(Home))

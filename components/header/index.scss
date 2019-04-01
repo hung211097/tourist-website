@@ -37,6 +37,7 @@
       .contact-sidebar{
         a{
           font-size: 14px !important;
+          text-transform: none;
         }
       }
     }
@@ -70,6 +71,7 @@
         font-size: 20px;
         color: #fff;
         transition: 0.2s all;
+        text-transform: uppercase;
       }
       ul.sub-menu {
         margin: 0px;
@@ -104,7 +106,7 @@
         .left-header {
           color: white;
           padding: 0px 15px;
-          width: 36%;
+          width: 41%;
           float: left;
           display: inline;
           box-sizing: border-box;
@@ -124,7 +126,7 @@
           color: white;
           padding: 0px 15px;
           text-align: right;
-          width: 64%;
+          width: 59%;
           float: left;
           display: inline;
           box-sizing: border-box;
@@ -136,7 +138,6 @@
                 cursor: pointer;
                 background-color: #4a515b;
               }
-              margin-left: 10px;
               float: right;
               display: table;
               padding: 18px 15px;
@@ -425,6 +426,7 @@
       width: 35px;
       position: relative;
       transition: width 0.2s ease-out;
+      margin-right: 15px;
       // backface-visibility: hidden;
 
       &.active {
