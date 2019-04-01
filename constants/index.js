@@ -9,3 +9,8 @@ export const modal = {
   LOADING: 'LOADING',
   CANCEL: 'CANCEL'
 }
+
+export const lng = {
+  EN: 'en',
+  VI: 'vi'
+}

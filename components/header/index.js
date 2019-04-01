@@ -11,7 +11,9 @@ import { MdLocationOn } from "react-icons/md"
 import { saveLocation, logout, saveRedirectUrl, saveProfile } from '../../actions'
 import { setLocalStorage, getLocalStorage, removeItem } from '../../services/local-storage.service'
 import { KEY } from '../../constants/local-storage'
+import { lng } from '../../constants'
 import { slugify } from '../../services/utils.service'
+import { withNamespaces  } from "react-i18next"
 
 const mapStateToProps = (state) => {
   return {
@@ -38,7 +40,9 @@ class Header extends React.Component {
     saveRedirectUrl: PropTypes.func,
     saveProfile: PropTypes.func,
     user: PropTypes.object,
-    logout: PropTypes.func
+    logout: PropTypes.func,
+    i18n: PropTypes.object,
+    t: PropTypes.func
   }
 
   constructor(props) {
@@ -48,12 +52,43 @@ class Header extends React.Component {
       showSidebar: false,
       showSearchBox: false,
       isSticky: false,
-      keyword: ''
+      keyword: '',
+      showChangeLng: false,
+      language: [
+        {
+          label: "en",
+          isChoose: false,
+          flag: "/static/images/uk.png"
+        },
+        {
+          label: "vi",
+          isChoose: false,
+          flag: "/static/images/vi.png"
+        }
+      ]
     }
   }
 
   componentDidMount() {
     this.loadProfile()
+    let temp = this.state.language
+    const lang = getLocalStorage(KEY.LANGUAGE)
+    if(lang){
+      temp.forEach((item) => {
+        if(item.label === lang){
+          item.isChoose = true
+        }
+      })
+    }
+    else{
+      let findItem = temp.find((item) => {
+        return item.label === lng.EN
+      })
+      findItem.isChoose = true
+    }
+    this.setState({
+      language: temp
+    })
     window.addEventListener('scroll', this.handleOnScroll)
     const objLocation = getLocalStorage(KEY.LOCATION)
     if(objLocation || objLocation === ''){
@@ -188,7 +223,44 @@ class Header extends React.Component {
     })
   }
 
+  toggleChangeLng(){
+    this.setState({
+      showChangeLng: !this.state.showChangeLng
+    })
+  }
+
+  offShowChangeLng(){
+    this.setState({
+      showChangeLng: false
+    })
+  }
+
+  chosenLng(){
+    let temp = this.state.language.find((item) => {
+      return item.isChoose === true
+    })
+    return temp
+  }
+
+  changeLng(choose){
+    let temp = this.state.language
+    temp.forEach((item) => {
+      if(item.label === choose.label){
+        item.isChoose = true
+        setLocalStorage(KEY.LANGUAGE, item.label)
+        this.props.i18n.changeLanguage(choose.label)
+      }
+      else{
+        item.isChoose = false
+      }
+    })
+    this.setState({
+      language: temp
+    })
+  }
+
   render() {
+    const { t } = this.props
     return (
       <div itemScope="itemScope" itemType="http://schema.org/WPHeader">
         <style jsx>{styles}</style>
@@ -347,6 +419,32 @@ class Header extends React.Component {
                         </div>
                       </a>
                     }
+                    <ClickOutside onClickOutside={this.offShowChangeLng.bind(this)}>
+                      <div className="multi-lng" onClick={this.toggleChangeLng.bind(this)}>
+                        {this.chosenLng() &&
+                          <button aria-expanded="false" aria-haspopup="true" className="btn dropdown-toggle" type="button">
+                            <img alt={this.chosenLng().label} src={this.chosenLng().flag}/>&nbsp;&nbsp;
+                            <span>{this.chosenLng().label}</span>&nbsp;
+                          </button>
+                        }
+                        <div className={this.state.showChangeLng ? "dropdown-menu show" : "dropdown-menu"}>
+                          {this.state.language.map((item, key) => {
+                              if(!item.isChoose){
+                                return(
+                                  <div className="wrapper-dropdown-item" key={key} onClick={this.changeLng.bind(this, item)}>
+                                    <a className="dropdown-item">
+                                      <img src={item.flag} alt={item.label}/>&nbsp;
+                                      <span>{item.label}</span>
+                                    </a>
+                                  </div>
+                                )
+                              }
+                              return null
+                            })
+                          }
+                        </div>
+                      </div>
+                    </ClickOutside>
                     <Link route={!_.isEmpty(this.props.user) ? "profile" : "login"}>
                       <a>
                         <div className="account-zone" style={!_.isEmpty(this.props.user) ? {lineHeight: '2.6', padding: '11px 15px'} : null}>
@@ -370,11 +468,6 @@ class Header extends React.Component {
                         </div>
                       </a>
                     </Link>
-                    <div className="add-review">
-                      <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
-                        <a className="nd_options_margin_left_10" href="#">Add Your Review</a>
-                      </div>
-                    </div>
                     <form className="search-box" onSubmit={this.handleSubmit.bind(this)}>
                       <div className={this.state.showSearchBox ? "icon-search-container active" : "icon-search-container"}>
                         <span className="fa-search" onClick={this.onShowSearchBox.bind(this)}><FaSearch style={{color: 'white', fontSize: '18px'}}/></span>
@@ -410,7 +503,7 @@ class Header extends React.Component {
                           <ul id="menu-menu-2" className="menu">
                             <li className={this.props.page === 'home' ? 'active' : ''}>
                               <Link route="home">
-                                <a>HOME</a>
+                                <a>{t('title')}</a>
                               </Link>
                             </li>
                             <li className={this.props.page === 'tours' ? 'active' : ''}>
@@ -563,4 +656,4 @@ class Header extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header)
+export default withNamespaces('translation')(connect(mapStateToProps, mapDispatchToProps)(Header))
