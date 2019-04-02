@@ -11,13 +11,15 @@ import ApiService from 'services/api.service'
 import { calcTotalPage, slugify } from '../../services/utils.service'
 import Autosuggest from 'react-autosuggest'
 import { Router } from 'routes'
+import { withNamespaces } from "react-i18next"
 
 class SearchResult extends React.Component {
   displayName = 'Search Result'
 
   static propTypes = {
     searchResult: PropTypes.object,
-    query: PropTypes.object
+    query: PropTypes.object,
+    t: PropTypes.func
   }
 
   static async getInitialProps({ query }) {
@@ -244,6 +246,8 @@ class SearchResult extends React.Component {
   }
 
   render() {
+    const {t} = this.props
+    // console.log(this.state);
     return (
       <>
         <Layout page="search" {...this.props}>
@@ -757,4 +761,4 @@ class SearchResult extends React.Component {
   }
 }
 
-export default SearchResult
+export default withNamespaces('translation')(SearchResult)

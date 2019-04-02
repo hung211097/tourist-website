@@ -132,6 +132,22 @@
     "email_format": "Email chưa đúng định dạng!",
     "email_required": "Email còn trống!"
   },
+  "wrong_auth": {
+    "oops": "Xin lỗi!",
+    "content": "Phiên bản đăng nhập của bạn đã hết hạn hoặc có vấn đề phát sinh với phiên bản đăng nhập của bạn.",
+    "again": "Vui lòng đăng nhập lại!",
+    "login": "ĐĂNG NHẬP"
+  },
+  "forget_password": {
+    "title": "QUÊN MẬT KHẨU",
+    "send": "GỬI YÊU CẦU",
+    "email_format": "Email chưa đúng định dạng!",
+    "email_required": "Email còn trống!",
+    "success": "Yêu cầu của bạn đã được gửi và chúng tôi sẽ gửi lại mật khẩu mới cho bạn, hãy kiểm tra lại email của bạn!",
+    "note": "Nếu bạn chưa nhận được mail của chúng tôi, hãy",
+    "resend": "gửi lại yêu cầu này",
+    "Email does not exist": "Email không tồn tại"
+  },
   "show_more": "XEM THÊM",
   "btn_loading": "Đang tải...",
   "title": "Chào mừng",

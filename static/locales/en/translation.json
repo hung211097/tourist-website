@@ -132,6 +132,22 @@
     "email_format": "Email must be in right format!",
     "email_required": "Email is required!"
   },
+  "wrong_auth": {
+    "oops": "Oops!",
+    "content": "Your logging version is expired or something wrong happen with your account.",
+    "again": "Please login again!",
+    "login": "LOGIN"
+  },
+  "forget_password": {
+    "title": "FORGET PASSWORD",
+    "send": "SEND REQUEST",
+    "email_format": "Email must be in right format!",
+    "email_required": "Email is required!",
+    "success": "Your request is accepted and we will send you a new password, please check your incoming email!",
+    "note": "If you don&apos;t receive anything, please",
+    "resend": "resend this request",
+    "Email does not exist": "Email does not exist"
+  },
   "show_more": "SHOW MORE",
   "btn_loading": "Loading...",
   "title": "Welcome to react using react-i18next",
