@@ -10,7 +10,8 @@ class TourItem extends React.Component {
   displayName = 'Tour Item'
 
   static propTypes = {
-    item: PropTypes.object.isRequired
+    item: PropTypes.object.isRequired,
+    t: PropTypes.func
   }
 
   constructor(props) {
@@ -23,14 +24,14 @@ class TourItem extends React.Component {
   }
 
   render() {
-    const { item } = this.props
+    const { item, t } = this.props
     return (
       <div className="tour-item">
         <style jsx>{styles}</style>
         <Link route="detail-tour" params={{id: item.id}}>
           <a>
             {!!item.discount &&
-              <span className="sale">SALE!</span>
+              <span className="sale">{t('tours.sale')}!</span>
             }
             <img alt="featured_image" src={item.tour.featured_img}/>
             <h2>{item.tour.name}</h2>
@@ -48,10 +49,10 @@ class TourItem extends React.Component {
         </div>
         <div className="action">
           <Link route="checkout-passengers" params={{tour_id: item.id}}>
-            <a className="button">BOOK NOW</a>
+            <a className="button">{t('tours.book')}</a>
           </Link>
           <Link route="detail-tour" params={{id: item.id}}>
-            <a className="button ml-4">DETAIL</a>
+            <a className="button ml-4">{t('tours.detail')}</a>
           </Link>
         </div>
       </div>

@@ -54,6 +54,7 @@
     "react-dom": "^16.7.0",
     "react-geocode": "^0.1.2",
     "react-google-maps": "^9.4.5",
+    "react-google-recaptcha": "^1.0.5",
     "react-i18next": "^9.0.10",
     "react-icons": "^3.4.0",
     "react-images": "^0.5.19",

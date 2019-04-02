@@ -7,9 +7,13 @@ import { connect } from 'react-redux'
 import { FaFacebookF, FaCheck } from "react-icons/fa"
 import validateEmail from '../../services/validates/email.js'
 import validatePhone from '../../services/validates/phone.js'
+import { validateStringWithoutNumber } from '../../services/validates'
 import ApiService from '../../services/api.service'
 import { authLogin } from 'actions'
 import { checkAfterLogin } from '../../services/auth.service'
+import { withNamespaces } from "react-i18next"
+import ReCAPTCHA from "react-google-recaptcha"
+const site_key = process.env.KEY_GOOGLE_RECAPTCHA
 
 const mapStateToProps = state => {
   return {
@@ -30,7 +34,8 @@ class Register extends React.Component {
   static propTypes = {
     authLogin: PropTypes.func,
     user: PropTypes.object,
-    link_redirect: PropTypes.string
+    link_redirect: PropTypes.string,
+    t: PropTypes.func
   }
 
   constructor(props) {
@@ -45,7 +50,8 @@ class Register extends React.Component {
       email: '',
       showPopup: false,
       error: '',
-      loading: false
+      loading: false,
+      isCaptcha: false
     }
   }
 
@@ -158,7 +164,11 @@ class Register extends React.Component {
       return false
     }
 
-    if(!this.state.fullname){
+    if(!this.state.fullname || !validateStringWithoutNumber(this.state.fullname)){
+      return false
+    }
+
+    if(!this.state.isCaptcha){
       return false
     }
 
@@ -171,7 +181,33 @@ class Register extends React.Component {
     })
   }
 
+  onChangeCaptcha = (value) => {
+    this.apiService.verifyCaptcha({captcha: value}).then((res) => {
+      if(res.success){
+        this.setState({
+          isCaptcha: true
+        })
+      }
+      else{
+        this.setState({
+          isCaptcha: false
+        })
+      }
+    }).catch(() => {
+      this.setState({
+        isCaptcha: false
+      })
+    })
+  }
+
+  onExpired = () => {
+    this.setState({
+      isCaptcha: false
+    })
+  }
+
   render() {
+    const {t} = this.props
     return (
       <>
         <Layout page="login" {...this.props}>
@@ -184,7 +220,7 @@ class Register extends React.Component {
                   <div className="nd_options_section nd_options_height_110"/>
                   <div className="nd_options_section title-contain">
                     <h1>
-                      <span>REGISTER</span>
+                      <span>{t('register.title')}</span>
                       <div className="nd_options_section">
                         <span className="underline"></span>
                       </div>
@@ -200,52 +236,56 @@ class Register extends React.Component {
                   <form className="woocommerce-form woocommerce-form-login login" onSubmit={this.handleSubmit.bind(this)}>
                     <div className="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                       <label htmlFor="fullname">
-                        Fullname
+                        {t('register.fullname')}
                         <span className="required"> *</span>
                       </label>
                       <input id="fullname" type="text" name="fullname" value={this.state.fullname}
-                        className={this.state.isSubmit && !this.state.fullname ?
+                        className={(this.state.isSubmit && !this.state.fullname) ||
+                          (this.state.isSubmit && this.state.fullname && !validateStringWithoutNumber(this.state.fullname)) ?
                         "woocommerce-Input woocommerce-Input--text input-text error" :
                         "woocommerce-Input woocommerce-Input--text input-text"}
                          onChange={this.handleChangeFullname.bind(this)}/>
                        {this.state.isSubmit && !this.state.fullname &&
-                         <p className="error">Fullname is required!</p>
+                         <p className="error">{t('register.fullname_required')}</p>
+                       }
+                       {this.state.isSubmit && this.state.fullname && !validateStringWithoutNumber(this.state.fullname) &&
+                         <p className="error">{t('register.fullname_format')}</p>
                        }
                     </div>
                     <div className="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                       <label htmlFor="password">
-                        Password
+                        {t('register.password')}
                         <span className="required"> *</span>
                       </label>
-                      <input id="password" type="password" name="password" value={this.state.password}
+                      <input id="password" type="password" name="password" value={this.state.password} maxLength="20"
                         className={this.state.isSubmit && !this.state.password ?
                           "woocommerce-Input woocommerce-Input--text input-text error" :
                           "woocommerce-Input woocommerce-Input--text input-text"}
                         onChange={this.handleChangePassword.bind(this)}/>
                       {this.state.isSubmit && !this.state.password &&
-                        <p className="error">Password is required!</p>
+                        <p className="error">{t('register.password_required')}</p>
                       }
                     </div>
                     <div className="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                       <label htmlFor="confirmPassword">
-                        Confirm Password
+                        {t('register.confirm')}
                         <span className="required"> *</span>
                       </label>
-                      <input id="confirmPassword" type="password" name="confirmPassword" value={this.state.confirmPassword}
+                      <input id="confirmPassword" type="password" name="confirmPassword" value={this.state.confirmPassword} maxLength="20"
                         className={this.state.isSubmit && (!this.state.confirmPassword || this.state.password !== this.state.confirmPassword) ?
                         "woocommerce-Input woocommerce-Input--text input-text error" :
                         "woocommerce-Input woocommerce-Input--text input-text"}
                          onChange={this.handleChangeConfirmPassword.bind(this)}/>
                        {this.state.isSubmit && !this.state.confirmPassword &&
-                         <p className="error">Confirm password is required!</p>
+                         <p className="error">{t('register.confirm_required')}</p>
                        }
                        {this.state.isSubmit && this.state.confirmPassword && this.state.password !== this.state.confirmPassword &&
-                         <p className="error">Password and Confirm password must be match!</p>
+                         <p className="error">{t('register.not_match')}</p>
                        }
                     </div>
                     <div className="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                       <label htmlFor="phone">
-                        Phone number
+                        {t('register.phone')}
                         <span className="required"> *</span>
                       </label>
                       <input id="phone" type="text" name="phone" value={this.state.phone}
@@ -254,15 +294,15 @@ class Register extends React.Component {
                         "woocommerce-Input woocommerce-Input--text input-text"}
                          onChange={this.handleChangePhone.bind(this)}/>
                        {this.state.isSubmit && !this.state.phone &&
-                         <p className="error">Phone number is required!</p>
+                         <p className="error">{t('register.phone_required')}</p>
                        }
                        {this.state.isSubmit && this.state.phone && !validatePhone(this.state.phone) &&
-                         <p className="error">Phone number must be 10 digits!</p>
+                         <p className="error">{t('register.phone_format')}</p>
                        }
                     </div>
                     <div className="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                       <label htmlFor="email">
-                        Email
+                        {t('register.email')}
                         <span className="required"> *</span>
                       </label>
                       <input id="email" type="text" name="email" value={this.state.email}
@@ -271,14 +311,24 @@ class Register extends React.Component {
                         "woocommerce-Input woocommerce-Input--text input-text"}
                          onChange={this.handleChangeEmail.bind(this)}/>
                        {this.state.isSubmit && !this.state.email &&
-                         <p className="error">Email number is required!</p>
+                         <p className="error">{t('register.email_required')}</p>
                        }
                        {this.state.isSubmit && this.state.email && !validateEmail(this.state.email) &&
-                         <p className="error">Email must be in right format!</p>
+                         <p className="error">{t('register.email_format')}</p>
                        }
                     </div>
+                    <div className="captcha">
+                      <ReCAPTCHA
+                        sitekey={site_key}
+                        onChange={this.onChangeCaptcha}
+                        onExpired={this.onExpired}
+                        />
+                      {this.state.isSubmit && !this.state.isCaptcha &&
+                        <p className="error">{t('register.captcha')}</p>
+                      }
+                    </div>
                     {this.state.error &&
-                      <p className="error">{this.state.error}</p>
+                      <p className="error">{t('register.' + this.state.error)}</p>
                     }
                     {this.state.loading &&
                       <div className="text-center mt-3 mb-3">
@@ -287,16 +337,16 @@ class Register extends React.Component {
                     }
                     <div className="form-row">
                       <button type="submit" className="woocommerce-Button button" name="login" onClick={this.handleSubmit.bind(this)}>
-                        Register
+                        {t('register.title')}
                       </button>
                     </div>
-                    <p className="co-break">OR</p>
+                    <p className="co-break">{t('register.or')}</p>
                     <button type="button" className="woocommerce-Button button fb" name="loginFB" onClick={this.handleLoginFB.bind(this)}>
                       <span><FaFacebookF style={{fontSize: '18px', position: 'relative', top: '-2px'}}/></span>
-                      <span> Login with Facebook</span>
+                      <span> {t('register.login_fb')}</span>
                     </button>
-                    <p className="link-page">You have an account?&nbsp;
-                      <Link route="login"><a>Login here</a></Link>
+                    <p className="link-page">{t('register.have_account')}&nbsp;
+                      <Link route="login"><a>{t('register.login_here')}</a></Link>
                     </p>
                   </form>
                 </div>
@@ -305,12 +355,12 @@ class Register extends React.Component {
           </section>
           <PopupInfo show={this.state.showPopup} onClose={this.handleClose.bind(this)}>
             <FaCheck size={100} style={{color: 'rgb(67, 74, 84)'}}/>
-            <h1>Congratulations!</h1>
+            <h1>{t('register.congratulations')}!</h1>
             <div className="nd_options_height_10" />
-            <p>You register an account successfully!</p>
-            <p>Please check your email to verify the account!</p>
+            <p>{t('register.successfully')}</p>
+            <p>{t('register.check_email')}</p>
             <div className="nd_options_height_10" />
-            <a className="co-btn" onClick={this.handleClose.bind(this)}>OK</a>
+            <a className="co-btn" onClick={this.handleClose.bind(this)}>{t('register.OK')}</a>
           </PopupInfo>
         </Layout>
       </>
@@ -318,4 +368,4 @@ class Register extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register)
+export default withNamespaces('translation')(connect(mapStateToProps, mapDispatchToProps)(Register))

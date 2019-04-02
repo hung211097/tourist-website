@@ -45,7 +45,8 @@ class Login extends React.Component {
       username: '',
       password: '',
       remember: false,
-      error: ''
+      error: '',
+      loading: false,
     }
   }
 
@@ -95,6 +96,10 @@ class Login extends React.Component {
       return
     }
 
+    this.setState({
+      loading: true
+    })
+
     this.apiService.login({
       username: this.state.username,
       password: this.state.password
@@ -108,7 +113,8 @@ class Login extends React.Component {
         error = e.result
       }
       this.setState({
-        error: error
+        error: error,
+        loading: false
       })
     })
 
@@ -199,6 +205,11 @@ class Login extends React.Component {
                             checked={this.state.remember} onChange={this.handleRemember.bind(this)}/>
                           <span> Remember me</span>
                         </label>*/}
+                        {this.state.loading &&
+                          <div className="text-center mt-3 mb-3">
+                            <img alt="loading" src="/static/svg/loading.svg" />
+                          </div>
+                        }
                         <span className="woocommerce-LostPassword lost_password">
                           <Link route="forget-password">
                             <a>{t('login.lost_password')}</a>
