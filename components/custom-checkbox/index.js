@@ -10,7 +10,8 @@ class CustomCheckbox extends React.Component {
     onCheck: PropTypes.func,
     isNormal: PropTypes.bool,
     isCheck: PropTypes.bool,
-    content: PropTypes.string
+    content: PropTypes.string,
+    t: PropTypes.func
   }
 
   static defaultProps = {
@@ -41,10 +42,11 @@ class CustomCheckbox extends React.Component {
   }
 
   render() {
+    const {t} = this.props
     return (
       <Checkbox animation="smooth" shape="curve" color="primary-o" checked={this.state.isCheck} onChange={this.handleChange.bind(this)}>
         <span>
-          {this.props.item ? this.props.item.label : this.props.content}
+          {this.props.item ? t('map_filter.' + this.props.item.label) : this.props.content}
         </span>
       </Checkbox>
     )

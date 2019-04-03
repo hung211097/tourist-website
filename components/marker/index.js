@@ -27,7 +27,8 @@ class MarkerComponent extends React.Component{
     tourChosen: PropTypes.number,
     toggleShowTour: PropTypes.func,
     isShowTour: PropTypes.bool,
-    isSetTour: PropTypes.bool
+    isSetTour: PropTypes.bool,
+    t: PropTypes.func
   }
 
   static defaultProps = {
@@ -79,6 +80,7 @@ class MarkerComponent extends React.Component{
   }
 
   render(){
+    const {t} = this.props
     return(
       <Marker
         position={{lat: this.props.infoLocation.latitude, lng: this.props.infoLocation.longitude}}
@@ -101,32 +103,38 @@ class MarkerComponent extends React.Component{
                 <img alt="feature_img" src={this.props.infoLocation.featured_img}/>
               }
               {this.props.isMe &&
-                <p className="bold">You are here!</p>
+                <p className="bold">{t('marker.here')}</p>
               }
               {this.props.infoLocation.name &&
-                <p><span className="bold">Location:</span> {this.props.infoLocation.name}</p>
+                <p><span className="bold">{t('marker.location')}:</span> {this.props.infoLocation.name}</p>
               }
               {this.props.infoLocation.description &&
                 <p>
-                  <span className="bold">Description: </span> {this.state.isShowMore ? this.props.infoLocation.description : this.props.infoLocation.description.substring(0, this.maxDes)}
-                  <a onClick={this.toggleShowMore.bind(this)}> {this.state.isShowMore ? 'Show less' : '... Show more'}</a>
+                  <span className="bold">{t('marker.description')}: </span> 
+                    {this.state.isShowMore ? this.props.infoLocation.description :
+                      this.props.infoLocation.description.substring(0, this.maxDes)}
+                  <a onClick={this.toggleShowMore.bind(this)}> {this.state.isShowMore ? t('marker.show_less') : '... ' + t('marker.show_more')}</a>
                 </p>
               }
               {this.props.infoLocation.address &&
-                <p><span className="bold">Address: </span> {this.props.infoLocation.address}</p>
+                <p><span className="bold">{t('marker.address')}: </span> {this.props.infoLocation.address}</p>
               }
               {this.props.infoLocation.tours && !!this.props.infoLocation.tours.length && !this.props.isSetTour &&
                 <div>
-                  <p className="bold">Some tours pass over: </p>
+                  <p className="bold">{t('marker.tour_pass')}: </p>
                   <ol className="tour-list">
                     {this.props.infoLocation.tours.map((item) => {
                         return(
                           <li className="tour-item" key={item.id}>
-                            <Link route="detail-tour" params={{id: item.tour_turns.id}}>
+                            {item.tour_turns ?
+                              <Link route="detail-tour" params={{id: item.tour_turns.id}}>
+                                <a>{item.name}</a>
+                              </Link>
+                              :
                               <a>{item.name}</a>
-                            </Link>
+                            }
                             &nbsp;&nbsp;&nbsp;
-                            <a className="display-tour" onClick={this.onShowRoute.bind(this, item.id)}>
+                            <a className="display-tour" onClick={this.onShowRoute.bind(this, item.id)} title="Display tour on the map">
                               {this.props.tourChosen && this.props.tourChosen === item.id && this.props.isShowTour ?
                                 <FaEyeSlash style={{fontSize: '19px'}}/>
                                 :
@@ -141,7 +149,7 @@ class MarkerComponent extends React.Component{
                 </div>
               }
               {this.props.infoLocation.isInTour && this.props.infoLocation.order.indexOf(',') >= 0 &&
-                <p><span className="bold">Numerical of order: </span> {this.props.infoLocation.order}</p>
+                <p><span className="bold">{t('marker.order')}: </span> {this.props.infoLocation.order}</p>
               }
             </div>
           </div>

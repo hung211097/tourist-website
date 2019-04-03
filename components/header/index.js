@@ -12,8 +12,7 @@ import { saveLocation, logout, saveRedirectUrl, saveProfile } from '../../action
 import { setLocalStorage, getLocalStorage, removeItem } from '../../services/local-storage.service'
 import { KEY } from '../../constants/local-storage'
 import { lng } from '../../constants'
-import { slugify } from '../../services/utils.service'
-import { withNamespaces  } from "react-i18next"
+import { withNamespaces } from "react-i18next"
 
 const mapStateToProps = (state) => {
   return {
@@ -217,7 +216,7 @@ class Header extends React.Component {
 
   handleSubmit(e){
     e.preventDefault()
-    Router.pushRoute('search-result', {keyword: slugify(this.state.keyword)})
+    Router.pushRoute('search-result', {keyword: this.state.keyword})
     this.setState({
       keyword: '',
     })

@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 import Popup from 'reactjs-popup'
+import { withNamespaces } from "react-i18next"
 
 let customStyles = {
     width: '90%',
@@ -12,7 +13,7 @@ let customStyleOverlay = {
 
 }
 
-export default class extends React.Component {
+class PopupLoading extends React.Component {
     displayName = 'Popup Loading'
 
     static propTypes = {
@@ -21,7 +22,8 @@ export default class extends React.Component {
         onClose: PropTypes.func,
         children: PropTypes.any,
         customContent: PropTypes.object,
-        customOverlay: PropTypes.object
+        customOverlay: PropTypes.object,
+        t: PropTypes.func
     }
 
     constructor(props) {
@@ -33,6 +35,7 @@ export default class extends React.Component {
     }
 
     render() {
+        const {t} = this.props
         if(this.props.customContent){
           customStyles = this.props.customContent
         }
@@ -52,7 +55,7 @@ export default class extends React.Component {
                     <>
                         <div className="modal-annouce-success">
                           <div className="content">
-                            <h2>Processing!</h2>
+                            <h2>{t('processing')}</h2>
                             <img alt='loading' src="/static/svg/loading.svg" />
                           </div>
                         </div>
@@ -63,3 +66,5 @@ export default class extends React.Component {
         )
     }
 }
+
+export default withNamespaces('translation')(PopupLoading)

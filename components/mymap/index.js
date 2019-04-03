@@ -8,6 +8,7 @@ import { KEY } from '../../constants/local-storage'
 import { connect } from 'react-redux'
 import { toggleShowTour } from '../../actions'
 import ApiService from '../../services/api.service'
+import { withNamespaces } from "react-i18next"
 
 const KEY_GOOGLE_MAP = process.env.KEY_GOOGLE_MAP
 Geocode.setApiKey(KEY_GOOGLE_MAP);
@@ -31,7 +32,7 @@ class MyMap extends React.Component {
   static defaultProps = {
     isMarkerShown: false,
     isSearchBox: false,
-    isSetTour: false
+    isSetTour: false,
   }
 
   static propTypes = {
@@ -42,7 +43,8 @@ class MyMap extends React.Component {
     isShowTour: PropTypes.bool,
     isSetTour: PropTypes.bool,
     idTourSet: PropTypes.number,
-    customStyles: PropTypes.any
+    customStyles: PropTypes.any,
+    t: PropTypes.func
   }
 
   constructor(props) {
@@ -80,6 +82,7 @@ class MyMap extends React.Component {
   }
 
   render() {
+    const {t} = this.props
     return (
       <div className="custom-map" style={this.props.customStyles}>
         <style jsx>{styles}</style>
@@ -94,10 +97,11 @@ class MyMap extends React.Component {
           toggleShowTour={this.onToggleShowTour.bind(this)}
           isShowTour={this.props.isShowTour}
           isSetTour={this.props.isSetTour}
-          idTourSet={this.props.idTourSet}/>
+          idTourSet={this.props.idTourSet}
+          t={t}/>
       </div>
     )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyMap)
+export default withNamespaces('translation')(connect(mapStateToProps, mapDispatchToProps)(MyMap))
