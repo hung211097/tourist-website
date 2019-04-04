@@ -17,6 +17,7 @@ import matchSorter from 'match-sorter'
 import InfiniteScroll from 'react-infinite-scroller'
 import { removeItem } from '../../services/session-storage.service'
 import { KEY } from '../../constants/session-storage'
+import { withNamespaces } from "react-i18next"
 
 const mapStateToProps = state => {
   return {
@@ -29,7 +30,8 @@ class CheckOutConfirmation extends React.Component {
 
   static propTypes = {
     user: PropTypes.object,
-    bookInfo: PropTypes.object
+    bookInfo: PropTypes.object,
+    t: PropTypes.func
   }
 
   static async getInitialProps({ query }) {
@@ -117,6 +119,7 @@ class CheckOutConfirmation extends React.Component {
   render() {
     const { tourInfo } = this.state
     const { bookInfo } = this.state
+    const {t} = this.props
     return (
       <>
         <Layout page="checkout" {...this.props}>
@@ -129,7 +132,7 @@ class CheckOutConfirmation extends React.Component {
                   <div className="nd_options_section nd_options_height_110"/>
                   <div className="nd_options_section title-contain">
                     <h1>
-                      <span>CHECKOUT</span>
+                      <span>{t('checkout')}</span>
                       <div className="nd_options_section">
                         <span className="underline"></span>
                       </div>
@@ -141,7 +144,7 @@ class CheckOutConfirmation extends React.Component {
             </div>
             <div className="nd_options_container nd_options_clearfix content">
               <div className="wizard-step-zone">
-                <WizardStep step={wizardStep.CONFIRMATION} />
+                <WizardStep step={wizardStep.CONFIRMATION} t={t}/>
               </div>
               {tourInfo && bookInfo &&
                 <div className="confirmation-info">
@@ -149,12 +152,12 @@ class CheckOutConfirmation extends React.Component {
                     <div className="col-12 col-sm-10 offset-sm-1 no-padding-res">
                       <div className="book-form">
                         <div className="text-center">
-                          <h1>BOOKING CONFIRMATION</h1>
+                          <h1>{t('checkout_confirmation.title')}</h1>
                           <span className="undericon"><FaPlaneDeparture /></span>
                         </div>
                         <div className="tour-info">
                           <div className="title ">
-                            <h3>TOUR INFORMATION</h3>
+                            <h3>{t('checkout_confirmation.tour_info')}</h3>
                             <div className="underline-zone">
                               <span className="underline"></span>
                             </div>
@@ -173,12 +176,12 @@ class CheckOutConfirmation extends React.Component {
                                 <div className="col-sm-6">
                                   <p>
                                     <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
-                                    Booking Code:&nbsp;
+                                    {t('checkout_confirmation.book_code')}:&nbsp;
                                     <span>{getCode(bookInfo.id)}</span>
                                   </p>
                                   <p>
                                     <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
-                                    Tour Code:&nbsp;
+                                      {t('checkout_confirmation.code')}:&nbsp;:&nbsp;
                                     <span>{getCode(tourInfo.id)}</span>
                                   </p>
                                   {!!bookInfo.type_passenger_detail.length && bookInfo.type_passenger_detail.map((item, key) => {
@@ -191,7 +194,7 @@ class CheckOutConfirmation extends React.Component {
                                               <FaChild /> : null
                                             }
                                           </i>
-                                          {this.ages[item.type]} price:&nbsp;
+                                          {t('checkout_confirmation.' + this.ages[item.type])} price:&nbsp;
                                           <span>
                                             {item.price.toLocaleString()} VND
                                           </span>
@@ -202,25 +205,25 @@ class CheckOutConfirmation extends React.Component {
                                   }
                                   <p className="total">
                                     <i className="fa fa-child" aria-hidden="true"><FaMoneyBill /></i>
-                                    Total price:&nbsp;
+                                    {t('checkout_confirmation.total_price')}:&nbsp;
                                     <span>{bookInfo.total_pay.toLocaleString()} VND</span>
                                   </p>
                                 </div>
                                 <div className="col-sm-6">
                                   <p>
                                     <i className="fa fa-calendar-minus-o" aria-hidden="true"><FaRegCalendarMinus /></i>
-                                    Start date:&nbsp;
+                                    {t('checkout_confirmation.start_date')}:&nbsp;
                                     <span>{formatDate(tourInfo.start_date)}</span>
                                   </p>
                                   <p>
                                     <i className="fa fa-calendar-plus-o" aria-hidden="true"><FaRegCalendarPlus /></i>
-                                    End date:&nbsp;
+                                    {t('checkout_confirmation.end_date')}:&nbsp;
                                     <span>{formatDate(tourInfo.end_date)}</span>
                                   </p>
                                   <p>
                                     <i className="fa fa-calendar" aria-hidden="true"><FaRegCalendarAlt /></i>
-                                    Lasting:&nbsp;
-                                    <span>{distanceFromDays(new Date(tourInfo.start_date), new Date(tourInfo.end_date)) + 1} days</span>
+                                    {t('checkout_confirmation.lasting')}:&nbsp;
+                                    <span>{distanceFromDays(new Date(tourInfo.start_date), new Date(tourInfo.end_date)) + 1} {t('checkout_confirmation.days')}</span>
                                   </p>
                                 </div>
                               </div>
@@ -230,7 +233,7 @@ class CheckOutConfirmation extends React.Component {
                         <div className="apart" />
                         <div className="contact-info">
                           <div className="title">
-                            <h3>CONTACT INFORMATION</h3>
+                            <h3>{t('checkout_confirmation.contact_info')}</h3>
                             <div className="underline-zone">
                               <span className="underline"></span>
                             </div>
@@ -238,10 +241,10 @@ class CheckOutConfirmation extends React.Component {
                           <div className="content-contact row">
                             <div className="col-12">
                               <div className="contact">
-                                <p>Fullname: <span>{bookInfo.book_tour_contact_info.fullname}</span></p>
-                                <p>Phone number: <span> {bookInfo.book_tour_contact_info.phone}</span></p>
+                                <p>{t('checkout_confirmation.fullname')}: <span>{bookInfo.book_tour_contact_info.fullname}</span></p>
+                                <p>{t('checkout_confirmation.phone')}: <span> {bookInfo.book_tour_contact_info.phone}</span></p>
                                 <p>Email: <span>{bookInfo.book_tour_contact_info.email}</span></p>
-                                <p>Address: <span>{bookInfo.book_tour_contact_info.address}</span></p>
+                                <p>{t('checkout_confirmation.address')}: <span>{bookInfo.book_tour_contact_info.address}</span></p>
                               </div>
                             </div>
                           </div>
@@ -249,7 +252,7 @@ class CheckOutConfirmation extends React.Component {
                         <div className="apart" />
                         <div className="passenger-info">
                           <div className="title">
-                            <h3>PASSENGER INFORMATION</h3>
+                            <h3>{t('checkout_confirmation.passenger_info')}</h3>
                             <div className="underline-zone">
                               <span className="underline"></span>
                             </div>
@@ -271,7 +274,7 @@ class CheckOutConfirmation extends React.Component {
                                     filterable={true}
                                     columns={[
                                       {
-                                        Header: 'Fullname',
+                                        Header: t('checkout_confirmation.fullname'),
                                         accessor: 'fullname',
                                         id: 'fullname',
                                         filterAll: true,
@@ -279,7 +282,7 @@ class CheckOutConfirmation extends React.Component {
                                           matchSorter(rows, filter.value, { keys: ["fullname"] }),
                                       },
                                       {
-                                        Header: '	Phone number',
+                                        Header: t('checkout_confirmation.phone'),
                                         accessor: 'phone',
                                         id: 'phone',
                                         filterAll: true,
@@ -287,7 +290,7 @@ class CheckOutConfirmation extends React.Component {
                                           matchSorter(rows, filter.value, { keys: ["phone"] }),
                                       },
                                       {
-                                        Header: 'Birthdate',
+                                        Header: t('checkout_confirmation.birthdate'),
                                         accessor: d => formatDate(d.birthdate),
                                         id: 'birthdate',
                                         filterAll: true,
@@ -297,23 +300,23 @@ class CheckOutConfirmation extends React.Component {
                                           compareDate(a, b)
                                       },
                                       {
-                                        Header: 'Gender',
-                                        accessor: 'sex',
+                                        Header: t('checkout_confirmation.gender'),
+                                        accessor: d => t('checkout_confirmation.' + d.sex),
                                         id: 'gender',
                                         filterAll: true,
                                         filterMethod: (filter, rows) =>
                                           matchSorter(rows, filter.value.toLocaleString(), { keys: ["gender"] }),
                                       },
                                       {
-                                        Header: 'Age',
-                                        accessor: d => this.ages[d.type_passenger.name],
+                                        Header: t('checkout_confirmation.age'),
+                                        accessor: d => t('checkout_confirmation.' + this.ages[d.type_passenger.name]),
                                         id: 'age',
                                         filterAll: true,
                                         filterMethod: (filter, rows) =>
                                           matchSorter(rows, filter.value, { keys: ["age"] }),
                                       },
                                       {
-                                        Header: 'Identity card / Passport',
+                                        Header: t('checkout_confirmation.passport'),
                                         id: 'passport',
                                         accessor: 'passport',
                                         filterAll: true,
@@ -329,14 +332,14 @@ class CheckOutConfirmation extends React.Component {
                         </div>
                         <div className="note-zone">
                           <p className="note">
-                            <strong>Note:</strong> If you don&apos;t login our website, after booking a tour you will
-                            see the confirmation at this step and receive the same content email for your usually checking.
+                            <strong>{t('checkout_confirmation.note')}:</strong>&nbsp;
+                            {t('checkout_confirmation.note_content')}
                           </p>
                         </div>
                         <div className="confirm-zone">
                           <Link route="home">
                             <a className="co-btn w-auto">
-                              BACK TO HOMEPAGE
+                              {t('checkout_confirmation.back_home')}
                             </a>
                           </Link>
                         </div>
@@ -353,4 +356,4 @@ class CheckOutConfirmation extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(CheckOutConfirmation)
+export default withNamespaces('translation')(connect(mapStateToProps)(CheckOutConfirmation))

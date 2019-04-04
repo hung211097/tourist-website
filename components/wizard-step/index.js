@@ -9,7 +9,8 @@ class WizardStep extends React.Component {
   displayName = 'Wizard Step'
 
   static propTypes = {
-    step: PropTypes.string.isRequired
+    step: PropTypes.string.isRequired,
+    t: PropTypes.func
   }
 
   static defaultProps = {
@@ -38,7 +39,7 @@ class WizardStep extends React.Component {
   }
 
   render() {
-    const { step } = this.props
+    const { step, t } = this.props
     return (
       <div className="wizard-step">
         <style jsx>{styles}</style>
@@ -48,8 +49,8 @@ class WizardStep extends React.Component {
             <a id="form-total-t-0" aria-controls="form-total-p-0" onClick={this.handleClickPassenger.bind(this)}>
               <div className="title">
                 <span className="step-icon"><i><FaUser/></i></span>
-                <span className="step-number">Step 1</span>
-                <span className="step-text">Passenger Infomation</span>
+                <span className="step-number">{t('wizard_step.step')} 1</span>
+                <span className="step-text">{t('wizard_step.passenger_info')}</span>
               </div>
             </a>
           </li>
@@ -60,8 +61,8 @@ class WizardStep extends React.Component {
               <span className="current-info audible"> </span>
               <div className="title">
                 <span className="step-icon"><i><FaCreditCard/></i></span>
-                <span className="step-number">Step 2</span>
-                <span className="step-text">Payment Infomation</span>
+                <span className="step-number">{t('wizard_step.step')} 2</span>
+                <span className="step-text">{t('wizard_step.payment_info')}</span>
               </div>
             </a>
           </li>
@@ -70,8 +71,8 @@ class WizardStep extends React.Component {
             <a id="form-total-t-2" aria-controls="form-total-p-2" onClick={this.handleClickConfirmation.bind(this)}>
               <div className="title">
                 <span className="step-icon"><i><FaReceipt/></i></span>
-                <span className="step-number">Step 3</span>
-                <span className="step-text">Confirm Your Booking</span>
+                <span className="step-number">{t('wizard_step.step')} 3</span>
+                <span className="step-text">{t('wizard_step.confirm')}</span>
               </div>
             </a>
           </li>

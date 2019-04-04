@@ -14,6 +14,8 @@ import { getUserAuth } from 'services/auth.service'
 import { setSessionStorage, removeItem } from '../../services/session-storage.service'
 import { KEY } from '../../constants/session-storage'
 import { getCode, moveToElementId } from '../../services/utils.service'
+import { withNamespaces } from "react-i18next"
+import { validateStringWithoutNumber } from '../../services/validates'
 
 const mapStateToProps = state => {
   return {
@@ -26,7 +28,8 @@ class CheckOutPassengers extends React.Component {
 
   static propTypes = {
     user: PropTypes.object,
-    tourInfo: PropTypes.object
+    tourInfo: PropTypes.object,
+    t: PropTypes.func
   }
 
   static async getInitialProps({ query }) {
@@ -154,7 +157,7 @@ class CheckOutPassengers extends React.Component {
       return false
     }
 
-    if(!this.state.name){
+    if(!this.state.name || !validateStringWithoutNumber(this.state.name)){
       moveToElementId('fullname')
       return false
     }
@@ -239,6 +242,7 @@ class CheckOutPassengers extends React.Component {
 
   render() {
     const { tourInfo } = this.state
+    const { t } = this.props
     return (
       <>
         <Layout page="checkout" {...this.props}>
@@ -251,7 +255,7 @@ class CheckOutPassengers extends React.Component {
                   <div className="nd_options_section nd_options_height_110"/>
                   <div className="nd_options_section title-contain">
                     <h1>
-                      <span>CHECKOUT</span>
+                      <span>{t('checkout')}</span>
                       <div className="nd_options_section">
                         <span className="underline"></span>
                       </div>
@@ -263,7 +267,7 @@ class CheckOutPassengers extends React.Component {
             </div>
             <div className="nd_options_container nd_options_clearfix content">
               <div className="wizard-step-zone">
-                <WizardStep step={wizardStep.PASSENGER} />
+                <WizardStep step={wizardStep.PASSENGER} t={t}/>
               </div>
               <div className="passenger-info">
                 <div className="row">
@@ -272,18 +276,18 @@ class CheckOutPassengers extends React.Component {
                       <form onSubmit={this.handleSubmit.bind(this)}>
                         <div className="wrapper">
                           <div className="title">
-                            <h3>NUMBER OF PASSENGERS</h3>
+                            <h3>{t('checkout_passenger.num_passenger')}</h3>
                           </div>
                           {this.findAgePassenger('adults') &&
                             <div className="row adult-zone">
                               <div className="col-md-5 col-sm-5 col-12">
                                 <div className="form-group">
-                                  <label htmlFor="adult">Adult (*)</label>
+                                  <label htmlFor="adult">{t('checkout_passenger.Adult')} (*)</label>
                                   <input type="number" name="adult" className={this.state.isSubmit && !+this.state.adult ? "error" : ""}
                                     id="adult" value={this.state.adult} min={1} pattern="^\d+$"
                                     onChange={this.handleChangeAdult.bind(this)}/>
                                   {this.state.isSubmit && !this.state.adult &&
-                                    <p className="error">This field is required minimum 1</p>
+                                    <p className="error">{t('checkout_passenger.minimum')}</p>
                                   }
                                 </div>
                               </div>
@@ -296,47 +300,50 @@ class CheckOutPassengers extends React.Component {
                             <div className="row child-zone">
                               <div className="col-md-5 col-sm-5 col-12">
                                 <div className="form-group">
-                                  <label>Children </label>
+                                  <label>{t('checkout_passenger.Children')} </label>
                                   <input type="number" name="child" value={this.state.child} min={0} pattern="^\d+$"
                                     onChange={this.handleChangeChild.bind(this)}/>
                                   <span className="error" />
                                 </div>
                               </div>
                               <div className="col-md-7 col-sm-7 col-12">
-                                <p className="caption-text">For children under 12 years old</p>
+                                <p className="caption-text">{t('checkout_passenger.note_children')}</p>
                               </div>
                               <div className="nd_options_height_10"/>
                             </div>
                           }
                           <div className="nd_options_height_30"/>
                           <div className="title">
-                            <h3>CONTACT INFORMATION</h3>
+                            <h3>{t('checkout_passenger.contact_info')}</h3>
                           </div>
                           <div className="row contact-zone">
                             <div className="form-group col-sm-6 col-12" id="fullname">
                               <div className="form-group">
-                                <label htmlFor="name">Fullname (*)</label>
+                                <label htmlFor="name">{t('checkout_passenger.fullname')} (*)</label>
                                 <input type="text" name="name" id="name" value={this.state.name}
                                   onChange={this.handleChangeName.bind(this)} required="required" data-validation="required"
                                   className={this.state.isSubmit && !this.state.name ? "error" : ""} />
                                   {this.state.isSubmit && !this.state.name &&
-                                    <p className="error">This field is required!</p>
+                                    <p className="error">{t('checkout_passenger.fullname_required')}</p>
+                                  }
+                                  {this.state.isSubmit && this.state.name && !validateStringWithoutNumber(this.state.name) &&
+                                    <p className="error">{t('checkout_passenger.fullname_format')}</p>
                                   }
                               </div>
                             </div>
                             <div className="form-group col-sm-6 col-12" id="phone">
                               <div className="form-group">
-                                <label htmlFor="phone">Phone number (*)</label>
+                                <label htmlFor="phone">{t('checkout_passenger.phone')} (*)</label>
                                 <input type="text" name="phone" id="phone" value={this.state.phone}
                                   onChange={this.handleChangePhone.bind(this)}
                                   required="required" maxLength={15} data-validation="required custom length"
                                   data-validation-length="max15"
                                   className={(this.state.isSubmit && !this.state.phone) || (this.state.isSubmit && this.state.phone && !validatePhone(this.state.phone)) ? "error" : "" }/>
                                 {this.state.isSubmit && !this.state.phone &&
-                                  <p className="error">This field is required!</p>
+                                  <p className="error">{t('checkout_passenger.phone_required')}</p>
                                 }
                                 {this.state.isSubmit && this.state.phone && !validatePhone(this.state.phone) &&
-                                  <p className="error">Phone number must be in 10 digits!</p>
+                                  <p className="error">{t('checkout_passenger.phone_format')}</p>
                                 }
                               </div>
                             </div>
@@ -350,22 +357,22 @@ class CheckOutPassengers extends React.Component {
                                   onChange={this.handleChangeEmail.bind(this)}
                                   className={(this.state.isSubmit && !this.state.email) || (this.state.isSubmit && this.state.email && !validateEmail(this.state.email)) ? "error" : "" }/>
                                 {this.state.isSubmit && !this.state.email &&
-                                  <p className="error">This field is required!</p>
+                                  <p className="error">{t('checkout_passenger.email_required')}</p>
                                 }
                                 {this.state.isSubmit && this.state.email && !validateEmail(this.state.email) &&
-                                  <p className="error">Email must be right in format!</p>
+                                  <p className="error">{t('checkout_passenger.email_format')}</p>
                                 }
                               </div>
                             </div>
                             <div className="form-group col-sm-6 col-xs-12" id="address">
                               <div className="form-group has-success">
-                                <label htmlFor="address">Address (*)</label>
+                                <label htmlFor="address">{t('checkout_passenger.address')} (*)</label>
                                 <input type="text" id="address" name="address" data-validation="required"
                                   value={this.state.address}
                                   onChange={this.handleChangeAddress.bind(this)}
                                   className={this.state.isSubmit && !this.state.address ? "error" : ""}/>
                                 {this.state.isSubmit && !this.state.address &&
-                                  <p className="error">This field is required!</p>
+                                  <p className="error">{t('checkout_passenger.address_required')}</p>
                                 }
                               </div>
                             </div>
@@ -374,7 +381,7 @@ class CheckOutPassengers extends React.Component {
                             {[...Array(this.state.adult)].map((item, key) => {
                                 return(
                                   <PassengerInfo index={key} age={"adults"} isSubmit={this.state.isSubmit} key={key}
-                                    onChangePassenger={this.handleChangePassenger.bind(this)}/>
+                                    onChangePassenger={this.handleChangePassenger.bind(this)} t={t}/>
                                 )
                               })
                             }
@@ -382,7 +389,7 @@ class CheckOutPassengers extends React.Component {
                                 return(
                                   <PassengerInfo index={this.state.adult + key} age={"children"}
                                     isSubmit={this.state.isSubmit} key={this.state.adult + key}
-                                    onChangePassenger={this.handleChangePassenger.bind(this)}/>
+                                    onChangePassenger={this.handleChangePassenger.bind(this)} t={t}/>
                                 )
                               })
                             }
@@ -391,7 +398,7 @@ class CheckOutPassengers extends React.Component {
                             <div className="button-area">
                               <ul className="list-inline">
                                 <li className="pull-right">
-                                  <a onClick={this.handleSubmit.bind(this)} className="co-btn">Next</a>
+                                  <a onClick={this.handleSubmit.bind(this)} className="co-btn">{t('checkout_passenger.next')}</a>
                                 </li>
                               </ul>
                               {this.state.loading &&
@@ -410,7 +417,7 @@ class CheckOutPassengers extends React.Component {
                           <div className="img-zone">
                             <img alt="featured_img" src={tourInfo.tour.featured_img}/>
                             {!!tourInfo.discount &&
-                              <span className="sale">SALE!</span>
+                              <span className="sale">{t('checkout_passenger.sale')}!</span>
                             }
                           </div>
                           <div className="info-area">
@@ -422,28 +429,28 @@ class CheckOutPassengers extends React.Component {
                             <ul className="list-unstyled">
                               <li>
                                 <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
-                                Code:&nbsp;
+                                {t('checkout_passenger.code')}:&nbsp;
                                 <span>{getCode(tourInfo.id)}</span>
                               </li>
                               <li>
                                 <i className="fa fa-calendar-minus-o" aria-hidden="true"><FaRegCalendarMinus /></i>
-                                Start date:&nbsp;
+                                {t('checkout_passenger.start_date')}:&nbsp;
                                 <span>{formatDate(tourInfo.start_date)}</span>
                               </li>
                               <li>
                                 <i className="fa fa-calendar-plus-o" aria-hidden="true"><FaRegCalendarPlus /></i>
-                                End date:&nbsp;
+                                {t('checkout_passenger.end_date')}:&nbsp;
                                 <span>{formatDate(tourInfo.end_date)}</span>
                               </li>
                               <li>
                                 <i className="fa fa-calendar" aria-hidden="true"><FaRegCalendarAlt /></i>
-                                Lasting:&nbsp;
-                                <span>{distanceFromDays(new Date(tourInfo.start_date), new Date(tourInfo.end_date)) + 1} days</span>
+                                {t('checkout_passenger.lasting')}:&nbsp;
+                                <span>{distanceFromDays(new Date(tourInfo.start_date), new Date(tourInfo.end_date)) + 1} {t('checkout_passenger.days')}</span>
                               </li>
                               {!!this.state.adult && !!this.getPriceByAge('adults') &&
                                 <li id="liAdult" className="display-hidden" style={{display: 'list-item'}}>
                                   <i className="fa fa-user-secret" aria-hidden="true"><FaUserSecret /></i>
-                                  Adult price:&nbsp;
+                                  {t('checkout_passenger.adult_price')}:&nbsp;
                                   <span>
                                     <strong>
                                       {this.getPriceByAge('adults').toLocaleString()}
@@ -455,7 +462,7 @@ class CheckOutPassengers extends React.Component {
                               {!!this.state.child && this.getPriceByAge('children') &&
                                 <li id="liChild" className="display-hidden" style={{display: 'list-item'}}>
                                   <i className="fa fa-child" aria-hidden="true"><FaChild /></i>
-                                  Children price:&nbsp;
+                                  {t('checkout_passenger.children_price')}:&nbsp;
                                   <span>
                                     <strong>
                                       {this.getPriceByAge('children').toLocaleString()}
@@ -471,7 +478,7 @@ class CheckOutPassengers extends React.Component {
                               </li>*/}
                             </ul>
                             <div className="price-total">
-                              <h2>Total price: <span>{this.getTotalPrice().toLocaleString()}</span> VND</h2>
+                              <h2>{t('checkout_passenger.total_price')}: <span>{this.getTotalPrice().toLocaleString()}</span> VND</h2>
                             </div>
                           </div>
                         </div>
@@ -488,4 +495,4 @@ class CheckOutPassengers extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(CheckOutPassengers)
+export default withNamespaces('translation')(connect(mapStateToProps)(CheckOutPassengers))

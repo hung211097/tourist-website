@@ -15,6 +15,7 @@ import { UnmountClosed } from 'react-collapse'
 import { getCode } from '../../services/utils.service'
 import { useModal } from '../../actions'
 import { modal } from '../../constants'
+import { withNamespaces } from "react-i18next"
 
 const mapStateToProps = state => {
   return {
@@ -34,7 +35,8 @@ class CheckOutPayment extends React.Component {
   static propTypes = {
     user: PropTypes.object,
     tourInfo: PropTypes.object,
-    useModal: PropTypes.func
+    useModal: PropTypes.func,
+    t: PropTypes.func
   }
 
   static async getInitialProps({ query }) {
@@ -127,8 +129,8 @@ class CheckOutPayment extends React.Component {
       passengers: this.state.passengers
     }).then((data) => {
       this.timeout = setTimeout(() => {
-        this.props.useModal && this.props.useModal({type: modal.LOADING, isOpen: false, data: ''})
         Router.pushRoute("checkout-confirmation", {book_completed: data.book_tour.code})
+        this.props.useModal && this.props.useModal({type: modal.LOADING, isOpen: false, data: ''})
       }, 1000)
     }).catch((e) => {
       let error = "There is an error, please try book tour again!"
@@ -213,6 +215,7 @@ class CheckOutPayment extends React.Component {
 
   render() {
     const { tourInfo } = this.state
+    const {t} = this.props
     return (
       <>
         <Layout page="checkout" {...this.props}>
@@ -225,7 +228,7 @@ class CheckOutPayment extends React.Component {
                   <div className="nd_options_section nd_options_height_110"/>
                   <div className="nd_options_section title-contain">
                     <h1>
-                      <span>CHECKOUT</span>
+                      <span>{t('checkout')}</span>
                       <div className="nd_options_section">
                         <span className="underline"></span>
                       </div>
@@ -237,7 +240,7 @@ class CheckOutPayment extends React.Component {
             </div>
             <div className="nd_options_container nd_options_clearfix content">
               <div className="wizard-step-zone">
-                <WizardStep step={wizardStep.PAYMENT} />
+                <WizardStep step={wizardStep.PAYMENT} t={t}/>
               </div>
               <div className="payment-info">
                 <div className="row">
@@ -246,9 +249,9 @@ class CheckOutPayment extends React.Component {
                       <form onSubmit={this.handleSubmit.bind(this)}>
                         <div className="wrapper">
                           <div className="title">
-                            <h3>PAYMENT METHOD</h3>
+                            <h3>{t('checkout_payment.title')}</h3>
                           </div>
-                          <p className="caption-text">Please choose one of below payment method:</p>
+                          <p className="caption-text">{t('checkout_payment.sub_title')}</p>
                           <div className="methods">
                             <div className="method">
                               <input style={{display: 'none'}} value="incash"
@@ -258,11 +261,11 @@ class CheckOutPayment extends React.Component {
                                 <label className={this.state.isShowMethod1 ? "title active" : "title"}
                                   onClick={this.handleChooseMethod_1.bind(this)}>
                                   <h4 style={{margin: '0 0 10px'}}>
-                                    Pay in cash at Travel Tour Office
+                                    {t('checkout_payment.incash')}
                                     <span><img alt="incash" src="/static/images/incash.png" className="incash"/></span>
                                   </h4>
                                   <div className="description">
-                                    Please come to Travel Tour Office for payment and receive ticket.
+                                    {t('checkout_payment.sub_incash')}
                                   </div>
                                   {this.state.isShowMethod1 ?
                                     <i><FaCheck /></i>
@@ -272,11 +275,11 @@ class CheckOutPayment extends React.Component {
                                 </label>
                                 <UnmountClosed isOpened={this.state.isShowMethod1} springConfig={{stiffness: 150, damping: 20}}>
                                   <div className="collapse-content">
-                                    <h2>TRAVELTOUR OFFICE</h2>
+                                    <h2>{t('checkout_payment.office')}</h2>
                                     <div className="nd_options_section nd_options_height_10"/>
-                                    <strong>Address:</strong> 162 Ba Tháng Hai, Phường 12, Quận 10, TP.HCM<br />
+                                    <strong>{t('checkout_payment.address')}:</strong> 162 Ba Tháng Hai, Phường 12, Quận 10, TP.HCM<br />
                                     <div className="nd_options_section nd_options_height_5"/>
-                                    <strong>Phone number:</strong> <a href="tel:0963186896">0963186896</a><br />
+                                    <strong>{t('checkout_payment.phone')}:</strong> <a href="tel:0963186896">0963186896</a><br />
                                     <div className="nd_options_section nd_options_height_5"/>
                                     <strong>Email:</strong>&nbsp;<a href="mailto:traveltour@gmail.com">traveltour@gmail.com</a><br />
                                   </div>
@@ -291,11 +294,11 @@ class CheckOutPayment extends React.Component {
                                 <label className={this.state.isShowMethod2 ? "title active" : "title"}
                                   onClick={this.handleChooseMethod_2.bind(this)}>
                                   <h4 style={{margin: '0 0 10px'}}>
-                                    Pay by transfer money through banking
+                                    {t('checkout_payment.transfer')}
                                     <span><img alt="transfer" src="/static/svg/bank.svg" className="transfer"/></span>
                                   </h4>
                                   <div className="description">
-                                    After you transfer money successfully, our staff will contact you by email or telephone
+                                    {t('checkout_payment.sub_transfer')}
                                   </div>
                                   {this.state.isShowMethod2 ?
                                     <i><FaCheck /></i>
@@ -305,19 +308,19 @@ class CheckOutPayment extends React.Component {
                                 </label>
                                 <UnmountClosed isOpened={this.state.isShowMethod2} springConfig={{stiffness: 150, damping: 20}}>
                                   <div className="collapse-content">
-                                    <h2>TRAVELTOUR&apos;S BANKING ACCOUNT</h2>
+                                    <h2>{t('checkout_payment.account')}</h2>
                                     <div className="nd_options_section nd_options_height_10"/>
-                                    <strong>Note:</strong><br/>
+                                    <strong>{t('checkout_payment.note')}:</strong><br/>
                                     <div className="nd_options_section nd_options_height_5"/>
-                                    <p className="red">Please contact our staffs to confirm your booking before transferring</p>
-                                    <p>When you transfer money, the message should be:</p>
-                                    <strong>&quot;MT ToudCode, Fullname, Content&quot;</strong><br/>
-                                    <p>For example: &quot;MT 00001, Williams, Booking tour on website&quot;</p>
+                                    <p className="red">{t('checkout_payment.note_content')}</p>
+                                    <p>{t('checkout_payment.formula')}</p>
+                                    <strong>{t('checkout_payment.formula_content')}</strong><br/>
+                                    <p>{t('checkout_payment.ex')}</p>
                                     <br/>
-                                    <p>Banking account of Travel Tour Company at Vietcombank Hồ Chí Minh City - VCB</p>
-                                    <p>Account Number: <strong>13422518A41</strong></p>
+                                    <p>{t('checkout_payment.bank')}</p>
+                                    <p>{t('checkout_payment.account_number')}: <strong>13422518A41</strong></p>
                                     <br/>
-                                    <p>Thank you very much!</p>
+                                    <p>{t('checkout_payment.thank')}</p>
                                   </div>
                                 </UnmountClosed>
                               </div>
@@ -358,22 +361,22 @@ class CheckOutPayment extends React.Component {
                           </div>
                           {this.state.isSubmit && !this.state.method &&
                             <div className="error-announce">
-                              <p className="error">Please choose a payment method!</p>
+                              <p className="error">{t('checkout_payment.choose_method')}</p>
                             </div>
                           }
                           {this.state.error &&
                             <div className="error-announce">
-                              <p className="error">{this.state.error}</p>
+                              <p className="error">{t('checkout_payment.' + this.state.error)}</p>
                             </div>
                           }
                           <div className="col-12 no-padding">
                             <div className="button-area">
                               <ul className="list-inline">
                                 <li>
-                                  <a onClick={this.handleBack.bind(this)} className="co-btn">Back</a>
+                                  <a onClick={this.handleBack.bind(this)} className="co-btn">{t('checkout_payment.back')}</a>
                                 </li>
                                 <li className="pull-right">
-                                  <a onClick={this.handleSubmit.bind(this)} className="co-btn">Book</a>
+                                  <a onClick={this.handleSubmit.bind(this)} className="co-btn">{t('checkout_payment.book')}</a>
                                 </li>
                               </ul>
                             </div>
@@ -388,9 +391,9 @@ class CheckOutPayment extends React.Component {
                         <div className="book-info">
                           <div className="img-zone">
                             <img alt="featured_img" src={tourInfo.tour.featured_img}/>
-                              {!!tourInfo.discount &&
-                                <span className="sale">SALE!</span>
-                              }
+                            {!!tourInfo.discount &&
+                              <span className="sale">{t('checkout_passenger.sale')}!</span>
+                            }
                           </div>
                           <div className="info-area">
                             <h3>
@@ -401,28 +404,28 @@ class CheckOutPayment extends React.Component {
                             <ul className="list-unstyled">
                               <li>
                                 <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
-                                Code:&nbsp;
+                                {t('checkout_passenger.code')}:&nbsp;
                                 <span>{getCode(tourInfo.id)}</span>
                               </li>
                               <li>
                                 <i className="fa fa-calendar-minus-o" aria-hidden="true"><FaRegCalendarMinus /></i>
-                                Start date:&nbsp;
+                                {t('checkout_passenger.start_date')}:&nbsp;
                                 <span>{formatDate(tourInfo.start_date)}</span>
                               </li>
                               <li>
                                 <i className="fa fa-calendar-plus-o" aria-hidden="true"><FaRegCalendarPlus /></i>
-                                End date:&nbsp;
+                                {t('checkout_passenger.end_date')}:&nbsp;
                                 <span>{formatDate(tourInfo.end_date)}</span>
                               </li>
                               <li>
                                 <i className="fa fa-calendar" aria-hidden="true"><FaRegCalendarAlt /></i>
-                                Lasting:&nbsp;
-                                <span>{distanceFromDays(new Date(tourInfo.start_date), new Date(tourInfo.end_date)) + 1} days</span>
+                                {t('checkout_passenger.lasting')}:&nbsp;
+                                <span>{distanceFromDays(new Date(tourInfo.start_date), new Date(tourInfo.end_date)) + 1} {t('checkout_passenger.days')}</span>
                               </li>
                               {!!this.state.num_adult && !!this.getPriceByAge('adults') &&
                                 <li id="liAdult" className="display-hidden" style={{display: 'list-item'}}>
                                   <i className="fa fa-user-secret" aria-hidden="true"><FaUserSecret /></i>
-                                  Adult price:&nbsp;
+                                  {t('checkout_passenger.adult_price')}:&nbsp;
                                   <span>
                                     <strong>
                                       {this.getPriceByAge('adults').toLocaleString()}
@@ -434,7 +437,7 @@ class CheckOutPayment extends React.Component {
                               {!!this.state.num_child && this.getPriceByAge('children') &&
                                 <li id="liChild" className="display-hidden" style={{display: 'list-item'}}>
                                   <i className="fa fa-child" aria-hidden="true"><FaChild /></i>
-                                  Children price:&nbsp;
+                                  {t('checkout_passenger.children_price')}:&nbsp;
                                   <span>
                                     <strong>
                                       {this.getPriceByAge('children').toLocaleString()}
@@ -450,7 +453,7 @@ class CheckOutPayment extends React.Component {
                               </li>*/}
                             </ul>
                             <div className="price-total">
-                              <h2>Total price: <span>{this.getTotalPrice().toLocaleString()}</span> VND</h2>
+                              <h2>{t('checkout_passenger.total_price')}: <span>{this.getTotalPrice().toLocaleString()}</span> VND</h2>
                             </div>
                           </div>
                         </div>
@@ -467,4 +470,4 @@ class CheckOutPayment extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CheckOutPayment)
+export default withNamespaces('translation')(connect(mapStateToProps, mapDispatchToProps)(CheckOutPayment))
