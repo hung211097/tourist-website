@@ -5,19 +5,22 @@ import { Layout } from 'components'
 import ApiService from 'services/api.service'
 import { Router, Link } from 'routes'
 import { RatingStar, BtnViewMore, MyMap, TourItem, Lightbox } from 'components'
-import { getCode, slugify } from '../../services/utils.service'
+import { getCode, slugify, convertFullUrl } from '../../services/utils.service'
 import { FaRegCalendarAlt, FaEye, FaSuitcase } from "react-icons/fa"
 import { formatDate, distanceFromDays } from '../../services/time.service'
 import validateEmail from '../../services/validates/email.js'
 import { withNamespaces, Trans } from "react-i18next"
 import { validateStringWithoutNumber } from '../../services/validates'
+import { FacebookShareButton } from 'react-share'
+import { FaFacebookF } from 'react-icons/fa'
 
 class DetailTour extends React.Component {
   displayName = 'Detail Tour'
 
   static propTypes = {
     tourInfo: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
+    route: PropTypes.object,
   }
 
   static async getInitialProps({ query }) {
@@ -146,9 +149,15 @@ class DetailTour extends React.Component {
     const distance = distanceFromDays(new Date(tourTurn.start_date), new Date(tourTurn.end_date)) + 1
     const day_left = distanceFromDays(Date.now(), new Date(tourTurn.start_date))
     const slot = tourTurn.num_max_people - tourTurn.num_current_people
+    const url = convertFullUrl(this.props.route.parsedUrl.pathname)
     return (
       <>
-        <Layout page="tours" {...this.props}>
+        <Layout page="tours" {...this.props}
+          seo={{
+              title: tourTurn.tour.name,
+              description: tourTurn.tour.description.substring(0, 100),
+              image: tourTurn.tour.featured_img
+          }}>
           <style jsx>{styles}</style>
           <section className='middle'>
             {/* section box*/}
@@ -255,6 +264,15 @@ class DetailTour extends React.Component {
                             <Link route="checkout-passengers" params={{tour_id: tourTurn.id}}>
                               <a className="co-btn green w-auto mt-4">{t('detail_tour.book')}</a>
                             </Link>
+                            <FacebookShareButton
+                              url={url}
+                              quote={tourTurn.tour.name}
+                              style={{display: 'inline-block'}}>
+                              <div id="fb-share-button">
+                                <i><FaFacebookF /></i>
+                                <span>Share</span>
+                              </div>
+                            </FacebookShareButton>
                             {/*<div className="product_meta">
                               <span className="posted-in">
                                 Category:&nbsp;

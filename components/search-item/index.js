@@ -6,6 +6,7 @@ import { Link } from 'routes'
 import { FaRegCommentDots, FaRegEye, FaBarcode, FaCalendarAlt, FaClock, FaUserAlt, FaRegCalendarAlt } from "react-icons/fa"
 import { formatDate, distanceFromDays } from '../../services/time.service'
 import { getCode } from '../../services/utils.service'
+import { slugify } from '../../services/utils.service'
 
 class SearchItem extends React.Component {
   displayName = 'Search Item'
@@ -36,7 +37,7 @@ class SearchItem extends React.Component {
           <style jsx>{styles}</style>
           <div className="item-tour-main">
             <div>
-              <Link route="detail-tour" params={{id: item.id}}>
+              <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
                 <a title={item.tour.name}>
                   <div className="tour-img">
                     <img src={item.tour.featured_img} className="img-responsive" alt="featured_image" />
@@ -85,7 +86,7 @@ class SearchItem extends React.Component {
                         <div className="price-new_n f-left">{item.end_price.toLocaleString()} VND</div>
                         <div className="clear" />
                       </div>
-                      <Link route="detail-tour" params={{id: item.id}}>
+                      <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
                         <a className="btn-book col-3">
                           <span>{t('search.detail')}</span>
                         </a>
@@ -104,7 +105,7 @@ class SearchItem extends React.Component {
         <div className="search-container row">
           <div className="col-lg-3 col-md-3 col-sm-12 featured_image-container">
             <div className="featured_image">
-              <Link route="detail-tour" params={{id: item.id}}>
+              <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
                 <a>
                   <img src={item.tour.featured_img} className="img-responsive pic" alt="featured_image" />
                   {!!item.discount &&
@@ -118,7 +119,7 @@ class SearchItem extends React.Component {
             <div className="row tour-name-container">
               <div className="col-12">
                 <div className="tour-name">
-                  <Link route="detail-tour" params={{id: item.id}}>
+                  <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
                     <a title={item.tour.name}>
                       {item.tour.name}
                     </a>
@@ -167,7 +168,7 @@ class SearchItem extends React.Component {
                     }
                     <span>{item.end_price.toLocaleString()} VND</span>
                   </div>
-                  <Link route="detail-tour" params={{id: item.id}}>
+                  <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
                     <a className="btn" title="Detail">{t('search.detail')}</a>
                   </Link>
                 </div>

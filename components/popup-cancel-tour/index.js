@@ -7,6 +7,7 @@ import { CustomCheckbox } from 'components'
 import { Link } from 'routes'
 import { formatDate } from '../../services/time.service'
 import { withNamespaces } from "react-i18next"
+import { slugify } from '../../services/utils.service'
 
 let customStyles = {
     width: '90%',
@@ -155,7 +156,7 @@ class PopupCancelTour extends React.Component {
                                   {tourInfo &&
                                     <ul>
                                       <li>
-                                        <Link route="detail-tour" params={{id: tourInfo.id}}>
+                                        <Link route="detail-tour" params={{id: tourInfo.id, name: slugify(tourInfo.tour.name)}}>
                                           <a>{tourInfo.tour.name}</a>
                                         </Link>
                                       </li>

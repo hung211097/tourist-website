@@ -13,7 +13,7 @@ import { formatDate, distanceFromDays } from '../../services/time.service'
 import { getUserAuth } from 'services/auth.service'
 import { setSessionStorage, removeItem } from '../../services/session-storage.service'
 import { KEY } from '../../constants/session-storage'
-import { getCode, moveToElementId } from '../../services/utils.service'
+import { getCode, moveToElementId, slugify } from '../../services/utils.service'
 import { withNamespaces } from "react-i18next"
 import { validateStringWithoutNumber } from '../../services/validates'
 
@@ -422,7 +422,7 @@ class CheckOutPassengers extends React.Component {
                           </div>
                           <div className="info-area">
                             <h3>
-                              <Link route="detail-tour" params={{id: tourInfo.id}}>
+                              <Link route="detail-tour" params={{id: tourInfo.id, name: slugify(tourInfo.tour.name)}}>
                                 <a>{tourInfo.tour.name}</a>
                               </Link>
                             </h3>

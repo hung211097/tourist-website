@@ -5,6 +5,7 @@ import { RatingStar } from 'components'
 import { Link } from 'routes'
 import { FaRegCalendarAlt } from "react-icons/fa"
 import { formatDate } from '../../services/time.service'
+import { slugify } from '../../services/utils.service'
 
 class TourItem extends React.Component {
   displayName = 'Tour Item'
@@ -28,7 +29,7 @@ class TourItem extends React.Component {
     return (
       <div className="tour-item">
         <style jsx>{styles}</style>
-        <Link route="detail-tour" params={{id: item.id}}>
+        <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
           <a>
             {!!item.discount &&
               <span className="sale">{t('tours.sale')}!</span>
@@ -51,7 +52,7 @@ class TourItem extends React.Component {
           <Link route="checkout-passengers" params={{tour_id: item.id}}>
             <a className="button">{t('tours.book')}</a>
           </Link>
-          <Link route="detail-tour" params={{id: item.id}}>
+          <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
             <a className="button ml-4">{t('tours.detail')}</a>
           </Link>
         </div>

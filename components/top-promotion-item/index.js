@@ -5,6 +5,7 @@ import { Link } from 'routes'
 import { FaRegCalendarAlt, FaRegClock } from "react-icons/fa"
 import { formatDate } from '../../services/time.service'
 import Countdown, { zeroPad } from 'react-countdown-now'
+import { slugify } from '../../services/utils.service'
 
 class TopPromotionItem extends React.Component {
   displayName = 'Top Promotion Item'
@@ -49,7 +50,7 @@ class TopPromotionItem extends React.Component {
         <style jsx>{styles}</style>
         <div className="wrapper-item">
           <div className="content-item">
-            <Link route="detail-tour" params={{id: item.id}}>
+            <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
               <a>
                 <div className="contain-price">
                   {!!item.discount &&
@@ -65,13 +66,13 @@ class TopPromotionItem extends React.Component {
             </Link>
           </div>
           <div className="name-item">
-            <Link route="detail-tour" params={{id: item.id}}>
+            <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
               <a>
                 <h3 style={item.tour.name.length > 30 ? {fontSize: '16px'} : null}>
                   {item.tour.name}
                   <br/>
                   <p><FaRegCalendarAlt style={{fontSize: '15px', position: 'relative', top: '-1px'}} /> {formatDate(item.start_date)}</p>
-                  <p className="float-right">
+                  <p className="count-down">
                     <FaRegClock style={{fontSize: '15px', position: 'relative', top: '-1px', marginRight: '5px'}} />
                     <Countdown zeroPadTime={2} date={new Date(item.start_date)} key={item.id} renderer={renderTime} onComplete={this.handleComplete.bind(this)}/>
                   </p>
@@ -81,7 +82,7 @@ class TopPromotionItem extends React.Component {
           </div>
           <div className="description-item">
             <p>{item.tour.description.substring(0, this.maxDes) + '...'}</p>
-            <Link route="detail-tour" params={{id: item.id}}>
+            <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
               <a>{t('home.top_item.detail')}</a>
             </Link>
           </div>
