@@ -5,9 +5,16 @@ import validateEmail from '../../services/validates/email.js'
 import { companyPosition } from '../../constants/map-option'
 import ApiService from 'services/api.service'
 import { FaCheck } from "react-icons/fa"
+import PropTypes from 'prop-types'
+import { withNamespaces } from "react-i18next"
+import { validateStringWithoutNumber } from '../../services/validates'
 
 class Contact extends React.Component {
   displayName = 'Contact'
+
+  static propTypes = {
+      t: PropTypes.func
+  }
 
   constructor(props) {
     super(props)
@@ -68,7 +75,7 @@ class Contact extends React.Component {
   }
 
   validate(){
-    if(!this.state.name){
+    if(!this.state.name || !validateStringWithoutNumber(this.state.name)){
       return false
     }
 
@@ -90,6 +97,7 @@ class Contact extends React.Component {
   }
 
   render() {
+    const {t} = this.props
     return (
       <>
         <Layout page="contact" {...this.props}>
@@ -102,7 +110,7 @@ class Contact extends React.Component {
                   <div className="nd_options_section nd_options_height_110"/>
                   <div className="nd_options_section title-contain">
                     <h1>
-                      <span>CONTACT</span>
+                      <span>{t('contact.title')}</span>
                       <div className="nd_options_section">
                         <span className="underline"></span>
                       </div>
@@ -118,7 +126,7 @@ class Contact extends React.Component {
                   <div className="col-lg-6">
                     <div className="inner">
                       <div className="wrapper">
-                        <h3>DROP US A LINE</h3>
+                        <h3>{t('contact.drop')}</h3>
                         <div className="nd_options_section nd_options_height_20"/>
                         <div className="nd_options_section nd_options_line_height_0 underline-zone">
                           <span className="underline"></span>
@@ -127,18 +135,17 @@ class Contact extends React.Component {
                         <div className="wpb_text_column wpb_content_element">
                           <div className="wpb_wrapper">
                             <p>
-                              Hãy liên hệ với chúng tôi để được tư vấn, giải đáp thắc mắc và đạt được những gì bạn mong đợi về một kì nghỉ mơ ước.
+                              {t('contact.drop_content')}
                             </p>
-                            <h3>LIÊN HỆ TRỰC TIẾP</h3>
-                            <p>Nếu bạn có vấn đề cần được giải đáp hãy liên hệ trực tiếp với chúng tôi, vui lòng xem thông tin bên dưới:</p>
-                            <h3>LIÊN HỆ QUA HỆ THỐNG WEBSITE</h3>
+                            <h3>{t('contact.direct')}</h3>
+                            <p>{t('contact.direct_content')}</p>
+                            <h3>{t('contact.website')}</h3>
                             <ul>
-                              <li>Chúng tôi luôn đón nhận mọi sự góp ý, những vấn đề của quý khách cần được giải đáp.</li>
+                              <li>{t('contact.website_1')}</li>
                               <li>
-                                Vui lòng sử dụng diễn đàn để đặt câu hỏi khi quý khách có vấn đề không giải quyết được.
-                                Đội ngũ nhân viên của chúng tôi sẽ giải đáp vấn đề của quý khách một cách nhanh chóng.
+                                {t('contact.website_2')}
                               </li>
-                              <li>Để thực hiện việc liên hệ các bạn vui lòng điền vào theo form bên dưới.</li>
+                              <li>{t('contact.website_3')}</li>
                             </ul>
                           </div>
                         </div>
@@ -146,13 +153,16 @@ class Contact extends React.Component {
                           <div className="form-msg">
                             <form onSubmit={this.handleSubmit.bind(this)}>
                               <div className="input-field">
-                                <p>Name: </p>
+                                <p>{t('contact.name')}: </p>
                                 <span>
                                   <input type="text" name="name" placeholder="Name" value={this.state.name}
                                     onChange={this.handleChangeName.bind(this)}/>
                                 </span>
                                 {this.state.isSubmit && !this.state.name &&
-                                  <p className="error">This field is required</p>
+                                  <p className="error">{t('contact.fullname_required')}</p>
+                                }
+                                {this.state.isSubmit && this.state.name && !validateStringWithoutNumber(this.state.name) &&
+                                  <p className="error">{t('contact.fullname_format')}</p>
                                 }
                               </div>
                               <div className="input-field">
@@ -162,26 +172,26 @@ class Contact extends React.Component {
                                     onChange={this.handleChangeEmail.bind(this)}/>
                                 </span>
                                 {this.state.isSubmit && !this.state.email &&
-                                  <p className="error">This field is required</p>
+                                  <p className="error">{t('contact.email_required')}</p>
                                 }
                                 {this.state.isSubmit && this.state.email && !validateEmail(this.state.email) &&
-                                  <p className="error">Email must be right in format</p>
+                                  <p className="error">{t('contact.email_format')}</p>
                                 }
                               </div>
                               <div className="input-field">
-                                <p>Message: </p>
+                                <p>{t('contact.message')}: </p>
                                 <span>
                                   <textarea type="text" name="message" placeholder="Message" value={this.state.message}
                                     onChange={this.handleChangeMessage.bind(this)}/>
                                 </span>
                                 {this.state.isSubmit && !this.state.message &&
-                                  <p className="error">This field is required</p>
+                                  <p className="error">{t('contact.message_required')}</p>
                                 }
                               </div>
                               <div className="confirm-field">
-                                <button type="submit" onClick={this.handleSubmit.bind(this)}>SEND NOW</button>
+                                <button type="submit" onClick={this.handleSubmit.bind(this)}>{t('contact.send')}</button>
                                 {this.state.error &&
-                                  <p className="error">{this.state.error}</p>
+                                  <p className="error">{t('contact.' + this.state.error)}</p>
                                 }
                               </div>
                             </form>
@@ -200,9 +210,9 @@ class Contact extends React.Component {
                       <div className="col-12 no-padding">
                         <div className="inner" style={{paddingLeft: '30px'}}>
                           <div className="wrapper">
-                            <p>Address: 162 Ba Tháng Hai, Phường 12, Quận 10</p>
+                            <p>{t('contact.address')}: 162 Ba Tháng Hai, Phường 12, Quận 10</p>
                             <br/>
-                            <p>City: Hồ Chí Minh - Việt Nam</p>
+                            <p>{t('contact.city')}: Hồ Chí Minh - Việt Nam</p>
                           </div>
                         </div>
                       </div>
@@ -211,7 +221,7 @@ class Contact extends React.Component {
                           <div className="wrapper">
                             <div className="nd_options_section  nd_options_display_table w-100">
                               <div className="table-cell-left">
-                                <p>Phone: </p>
+                                <p>{t('contact.phone')}: </p>
                               </div>
                               <div className="table-cell-right">
                                 <p>0963186896</p>
@@ -220,7 +230,7 @@ class Contact extends React.Component {
                             <div style={{backgroundColor: '#f1f1f1', height: '1px'}}/>
                             <div className="nd_options_section  nd_options_display_table w-100">
                               <div className="table-cell-left">
-                                <p>Opening: </p>
+                                <p>{t('contact.opening')}: </p>
                               </div>
                               <div className="table-cell-right">
                                 <p>9:00 AM</p>
@@ -243,7 +253,7 @@ class Contact extends React.Component {
                             <div style={{backgroundColor: '#f1f1f1', height: '1px'}}/>
                             <div className="nd_options_section  nd_options_display_table w-100">
                               <div className="table-cell-left">
-                                <p>Closing: </p>
+                                <p>{t('contact.closing')}: </p>
                               </div>
                               <div className="table-cell-right">
                                 <p>18:00 PM</p>
@@ -260,11 +270,11 @@ class Contact extends React.Component {
           </section>
           <PopupInfo show={this.state.showPopup} onClose={this.handleClose.bind(this)}>
             <FaCheck size={100} style={{color: 'rgb(67, 74, 84)'}}/>
-            <h1>Successfully!</h1>
+            <h1>{t('contact.success')}</h1>
             <div className="nd_options_height_10" />
-            <p>Your message is sent to us.</p>
-            <p>Please check your email in a few day.</p>
-            <button className="co-btn mt-5" onClick={this.handleClose.bind(this)}>OK</button>
+            <p>{t('contact.success_content_1')}</p>
+            <p>{t('contact.success_content_2')}</p>
+            <button className="co-btn mt-5" onClick={this.handleClose.bind(this)}>{t('contact.OK')}</button>
           </PopupInfo>
         </Layout>
       </>
@@ -272,4 +282,4 @@ class Contact extends React.Component {
   }
 }
 
-export default Contact
+export default withNamespaces('translation')(Contact)
