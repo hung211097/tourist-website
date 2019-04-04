@@ -13,6 +13,7 @@ import ReactTable from 'react-table'
 import { getCode, capitalize } from '../../services/utils.service'
 import matchSorter from 'match-sorter'
 import { formatDate, compareDate, distanceFromDays } from '../../services/time.service'
+import { withNamespaces } from "react-i18next"
 
 const mapStateToProps = (state) => {
     return {
@@ -24,7 +25,8 @@ class DetailBookedTour extends React.Component {
     displayName = 'Detail Booked Tour'
     static propTypes = {
         dispatch: PropTypes.func,
-        user: PropTypes.object
+        user: PropTypes.object,
+        t: PropTypes.func
     }
 
     constructor(props) {
@@ -107,6 +109,7 @@ class DetailBookedTour extends React.Component {
     }
 
     render() {
+      const {t} = this.props
       let tourInfo = null
       if(this.state.bookTour){
         tourInfo = this.state.bookTour.tour_turn
@@ -121,15 +124,15 @@ class DetailBookedTour extends React.Component {
                         <Link route="my-booking">
                           <a className="back"><FaArrowLeft style={{fontSize: '25px'}}/></a>
                         </Link>
-                        <h1 className="my-profile__title">DETAIL BOOKED TOUR INFORMATION <span>#{getCode(this.state.bookTour.id)}</span></h1>
-                        <h3 className="booking-status">Status: <span>{capitalize(this.state.bookTour.status)}</span></h3>
+                        <h1 className="my-profile__title">{t('detail_booked_tour.title')} <span>#{getCode(this.state.bookTour.id)}</span></h1>
+                        <h3 className="booking-status">{t('detail_booked_tour.status')}: <span>{capitalize(t('detail_booked_tour.' + this.state.bookTour.status))}</span></h3>
                       </div>
                       <div className="content">
                         <div className="container">
                           <div className="finish">
                             {tourInfo &&
                               <div className="tour-info">
-                                <div className="header-title has-top-border">Tour information
+                                <div className="header-title has-top-border">{t('detail_booked_tour.tour_info')}
                                   <span className="icon"><FaInfoCircle style={{fontSize: '25px', position: 'relative', top: '-1px'}}/></span>
                                 </div>
                                 <div className="content-tour row">
@@ -146,23 +149,23 @@ class DetailBookedTour extends React.Component {
                                       <div className="col-sm-6">
                                         <p>
                                           <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
-                                          Tour Code:&nbsp;
+                                          {t('detail_booked_tour.code')}:&nbsp;
                                           <span>{getCode(tourInfo.id)}</span>
                                         </p>
                                         <p>
                                           <i className="fa fa-calendar-minus-o" aria-hidden="true"><FaRegCalendarMinus /></i>
-                                          Start date:&nbsp;
+                                          {t('detail_booked_tour.start_date')}:&nbsp;
                                           <span>{formatDate(tourInfo.start_date)}</span>
                                         </p>
                                         <p>
                                           <i className="fa fa-calendar-plus-o" aria-hidden="true"><FaRegCalendarPlus /></i>
-                                          End date:&nbsp;
+                                          {t('detail_booked_tour.end_date')}:&nbsp;
                                           <span>{formatDate(tourInfo.end_date)}</span>
                                         </p>
                                         <p>
                                           <i className="fa fa-calendar" aria-hidden="true"><FaRegCalendarAlt /></i>
-                                          Lasting:&nbsp;
-                                          <span>{distanceFromDays(new Date(tourInfo.start_date), new Date(tourInfo.end_date)) + 1} days</span>
+                                          {t('detail_booked_tour.lasting')}:&nbsp;
+                                          <span>{distanceFromDays(new Date(tourInfo.start_date), new Date(tourInfo.end_date)) + 1} {t('detail_booked_tour.days')}</span>
                                         </p>
                                       </div>
                                       <div className="col-sm-6"></div>
@@ -172,7 +175,7 @@ class DetailBookedTour extends React.Component {
                               </div>
                             }
                             <div className="checkout-info">
-                              <div className="header-title has-top-border">Checkout information
+                              <div className="header-title has-top-border">{t('detail_booked_tour.checkout_info')}
                                 <span className="icon"><FaMoneyBill style={{fontSize: '25px', position: 'relative', top: '-1px'}}/></span>
                               </div>
                               <div className="row no-padding">
@@ -180,18 +183,18 @@ class DetailBookedTour extends React.Component {
                                   <div className="checkout-contact">
                                     {this.findAgePassenger('adults') &&
                                       <div className="item-row">
-                                        <span className="item-label">Adult price</span>
+                                        <span className="item-label">{t('detail_booked_tour.adult_price')}</span>
                                         <span className="value">{this.getPriceByAge('adults').toLocaleString()} VND</span>
                                       </div>
                                     }
                                     {this.findAgePassenger('children') &&
                                       <div className="item-row">
-                                        <span className="item-label">Children price</span>
+                                        <span className="item-label">{t('detail_booked_tour.children_price')}</span>
                                         <span className="value">{this.getPriceByAge('children').toLocaleString()} VND</span>
                                       </div>
                                     }
                                     <div className="item-row">
-                                      <span className="item-label bold">Total price</span>
+                                      <span className="item-label bold">{t('detail_booked_tour.total_price')}</span>
                                       <span className="value">{this.state.bookTour.total_pay.toLocaleString()} VND</span>
                                     </div>
                                   </div>
@@ -200,13 +203,13 @@ class DetailBookedTour extends React.Component {
                                   <div className="checkout-contact">
                                     {this.findAgePassenger('adults') &&
                                       <div className="item-row">
-                                        <span className="item-label">Number of adults</span>
+                                        <span className="item-label">{t('detail_booked_tour.num_adult')}</span>
                                         <span className="value">{this.getNumberByAge('adults')}</span>
                                       </div>
                                     }
                                     {this.findAgePassenger('children') &&
                                       <div className="item-row">
-                                        <span className="item-label">Number of children</span>
+                                        <span className="item-label">{t('detail_booked_tour.num_children')}</span>
                                         <span className="value">{this.getNumberByAge('children')}</span>
                                       </div>
                                     }
@@ -215,16 +218,16 @@ class DetailBookedTour extends React.Component {
                               </div>
                             </div>
                             <div className="contact-info">
-                              <div className="header-title has-top-border">Contact information
+                              <div className="header-title has-top-border">{t('detail_booked_tour.contact_info')}
                                 <span className="icon"><FaPhone style={{fontSize: '18px', position: 'relative', top: '-2px'}}/></span>
                               </div>
                               <div className="booking-contact">
                                 <div className="item-row">
-                                  <span className="item-label">Fullname: </span>
+                                  <span className="item-label">{t('detail_booked_tour.fullname')}: </span>
                                   <span className="value responsive">{this.state.bookTour.book_tour_contact_info.fullname}</span>
                                 </div>
                                 <div className="item-row">
-                                  <span className="item-label">Phone number: </span>
+                                  <span className="item-label">{t('detail_booked_tour.phone')}: </span>
                                   <span className="value responsive">{this.state.bookTour.book_tour_contact_info.phone}</span>
                                 </div>
                                 <div className="item-row">
@@ -232,13 +235,13 @@ class DetailBookedTour extends React.Component {
                                   <span className="value responsive">{this.state.bookTour.book_tour_contact_info.email}</span>
                                 </div>
                                 <div className="item-row">
-                                  <span className="item-label bold">Address: </span>
+                                  <span className="item-label bold">{t('detail_booked_tour.address')}: </span>
                                   <span className="value responsive">{this.state.bookTour.book_tour_contact_info.address}</span>
                                 </div>
                               </div>
                             </div>
                             <div className="pax-info">
-                              <div className="header-title has-top-border mb-4">Passenger information
+                              <div className="header-title has-top-border mb-4">{t('detail_booked_tour.passenger_info')}
                                 <span className="icon"><FaUsers style={{fontSize: '24px', position: 'relative', top: '-2px'}}/></span>
                               </div>
                               <div className="table-responsive">
@@ -256,7 +259,7 @@ class DetailBookedTour extends React.Component {
                                     filterable={true}
                                     columns={[
                                       {
-                                        Header: 'Fullname',
+                                        Header: t('detail_booked_tour.fullname'),
                                         accessor: 'fullname',
                                         id: 'fullname',
                                         filterAll: true,
@@ -264,7 +267,7 @@ class DetailBookedTour extends React.Component {
                                           matchSorter(rows, filter.value, { keys: ["fullname"] }),
                                       },
                                       {
-                                        Header: '	Phone number',
+                                        Header: t('detail_booked_tour.phone'),
                                         accessor: 'phone',
                                         id: 'phone',
                                         filterAll: true,
@@ -272,7 +275,7 @@ class DetailBookedTour extends React.Component {
                                           matchSorter(rows, filter.value, { keys: ["phone"] }),
                                       },
                                       {
-                                        Header: 'Birthdate',
+                                        Header: t('detail_booked_tour.birthdate'),
                                         accessor: d => formatDate(d.birthdate),
                                         id: 'birthdate',
                                         filterAll: true,
@@ -282,23 +285,23 @@ class DetailBookedTour extends React.Component {
                                           compareDate(a, b)
                                       },
                                       {
-                                        Header: 'Gender',
-                                        accessor: 'sex',
+                                        Header: t('detail_booked_tour.gender'),
+                                        accessor: d => t('detail_booked_tour.' + d.sex),
                                         id: 'gender',
                                         filterAll: true,
                                         filterMethod: (filter, rows) =>
                                           matchSorter(rows, filter.value.toLocaleString(), { keys: ["gender"] }),
                                       },
                                       {
-                                        Header: 'Age',
-                                        accessor: d => this.ages[d.type_passenger.name],
+                                        Header: t('detail_booked_tour.age'),
+                                        accessor: d => t('detail_booked_tour.' + this.ages[d.type_passenger.name]),
                                         id: 'age',
                                         filterAll: true,
                                         filterMethod: (filter, rows) =>
                                           matchSorter(rows, filter.value, { keys: ["age"] }),
                                       },
                                       {
-                                        Header: 'Identity card / Passport',
+                                        Header: t('detail_booked_tour.passport'),
                                         id: 'passport',
                                         accessor: 'passport',
                                         filterAll: true,
@@ -321,4 +324,4 @@ class DetailBookedTour extends React.Component {
     }
 }
 
-export default connect(mapStateToProps)(DetailBookedTour)
+export default withNamespaces('translation')(connect(mapStateToProps)(DetailBookedTour))

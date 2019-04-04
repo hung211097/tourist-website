@@ -297,12 +297,10 @@ class MapComponent extends React.Component{
         else if (i == routes.length - 1) request.destination = new google.maps.LatLng(item.location.latitude, item.location.longitude);
         else {
           if (!request.waypoints) request.waypoints = [];
-          if(routes[i].location.id != 72){
-            request.waypoints.push({
-              location:  new google.maps.LatLng(routes[i].location.latitude, routes[i].location.longitude),
-              stopover: true
-            });
-          }
+          request.waypoints.push({
+            location:  new google.maps.LatLng(routes[i].location.latitude, routes[i].location.longitude),
+            stopover: true
+          });
         }
       })
       request.travelMode = google.maps.TravelMode.DRIVING
@@ -332,12 +330,10 @@ class MapComponent extends React.Component{
           }
           else {
             if (!request.waypoints) request.waypoints = [];
-            if(routes[j].location.id != 72){
-              request.waypoints.push({
-                location:  new google.maps.LatLng(routes[j].location.latitude, routes[j].location.longitude),
-                stopover: true
-              });
-            }
+            request.waypoints.push({
+              location:  new google.maps.LatLng(routes[j].location.latitude, routes[j].location.longitude),
+              stopover: true
+            });
           }
         }
         DirectionsService.route(request, (result, status) => {

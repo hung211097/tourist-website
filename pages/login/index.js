@@ -186,7 +186,7 @@ class Login extends React.Component {
                         {t('login.password')}
                         <span className="required"> *</span>
                       </label>
-                      <input id="password" type="password" name="password" value={this.state.password}
+                      <input id="password" type="password" name="password" value={this.state.password} maxLength="20"
                         className={this.state.isSubmit && !this.state.password ?
                           "woocommerce-Input woocommerce-Input--text input-text error" :
                           "woocommerce-Input woocommerce-Input--text input-text"}

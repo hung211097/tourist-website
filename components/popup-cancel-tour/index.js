@@ -6,6 +6,7 @@ import ApiService from 'services/api.service'
 import { CustomCheckbox } from 'components'
 import { Link } from 'routes'
 import { formatDate } from '../../services/time.service'
+import { withNamespaces } from "react-i18next"
 
 let customStyles = {
     width: '90%',
@@ -19,7 +20,7 @@ let customStyleOverlay = {
 
 }
 
-export default class extends React.Component {
+class PopupCancelTour extends React.Component {
     displayName = 'Popup Cancel Tour'
 
     static propTypes = {
@@ -29,7 +30,8 @@ export default class extends React.Component {
         customContent: PropTypes.object,
         customOverlay: PropTypes.object,
         tour: PropTypes.any,
-        changeStatus: PropTypes.func
+        changeStatus: PropTypes.func,
+        t: PropTypes.func
     }
 
     constructor(props) {
@@ -120,7 +122,7 @@ export default class extends React.Component {
         if(this.state.isSend){
           localStyles.maxWidth = '400px'
         }
-        const { tour } = this.props
+        const { tour, t } = this.props
         const { tourInfo } = this.state
         return (
             <div>
@@ -135,18 +137,18 @@ export default class extends React.Component {
                         <div className="close-modal" data-dismiss="modal" aria-label="Close" onClick={close}/>
                         <div className="modal-annouce-success">
                           <div className="content">
-                            <h1>CANCEL TOUR</h1>
+                            <h1>{t('cancel_tour.title')}</h1>
                             <div className="break" />
                             {this.state.isSend ?
                               <div className="result">
-                                <h3>Your request is sent to us succefully!</h3>
-                                <p className="mb-3">We will make a phone call and send email to you after processing your request!</p>
-                                <p className="thank">Thank you!</p>
+                                <h3>{t('cancel_tour.success')}</h3>
+                                <p className="mb-3">{t('cancel_tour.reply')}</p>
+                                <p className="thank">{t('cancel_tour.thank')}</p>
                               </div>
                               :
                               <div>
                                 <div className="tour-info">
-                                  <h3>Tour information: </h3>
+                                  <h3>{t('cancel_tour.tour_info')}: </h3>
                                   <div className="nd_options_section nd_options_line_height_0 underline-zone">
                                     <span className="underline"></span>
                                   </div>
@@ -157,10 +159,10 @@ export default class extends React.Component {
                                           <a>{tourInfo.tour.name}</a>
                                         </Link>
                                       </li>
-                                      <li>Start date: {formatDate(tourInfo.start_date)}</li>
-                                      <li>Book at: {formatDate(tour.book_time, 'dd/MM/yyyy HH:MM')}</li>
-                                      <li>Number of people: {tour.num_passenger}</li>
-                                      <li>Total money: {tour.total_pay.toLocaleString()} VND</li>
+                                      <li>{t('cancel_tour.start_date')}: {formatDate(tourInfo.start_date)}</li>
+                                      <li>{t('cancel_tour.book_at')}: {formatDate(tour.book_time, 'dd/MM/yyyy HH:MM')}</li>
+                                      <li>{t('cancel_tour.num_people')}: {tour.num_passenger}</li>
+                                      <li>{t('cancel_tour.total_money')}: {tour.total_pay.toLocaleString()} VND</li>
                                     </ul>
                                   }
                                 </div>
@@ -168,7 +170,7 @@ export default class extends React.Component {
                                   <div className="reason">
                                     <div className="nd_options_height_20"/>
                                       <div className="form-group has-danger">
-                                        <label className="form-control-label" htmlFor="reason">Your reason:</label>
+                                        <label className="form-control-label" htmlFor="reason">{t('cancel_tour.reason')}:</label>
                                         <div className="nd_options_section nd_options_line_height_0 underline-zone">
                                           <span className="underline"></span>
                                         </div>
@@ -176,76 +178,76 @@ export default class extends React.Component {
                                             "form-control form-control-danger active" : "form-control"}
                                            rows="5" value={this.state.reason} onChange={this.handleChangeReason.bind(this)}></textarea>
                                          {this.state.isSubmit && !this.state.reason &&
-                                           <div className="form-control-feedback mt-3">This field is required!</div>
+                                           <div className="form-control-feedback mt-3">{t('cancel_tour.reason_required')}</div>
                                          }
                                       </div>
                                   </div>
                                   <div className="condition">
-                                    <h3>Terms of condition: </h3>
+                                    <h3>{t('cancel_tour.terms')}: </h3>
                                     <div className="nd_options_section nd_options_line_height_0 underline-zone">
                                       <span className="underline"></span>
                                     </div>
                                     <div className="condition-content">
-                                      <h3>ĐIỀU KIỆN HỦY TOUR TRONG NƯỚC</h3>
-                                      <h4><strong>Đối với ngày thường:</strong></h4>
+                                      <h3>{t('cancel_tour.domestic')}</h3>
+                                      <h4><strong>{t('cancel_tour.domestic_week_day')}</strong></h4>
                                       <ul>
-                                        <li>Hủy vé 5-7 ngày trước ngày khởi hành: phí hủy 40% tiền tour.</li>
-                                        <li>Hủy vé 3-4 ngày trước ngày khởi hành: phí hủy 60% tiền tour.</li>
-                                        <li>Hủy vé 2 ngày trước ngày khởi hành: phí hủy 70% tiền tour.</li>
-                                        <li>Hủy vé 1 ngày trước ngày khởi hành: phí hủy 100% tiền tour.</li>
-                                        <li>Trường hợp quý khách đến trễ giờ khởi hành được tính là hủy ngay trong ngày : phí phạt 100% tiền tour.</li>
+                                        <li>{t('cancel_tour.domestic_week_day_1')}</li>
+                                        <li>{t('cancel_tour.domestic_week_day_2')}</li>
+                                        <li>{t('cancel_tour.domestic_week_day_3')}</li>
+                                        <li>{t('cancel_tour.domestic_week_day_4')}</li>
+                                        <li>{t('cancel_tour.domestic_week_day_5')}</li>
                                       </ul>
                                       <br/>
-                                      <h4><strong>Đối với ngày lễ, Tết:</strong></h4>
+                                      <h4><strong>{t('cancel_tour.domestic_holiday')}</strong></h4>
                                       <ul>
-                                        <li>Hủy tour từ 8-10 ngày trước ngày khởi hành: Phí huỷ tour là 30% trên tổng giá tour.</li>
-                                        <li>Hủy tour từ 5-7 ngày trước ngày khởi hành: Phí huỷ tour là 60% trên tổng giá tour.</li>
-                                        <li>Hủy tour từ 3-4 ngày trước ngày khởi hành: Phí huỷ tour là 90% trên tổng giá tour.</li>
-                                        <li>Hủy tour từ 1-2 ngày trước ngày khởi hành: Phí huỷ tour là 100% trên tổng giá tour.</li>
-                                        <li>Các tour ngày lễ, tết là các tour có thời gian diễn ra rơi vào một trong các ngày lễ, tết theo qui định.</li>
+                                        <li>{t('cancel_tour.domestic_holiday_1')}</li>
+                                        <li>{t('cancel_tour.domestic_holiday-2')}</li>
+                                        <li>{t('cancel_tour.domestic_holiday_3')}</li>
+                                        <li>{t('cancel_tour.domestic_holiday_4')}</li>
+                                        <li>{t('cancel_tour.domestic_holiday_5')}</li>
                                       </ul>
                                       <br/>
-                                      <h4><strong>Lưu ý khi chuyển/hủy tour</strong></h4>
-                                      <p>Thời gian hủy chuyến du lịch được tính cho ngày làm việc, không tính Thứ Bảy, Chủ Nhật & các ngày Lễ, Tết.</p>
+                                      <h4><strong>{t('cancel_tour.note')}</strong></h4>
+                                      <p>{t('cancel_tour.note_content')}</p>
                                       <br/>
-                                      <h3>ĐIỀU KIỆN HỦY TOUR NƯỚC NGOÀI</h3>
-                                      <h4><strong>Đối với ngày thường:</strong></h4>
+                                      <h3>{t('cancel_tour.foreign')}</h3>
+                                      <h4><strong>{t('cancel_tour.foreign_week_day')}</strong></h4>
                                       <ul>
-                                        <li>Nếu hủy hoặc chuyển sang các tuyến du lịch khác trước ngày khởi hành 30 ngày: Không bị mất chi phí.</li>
-                                        <li>Nếu hủy hoặc chuyển sang các chuyến du lịch khác từ 24-29 ngày trước ngày khởi hành: Phạt 50% tiền cọc tour.</li>
-                                        <li>Nếu hủy hoặc chuyển sang các chuyến du lịch khác từ 20-24 ngày trước ngày khởi hành: Phạt 100% tiền cọc tour.</li>
-                                        <li>Nếu hủy chuyến du lịch ngay sau khi Đại Sứ Quán, Lãnh Sự Quán đã cấp visa (đối với các nước cần visa): Phạt 100% tiền cọc tour.</li>
-                                        <li>Nếu hủy chuyến du lịch trong vòng từ 14-19 ngày trước ngày khởi hành: Phạt 50% trên giá tour du lịch.</li>
-                                        <li>Nếu hủy chuyến du lịch trong vòng từ 10-13 ngày trước ngày khởi hành: Phạt 70% trên giá tour du lịch.</li>
-                                        <li>Nếu hủy chuyến du lịch trong vòng từ 02-09 ngày trước ngày khởi hành: Phạt 90% trên giá vé du lịch.</li>
-                                        <li>Nếu hủy chuyến du lịch trong vòng 01 ngày trước ngày khởi hành : Phạt 100% trên giá vé du lịch.</li>
+                                        <li>{t('cancel_tour.foreign_week_day_1')}</li>
+                                        <li>{t('cancel_tour.foreign_week_day_2')}</li>
+                                        <li>{t('cancel_tour.foreign_week_day_3')}</li>
+                                        <li>{t('cancel_tour.foreign_week_day_4')}</li>
+                                        <li>{t('cancel_tour.foreign_week_day_5')}</li>
+                                        <li>{t('cancel_tour.foreign_week_day_6')}.</li>
+                                        <li>{t('cancel_tour.foreign_week_day_7')}</li>
+                                        <li>{t('cancel_tour.foreign_week_day_8')}</li>
                                       </ul>
                                       <br/>
-                                      <h4><strong>Đối với ngày lễ, Tết:</strong></h4>
+                                      <h4><strong>{t('cancel_tour.foreign_holiday')}</strong></h4>
                                       <ul>
-                                        <li>Hủy tour ngay sau khi Đại Sứ Quán, Lãnh Sự Quán đã cấp visa: Chi phí huỷ tour là 100% tiền cọc tour.</li>
-                                        <li>Hủy tour từ 30 – 45 ngày trước ngày khởi hành: Phí huỷ tour là 30% trên tổng giá tour.</li>
-                                        <li>Hủy tour từ 16 – 29 ngày trước ngày khởi hành: Phí huỷ tour là 60% trên tổng giá tour.</li>
-                                        <li>Hủy tour từ 08 – 15 ngày trước ngày khởi hành: Phí huỷ tour là 90% trên tổng giá tour.</li>
-                                        <li>Hủy tour từ 01 – 07 ngày trước ngày khởi hành: Phí huỷ tour là 100% trên tổng giá tour.</li>
-                                        <li>Các tour ngày lễ, tết là các tour có thời gian diễn ra rơi vào một trong các ngày lễ, tết theo qui định.</li>
+                                        <li>{t('cancel_tour.foreign_holiday_1')}</li>
+                                        <li>{t('cancel_tour.foreign_holiday_2')}</li>
+                                        <li>{t('cancel_tour.foreign_holiday_3')}</li>
+                                        <li>{t('cancel_tour.foreign_holiday_4')}</li>
+                                        <li>{t('cancel_tour.foreign_holiday_5')}</li>
+                                        <li>{t('cancel_tour.foreign_holiday_6')}</li>
                                       </ul>
                                       <br/>
-                                      <h4><strong>Lưu ý khi chuyển/hủy tour</strong></h4>
-                                      <p>Thời gian hủy chuyến du lịch được tính cho ngày làm việc, không tính Thứ Bảy, Chủ Nhật & các ngày Lễ, Tết.</p>
+                                      <h4><strong>{t('cancel_tour.note')}</strong></h4>
+                                      <p>{t('cancel_tour.note_content')}</p>
                                     </div>
                                     <div className="checkbox-zone">
                                       <CustomCheckbox isCheck={this.state.isAgree} onCheck={this.handleCheck.bind(this)}
-                                         content={'I have read and accepted with these above terms of condition'}/>
+                                         content={t('cancel_tour.have_read')}/>
                                       {this.state.isSubmit && !this.state.isAgree &&
-                                        <div className="form-control-feedback mt-3">You haven&apos;t agreed with our terms of condition yet!</div>
+                                        <div className="form-control-feedback mt-3">{t('cancel_tour.not_agree')}</div>
                                       }
                                     </div>
                                     {this.state.error &&
-                                      <p className="error">{this.state.error}</p>
+                                      <p className="error">{t('cancel_tour.' + this.state.error)}</p>
                                     }
                                     <div className="confirm-zone">
-                                      <button type="submit" className="co-btn" onClick={this.handleSubmit.bind(this)}>SEND REQUEST</button>
+                                      <button type="submit" className="co-btn" onClick={this.handleSubmit.bind(this)}>{t('cancel_tour.send')}</button>
                                     </div>
                                   </div>
                                 </form>
@@ -260,3 +262,5 @@ export default class extends React.Component {
         )
     }
 }
+
+export default withNamespaces('translation')(PopupCancelTour)

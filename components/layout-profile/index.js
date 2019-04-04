@@ -12,6 +12,7 @@ import _ from 'lodash'
 import { checkLogin } from 'services/auth.service'
 import { removeItem } from '../../services/local-storage.service'
 import { KEY } from '../../constants/local-storage'
+import { withNamespaces } from "react-i18next"
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -28,7 +29,8 @@ class LayoutProfile extends React.Component {
         user: PropTypes.object,
         page: PropTypes.string,
         children: PropTypes.any.isRequired,
-        tabName: PropTypes.string
+        tabName: PropTypes.string,
+        t: PropTypes.func
     }
 
     constructor(props) {
@@ -54,6 +56,7 @@ class LayoutProfile extends React.Component {
     }
 
     render() {
+        const {t} = this.props
         return (
             <>
                 <Layout page="profile" {...this.props}>
@@ -67,7 +70,7 @@ class LayoutProfile extends React.Component {
                               <div className="titleTable">
                                 <div className="titleTableInner">
                                   <div className="pageTitleInfo">
-                                    <h1>My Profile</h1>
+                                    <h1>{t('profile.title')}</h1>
                                     <div className="under-border" />
                                   </div>
                                 </div>
@@ -86,7 +89,7 @@ class LayoutProfile extends React.Component {
                                     <Link route="profile">
                                       <a>
                                         <FaUserAlt style={{fontSize: '16px', marginRight: '10px'}}/>
-                                        <span>Profile</span>
+                                        <span>{t('profile.menu_profile')}</span>
                                       </a>
                                     </Link>
                                   </li>
@@ -94,7 +97,7 @@ class LayoutProfile extends React.Component {
                                     <Link route="my-booking">
                                       <a>
                                         <FaShoppingCart style={{fontSize: '16px', marginRight: '10px'}}/>
-                                        My booking
+                                        {t('profile.menu_booking')}
                                       </a>
                                     </Link>
                                   </li>
@@ -102,7 +105,7 @@ class LayoutProfile extends React.Component {
                                     <Link route="update-profile">
                                       <a>
                                         <FaCog style={{fontSize: '16px', marginRight: '10px'}}/>
-                                        Update profile
+                                        {t('profile.menu_update_profile')}
                                       </a>
                                     </Link>
                                   </li>
@@ -111,7 +114,7 @@ class LayoutProfile extends React.Component {
                                       <Link route="change-password">
                                         <a>
                                           <FaKey style={{fontSize: '16px', marginRight: '10px'}}/>
-                                          Change password
+                                          {t('profile.menu_change_password')}
                                         </a>
                                       </Link>
                                     </li>
@@ -119,7 +122,7 @@ class LayoutProfile extends React.Component {
                                   <li>
                                     <a href="javascript:;" onClick={this.handleLogout.bind(this)}>
                                       <IoIosUndo style={{fontSize: '16px', marginRight: '10px'}}/>
-                                      Sign out
+                                      {t('profile.menu_logout')}
                                     </a>
                                   </li>
                                 </ul>
@@ -132,139 +135,10 @@ class LayoutProfile extends React.Component {
                         </div>
                       </section>
                     </div>
-                    {/*<nav className="profile-menu-mobile d-md-none">
-                        <ul>
-                            <li className={this.props.tabName === "profile" ? "active" : ""}>
-                                <Link route="profile">
-                                    <a>Thông tin tài khoản</a>
-                                </Link>
-                            </li>
-                            <li className={this.props.tabName === "notification" ? "active" : ""}>
-                                <Link route="profile-notification">
-                                    <a>Thông báo</a>
-                                </Link>
-                            </li>
-                            <li className={this.props.tabName === "point" ? "active" : ""}>
-                                <Link route="profile-point">
-                                    <a>Lịch sử điểm</a>
-                                </Link>
-                            </li>
-                            <li className={this.props.tabName === "reviews" ? "active" : ""}>
-                                <Link route="profile-reviews">
-                                    <a>Lịch sử review</a>
-                                </Link>
-                            </li>
-                            <li className={this.props.tabName === "orders" ? "active" : ""}>
-                                <Link route="profile-orders">
-                                    <a>Lịch sử đổi quà</a>
-                                </Link>
-                            </li>
-                            {this.props.user &&
-                              <li onClick={this.handleLogout.bind(this)}>
-                                  <a href="#">Đăng xuất</a>
-                              </li>
-                            }
-                        </ul>
-                    </nav>*/}
-
-                    {/* section */}
-                    {/*<section className="profile-cover">
-                        <div className="profile-bar">
-                            <div className="container">
-                                <div className="profile-bar-inner">
-                                    <div className="profile-avatar">
-                                        <img alt={user.display_name} src={user.avatar ? user.avatar : '/static/images/avatar.jpg'} />
-                                    </div>
-                                    <h3>
-                                      {user.display_name}
-                                      {user.verified &&
-                                        <em className="authen-tick"></em>
-                                      }
-                                    </h3>
-                                    <div className="profile-meta">
-                                        <span><em>{user.number_of_reviews}</em> Review</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>*/}
-
-                    {/*<section className="middle">
-                        <div className="container">
-                            <div className="profile-col">
-                                <div className="profile-follow d-none">
-                                    <div className="profile-follow-item">
-                                        <strong>70</strong>
-                                        <p>Reviews</p>
-                                    </div>
-                                    <div className="profile-follow-item">
-                                        <strong>153</strong>
-                                        <p>Followers</p>
-                                    </div>
-                                    <div className="profile-follow-item">
-                                        <strong>527</strong>
-                                        <p>Thumbs up</p>
-                                    </div>
-                                </div>
-                                <div className="clearfix" />
-                                <div className="profile-colleft">
-                                    <div className="skintype">
-                                        <p>Loại da</p>
-                                        <h3>{user.skin_type || 'Chưa xác định'}</h3>
-                                        <div className="line" />
-                                        <strong>{user.point_balance}</strong>
-                                        <p>Điểm</p>
-                                    </div>
-                                    <div className="profile-menu d-none d-md-block">
-                                        <div className={this.props.tabName === "profile" ? "pm-item active" : "pm-item"}>
-                                            <Link route="profile">
-                                                <a>Thông tin tài khoản</a>
-                                            </Link>
-                                        </div>
-                                        <div className={this.props.tabName === "notification" && this.state.moreType ? "pm-item active has-child dropdown-arrow"
-                                           : this.props.tabName === "notification" && !this.state.moreType ? "pm-item active has-child"
-                                           : this.props.tabName !== "notification" && this.state.moreType ? "pm-item has-child dropdown-arrow"
-                                           : "pm-item has-child"}>
-                                            <Link route="profile-notification">
-                                                <a onClick={this.handleSeenNotification.bind(this)}>Thông báo</a>
-                                            </Link>
-                                            <div className="more-type">
-                                              <span>{this.state.numNotification}</span>
-                                            </div>
-                                            <div className={this.state.moreType ? "pm-child d-block" : "pm-child"}>
-                                              <a href="#">Pretty tips <em>3</em></a>
-                                              <a href="#">Community <em>8</em></a>
-                                            </div>
-                                        </div>
-                                        <div className={this.props.tabName === "point" ? "pm-item active" : "pm-item"}>
-                                            <Link route="profile-point">
-                                                <a>Lịch sử điểm</a>
-                                            </Link>
-                                        </div>
-                                        <div className={this.props.tabName === "reviews" ? "pm-item active" : "pm-item"}>
-                                            <Link route="profile-reviews">
-                                                <a>Lịch sử review</a>
-                                            </Link>
-                                        </div>
-                                        <div className={this.props.tabName === "orders" ? "pm-item active" : "pm-item"}>
-                                            <Link route="profile-orders">
-                                                <a>Lịch sử đổi quà</a>
-                                            </Link>
-                                        </div>
-                                        <div className="pm-item" onClick={this.handleLogout.bind(this)}>
-                                            <a href="#">Đăng xuất</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                {this.props.children}
-                                <div className="clearfix" />
-                            </div>
-                        </div>
-                    </section>*/}
                 </Layout>
             </>
         )
     }
 }
 
-export default connect(null, mapDispatchToProps)(LayoutProfile)
+export default withNamespaces('translation')(connect(null, mapDispatchToProps)(LayoutProfile))

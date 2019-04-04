@@ -9,6 +9,8 @@ import { getUserAuth } from 'services/auth.service'
 import { moveToElementId } from '../../services/utils.service'
 import { saveProfile } from '../../actions'
 import { formatDate, isValidDate } from '../../services/time.service'
+import { withNamespaces } from "react-i18next"
+import { validateStringWithoutNumber } from '../../services/validates'
 
 const mapStateToProps = (state) => {
     return {
@@ -27,6 +29,7 @@ class UpdateProfile extends React.Component {
     static propTypes = {
         user: PropTypes.object,
         saveProfile: PropTypes.func,
+        t: PropTypes.func
     }
 
     constructor(props) {
@@ -35,9 +38,9 @@ class UpdateProfile extends React.Component {
         this.refUpdloadAvatar = React.createRef()
         this.limitUpload = 1
         this.genders = [
-          { value: 'Male', label: 'Male' },
-          { value: 'Female', label: 'Female' },
-          { value: 'Other', label: 'Other' }
+          { value: 'Male', label: props.t('update_profile.Male') },
+          { value: 'Female', label: props.t('update_profile.Female') },
+          { value: 'Other', label: props.t('update_profile.Other') }
         ]
         this.files_avatar = []
         this.state = {
@@ -112,7 +115,7 @@ class UpdateProfile extends React.Component {
             isSubmit: true
         })
         // const validList = ['fullname', 'email', 'email-format', 'phone', 'phone-format']
-        const validList = ['fullname']
+        const validList = ['fullname', 'fullname_format']
         for (var i = validList.length - 1; i >= 0; i--) {
             if (!this.onValidated(validList[i], true)) {
                 return moveToElementId(validList[i])
@@ -191,6 +194,10 @@ class UpdateProfile extends React.Component {
             return !!this.state.fullname
         }
 
+        if(name == 'fullname_format'){
+          return validateStringWithoutNumber(this.state.fullname)
+        }
+
         // if (name == 'phone-format') {
         //     return !this.state.phone || validatePhone(this.state.phone)
         // }
@@ -211,20 +218,21 @@ class UpdateProfile extends React.Component {
     }
 
     render() {
+        const {t} = this.props
         return (
             <LayoutProfile page="profile" tabName="update-profile" {...this.props}>
                 <style jsx>{styles}</style>
                 <div className="profile-detail">
                   <div className="title">
                     <div className="text-center title-contain">
-                      <h1 className="my-profile__title">UPDATE INFORMATION</h1>
+                      <h1 className="my-profile__title">{t('update_profile.title')}</h1>
                     </div>
                     <div className="content">
                       <div className="profile-info row">
                         <div className="col-md-6">
                           <div className="co-field" id="fullname">
                               <p>
-                                  <strong>Fullname*</strong>
+                                  <strong>{t('update_profile.fullname')}*</strong>
                               </p>
                               <input
                                   type="text"
@@ -234,25 +242,30 @@ class UpdateProfile extends React.Component {
                               />
                               {!this.onValidated('fullname') && (
                                   <div className="notify-box">
-                                      <p className="error">This field is required</p>
+                                      <p className="error">{t('update_profile.fullname_required')}</p>
+                                  </div>
+                              )}
+                              {!this.onValidated('fullname_format') && (
+                                  <div className="notify-box">
+                                      <p className="error">{t('update_profile.fullname_format')}</p>
                                   </div>
                               )}
                           </div>
                           <div className="co-field">
                               <p>
-                                  <strong>Gender</strong>
+                                  <strong>{t('update_profile.gender')}</strong>
                               </p>
                               <Select
                                   instanceId="gender"
                                   value={this.state.gender}
                                   onChange={this.handleGenderChange.bind(this)}
-                                  placeholder={this.state.gender ? this.state.gender : 'Choose your gender'}
+                                  placeholder={this.state.gender ? t('update_profile.' + this.state.gender) : t('update_profile.choose_gender')}
                                   options={this.genders}
                               />
                           </div>
                           <div className="co-field">
                               <p>
-                                  <strong>Birthday</strong>
+                                  <strong>{t('update_profile.birthdate')}</strong>
                               </p>
                               <input
                                   type="date"
@@ -264,7 +277,7 @@ class UpdateProfile extends React.Component {
                           </div>
                           <div className="co-field">
                               <p>
-                                  <strong>Address</strong>
+                                  <strong>{t('update_profile.address')}</strong>
                               </p>
                               <textarea
                                   className="co-textarea"
@@ -319,7 +332,7 @@ class UpdateProfile extends React.Component {
                         <div className="col-md-6">
                           <div className="co-field">
                               <p>
-                                  <strong>Avatar</strong>
+                                  <strong>{t('update_profile.avatar')}</strong>
                               </p>
                               <div className="nrr-image">
                                   <div className="nrr-image-upload">
@@ -335,7 +348,7 @@ class UpdateProfile extends React.Component {
                                           className="nrr-updload-file"
                                       />
                                       <span className="sub">
-                                          Maximum size: 1MB<br /> Supported format: jpg, png
+                                          {t('update_profile.max_size')}<br /> {t('update_profile.support')}
                                       </span>
                                   </div>
                               </div>
@@ -357,14 +370,14 @@ class UpdateProfile extends React.Component {
                           {this.state.action == true && (
                             <AutoHide duration={10000}>
                               <div className="alert alert-custom" role="alert">
-                                Update profile successfully!
+                                {t('update_profile.success')}!
                               </div>
                             </AutoHide>
                           )}
                           {this.state.actionError == true && this.state.error &&(
                             <AutoHide duration={10000}>
                               <div className="alert alert-danger" role="alert">
-                                {this.state.error}
+                                {t('update_profile.' + this.state.error)}
                               </div>
                             </AutoHide>
                           )}
@@ -372,7 +385,7 @@ class UpdateProfile extends React.Component {
                         <div className="confirm-zone row">
                           <div className="text-center comfirm-order-control">
                               <a className="co-btn" onClick={this.submitProfile.bind(this)}>
-                                  Update
+                                  {t('update_profile.update')}
                               </a>
                           </div>
                         </div>
@@ -385,4 +398,4 @@ class UpdateProfile extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UpdateProfile)
+export default withNamespaces('translation')(connect(mapStateToProps, mapDispatchToProps)(UpdateProfile))

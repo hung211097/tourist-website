@@ -548,3 +548,8 @@ p {
     color: white;
     border-color: white;
 }
+
+.react-autosuggest__suggestions-container{
+  overflow: auto;
+  max-height: 250px;  
+}
