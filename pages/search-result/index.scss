@@ -262,7 +262,7 @@
             }
             .confirm-zone{
               button{
-                width: 35%;
+                width: 40%;
                 &:nth-child(2){
                   margin-left: 20px;
                 }
@@ -298,7 +298,7 @@
               font-size: 18px;
               position: relative;
               top: -2px;
-              @media screen and (max-width: 576px){
+              @media screen and (max-width: 834px){
                 float: none;
               }
               span{

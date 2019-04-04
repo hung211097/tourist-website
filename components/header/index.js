@@ -11,7 +11,8 @@ import { MdLocationOn } from "react-icons/md"
 import { saveLocation, logout, saveRedirectUrl, saveProfile } from '../../actions'
 import { setLocalStorage, getLocalStorage, removeItem } from '../../services/local-storage.service'
 import { KEY } from '../../constants/local-storage'
-import { slugify } from '../../services/utils.service'
+import { lng } from '../../constants'
+import { withNamespaces } from "react-i18next"
 
 const mapStateToProps = (state) => {
   return {
@@ -38,7 +39,9 @@ class Header extends React.Component {
     saveRedirectUrl: PropTypes.func,
     saveProfile: PropTypes.func,
     user: PropTypes.object,
-    logout: PropTypes.func
+    logout: PropTypes.func,
+    i18n: PropTypes.object,
+    t: PropTypes.func
   }
 
   constructor(props) {
@@ -48,12 +51,43 @@ class Header extends React.Component {
       showSidebar: false,
       showSearchBox: false,
       isSticky: false,
-      keyword: ''
+      keyword: '',
+      showChangeLng: false,
+      language: [
+        {
+          label: "en",
+          isChoose: false,
+          flag: "/static/images/uk.png"
+        },
+        {
+          label: "vi",
+          isChoose: false,
+          flag: "/static/images/vi.png"
+        }
+      ]
     }
   }
 
   componentDidMount() {
     this.loadProfile()
+    let temp = this.state.language
+    const lang = getLocalStorage(KEY.LANGUAGE)
+    if(lang){
+      temp.forEach((item) => {
+        if(item.label === lang){
+          item.isChoose = true
+        }
+      })
+    }
+    else{
+      let findItem = temp.find((item) => {
+        return item.label === lng.EN
+      })
+      findItem.isChoose = true
+    }
+    this.setState({
+      language: temp
+    })
     window.addEventListener('scroll', this.handleOnScroll)
     const objLocation = getLocalStorage(KEY.LOCATION)
     if(objLocation || objLocation === ''){
@@ -182,13 +216,50 @@ class Header extends React.Component {
 
   handleSubmit(e){
     e.preventDefault()
-    Router.pushRoute('search-result', {keyword: slugify(this.state.keyword)})
+    Router.pushRoute('search-result', {keyword: this.state.keyword})
     this.setState({
       keyword: '',
     })
   }
 
+  toggleChangeLng(){
+    this.setState({
+      showChangeLng: !this.state.showChangeLng
+    })
+  }
+
+  offShowChangeLng(){
+    this.setState({
+      showChangeLng: false
+    })
+  }
+
+  chosenLng(){
+    let temp = this.state.language.find((item) => {
+      return item.isChoose === true
+    })
+    return temp
+  }
+
+  changeLng(choose){
+    let temp = this.state.language
+    temp.forEach((item) => {
+      if(item.label === choose.label){
+        item.isChoose = true
+        setLocalStorage(KEY.LANGUAGE, item.label)
+        this.props.i18n.changeLanguage(choose.label)
+      }
+      else{
+        item.isChoose = false
+      }
+    })
+    this.setState({
+      language: temp
+    })
+  }
+
   render() {
+    const { t } = this.props
     return (
       <div itemScope="itemScope" itemType="http://schema.org/WPHeader">
         <style jsx>{styles}</style>
@@ -207,7 +278,7 @@ class Header extends React.Component {
                           <span className="fa-search"><FaSearch style={{color: 'white', fontSize: '18px'}}/></span>
                           <input type="text" className="search-input"
                             value={this.state.keyword} onChange={this.handleChangeKeyword.bind(this)}
-                            data-ic-class="search-input" placeholder="Search tour" />
+                            data-ic-class="search-input" placeholder={t('header.search_tour')} />
                         </div>
                       </form>
                     </li>
@@ -225,12 +296,12 @@ class Header extends React.Component {
                     }
                     <li className={this.props.page === 'home' ? 'active' : ''}>
                       <Link route="home">
-                        <a className="effect-hover">HOME</a>
+                        <a className="effect-hover">{t('header.home')}</a>
                       </Link>
                     </li>
                     <li className={this.props.page === 'tours' ? 'active' : ''}>
                       <Link route="tours">
-                        <a className="effect-hover">TOURS</a>
+                        <a className="effect-hover">{t('header.tours')}</a>
                       </Link>
                     </li>
                     {/*<li>
@@ -252,12 +323,12 @@ class Header extends React.Component {
                     </li>*/}
                     <li className={this.props.page === 'about-us' ? 'active' : ''}>
                       <Link route="about-us">
-                        <a className="effect-hover">ABOUT US</a>
+                        <a className="effect-hover">{t('header.about')}</a>
                       </Link>
                     </li>
                     <li className={this.props.page === 'contact' ? 'active' : ''}>
                       <Link route="contact">
-                        <a className="effect-hover">CONTACT</a>
+                        <a className="effect-hover">{t('header.contact')}</a>
                       </Link>
                     </li>
                     <li className="no-padding">
@@ -266,14 +337,14 @@ class Header extends React.Component {
                     {!_.isEmpty(this.props.user) ?
                       <li>
                         <a onClick={this.handleLogout.bind(this)} href="javascript:;">
-                          LOGOUT <FaSignOutAlt style={{fontSize: '18px', color: 'white', marginLeft: '8px'}}/>
+                          {t('header.logout')} <FaSignOutAlt style={{fontSize: '18px', color: 'white', marginLeft: '8px'}}/>
                         </a>
                       </li>
                       :
                       <li>
                         <Link route="login">
                           <a>
-                            LOG IN
+                            {t('header.login')}
                             <FaSignInAlt style={{fontSize: '18px', color: 'white', marginLeft: '8px'}}/>
                           </a>
                         </Link>
@@ -300,7 +371,7 @@ class Header extends React.Component {
                           </a>
                         </div>
                         <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
-                          <a className="nd_options_margin_right_20" href="tel:0963186896">Hotline: 0963186896</a>
+                          <a className="nd_options_margin_right_20" href="tel:0963186896">{t('header.hotline')}: 0963186896</a>
                         </div>
                       </div>
                     </li>
@@ -333,7 +404,7 @@ class Header extends React.Component {
                         </a>
                       </div>
                       <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
-                        <a className="nd_options_margin_right_20" href="tel:0963186896">Hotline: 0963186896</a>
+                        <a className="nd_options_margin_right_20" href="tel:0963186896">{t('header.hotline')}: 0963186896</a>
                       </div>
                     </div>
                   </div>
@@ -343,18 +414,74 @@ class Header extends React.Component {
                     {!_.isEmpty(this.props.user) &&
                       <a onClick={this.handleLogout.bind(this)} href="javascript:;">
                         <div className="nd_options_display_table_cell nd_options_vertical_align_middle float-right logout">
-                          <p>Logout <FaSignOutAlt style={{fontSize: '16px', color: 'white', marginLeft: '5px'}}/></p>
+                          <p>{t('header.logout')} <FaSignOutAlt style={{fontSize: '16px', color: 'white', marginLeft: '5px'}}/></p>
                         </div>
                       </a>
                     }
-                    <Link route={!_.isEmpty(this.props.user) ? "profile" : "login"}>
+                    {_.isEmpty(this.props.user) &&
+                      <Link route="login">
+                        <a>
+                          <div className="account-zone">
+                            <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
+                              <h6 className="nd_options_font_size_10 nd_options_text_align_left nd_options_color_white nd_options_second_font">
+                                <p className="nd_options_color_white">
+                                  {t('header.login')}
+                                  <FaSignInAlt style={{fontSize: '16px', color: 'white', marginLeft: '6px', position: 'relative', top: '-1px'}}/>
+                                </p>
+                              </h6>
+                            </div>
+                          </div>
+                        </a>
+                      </Link>
+                    }
+                    <ClickOutside onClickOutside={this.offShowChangeLng.bind(this)}>
+                      <div className="multi-lng" onClick={this.toggleChangeLng.bind(this)}>
+                        {this.chosenLng() &&
+                          <button aria-expanded="false" aria-haspopup="true" className="btn dropdown-toggle" type="button">
+                            <img alt={this.chosenLng().label} src={this.chosenLng().flag}/>&nbsp;&nbsp;
+                            <span>{this.chosenLng().label}</span>&nbsp;
+                          </button>
+                        }
+                        <div className={this.state.showChangeLng ? "dropdown-menu show" : "dropdown-menu"}>
+                          {this.state.language.map((item, key) => {
+                              if(!item.isChoose){
+                                return(
+                                  <div className="wrapper-dropdown-item" key={key} onClick={this.changeLng.bind(this, item)}>
+                                    <a className="dropdown-item">
+                                      <img src={item.flag} alt={item.label}/>&nbsp;
+                                      <span>{item.label}</span>
+                                    </a>
+                                  </div>
+                                )
+                              }
+                              return null
+                            })
+                          }
+                        </div>
+                      </div>
+                    </ClickOutside>
+                    {!_.isEmpty(this.props.user) &&
+                      <Link route="profile">
+                        <a>
+                          <div className="account-zone" style={{lineHeight: '2.6', padding: '11px 15px'}}>
+                            <div>
+                              <img alt="avatar" src={this.props.user.avatar ? (this.props.user.avatar) : "/static/images/avatar.jpg"} width={30} />
+                              <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
+                                <p className="fullname">{this.props.user.fullname}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </a>
+                      </Link>
+                    }
+                    {/*<Link route={!_.isEmpty(this.props.user) ? "profile" : "login"}>
                       <a>
                         <div className="account-zone" style={!_.isEmpty(this.props.user) ? {lineHeight: '2.6', padding: '11px 15px'} : null}>
                           {_.isEmpty(this.props.user) ?
                             <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
                               <h6 className="nd_options_font_size_10 nd_options_text_align_left nd_options_color_white nd_options_second_font">
                                 <p className="nd_options_color_white">
-                                  Log in
+                                  {t('header.login')}
                                   <FaSignInAlt style={{fontSize: '16px', color: 'white', marginLeft: '6px', position: 'relative', top: '-1px'}}/>
                                 </p>
                               </h6>
@@ -369,18 +496,13 @@ class Header extends React.Component {
                           }
                         </div>
                       </a>
-                    </Link>
-                    <div className="add-review">
-                      <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
-                        <a className="nd_options_margin_left_10" href="#">Add Your Review</a>
-                      </div>
-                    </div>
+                    </Link>*/}
                     <form className="search-box" onSubmit={this.handleSubmit.bind(this)}>
                       <div className={this.state.showSearchBox ? "icon-search-container active" : "icon-search-container"}>
                         <span className="fa-search" onClick={this.onShowSearchBox.bind(this)}><FaSearch style={{color: 'white', fontSize: '18px'}}/></span>
                         <input type="text" className="search-input"
                           value={this.state.keyword} onChange={this.handleChangeKeyword.bind(this)}
-                          data-ic-class="search-input" placeholder="Search tour" />
+                          data-ic-class="search-input" placeholder={t('header.search_tour')}/>
                         <span className="fa-times-circle" onClick={this.onHideSearchBox.bind(this)}><FaTimesCircle /></span>
                       </div>
                     </form>
@@ -410,12 +532,12 @@ class Header extends React.Component {
                           <ul id="menu-menu-2" className="menu">
                             <li className={this.props.page === 'home' ? 'active' : ''}>
                               <Link route="home">
-                                <a>HOME</a>
+                                <a>{t('header.home')}</a>
                               </Link>
                             </li>
                             <li className={this.props.page === 'tours' ? 'active' : ''}>
                               <Link route="tours">
-                                <a>TOURS</a>
+                                <a>{t('header.tours')}</a>
                               </Link>
                             </li>
                             {/*<li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/">SHOP</a>
@@ -428,17 +550,17 @@ class Header extends React.Component {
                             </li>*/}
                             <li className={this.props.page === 'about-us' ? 'active' : ''}>
                               <Link route="about-us">
-                                <a>ABOUT US</a>
+                                <a>{t('header.about')}</a>
                               </Link>
                             </li>
                             <li className={this.props.page === 'contact' ? 'active' : ''}>
                               <Link route="contact">
-                                <a>CONTACT</a>
+                                <a>{t('header.contact')}</a>
                               </Link>
                             </li>
                             <li className="nd_options_book_now_btn">
                               <Link route="search-result">
-                                <a>BOOK NOW</a>
+                                <a>{t('header.booknow')}</a>
                               </Link>
                             </li>
                           </ul>
@@ -494,12 +616,12 @@ class Header extends React.Component {
                           <ul id="menu-menu-2" className="menu">
                             <li className={this.props.page === 'home' ? 'active' : ''}>
                               <Link route="home">
-                                <a>HOME</a>
+                                <a>{t('header.home')}</a>
                               </Link>
                             </li>
                             <li className={this.props.page === 'tours' ? 'active' : ''}>
                               <Link route="tours">
-                                <a>TOURS</a>
+                                <a>{t('header.tours')}</a>
                               </Link>
                             </li>
                             {/*<li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/">SHOP</a>
@@ -512,17 +634,17 @@ class Header extends React.Component {
                             </li>*/}
                             <li className={this.props.page === 'about-us' ? 'active' : ''}>
                               <Link route="about-us">
-                                <a>ABOUT US</a>
+                                <a>{t('header.about')}</a>
                               </Link>
                             </li>
                             <li className={this.props.page === 'contact' ? 'active' : ''}>
                               <Link route="contact">
-                                <a>CONTACT</a>
+                                <a>{t('header.contact')}</a>
                               </Link>
                             </li>
                             <li className="nd_options_book_now_btn">
                               <Link route="search-result">
-                                <a>BOOK NOW</a>
+                                <a>{t('header.booknow')}</a>
                               </Link>
                             </li>
                           </ul>
@@ -540,9 +662,11 @@ class Header extends React.Component {
               {/*RESPONSIVE*/}
               <div className="nd_options_section text-center d-none nd_options_display_block_responsive">
                 <div className="nd_options_section nd_options_height_20" />
-                <a className="d-inline-block" href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel">
-                  <img alt="logo" className="nd_options_float_left" src="/static/images/logo.png" />
-                </a>
+                <Link route="home">
+                  <a className="d-inline-block">
+                    <img alt="logo" className="nd_options_float_left" src="/static/images/logo.png" />
+                  </a>
+                </Link>
                 <div className="nd_options_section nd_options_height_10" />
                 <div className="nd_options_section">
                   <a className="nd_options_open_navigation_2_sidebar_content nd_options_open_navigation_2_sidebar_content"
@@ -563,4 +687,4 @@ class Header extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header)
+export default withNamespaces('translation')(connect(mapStateToProps, mapDispatchToProps)(Header))

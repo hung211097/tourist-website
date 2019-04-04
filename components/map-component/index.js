@@ -15,7 +15,7 @@ import { getAirportPoint } from '../../services/utils.service'
 
 const customStyles = {
     width: '90%',
-    maxWidth: '800px',
+    maxWidth: '970px',
     maxHeight: '500px',
     overflow: 'auto'
 }
@@ -35,6 +35,7 @@ class MapComponent extends React.Component{
     isShowTour: PropTypes.bool,
     isSetTour: PropTypes.bool,
     idTourSet: PropTypes.number,
+    t: PropTypes.func
   }
 
   static defaultProps = {
@@ -107,7 +108,7 @@ class MapComponent extends React.Component{
     }
   }
 
-  addMarker(locations){
+  addMarker(locations){ //Add thêm marker mới vào bản đồ
     if(!this.state.locationNearCenter.length){
       locations.forEach((item) => {
         this.traceAddedLocation[item.id] = true
@@ -196,6 +197,8 @@ class MapComponent extends React.Component{
         longitude: nextMarkers[0].position.lng()
       },
       isChangeCenter: true
+    }, () => {  //Sau khi search ra điểm thì load địa điểm xung quanh center mới
+      this.getLocations()
     });
     // refs.map.fitBounds(bounds);
   }
@@ -294,12 +297,10 @@ class MapComponent extends React.Component{
         else if (i == routes.length - 1) request.destination = new google.maps.LatLng(item.location.latitude, item.location.longitude);
         else {
           if (!request.waypoints) request.waypoints = [];
-          if(routes[i].location.id != 72){
-            request.waypoints.push({
-              location:  new google.maps.LatLng(routes[i].location.latitude, routes[i].location.longitude),
-              stopover: true
-            });
-          }
+          request.waypoints.push({
+            location:  new google.maps.LatLng(routes[i].location.latitude, routes[i].location.longitude),
+            stopover: true
+          });
         }
       })
       request.travelMode = google.maps.TravelMode.DRIVING
@@ -329,12 +330,10 @@ class MapComponent extends React.Component{
           }
           else {
             if (!request.waypoints) request.waypoints = [];
-            if(routes[j].location.id != 72){
-              request.waypoints.push({
-                location:  new google.maps.LatLng(routes[j].location.latitude, routes[j].location.longitude),
-                stopover: true
-              });
-            }
+            request.waypoints.push({
+              location:  new google.maps.LatLng(routes[j].location.latitude, routes[j].location.longitude),
+              stopover: true
+            });
           }
         }
         DirectionsService.route(request, (result, status) => {
@@ -414,7 +413,7 @@ class MapComponent extends React.Component{
   }
 
   render(){
-    // console.log(styles);
+    const {t} = this.props
     return(
       <div className="map-content">
         <style jsx>{styles}</style>
@@ -458,6 +457,7 @@ class MapComponent extends React.Component{
             {this.props.myLocation && this.props.myLocation.position &&
               <MarkerComponent
                 isMe
+                t={t}
                 infoLocation={{
                   latitude: this.props.myLocation.position.latitude,
                   longitude: this.props.myLocation.position.longitude,
@@ -465,6 +465,7 @@ class MapComponent extends React.Component{
             }
             {this.state.markerChoose &&
               <MarkerComponent
+                t={t}
                 infoLocation={{
                   latitude: this.state.markerChoose.latitude,
                   longitude: this.state.markerChoose.longitude,
@@ -473,7 +474,7 @@ class MapComponent extends React.Component{
             {!!this.state.locationNearCenter.length && this.state.locationNearCenter.map((item) => {
                 if(!this.state.filterOptions.length){
                   return(
-                    <MarkerComponent infoLocation={item} key={item.id}
+                    <MarkerComponent infoLocation={item} key={item.id} t={t}
                       onDrawDirection={this.onDrawDirection.bind(this)}
                       tourChosen={this.state.idTourChosen} isSetTour={this.props.isSetTour}/>
                   )
@@ -481,7 +482,7 @@ class MapComponent extends React.Component{
                 let temp = this.state.filterOptions.find((findItem) => {return findItem === item.type.marker})
                 if(temp || item.isInTour === true){
                   return(
-                    <MarkerComponent infoLocation={item} key={item.id}
+                    <MarkerComponent infoLocation={item} key={item.id} t={t}
                       onDrawDirection={this.onDrawDirection.bind(this)}
                       tourChosen={this.state.idTourChosen} isSetTour={this.props.isSetTour}/>
                   )
@@ -559,24 +560,24 @@ class MapComponent extends React.Component{
         </a>
         <PopupInfo show={this.state.showFilter} onClose={this.handleClose.bind(this)} customContent={customStyles}>
           <div className="popup-title-filter">
-            <h1 className="bold">LOCATION FILTER</h1>
+            <h1 className="bold">{t('map_filter.title')}</h1>
             <span className="underline-popup"/>
           </div>
           <div className="row">
             {this.filterOptions.map((item, key) => {
                 return(
                   <div className="col-6 col-sm-3 text-left mb-4" key={key}>
-                    <CustomCheckbox item={item} onCheck={this.handleCheck.bind(this)} isNormal={false}/>
+                    <CustomCheckbox item={item} onCheck={this.handleCheck.bind(this)} isNormal={false} t={t}/>
                   </div>
                 )
               })
             }
           </div>
           <p className="caption">
-            Choose location&apos;s type you would like to display on the map or&nbsp;
-            <a onClick={this.handleShowAll.bind(this)} className="show-all">Show all</a>
+            {t('map_filter.note')}&nbsp;
+            <a onClick={this.handleShowAll.bind(this)} className="show-all">{t('map_filter.show_all')}</a>
           </p>
-          <button type="button" className="co-btn" style={{width: '30%', marginTop: '20px'}} onClick={this.handleClose.bind(this)}>OK</button>
+          <button type="button" className="co-btn" style={{width: '30%', marginTop: '20px'}} onClick={this.handleClose.bind(this)}>{t('map_filter.OK')}</button>
         </PopupInfo>
       </div>
     )

@@ -12,7 +12,8 @@ class SearchItem extends React.Component {
 
   static propTypes = {
     item: PropTypes.object,
-    isGrid: PropTypes.bool
+    isGrid: PropTypes.bool,
+    t: PropTypes.func
   }
 
   static defaultProps = {
@@ -28,7 +29,7 @@ class SearchItem extends React.Component {
   }
 
   render() {
-    const {item} = this.props
+    const {item, t} = this.props
     if(this.props.isGrid){
       return(
         <div className="col-sm-6 col-12">
@@ -38,32 +39,32 @@ class SearchItem extends React.Component {
               <Link route="detail-tour" params={{id: item.id}}>
                 <a title={item.tour.name}>
                   <div className="tour-img">
-                        <img src={item.tour.featured_img} className="img-responsive" alt="featured_image" />
-                        {!!item.discount &&
-                          <span className="sale">SALE!</span>
-                        }
-                        <div className="tour-statistic">
-                          <div className="row figure">
-                            <div className="col-sm-6 col-12 text-left no-padding">
-                              <i title="views"><FaRegEye /></i>&nbsp;&nbsp;
-                              <span style={{color: 'white'}} title="views">{item.view.toLocaleString()}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                              <i title="comments"><FaRegCommentDots /></i>&nbsp;&nbsp;
-                              <span style={{color: 'white'}} title="comments">0</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                            </div>
-                            <div className="col-sm-6 col-12 no-padding ratingstar">
-                              <RatingStar isWhite rate={4} />
-                            </div>
-                          </div>
-                          <div className="row no-margin">
-                            <div className="col-6 text-left no-padding">
-                              <i><FaRegCalendarAlt style={{position: 'relative', top: '-2px'}}/></i>&nbsp;&nbsp;{formatDate(item.start_date)}
-                            </div>
-                            <div className="col-6 text-right no-padding">
-                              <i><FaUserAlt style={{position: 'relative', top: '-2px'}}/></i>&nbsp;&nbsp;{item.num_max_people - item.num_current_people} slots
-                            </div>
-                          </div>
+                    <img src={item.tour.featured_img} className="img-responsive" alt="featured_image" />
+                    {!!item.discount &&
+                      <span className="sale">{t('search.sale')}!</span>
+                    }
+                    <div className="tour-statistic">
+                      <div className="row figure">
+                        <div className="col-sm-6 col-12 text-left no-padding">
+                          <i title="views"><FaRegEye /></i>&nbsp;&nbsp;
+                          <span style={{color: 'white'}} title="views">{item.view.toLocaleString()}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                          <i title="comments"><FaRegCommentDots /></i>&nbsp;&nbsp;
+                          <span style={{color: 'white'}} title="comments">0</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
+                        <div className="col-sm-6 col-12 no-padding ratingstar">
+                          <RatingStar isWhite rate={4} />
                         </div>
                       </div>
+                      <div className="row no-margin">
+                        <div className="col-6 text-left no-padding">
+                          <i><FaRegCalendarAlt style={{position: 'relative', top: '-2px'}}/></i>&nbsp;&nbsp;{formatDate(item.start_date)}
+                        </div>
+                        <div className="col-6 text-right no-padding">
+                          <i><FaUserAlt style={{position: 'relative', top: '-2px'}}/></i>&nbsp;&nbsp;{item.num_max_people - item.num_current_people} {t('search.slot')}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </a>
               </Link>
               <div className="tour-content">
@@ -75,7 +76,7 @@ class SearchItem extends React.Component {
                     <div className="tour-info row">
                       <div className="date col-2">
                         <div className="date-display">{distanceFromDays(new Date(item.start_date), new Date(item.end_date)) + 1}</div>
-                        <div className="date-lang">DAYS</div>
+                        <div className="date-lang">{t('search.days')}</div>
                       </div>
                       <div className="price col-7">
                         {!!item.discount &&
@@ -86,7 +87,7 @@ class SearchItem extends React.Component {
                       </div>
                       <Link route="detail-tour" params={{id: item.id}}>
                         <a className="btn-book col-3">
-                          <span>DETAIL</span>
+                          <span>{t('search.detail')}</span>
                         </a>
                       </Link>
                     </div>
@@ -107,7 +108,7 @@ class SearchItem extends React.Component {
                 <a>
                   <img src={item.tour.featured_img} className="img-responsive pic" alt="featured_image" />
                   {!!item.discount &&
-                    <span className="sale">SALE!</span>
+                    <span className="sale">{t('search.sale')}!</span>
                   }
                 </a>
               </Link>
@@ -145,16 +146,16 @@ class SearchItem extends React.Component {
               <div className="col-sm-12 statistic-content">
                 <div className="row mg-listtour">
                   <div className="col-lg-6 col-md-6 mg-bot10">
-                    <i><FaBarcode /></i>&nbsp;&nbsp;{getCode(item.id)}
+                    <i><FaBarcode /></i>&nbsp;&nbsp;{t('search.tour_code')}: {getCode(item.id)}
                   </div>
                   <div className="col-lg-6 col-md-6 mg-bot10">
-                    <i><FaCalendarAlt /></i>&nbsp;&nbsp;Start date: {formatDate(item.start_date)}
+                    <i><FaCalendarAlt /></i>&nbsp;&nbsp;{t('search.start_date')}: {formatDate(item.start_date)}
                   </div>
                   <div className="col-lg-6 col-md-6 mg-bot10">
-                    <i><FaClock /></i>&nbsp;&nbsp;Lasting: {distanceFromDays(new Date(item.start_date), new Date(item.end_date)) + 1} days
+                    <i><FaClock /></i>&nbsp;&nbsp;{t('search.lasting')}: {distanceFromDays(new Date(item.start_date), new Date(item.end_date)) + 1} days
                   </div>
                   <div className="col-lg-6 col-md-6 mg-bot10">
-                    <i><FaUserAlt /></i>&nbsp;&nbsp;Vacancy: {item.num_max_people - item.num_current_people}
+                    <i><FaUserAlt /></i>&nbsp;&nbsp;{t('search.vacancy')}: {item.num_max_people - item.num_current_people}
                   </div>
                 </div>
               </div>
@@ -167,7 +168,7 @@ class SearchItem extends React.Component {
                     <span>{item.end_price.toLocaleString()} VND</span>
                   </div>
                   <Link route="detail-tour" params={{id: item.id}}>
-                    <a className="btn" title="Detail">DETAIL</a>
+                    <a className="btn" title="Detail">{t('search.detail')}</a>
                   </Link>
                 </div>
               </div>

@@ -11,6 +11,7 @@ import InfiniteScroll from 'react-infinite-scroller'
 import ReactTable from 'react-table'
 import { getCode, shrinkCode, capitalize } from '../../services/utils.service'
 import matchSorter from 'match-sorter'
+import { withNamespaces } from "react-i18next"
 
 const mapStateToProps = (state) => {
     return {
@@ -22,7 +23,8 @@ class MyBooking extends React.Component {
     displayName = 'My Booking'
     static propTypes = {
         useModal: PropTypes.func,
-        user: PropTypes.object
+        user: PropTypes.object,
+        t: PropTypes.func
     }
 
     constructor(props) {
@@ -90,13 +92,14 @@ class MyBooking extends React.Component {
     }
 
     render() {
+        const {t} = this.props
         return (
             <LayoutProfile page="profile" tabName="my-booking" {...this.props}>
                 <style jsx>{styles}</style>
                 <div className="profile-detail">
                   <div className="title">
                     <div className="text-center title-contain">
-                      <h1 className="my-profile__title">MY BOOKING</h1>
+                      <h1 className="my-profile__title">{t('my_booking.title')}</h1>
                     </div>
                     <div className="row content">
                       <div className="col-md-12">
@@ -115,7 +118,7 @@ class MyBooking extends React.Component {
                               filterable={true}
                               columns={[
                                 {
-                                  Header: 'Code',
+                                  Header: t('my_booking.code'),
                                   accessor: d => getCode(d.id),
                                   id: 'id',
                                   className: "text-center",
@@ -135,7 +138,7 @@ class MyBooking extends React.Component {
                                   </div>
                                 },
                                 {
-                                  Header: 'Booking day',
+                                  Header: t('my_booking.book_day'),
                                   accessor: d => formatDate(d.book_time, "dd/MM/yyyy HH:mm"),
                                   id: 'date',
                                   filterAll: true,
@@ -143,12 +146,12 @@ class MyBooking extends React.Component {
                                     matchSorter(rows, filter.value, { keys: ["date"] }),
                                 },
                                 {
-                                  Header: 'Total slot',
+                                  Header: t('my_booking.total_slot'),
                                   accessor: 'num_passenger',
                                   className: "text-center"
                                 },
                                 {
-                                  Header: 'Total money',
+                                  Header: t('my_booking.total_money'),
                                   accessor: d => d.total_pay.toLocaleString() + " VND",
                                   id: 'total_money',
                                   filterAll: true,
@@ -156,8 +159,8 @@ class MyBooking extends React.Component {
                                     matchSorter(rows, filter.value.toLocaleString(), { keys: ["total_money"] }),
                                 },
                                 {
-                                  Header: 'Status',
-                                  accessor: d => capitalize(d.status),
+                                  Header: t('my_booking.status'),
+                                  accessor: d => capitalize(t('my_booking.' + d.status)),
                                   id: 'status',
                                   className: "text-center",
                                   filterAll: true,
@@ -165,7 +168,7 @@ class MyBooking extends React.Component {
                                     matchSorter(rows, filter.value, { keys: ["status"] }),
                                 },
                                 {
-                                  Header: 'Detail',
+                                  Header: t('my_booking.detail'),
                                   id: 'Detail',
                                   accessor: 'id',
                                   sortable: false,
@@ -177,12 +180,12 @@ class MyBooking extends React.Component {
                                       textAlign: 'center'
                                     }}>
                                     <Link route="detail-booked-tour" params={{id: props.value}}>
-                                      <a className="detail-btn">Detail</a>
+                                      <a className="detail-btn">{t('my_booking.detail')}</a>
                                     </Link>
                                   </div>
                                 },
                                 {
-                                  Header: 'Cancel',
+                                  Header: t('my_booking.cancel'),
                                   id: 'Cancel',
                                   accessor: props => ({
                                     id: props.id,
@@ -209,11 +212,11 @@ class MyBooking extends React.Component {
                                           <p style={{lineHeight: '2'}}>{statusCancel}</p>
                                         }
                                         {!isCancelBooking && request_cancel_bookings ?
-                                            <p style={{lineHeight: '2'}}>{capitalize(request_cancel_bookings.status)}</p>
+                                            <p style={{lineHeight: '2'}}>{capitalize(t('my_booking.' + request_cancel_bookings.status))}</p>
                                           :
                                           isCancelBooking && !request_cancel_bookings ?
                                             <a href="javascript:;" onClick={this.handleCancelTour.bind(this, id)}
-                                              className="cancel-btn">Cancel</a>
+                                              className="cancel-btn">{t('my_booking.cancel')}</a>
                                           : null
                                         }
                                       </div>
@@ -237,4 +240,4 @@ class MyBooking extends React.Component {
     }
 }
 
-export default connect(mapStateToProps)(MyBooking)
+export default withNamespaces('translation')(connect(mapStateToProps)(MyBooking))

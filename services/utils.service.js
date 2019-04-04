@@ -1,5 +1,8 @@
 const APP_URL = process.env.APP_URL
 import { transports } from '../constants/map-option'
+import { getLocalStorage } from './local-storage.service'
+import { KEY } from '../constants/local-storage'
+import { lng } from '../constants'
 
 export function isServer() {
   return typeof window === 'undefined'

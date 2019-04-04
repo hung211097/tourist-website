@@ -12,7 +12,9 @@ class TopPromotionItem extends React.Component {
   static propTypes = {
     item: PropTypes.object.isRequired,
     index: PropTypes.number,
-    onLoadTour: PropTypes.func
+    onLoadTour: PropTypes.func,
+    lng: PropTypes.string,
+    t: PropTypes.func,
   }
 
   constructor(props) {
@@ -30,12 +32,15 @@ class TopPromotionItem extends React.Component {
   }
 
   render() {
-    const { item } = this.props
+    const { item, t } = this.props
     const renderTime = ({ days, hours, minutes, seconds, completed }) => {
       if(completed){
         return <span></span>
       }
       else{
+        if(this.props.lng === 'vi'){
+          return <span>còn lại {days} ngày {zeroPad(hours)}:{zeroPad(minutes)}:{zeroPad(seconds)}</span>
+        }
         return <span>{days} days left {zeroPad(hours)}:{zeroPad(minutes)}:{zeroPad(seconds)}</span>
       }
     }
@@ -77,7 +82,7 @@ class TopPromotionItem extends React.Component {
           <div className="description-item">
             <p>{item.tour.description.substring(0, this.maxDes) + '...'}</p>
             <Link route="detail-tour" params={{id: item.id}}>
-              <a>DETAILS</a>
+              <a>{t('home.top_item.detail')}</a>
             </Link>
           </div>
         </div>

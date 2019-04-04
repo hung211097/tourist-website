@@ -3,6 +3,7 @@ import styles from './index.scss'
 import PropTypes from 'prop-types'
 import Select from 'react-select'
 import validatePhone from '../../services/validates/phone.js'
+import { validateStringWithoutNumber } from '../../services/validates'
 
 class PassengerInfo extends React.Component {
   displayName = 'Passenger Info'
@@ -11,15 +12,16 @@ class PassengerInfo extends React.Component {
     index: PropTypes.number,
     isSubmit: PropTypes.bool,
     age: PropTypes.string.isRequired,
-    onChangePassenger: PropTypes.func
+    onChangePassenger: PropTypes.func,
+    t: PropTypes.func
   }
 
   constructor(props) {
     super(props)
     this.genders = [
-      { value: 'male', label: 'Male' },
-      { value: 'female', label: 'Female' },
-      { value: 'other', label: 'Other' }
+      { value: 'male', label: props.t('checkout_passenger.male') },
+      { value: 'female', label: props.t('checkout_passenger.female') },
+      { value: 'other', label: props.t('checkout_passenger.other') }
     ]
     this.olds = {
       'adults': 'Adult',
@@ -83,7 +85,7 @@ class PassengerInfo extends React.Component {
   }
 
   validate(){
-    if(!this.state.fullname){
+    if(!this.state.fullname || !validateStringWithoutNumber(this.state.fullname)){
       return false
     }
 
@@ -103,33 +105,37 @@ class PassengerInfo extends React.Component {
   }
 
   render() {
+    const {t} = this.props
     return (
       <div className="passenger-info" id={"passenger-" + this.props.index}>
         <style jsx>{styles}</style>
         <div className="col-md-12 col-sm-12 col-12">
           <div className="title">
-            <h3>PASSENGER&apos;S INFORMATION # {this.props.index + 1}</h3>
+            <h3>{t('checkout_passenger.passenger_info')} # {this.props.index + 1}</h3>
           </div>
           <div className="row">
             <div className="form-group col-sm-6 col-12">
               <div className="form-group">
-                <label htmlFor={"name" + this.props.index}>Fullname (*)</label>
+                <label htmlFor={"name" + this.props.index}>{t('checkout_passenger.fullname')} (*)</label>
                 <input type="text" name="name" id={"name" + this.props.index} value={this.state.fullname}
                   onChange={this.handleChangeName.bind(this)} data-validation="required"
                   className={this.props.isSubmit && !this.state.fullname ? "error" : ""} />
                   {this.props.isSubmit && !this.state.fullname &&
-                    <p className="error">This field is required!</p>
+                    <p className="error">{t('checkout_passenger.fullname_required')}</p>
+                  }
+                  {this.props.isSubmit && this.state.fullname && !validateStringWithoutNumber(this.state.fullname) &&
+                    <p className="error">{t('checkout_passenger.fullname_format')}</p>
                   }
               </div>
             </div>
             <div className="form-group col-sm-6 col-12">
               <div className="form-group">
-                <label htmlFor={"date" + this.props.index}>Birthday (*)</label>
+                <label htmlFor={"date" + this.props.index}>{t('checkout_passenger.birthdate')} (*)</label>
                 <input type="date" name="date" id={"formatDate" + this.props.index} value={this.state.birthdate}
                   onChange={this.handleChangeBirthdate.bind(this)}
                   className={this.props.isSubmit && !this.state.birthdate ? "error" : "" }/>
                 {this.props.isSubmit && !this.state.birthdate &&
-                  <p className="error">This field is required!</p>
+                  <p className="error">{t('checkout_passenger.birthdate_required')}</p>
                 }
               </div>
             </div>
@@ -137,24 +143,24 @@ class PassengerInfo extends React.Component {
           <div className="row">
             <div className="form-group col-sm-6 col-12">
               <div className="form-group">
-                <label htmlFor="age">Age (*)</label>
-                <input className="disabled" type="text" name="age" id="age" value={this.olds[this.state.type]} disabled />
+                <label htmlFor="age">{t('checkout_passenger.age')} (*)</label>
+                <input className="disabled" type="text" name="age" id="age" value={t('checkout_passenger.' + this.olds[this.state.type])} disabled />
               </div>
             </div>
             <div className="form-group col-sm-6 col-12">
               <div className="form-group">
-                <label htmlFor="gender">Gender (*)</label>
+                <label htmlFor="gender">{t('checkout_passenger.gender')} (*)</label>
                 <div className="booking-drop">
                 <Select
                     instanceId="gender"
                     value={this.state.sex}
                     onChange={this.handleChangeSex.bind(this)}
-                    placeholder={this.state.sex ? this.state.sex : 'Choose your gender'}
+                    placeholder={this.state.sex ? t('checkout_passenger.' + this.state.sex) : t('checkout_passenger.choose_gender')}
                     options={this.genders}
                 />
                 </div>
                 {this.props.isSubmit && !this.state.sex &&
-                  <p className="error">This field is required!</p>
+                  <p className="error">{t('checkout_passenger.gender_required')}</p>
                 }
               </div>
             </div>
@@ -162,19 +168,19 @@ class PassengerInfo extends React.Component {
           <div className="row">
             <div className="form-group col-sm-6 col-12">
               <div className="form-group">
-                <label htmlFor={"phone" + this.props.index}>Phone number</label>
+                <label htmlFor={"phone" + this.props.index}>{t('checkout_passenger.phone')}</label>
                 <input type="text" name="phone" id={"phone" + this.props.index} value={this.state.phone}
                   onChange={this.handleChangePhone.bind(this)}
                   maxLength={15}
                   className={(this.props.isSubmit && this.state.phone && !validatePhone(this.state.phone)) ? "error" : "" }/>
                 {this.props.isSubmit && this.state.phone && !validatePhone(this.state.phone) &&
-                  <p className="error">Phone number must be in 10 digits!</p>
+                  <p className="error">{t('checkout_passenger.phone_format')}</p>
                 }
               </div>
             </div>
             <div className="form-group col-sm-6 col-12">
               <div className="form-group">
-                <label htmlFor={"passport" + this.props.index}>Identity number / Passport</label>
+                <label htmlFor={"passport" + this.props.index}>{t('checkout_passenger.passport')}</label>
                 <input type="text" name="passport" id={"passport" + this.props.index} value={this.state.passport}
                   onChange={this.handleChangePassport.bind(this)}/>
               </div>

@@ -9,12 +9,15 @@ import { getCode, slugify } from '../../services/utils.service'
 import { FaRegCalendarAlt, FaEye, FaSuitcase } from "react-icons/fa"
 import { formatDate, distanceFromDays } from '../../services/time.service'
 import validateEmail from '../../services/validates/email.js'
+import { withNamespaces, Trans } from "react-i18next"
+import { validateStringWithoutNumber } from '../../services/validates'
 
 class DetailTour extends React.Component {
   displayName = 'Detail Tour'
 
   static propTypes = {
     tourInfo: PropTypes.object,
+    t: PropTypes.func
   }
 
   static async getInitialProps({ query }) {
@@ -27,10 +30,10 @@ class DetailTour extends React.Component {
     super(props)
     this.apiService = ApiService()
     this.tabs = [
-      'Description',
-      'Detailed',
-      'Additional Information',
-      'Reviews'
+      'description',
+      'detail',
+      'addition',
+      'review'
     ]
     this.olds = {
       'adults': 'Adult',
@@ -122,7 +125,7 @@ class DetailTour extends React.Component {
       return false
     }
 
-    if(!this.state.author){
+    if(!this.state.author || !validateStringWithoutNumber(this.state.author)){
       return false
     }
 
@@ -139,6 +142,10 @@ class DetailTour extends React.Component {
 
   render() {
     const { tourTurn } = this.state
+    const {t} = this.props
+    const distance = distanceFromDays(new Date(tourTurn.start_date), new Date(tourTurn.end_date)) + 1
+    const day_left = distanceFromDays(Date.now(), new Date(tourTurn.start_date))
+    const slot = tourTurn.num_max_people - tourTurn.num_current_people
     return (
       <>
         <Layout page="tours" {...this.props}>
@@ -151,7 +158,7 @@ class DetailTour extends React.Component {
                   <div className="nd_options_section nd_options_height_110"/>
                   <div className="nd_options_section title-contain">
                     <h1>
-                      <span>DETAIL TOUR</span>
+                      <span>{t('detail_tour.title')}</span>
                       <div className="nd_options_section">
                         <span className="underline"></span>
                       </div>
@@ -169,7 +176,7 @@ class DetailTour extends React.Component {
                       <div className="col-sm-6 no-padding">
                         <div className="featured_img">
                           {!!tourTurn.discount &&
-                            <span className="sale">SALE!</span>
+                            <span className="sale">{t('detail_tour.sale')}!</span>
                           }
                           <figure className="img-wrapper">
                             <div className="big-img">
@@ -190,7 +197,7 @@ class DetailTour extends React.Component {
                           <div className="views-zone">
                             <span>
                               <i><FaEye /></i>
-                              {tourTurn.view.toLocaleString()} views
+                              {tourTurn.view.toLocaleString()} {t('detail_tour.view')}
                             </span>
                           </div>
                           <p className="price">
@@ -208,33 +215,45 @@ class DetailTour extends React.Component {
                           <div className="row short-des">
                             <div className="col-12">
                               <div className="row" style={{marginBottom: '15px', marginTop: '30px'}}>
-                                <div className="col-md-4 col-sm-4 col-6">Tour code:</div>
+                                <div className="col-md-4 col-sm-4 col-6">{t('detail_tour.tour_code')}:</div>
                                 <div className="col-md-8 col-sm-8 col-6">{getCode(tourTurn.id)}</div>
                               </div>
                               <div className="row">
-                                <div className="col-lg-4 col-md-6 col-sm-4 col-6 mg-10">Start date:</div>
-                                <div className="col-lg-3 col-md-6 col-sm-3 col-6">{formatDate(tourTurn.start_date)}</div>
-                                <div className="col-lg-5 col-md-12 col-sm-5 col-12">
+                                <div className="col-lg-4 col-md-6 col-sm-4 col-6 mg-10">{t('detail_tour.start_date')}:</div>
+                                <div className="col-lg-4 col-md-6 col-sm-3 col-6">{formatDate(tourTurn.start_date)}</div>
+                                <div className="col-lg-4 col-md-12 col-sm-5 col-12">
                                   <Link route="search-result" params={{keyword: slugify(tourTurn.tour.name)}}>
                                     <a style={{color: '#333'}}>
                                       <FaRegCalendarAlt style={{fontSize: '16px', color: 'rgb(67, 74, 84)', position: 'relative', top: '-2px'}}/>
                                       &nbsp;&nbsp;
-                                      <span style={{color: '#fc6600'}}>Other day</span>
+                                      <span style={{color: '#fc6600'}}>{t('detail_tour.other_day')}</span>
                                     </a>
                                   </Link>
                                   </div>
                                 </div>
                                 <div className="row" style={{marginTop: '15px'}}>
                                   <div className="col-lg-4 col-md-6 col-sm-4 col-6 mg-bot15">
-                                    <span>Last in {distanceFromDays(new Date(tourTurn.start_date), new Date(tourTurn.end_date)) + 1} days</span>
+                                    <span>
+                                      <Trans i18nKey="detail_tour.last_in" count={distance}>
+                                        Last in: {{distance}} days
+                                      </Trans>
+                                    </span>
                                   </div>
-                                  <div className="col-lg-3 col-md-6 col-sm-3 col-6"> {distanceFromDays(Date.now(), new Date(tourTurn.start_date))} days left</div>
-                                  <div className="col-lg-5 col-md-12 col-sm-5 col-12  mg-bot15">{tourTurn.num_max_people - tourTurn.num_current_people} vacancies left</div>
+                                  <div className="col-lg-4 col-md-6 col-sm-3 col-6">
+                                    <Trans i18nKey="detail_tour.days_left" count={day_left}>
+                                      {{day_left}} days left
+                                    </Trans>
+                                  </div>
+                                  <div className="col-lg-4 col-md-12 col-sm-5 col-12  mg-bot15">
+                                    <Trans i18nKey="detail_tour.vacancy" count={slot}>
+                                      {{slot}} vacancies left
+                                    </Trans>
+                                   </div>
                                 </div>
                               </div>
                             </div>
                             <Link route="checkout-passengers" params={{tour_id: tourTurn.id}}>
-                              <a className="co-btn green w-auto mt-4">BOOK NOW</a>
+                              <a className="co-btn green w-auto mt-4">{t('detail_tour.book')}</a>
                             </Link>
                             {/*<div className="product_meta">
                               <span className="posted-in">
@@ -255,7 +274,7 @@ class DetailTour extends React.Component {
                       {this.tabs.map((item, key) => {
                           return(
                             <li className={this.state.tabId === key ? "tab_item active" : "tab_item"} role="tab" key={key}>
-                              <a onClick={this.handleChangeTab.bind(this, key)}>{item}</a>
+                              <a onClick={this.handleChangeTab.bind(this, key)}>{t('detail_tour.' + item)}</a>
                             </li>
                           )
                         })
@@ -280,7 +299,7 @@ class DetailTour extends React.Component {
                               <div className="col-sm-12">
                                 <div className="wrapper-map">
                                   <div className="wrapper-title">
-                                    <h3>Routes</h3>
+                                    <h3>{t('detail_tour.route')}</h3>
                                     <div className="nd_options_height_10"/>
                                     <div className="nd_options_section nd_options_line_height_0 underline-zone">
                                       <span className="underline"></span>
@@ -297,7 +316,7 @@ class DetailTour extends React.Component {
                               <div className="col-sm-8">
                                 <div className="wrapper-detail">
                                   <div className="wrapper-title">
-                                    <h3 className="timeline-title">Timeline</h3>
+                                    <h3 className="timeline-title">{t('detail_tour.timeline')}</h3>
                                     <div className="nd_options_height_10"/>
                                     <div className="nd_options_section nd_options_line_height_0 underline-zone">
                                       <span className="underline"></span>
@@ -318,21 +337,21 @@ class DetailTour extends React.Component {
                             <div className="wrapper">
                               <div className="addtional-info">
                                 <p>
-                                  <i><FaSuitcase style={{position: 'relative', top: '-2px'}}/></i> Price of tour
+                                  <i><FaSuitcase style={{position: 'relative', top: '-2px'}}/></i> {t('detail_tour.price_tour')}
                                 </p>
                                 {!!tourTurn.price_passengers.length &&
                                   <table className="table table-bordered">
                                     <thead>
                                       <tr>
-                                        <td>Age of Passsenger</td>
-                                        <td>Price</td>
+                                        <td>{t('detail_tour.age_passenger')}</td>
+                                        <td>{t('detail_tour.price')}</td>
                                       </tr>
                                     </thead>
                                     <tbody>
                                       {tourTurn.price_passengers.map((item, key) => {
                                           return(
                                             <tr key={key}>
-                                              <td>{this.olds[item.type]}</td>
+                                              <td>{t('detail_tour.' + this.olds[item.type])}</td>
                                               <td>{item.price.toLocaleString()} VND</td>
                                             </tr>
                                           )
@@ -403,33 +422,36 @@ class DetailTour extends React.Component {
                             />
                           </div>
                           <div className="review-form">
-                            <div className={this.state.nextPage > 0 ? "respond margin-top20" : "respond"}>
-                              <span>Add a review</span>
+                            <div className={this.state.nextPage > 0 ? "respond margin-top30" : "respond"}>
+                              <span className="bold">{t('detail_tour.add_review')}</span>
                               <form className="comment-form" onSubmit={this.handleSubmit.bind(this)}>
-                                <p className="comment-notes">Your email address will not be published. Required fields are marked *</p>
+                                <p className="comment-notes">{t('detail_tour.note')} *</p>
                                 <div className="comment-form-rating">
-                                  <label htmlFor="rating">Your rating</label>
+                                  <label htmlFor="rating">{t('detail_tour.your_rating')} *</label>
                                   <div className="stars">
                                     <RatingStar hideNumber editor rtChange={this.handleChangeRating.bind(this)} rate={this.state.rating}/>
                                   </div>
                                   {this.state.isSubmit && !this.state.rating &&
-                                    <p className="error">Please rate this tour</p>
+                                    <p className="error">{t('detail_tour.please_rate')}</p>
                                   }
                                   <p className="comment-form-comment">
-                                    <label htmlFor="comment">Your review <span className="required">*</span></label>
+                                    <label htmlFor="comment">{t('detail_tour.your_review')} <span className="required">*</span></label>
                                     <textarea id="comment" name="comment" cols="45" rows="8" value={this.state.review}
                                       onChange={this.handleChangeReview.bind(this)}/>
                                   </p>
                                   {this.state.isSubmit && !this.state.review &&
-                                    <p className="error">This field is required</p>
+                                    <p className="error">{t('detail_tour.review_required')}</p>
                                   }
                                   <p className="comment-form-author">
-                                    <label htmlFor="author">Name <span className="required">*</span></label>
+                                    <label htmlFor="author">{t('detail_tour.name')} <span className="required">*</span></label>
                                     <input id="author" name="author" type="text" value={this.state.author}
                                       onChange={this.handleChangeAuthor.bind(this)} size="30"/>
                                   </p>
                                   {this.state.isSubmit && !this.state.author &&
-                                    <p className="error">This field is required</p>
+                                    <p className="error">{t('detail_tour.fullname_required')}</p>
+                                  }
+                                  {this.state.isSubmit && this.state.author && !validateStringWithoutNumber(this.state.author) &&
+                                    <p className="error">{t('detail_tour.fullname_format')}</p>
                                   }
                                   <p className="comment-form-email">
                                     <label htmlFor="email">Email <span className="required">*</span></label>
@@ -437,13 +459,13 @@ class DetailTour extends React.Component {
                                       onChange={this.handleChangeEmail.bind(this)} size="30"/>
                                   </p>
                                   {this.state.isSubmit && !this.state.email &&
-                                    <p className="error">This field is required</p>
+                                    <p className="error">{t('detail_tour.email_required')}</p>
                                   }
                                   {this.state.isSubmit && this.state.email && !validateEmail(this.state.email) &&
-                                    <p className="error">Email must be right in format</p>
+                                    <p className="error">{t('detail_tour.email_format')}</p>
                                   }
                                   <p className="form-submit">
-                                    <button type="submit" className="co-btn green w-auto" onClick={this.handleSubmit.bind(this)}>SUBMIT</button>
+                                    <button type="submit" className="co-btn green w-auto" onClick={this.handleSubmit.bind(this)}>{t('detail_tour.submit')}</button>
                                   </p>
                                 </div>
                               </form>
@@ -454,12 +476,12 @@ class DetailTour extends React.Component {
                     }
                   </div>
                   <section className="related-products">
-                    <h2>You may like</h2>
+                    <h2>{t('detail_tour.you_May_like')}</h2>
                     <div className="row">
                       {!!this.state.tourLike.length && this.state.tourLike.map((item) => {
                           return(
                             <div className="col-sm-3" key={item.id}>
-                              <TourItem item={item}/>
+                              <TourItem item={item} t={t}/>
                             </div>
                           )
                         })
@@ -476,4 +498,4 @@ class DetailTour extends React.Component {
   }
 }
 
-export default DetailTour
+export default withNamespaces('translation')(DetailTour)

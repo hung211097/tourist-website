@@ -37,6 +37,7 @@
       .contact-sidebar{
         a{
           font-size: 14px !important;
+          text-transform: none;
         }
       }
     }
@@ -70,6 +71,7 @@
         font-size: 20px;
         color: #fff;
         transition: 0.2s all;
+        text-transform: uppercase;
       }
       ul.sub-menu {
         margin: 0px;
@@ -104,7 +106,7 @@
         .left-header {
           color: white;
           padding: 0px 15px;
-          width: 36%;
+          width: 41%;
           float: left;
           display: inline;
           box-sizing: border-box;
@@ -124,7 +126,7 @@
           color: white;
           padding: 0px 15px;
           text-align: right;
-          width: 64%;
+          width: 59%;
           float: left;
           display: inline;
           box-sizing: border-box;
@@ -162,8 +164,10 @@
                 float: left;
               }
             }
-            .add-review{
-              margin: 0px 10px 0px 15px;
+            .multi-lng{
+              // margin: 0px 10px 0px 15px;
+              position: relative;
+              line-height: 4;
               float: right;
               display: table;
               padding-bottom: 3px;
@@ -174,6 +178,86 @@
               }
               &:hover{
                 background-color: #4a515b;
+              }
+              button{
+                &:focus{
+                  box-shadow: none;
+                }
+                border: 0;
+                width: 90px;
+                padding: 0 10px;
+                color: white;
+                padding-bottom: 4px;
+                img{
+                  max-width: 36%;
+                }
+                span{
+                  font-size: 13px;
+                  position: relative;
+                  top: 2px;
+                  text-transform: uppercase;
+                }
+                &:after{
+                  display: inline-block;
+                  width: 0;
+                  height: 0;
+                  margin-left: .3em;
+                  vertical-align: middle;
+                  content: "";
+                  border-top: .4em solid;
+                  border-right: .4em solid transparent;
+                  border-left: .4em solid transparent;
+                }
+              }
+              .dropdown-menu{
+                font-size: .8125rem;
+                border-radius: 0;
+                border: none;
+                box-shadow: 0 0 14px 4px rgba(0,0,0,.1);
+                min-width: 6rem;
+                padding: 0;
+                top: 98% !important;
+                position: absolute;
+                left: 0;
+                z-index: 1000;
+                float: left;margin: .125rem 0 0;
+                color: #292b2c;
+                text-align: left;
+                list-style: none;
+                background-color: #fff;
+                background-clip: padding-box;
+                &.show{
+                  display: block;
+                }
+                .wrapper-dropdown-item{
+                  &:hover{
+                    background-color: #F7F7F9;
+                  }
+                }
+                .dropdown-item{
+                  cursor: pointer;
+                  font-weight: 700;
+                  padding: 10px 15px;
+                  padding-left: 0;
+                  display: block;
+                  line-height: 1;
+                  width: 100%;
+                  clear: both;
+                  text-align: inherit;
+                  white-space: nowrap;
+                  background: 0 0;
+                  border: 0;
+                  img{
+                    max-width: 48%;
+                  }
+                  span{
+                    font-size: 1.2rem;
+                    position: relative;
+                    top: 3px;
+                    left: 4px;
+                    text-transform: uppercase;
+                  }
+                }
               }
             }
             .logout{
@@ -342,6 +426,7 @@
       width: 35px;
       position: relative;
       transition: width 0.2s ease-out;
+      margin-right: 15px;
       // backface-visibility: hidden;
 
       &.active {

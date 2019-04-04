@@ -5,6 +5,7 @@ import withRedux from 'next-redux-wrapper'
 import { initStore } from '../store'
 import { authLogin } from '../actions'
 import Routes from 'routes'
+import './i18n';
 
 class TouristApp extends App {
     static async getInitialProps({ Component, ctx }) {

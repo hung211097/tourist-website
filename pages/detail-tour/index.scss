@@ -333,11 +333,14 @@
         padding: 0;
         background: transparent none;
         border: 0;
+        span{
+          font-size: 1.6rem;
+        }
         textarea{
           resize: vertical;
         }
-        &.margin-top20{
-          margin-top: 20px;
+        &.margin-top30{
+          margin-top: 30px;
         }
         .comment-notes, .stars, .comment-form-comment, .comment-form-author, .comment-form-email, .form-submit{
           margin: 0 0 10px;

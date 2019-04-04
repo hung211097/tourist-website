@@ -1,12 +1,18 @@
 import React from 'react'
 import styles from './index.scss'
+import PropTypes from 'prop-types'
 import { Layout, SlickItem } from 'components'
 import ApiService from '../../services/api.service'
 import { TourItem } from 'components'
 import ContentLoader from "react-content-loader"
+import { withNamespaces } from "react-i18next"
 
 class Tours extends React.Component {
   displayName = 'Tours Page'
+
+  static propTypes = {
+    t: PropTypes.func
+  }
 
   constructor(props) {
     super(props)
@@ -45,6 +51,7 @@ class Tours extends React.Component {
   }
 
   render() {
+    const {t} = this.props
     return (
       <>
         <Layout page="tours" {...this.props}>
@@ -57,7 +64,7 @@ class Tours extends React.Component {
                   <div className="nd_options_section nd_options_height_110"/>
                   <div className="nd_options_section title-contain">
                     <h1>
-                      <span>TOURS</span>
+                      <span>{t('tours.title')}</span>
                       <div className="nd_options_section">
                         <span className="underline"></span>
                       </div>
@@ -71,7 +78,7 @@ class Tours extends React.Component {
               <div className="row list-tour top-popular">
                 <div className="col-sm-12 title">
                   <div className="wrapper text-center">
-                    <h1>TOP POPULAR TOUR</h1>
+                    <h1>{t('tours.popular')}</h1>
                     <div className="nd_options_height_10" />
                     <div className="nd_options_section nd_options_line_height_0 text-center">
                       <span className="underline-title"/>
@@ -83,7 +90,7 @@ class Tours extends React.Component {
                     {!!this.state.toursPopular && this.state.toursPopular.map((item, key) => {
                         return(
                           <div className="col-12" key={key}>
-                            <TourItem item={item}/>
+                            <TourItem item={item} t={t}/>
                           </div>
                         )
                       })
@@ -114,7 +121,7 @@ class Tours extends React.Component {
               <div className="row list-tour top-rating">
                 <div className="col-sm-12 title">
                   <div className="wrapper text-center">
-                    <h1>TOP RATING TOUR</h1>
+                    <h1>{t('tours.rating')}</h1>
                     <div className="nd_options_height_10" />
                     <div className="nd_options_section nd_options_line_height_0 text-center">
                       <span className="underline-title"/>
@@ -126,7 +133,7 @@ class Tours extends React.Component {
                     {!!this.state.toursRating && this.state.toursRating.map((item, key) => {
                         return(
                           <div className="col-12" key={key}>
-                            <TourItem item={item}/>
+                            <TourItem item={item} t={t}/>
                           </div>
                         )
                       })
@@ -138,7 +145,7 @@ class Tours extends React.Component {
               <div className="row list-tour top-view">
                 <div className="col-sm-12 title">
                   <div className="wrapper text-center">
-                    <h1>TOP CONCERNED TOUR</h1>
+                    <h1>{t('tours.concern')}</h1>
                     <div className="nd_options_height_10" />
                     <div className="nd_options_section nd_options_line_height_0 text-center">
                       <span className="underline-title"/>
@@ -150,7 +157,7 @@ class Tours extends React.Component {
                     {!!this.state.toursView && this.state.toursView.map((item, key) => {
                         return(
                           <div className="col-12" key={key}>
-                            <TourItem item={item}/>
+                            <TourItem item={item} t={t}/>
                           </div>
                         )
                       })
@@ -171,4 +178,4 @@ class Tours extends React.Component {
   }
 }
 
-export default Tours
+export default withNamespaces('translation')(Tours)

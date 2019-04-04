@@ -1,11 +1,17 @@
 import React from 'react'
 import styles from './index.scss'
+import PropTypes from 'prop-types'
 import { Layout } from 'components'
 import validateEmail from '../../services/validates/email.js'
 import ApiService from '../../services/api.service'
+import { withNamespaces } from "react-i18next"
 
 class ForgetPassword extends React.Component {
   displayName = 'Forget Password'
+
+  static propTypes = {
+    t: PropTypes.func
+  }
 
   constructor(props) {
     super(props)
@@ -77,6 +83,7 @@ class ForgetPassword extends React.Component {
   }
 
   render() {
+    const {t} = this.props
     return (
       <>
         <Layout page="login" {...this.props}>
@@ -89,7 +96,7 @@ class ForgetPassword extends React.Component {
                   <div className="nd_options_section nd_options_height_110"/>
                   <div className="nd_options_section title-contain">
                     <h1>
-                      <span>FORGET PASSWORD</span>
+                      <span>{t('forget_password.title')}</span>
                       <div className="nd_options_section">
                         <span className="underline"></span>
                       </div>
@@ -114,10 +121,10 @@ class ForgetPassword extends React.Component {
                         "woocommerce-Input woocommerce-Input--text input-text"}
                          onChange={this.handleChangeEmail.bind(this)}/>
                        {this.state.isSubmit && !this.state.email &&
-                         <p className="error">Email is required!</p>
+                         <p className="error">{t('forget_password.email_required')}</p>
                        }
                        {this.state.isSubmit && this.state.email && (!validateEmail(this.state.email)) &&
-                         <p className="error">Email must be in right format!</p>
+                         <p className="error">{t('forget_password.email_format')}</p>
                        }
                        {this.state.loading &&
                          <div className="text-center d-block w-100 mt-4">
@@ -128,21 +135,21 @@ class ForgetPassword extends React.Component {
                     {this.state.isSend &&
                       <div className="inform">
                         <p className="caption">
-                          Your request is accepted and we will send you a new password, please check your incoming email!
+                          {t('forget_password.success')}
                         </p>
                         <p className="caption">
-                          If you don&apos;t receive anything, please <a className="active" onClick={this.handleSubmit.bind(this)}>
-                          resend this request</a>
+                          {t('forget_password.note')} <a className="active" onClick={this.handleSubmit.bind(this)}>
+                          {t('forget_password.resend')}</a>
                         </p>
                       </div>
                     }
                     {this.state.error &&
-                      <p className="error">{this.state.error}</p>
+                      <p className="error">{t('forget_password.' + this.state.error)}</p>
                     }
                     {!this.state.isSend &&
                       <div className="form-row">
                         <button type="submit" className="woocommerce-Button button" name="login" onClick={this.handleSubmit.bind(this)}>
-                          SEND REQUEST
+                          {t('forget_password.send')}
                         </button>
                       </div>
                     }
@@ -157,4 +164,4 @@ class ForgetPassword extends React.Component {
   }
 }
 
-export default ForgetPassword
+export default withNamespaces('translation')(ForgetPassword)

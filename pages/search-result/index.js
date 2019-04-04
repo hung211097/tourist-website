@@ -8,16 +8,18 @@ import { TiThSmallOutline } from "react-icons/ti"
 import { UnmountClosed } from 'react-collapse'
 import ReactPaginate from 'react-paginate'
 import ApiService from 'services/api.service'
-import { calcTotalPage, slugify } from '../../services/utils.service'
+import { calcTotalPage } from '../../services/utils.service'
 import Autosuggest from 'react-autosuggest'
 import { Router } from 'routes'
+import { withNamespaces } from "react-i18next"
 
 class SearchResult extends React.Component {
   displayName = 'Search Result'
 
   static propTypes = {
     searchResult: PropTypes.object,
-    query: PropTypes.object
+    query: PropTypes.object,
+    t: PropTypes.func
   }
 
   static async getInitialProps({ query }) {
@@ -123,7 +125,7 @@ class SearchResult extends React.Component {
     if(!this.state.keyword){
       return
     }
-    Router.pushRoute('search-result', { keyword: slugify(this.state.keyword) })
+    Router.pushRoute('search-result', { keyword: this.state.keyword })
     this.setState({
       keyword: ''
     })
@@ -244,6 +246,7 @@ class SearchResult extends React.Component {
   }
 
   render() {
+    const {t} = this.props
     return (
       <>
         <Layout page="search" {...this.props}>
@@ -256,7 +259,7 @@ class SearchResult extends React.Component {
                   <div className="nd_options_section nd_options_height_110"/>
                   <div className="nd_options_section title-contain">
                     <h1>
-                      <span>SEARCH</span>
+                      <span>{t('search.title')}</span>
                       <div className="nd_options_section">
                         <span className="underline"></span>
                       </div>
@@ -268,50 +271,50 @@ class SearchResult extends React.Component {
             </div>
             <div className="sort-zone row no-margin">
               <div className="col-sm-12 no-padding">
-                <div className="inner">
+                <div className="inner no-padding">
                   <div className="wrapper">
                     <div className="sort-option-zone">
                       <div className="sort-option-container">
                         <ul>
                           <li className="sort-option">
-                            <p>Price</p>
+                            <p>{t('search.sort_price')}</p>
                             <img alt="down-arrow" src="/static/svg/icon-down-arrow-white.svg" width={13} />
                             <ul>
                               <li className={this.state.sortBy === "price" && this.state.sortType === "ASC" ? "active" : ''}
                                 onClick={this.handleChangeSort.bind(this, "price", "ASC")}>
-                                <a>Lowest Price</a>
+                                <a>{t('search.lowest_price')}</a>
                               </li>
                               <li className={this.state.sortBy === "price" && this.state.sortType === "DESC" ? "active" : ''}
                                 onClick={this.handleChangeSort.bind(this, "price", "DESC")}>
-                                <a>Highest Price</a>
+                                <a>{t('search.highest_price')}</a>
                               </li>
                             </ul>
                           </li>
                           <li className="sort-option">
-                            <p>Date</p>
+                            <p>{t('search.sort_date')}</p>
                             <img alt="down-arrow" src="/static/svg/icon-down-arrow-white.svg" width={13} />
                             <ul>
                               <li className={this.state.sortBy === "date" && this.state.sortType === "ASC" ? "active" : ''}
                                 onClick={this.handleChangeSort.bind(this, "date", "ASC")}>
-                                <a>Asc</a>
+                                <a>{t('search.asc')}</a>
                               </li>
                               <li className={this.state.sortBy === "date" && this.state.sortType === "DESC" ? "active" : ''}
                                 onClick={this.handleChangeSort.bind(this, "date", "DESC")}>
-                                <a>Desc</a>
+                                <a>{t('search.desc')}</a>
                               </li>
                             </ul>
                           </li>
                           <li className="sort-option">
-                            <p>Rating</p>
+                            <p>{t('search.sort_rating')}</p>
                             <img alt="down-arrow" src="/static/svg/icon-down-arrow-white.svg" width={13} />
                             <ul>
                               <li className={this.state.sortBy === "rating" && this.state.sortType === "ASC" ? "active" : ''}
                                 onClick={this.handleChangeSort.bind(this, "rating", "ASC")}>
-                                <a>Asc</a>
+                                <a>{t('search.asc')}</a>
                               </li>
                               <li className={this.state.sortBy === "rating" && this.state.sortType === "DESC" ? "active" : ''}
                                 onClick={this.handleChangeSort.bind(this, "rating", "DESC")}>
-                                <a>Desc</a>
+                                <a>{t('search.desc')}</a>
                               </li>
                             </ul>
                           </li>
@@ -333,7 +336,7 @@ class SearchResult extends React.Component {
                             <form onSubmit={this.handleSubmitSearch.bind(this)}>
                               <div className="search-name-box">
                                 <div className="title">
-                                  <h3>Search your destination:</h3>
+                                  <h3>{t('search.search_destination')}:</h3>
                                 </div>
                                 <div className="input-name-container">
                                   {/*<input type="text" name="name-tour" value={this.state.keyword} onChange={this.handleChangeKeyword.bind(this)}/>*/}
@@ -358,7 +361,7 @@ class SearchResult extends React.Component {
                             </form>
                             <div className="title-filter" onClick={this.handleToggleFilter.bind(this)}>
                               <h3>
-                                FILTER <FaFilter />
+                                {t('search.filter')} <FaFilter />
                                 <span className="pull-right">
                                   {this.state.filterShow ?
                                     <FaChevronDown />
@@ -373,7 +376,7 @@ class SearchResult extends React.Component {
                                   <div className="search-date-box">
                                     <div className="search-date-container">
                                       <div className="nd_options_height_10" />
-                                      <h3>Select your date:</h3>
+                                      <h3>{t('search.select_date')}:</h3>
                                       <div className="nd_options_height_20" />
                                       <div className="search-date-wrapper">
                                         <input type="date" value={this.state.date} onChange={this.handleChangeDate.bind(this)}/>
@@ -385,7 +388,7 @@ class SearchResult extends React.Component {
                                   <div className="price-range-box">
                                     <div className="price-range-container">
                                       <div className="nd_travel_section">
-                                        <h3>Max Price:</h3>
+                                        <h3>{t('search.max_price')}:</h3>
                                         <p><span>{this.state.price.toLocaleString()}</span> VND</p>
                                       </div>
                                       <div className="nd_travel_section mt-50">
@@ -406,8 +409,8 @@ class SearchResult extends React.Component {
                                   <div className="lasting-range-box">
                                     <div className="lasting-range-container">
                                       <div className="nd_travel_section">
-                                        <h3>Lasting in:</h3>
-                                        <p><span>{this.state.lasting}</span> day</p>
+                                        <h3>{t('search.last_in')}:</h3>
+                                        <p><span>{this.state.lasting}</span> {t('search.days')}</p>
                                       </div>
                                       <div className="nd_travel_section mt-50">
                                         <Slider
@@ -427,7 +430,7 @@ class SearchResult extends React.Component {
                                   <div className="rating-box">
                                     <div className="acc-content">
                                       <div className="nd_travel_section">
-                                        <h3>Rating:</h3>
+                                        <h3>{t('search.rating')}:</h3>
                                       </div>
                                       <div className="nd_options_height_10" />
                                       <div className="acc-rating">
@@ -506,8 +509,8 @@ class SearchResult extends React.Component {
                                   </div>
                                   <div className="confirm-zone">
                                     <div className="text-center">
-                                      <button type="submit" className="co-btn green" onClick={this.handleSubmitFilter.bind(this)}>APPLY</button>
-                                      <button type="button" className="co-btn green" onClick={this.handleReset.bind(this)}>RESET</button>
+                                      <button type="submit" className="co-btn green" onClick={this.handleSubmitFilter.bind(this)}>{t('search.apply')}</button>
+                                      <button type="button" className="co-btn green" onClick={this.handleReset.bind(this)}>{t('search.reset')}</button>
                                     </div>
                                   </div>
                                 </form>
@@ -518,7 +521,7 @@ class SearchResult extends React.Component {
                         <form onSubmit={this.handleSubmitSearch.bind(this)} className="d-sm-block d-none">
                           <div className="search-name-box">
                             <div className="title">
-                              <h3>Search your destination:</h3>
+                              <h3>{t('search.search_destination')}:</h3>
                             </div>
                             <div className="input-name-container">
                               {/*<input type="text" name="name-tour" value={this.state.keyword} onChange={this.handleChangeKeyword.bind(this)}/>*/}
@@ -544,13 +547,13 @@ class SearchResult extends React.Component {
                         <form onSubmit={this.handleSubmitFilter.bind(this)} className="d-sm-block d-none">
                           <div className="title-filter-web">
                             <h3>
-                              FILTER <FaFilter />
+                              {t('search.filter')} <FaFilter />
                             </h3>
                           </div>
                           <div className="search-date-box">
                             <div className="search-date-container">
                               <div className="nd_options_height_10" />
-                              <h3>Select your date:</h3>
+                              <h3>{t('search.select_date')}:</h3>
                               <div className="nd_options_height_20" />
                               <div className="search-date-wrapper">
                                 <input type="date" value={this.state.date} onChange={this.handleChangeDate.bind(this)}/>
@@ -562,7 +565,7 @@ class SearchResult extends React.Component {
                           <div className="price-range-box">
                             <div className="price-range-container">
                               <div className="nd_travel_section">
-                                <h3>Max Price:</h3>
+                                <h3>{t('search.max_price')}:</h3>
                                 <p><span>{this.state.price.toLocaleString()}</span> VND</p>
                               </div>
                               <div className="nd_travel_section mt-50">
@@ -583,8 +586,8 @@ class SearchResult extends React.Component {
                           <div className="lasting-range-box">
                             <div className="lasting-range-container">
                               <div className="nd_travel_section">
-                                <h3>Lasting in:</h3>
-                                <p><span>{this.state.lasting}</span> day</p>
+                                <h3>{t('search.last_in')}:</h3>
+                                <p><span>{this.state.lasting}</span> {t('search.days')}</p>
                               </div>
                               <div className="nd_travel_section mt-50">
                                 <Slider
@@ -604,7 +607,7 @@ class SearchResult extends React.Component {
                           <div className="rating-box">
                             <div className="acc-content">
                               <div className="nd_travel_section">
-                                <h3>Rating:</h3>
+                                <h3>{t('search.rating')}:</h3>
                               </div>
                               <div className="nd_options_height_10" />
                               <div className="acc-rating">
@@ -683,8 +686,8 @@ class SearchResult extends React.Component {
                           </div>
                           <div className="confirm-zone">
                             <div className="text-center">
-                              <button type="submit" className="co-btn green" onClick={this.handleSubmitFilter.bind(this)}>APPLY</button>
-                              <button type="button" className="co-btn green" onClick={this.handleReset.bind(this)}>RESET</button>
+                              <button type="submit" className="co-btn green" onClick={this.handleSubmitFilter.bind(this)}>{t('search.apply')}</button>
+                              <button type="button" className="co-btn green" onClick={this.handleReset.bind(this)}>{t('search.reset')}</button>
                             </div>
                           </div>
                         </form>
@@ -693,7 +696,7 @@ class SearchResult extends React.Component {
                           <div className="break d-sm-none d-block mb-5" />
                         <div className="search-for">
                           <div className="title d-inline-block">
-                            <h2>Search&apos;s result for: &quot;{this.state.keywordDisplay}&quot;</h2>
+                            <h2>{t('search.search_for')}: &quot;{this.state.keywordDisplay}&quot;</h2>
                           </div>
                           <div className="change-view">
                             <span className={this.state.isListView ? "active" : ''}>
@@ -705,16 +708,16 @@ class SearchResult extends React.Component {
                           </div>
                         </div>
                         <div className="search-content">
-                          {this.state.searchResult && !this.state.searchResult.length || !this.state.searchResult &&
+                          {((this.state.searchResult && !this.state.searchResult.length) || (!this.state.searchResult)) &&
                             <div className="no-result">
                               <img alt="warning" src="/static/svg/icon-warning-white.svg" width="20" />
-                              <h3>No results for this search</h3>
+                              <h3>{t('search.no_result')}</h3>
                             </div>
                           }
                           <div className="search-list-item row no-margin">
                             {this.state.searchResult && !!this.state.searchResult.length && this.state.searchResult.map((item, key) => {
                                 return(
-                                  <SearchItem key={key} isGrid={!this.state.isListView} item={item}/>
+                                  <SearchItem key={key} isGrid={!this.state.isListView} item={item} t={t}/>
                                 )
                               })
                             }
@@ -757,4 +760,4 @@ class SearchResult extends React.Component {
   }
 }
 
-export default SearchResult
+export default withNamespaces('translation')(SearchResult)

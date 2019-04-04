@@ -6,6 +6,7 @@ import { PopupInfo, PopupLoading } from 'components'
 import { useModal, saveRedirectUrl } from '../../actions'
 import { Link, Router } from 'routes'
 import { modal } from '../../constants'
+import { withNamespaces } from "react-i18next"
 
 const mapStateToProps = (state) => {
     return {
@@ -20,7 +21,8 @@ class Modal extends React.Component {
     static propTypes = {
         modal: PropTypes.any,
         dispatch: PropTypes.func.isRequired,
-        user: PropTypes.any
+        user: PropTypes.any,
+        t: PropTypes.func
     }
 
     constructor(props) {
@@ -37,6 +39,7 @@ class Modal extends React.Component {
     }
 
     render() {
+      const {t} = this.props
         if(!this.props.modal)
           return null;
         return (
@@ -46,13 +49,13 @@ class Modal extends React.Component {
               <PopupInfo show={this.props.modal.isOpen} onClose={this.handleClosePopup.bind(this, true)}
                 customContent={{width: '90%', maxWidth: '430px'}}>
                 <div className="content">
-                  <h2>Oops!</h2>
+                  <h2>{t('wrong_auth.oops')}!</h2>
                   <h4>
-                    Your logging version is expired or something wrong happen with your account.
+                    {t('wrong_auth.content')}
                   </h4>
-                  <h3>Please login again!</h3>
+                  <h3>{t('wrong_auth.again')}</h3>
                   <Link route="login">
-                    <a className="co-btn" onClick={this.handleClosePopup.bind(this)}>LOGIN</a>
+                    <a className="co-btn" onClick={this.handleClosePopup.bind(this)}>{t('wrong_auth.login')}</a>
                   </Link>
                 </div>
               </PopupInfo>
@@ -65,4 +68,4 @@ class Modal extends React.Component {
     }
 }
 
-export default connect(mapStateToProps)(Modal)
+export default withNamespaces('translation')(connect(mapStateToProps)(Modal))

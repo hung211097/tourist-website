@@ -1,5 +1,7 @@
 import fetchCached, { httpPost, httpPutForm, httpPut} from './cached-json-fetch'
 const baseURL = process.env.API_URL
+const site_captcha_key = process.env.KEY_GOOGLE_RECAPTCHA
+const site_secret_key = process.env.KEY_GOOGLE_RECAPTCHA_SECRET
 
 export default () => {
   let services = {
@@ -119,6 +121,10 @@ export default () => {
     getAutoSuggestTour: (name, limit = 10) => {
       let url = baseURL + `tour/searchByName?name=${name}&per_page=${limit}`
       return fetchCached(url)
+    },
+    verifyCaptcha: (data) => {
+      let url = baseURL + `verifyCaptcha`
+      return httpPost(url, data)
     }
   }
 
