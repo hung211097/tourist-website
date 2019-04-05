@@ -116,6 +116,10 @@
               display: inline-block;
               color: #fff !important;
               width: 40%;
+              transition: 0.2s ease-in-out;
+              &:hover{
+                background: #1AAB8D !important;
+              }
               @media screen and (max-width: 576px){
                 width: 60%;
                 margin-bottom: 30px;

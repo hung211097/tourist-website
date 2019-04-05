@@ -53,7 +53,7 @@ class SearchItem extends React.Component {
                           <span style={{color: 'white'}} title="comments">0</span>&nbsp;&nbsp;&nbsp;&nbsp;
                         </div>
                         <div className="col-sm-6 col-12 no-padding ratingstar">
-                          <RatingStar isWhite rate={4} />
+                          <RatingStar isWhite rate={item.tour.average_rating} />
                         </div>
                       </div>
                       <div className="row no-margin">
@@ -131,7 +131,7 @@ class SearchItem extends React.Component {
               <div className="col-12">
                 <div className="star-rating">
                   <div className="rateit">
-                    <RatingStar rate={4} />
+                    <RatingStar rate={item.tour.average_rating} />
                   </div>
                   <div className="statistic">
                     <span className="views" title="views">

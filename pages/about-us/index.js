@@ -200,8 +200,7 @@ class AboutUs extends React.Component {
                           <img alt="icon" src="/static/images/icon-support.png" />
                           <div className="service-item">
                             <p>
-                              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                              Aenean egestas magna at porttitor vehicula nullam augue ipsum dolor.
+                              {t('about.support_content')}
                             </p>
                             <a className="yellow">{t('about.support')}</a>
                           </div>
@@ -210,8 +209,7 @@ class AboutUs extends React.Component {
                           <img alt="icon" src="/static/images/icon-island.png" />
                           <div className="service-item">
                             <p>
-                              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                              Aenean egestas magna at porttitor vehicula nullam augue ipsum dolor.
+                              {t('about.resort_content')}
                             </p>
                             <a className="red">{t('about.resort')}</a>
                           </div>
@@ -224,8 +222,7 @@ class AboutUs extends React.Component {
                       <img alt="icon" src="/static/images/icon-landmark.png" />
                       <div className="service-item">
                         <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                          Aenean egestas magna at porttitor vehicula nullam augue ipsum dolor.
+                          {t('about.best_content')}
                         </p>
                         <a className="blue">{t('about.best')}</a>
                       </div>
@@ -234,8 +231,7 @@ class AboutUs extends React.Component {
                       <img alt="icon" src="/static/images/icon-map.png" />
                       <div className="service-item">
                         <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                          Aenean egestas magna at porttitor vehicula nullam augue ipsum dolor.
+                          {t('about.guide_content')}
                         </p>
                         <a className="green">{t('about.guide')}</a>
                       </div>

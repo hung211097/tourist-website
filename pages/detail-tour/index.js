@@ -1,18 +1,28 @@
 import React from 'react'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
-import { Layout } from 'components'
+import { Layout, AutoHide } from 'components'
+import { connect } from 'react-redux'
 import ApiService from 'services/api.service'
 import { Router, Link } from 'routes'
 import { RatingStar, BtnViewMore, MyMap, TourItem, Lightbox } from 'components'
 import { getCode, slugify, convertFullUrl } from '../../services/utils.service'
 import { FaRegCalendarAlt, FaEye, FaSuitcase } from "react-icons/fa"
-import { formatDate, distanceFromDays } from '../../services/time.service'
+import { formatDate, distanceFromDays, fromNow } from '../../services/time.service'
 import validateEmail from '../../services/validates/email.js'
 import { withNamespaces, Trans } from "react-i18next"
 import { validateStringWithoutNumber } from '../../services/validates'
 import { FacebookShareButton } from 'react-share'
 import { FaFacebookF } from 'react-icons/fa'
+import _ from 'lodash'
+import { getLocalStorage } from '../../services/local-storage.service'
+import { KEY } from '../../constants/local-storage'
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  }
+}
 
 class DetailTour extends React.Component {
   displayName = 'Detail Tour'
@@ -21,6 +31,7 @@ class DetailTour extends React.Component {
     tourInfo: PropTypes.object,
     t: PropTypes.func,
     route: PropTypes.object,
+    user: PropTypes.object
   }
 
   static async getInitialProps({ query }) {
@@ -49,11 +60,16 @@ class DetailTour extends React.Component {
       nextPage: 1,
       email: '',
       author: '',
-      review: '',
+      comment: '',
       rating: 0,
       isSubmit: false,
       tourLike: [],
-      images: []
+      images: [],
+      error: '',
+      action: false,
+      actionError: false,
+      reviews: [],
+      average_rating: this.props.tourInfo.tour.average_rating
     }
   }
 
@@ -73,6 +89,8 @@ class DetailTour extends React.Component {
         tourLike: res.data
       })
     })
+
+    this.onLoadMoreReviews()
     this.apiService.increaseView(this.state.tourTurn.id).then(() => {})
   }
 
@@ -82,8 +100,13 @@ class DetailTour extends React.Component {
     })
   }
 
-  onLoadMore(){
-
+  onLoadMoreReviews(){
+    this.apiService.getReviews(this.state.tourTurn.tour.id, this.state.nextPage, 2).then((res) => {
+      this.setState({
+        reviews: [...this.state.reviews, ...res.data],
+        nextPage: res.next_page
+      })
+    })
   }
 
   handleSubmit(e){
@@ -96,7 +119,31 @@ class DetailTour extends React.Component {
       return
     }
 
-
+    this.apiService.writeReview({
+      idTour: this.state.tourTurn.tour.id,
+      name: !_.isEmpty(this.props.user) ? this.props.user.fullname : this.state.author,
+      email: !_.isEmpty(this.props.user) ? this.props.user.email : this.state.email,
+      comment: this.state.comment,
+      rate: this.state.rating
+    }).then((res) => {
+      this.setState({
+        author: '',
+        email: '',
+        comment: '',
+        rating: 0,
+        action: true,
+        isSubmit: false,
+        average_rating: res.data.average_tour,
+        reviews: [res.data.review, ...this.state.reviews]
+      })
+    }).catch(() => {
+      this.setState({
+        error: "There is an error, please try again!",
+        actionError: true,
+        isSubmit: false
+      })
+    })
+    this.setState({ action: false, actionError: false })
   }
 
   handleChangeRating(star){
@@ -117,22 +164,22 @@ class DetailTour extends React.Component {
     })
   }
 
-  handleChangeReview(e){
+  handleChangeComment(e){
     this.setState({
-      review: e.target.value
+      comment: e.target.value
     })
   }
 
   validate(){
-    if(!this.state.email || !validateEmail(this.state.email)){
+    if(_.isEmpty(this.props.user) && (!this.state.email || !validateEmail(this.state.email))){
       return false
     }
 
-    if(!this.state.author || !validateStringWithoutNumber(this.state.author)){
+    if(_.isEmpty(this.props.user) && (!this.state.author || !validateStringWithoutNumber(this.state.author))){
       return false
     }
 
-    if(!this.state.review){
+    if(!this.state.comment){
       return false
     }
 
@@ -150,6 +197,7 @@ class DetailTour extends React.Component {
     const day_left = distanceFromDays(Date.now(), new Date(tourTurn.start_date))
     const slot = tourTurn.num_max_people - tourTurn.num_current_people
     const url = convertFullUrl(this.props.route.parsedUrl.pathname)
+    const num_review = 4
     return (
       <>
         <Layout page="tours" {...this.props}
@@ -201,7 +249,7 @@ class DetailTour extends React.Component {
                         <div className="summary">
                           <h1 className="product_title entry-title">{tourTurn.tour.name}</h1>
                           <div className="rating-zone">
-                            <RatingStar rate={3}/>
+                            <RatingStar rate={this.state.average_rating}/>
                           </div>
                           <div className="views-zone">
                             <span>
@@ -388,55 +436,41 @@ class DetailTour extends React.Component {
                       <div className="tab-panel">
                         <div className="reviews">
                           <div className="comments">
-                            <h2>2 reviews for <span>Hawaii Coast</span></h2>
+                            <h2>
+                              <Trans i18nKey="detail_tour.review_for" count={num_review}>
+                                {{num_review}} reviews for
+                              </Trans>
+                              <span className="bold"> {tourTurn.tour.name}</span>
+                            </h2>
                             <ol className="commentlist">
-                              <li>
-                                <div className="comment-container">
-                                  <img alt="avatar" src="/static/images/avatar.jpg"/>
-                                  <div className="comment-text">
-                                    <div className="star-rating">
-                                      <RatingStar hideNumber rate={3}/>
-                                    </div>
-                                    <p className="meta">
-                                      <strong className="woocommerce-review__author">Rebecca Stone</strong>
-                                      <span className="woocommerce-review__dash">–</span>
-                                      <time className="woocommerce-review__published-date">May 4, 2018</time>
-                                    </p>
-                                    <div className="description">
-                                      <p>
-                                        This is an amazing tour and i recommend this purchase to all family with kids.
-                                         Thanks again for the excellent tour guide that allow us to visit the country in best way possible. Thanks !
-                                       </p>
-                                    </div>
-                                  </div>
-                                </div>
-                              </li>
-                              <li>
-                                <div className="comment-container">
-                                  <img alt="avatar" src="/static/images/avatar.jpg"/>
-                                  <div className="comment-text">
-                                    <div className="star-rating">
-                                      <RatingStar hideNumber rate={3}/>
-                                    </div>
-                                    <p className="meta">
-                                      <strong className="woocommerce-review__author">Rebecca Stone</strong>
-                                      <span className="woocommerce-review__dash">–</span>
-                                      <time className="woocommerce-review__published-date">May 4, 2018</time>
-                                    </p>
-                                    <div className="description">
-                                      <p>
-                                        This is an amazing tour and i recommend this purchase to all family with kids.
-                                         Thanks again for the excellent tour guide that allow us to visit the country in best way possible. Thanks !
-                                       </p>
-                                    </div>
-                                  </div>
-                                </div>
-                              </li>
+                              {!!this.state.reviews.length && this.state.reviews.map((item, key) => {
+                                  return(
+                                    <li key={key}>
+                                      <div className="comment-container">
+                                        <img alt="avatar" src="/static/images/avatar.jpg"/>
+                                        <div className="comment-text">
+                                          <div className="star-rating">
+                                            <RatingStar rate={item.rate}/>
+                                          </div>
+                                          <p className="meta">
+                                            <strong className="woocommerce-review__author">{item.name}</strong>
+                                            <span className="woocommerce-review__dash"> – </span>
+                                            <time className="woocommerce-review__published-date">{fromNow(item.createdAt, getLocalStorage(KEY.LANGUAGE))}</time>
+                                          </p>
+                                          <div className="description">
+                                            <p>{item.comment}</p>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </li>
+                                  )
+                                })
+                              }
                             </ol>
                             <BtnViewMore
                               isLoading={this.state.isLoading}
                               show={this.state.nextPage > 0}
-                              onClick={this.onLoadMore.bind(this)}
+                              onClick={this.onLoadMoreReviews.bind(this)}
                             />
                           </div>
                           <div className="review-form">
@@ -454,29 +488,33 @@ class DetailTour extends React.Component {
                                   }
                                   <p className="comment-form-comment">
                                     <label htmlFor="comment">{t('detail_tour.your_review')} <span className="required">*</span></label>
-                                    <textarea id="comment" name="comment" cols="45" rows="8" value={this.state.review}
-                                      onChange={this.handleChangeReview.bind(this)}/>
+                                    <textarea id="comment" name="comment" cols="45" rows="8" value={this.state.comment}
+                                      onChange={this.handleChangeComment.bind(this)}/>
                                   </p>
-                                  {this.state.isSubmit && !this.state.review &&
+                                  {this.state.isSubmit && !this.state.comment &&
                                     <p className="error">{t('detail_tour.review_required')}</p>
                                   }
-                                  <p className="comment-form-author">
-                                    <label htmlFor="author">{t('detail_tour.name')} <span className="required">*</span></label>
-                                    <input id="author" name="author" type="text" value={this.state.author}
-                                      onChange={this.handleChangeAuthor.bind(this)} size="30"/>
-                                  </p>
-                                  {this.state.isSubmit && !this.state.author &&
+                                  {_.isEmpty(this.props.user) &&
+                                    <p className="comment-form-author">
+                                      <label htmlFor="author">{t('detail_tour.name')} <span className="required">*</span></label>
+                                      <input id="author" name="author" type="text" value={this.state.author}
+                                        onChange={this.handleChangeAuthor.bind(this)} size="30"/>
+                                    </p>
+                                  }
+                                  {this.state.isSubmit && !this.state.author && _.isEmpty(this.props.user) &&
                                     <p className="error">{t('detail_tour.fullname_required')}</p>
                                   }
                                   {this.state.isSubmit && this.state.author && !validateStringWithoutNumber(this.state.author) &&
                                     <p className="error">{t('detail_tour.fullname_format')}</p>
                                   }
-                                  <p className="comment-form-email">
-                                    <label htmlFor="email">Email <span className="required">*</span></label>
-                                    <input id="email" name="email" type="email" value={this.state.email}
-                                      onChange={this.handleChangeEmail.bind(this)} size="30"/>
-                                  </p>
-                                  {this.state.isSubmit && !this.state.email &&
+                                  {_.isEmpty(this.props.user) &&
+                                    <p className="comment-form-email">
+                                      <label htmlFor="email">Email <span className="required">*</span></label>
+                                      <input id="email" name="email" type="email" value={this.state.email}
+                                        onChange={this.handleChangeEmail.bind(this)} size="30"/>
+                                    </p>
+                                  }
+                                  {this.state.isSubmit && !this.state.email && _.isEmpty(this.props.user) &&
                                     <p className="error">{t('detail_tour.email_required')}</p>
                                   }
                                   {this.state.isSubmit && this.state.email && !validateEmail(this.state.email) &&
@@ -485,6 +523,20 @@ class DetailTour extends React.Component {
                                   <p className="form-submit">
                                     <button type="submit" className="co-btn green w-auto" onClick={this.handleSubmit.bind(this)}>{t('detail_tour.submit')}</button>
                                   </p>
+                                  {this.state.action &&
+                                    <AutoHide duration={5000} display="inline-block">
+                                      <div className="alert alert-custom" role="alert">
+                                        {t('detail_tour.success')}!
+                                      </div>
+                                    </AutoHide>
+                                  }
+                                  {this.state.actionError &&
+                                    <AutoHide duration={5000} display="inline-block">
+                                      <div className="alert alert-danger" role="alert">
+                                        {t('detail_tour.' + this.state.error)}!
+                                      </div>
+                                    </AutoHide>
+                                  }
                                 </div>
                               </form>
                             </div>
@@ -516,4 +568,4 @@ class DetailTour extends React.Component {
   }
 }
 
-export default withNamespaces('translation')(DetailTour)
+export default withNamespaces('translation')(connect(mapStateToProps)(DetailTour))

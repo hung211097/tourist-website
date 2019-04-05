@@ -41,6 +41,7 @@ class Register extends React.Component {
   constructor(props) {
     super(props)
     this.apiService = ApiService()
+    this.captcha = React.createRef()
     this.state = {
       isSubmit: false,
       phone: '',
@@ -130,8 +131,10 @@ class Register extends React.Component {
         email: '',
         phone: '',
         isSubmit: false,
-        loading: false
+        loading: false,
+        isCaptcha: false
       }, () => {
+        this.captcha.current.reset()
         this.timeout = setTimeout(() => {
           this.setState({
             showPopup: false
@@ -322,6 +325,7 @@ class Register extends React.Component {
                         sitekey={site_key}
                         onChange={this.onChangeCaptcha}
                         onExpired={this.onExpired}
+                        ref={this.captcha}
                         />
                       {this.state.isSubmit && !this.state.isCaptcha &&
                         <p className="error">{t('register.captcha')}</p>

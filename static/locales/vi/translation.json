@@ -116,7 +116,7 @@
     "price": "Giá",
     "Adult": "Người lớn",
     "Children": "Trẻ em",
-    "review_for": "Có {{num_review}} nhận xét cho {{name}}",
+    "review_for": "Có {{num_review}} nhận xét về",
     "more": "XEM THÊM",
     "add_review": "Thêm nhận xét",
     "note": "Email của bạn sẽ không công khai. Trường bắt buộc được đánh dấu",
@@ -130,7 +130,9 @@
     "fullname_required": "Tên đầy đủ còn trống!",
     "fullname_format": "Tên đầy đủ không được chứa chữ số!",
     "email_format": "Email chưa đúng định dạng!",
-    "email_required": "Email còn trống!"
+    "email_required": "Email còn trống!",
+    "success": "Gửi đánh giá thành công!",
+    "There is an error, please try again!": "Có lỗi xảy ra, hãy thử lại!"
   },
   "wrong_auth": {
     "oops": "Xin lỗi!",
@@ -245,7 +247,11 @@
     "support": "HỖ TRỢ",
     "best": "TOUR TỐT",
     "resort": "KHU NGHỈ DƯỠNG",
-    "guide": "BẢN ĐỒ HƯỚNG DẪN"
+    "guide": "HƯỚNG DẪN",
+    "support_content": "Vào bất cứ lúc nào bất cứ nơi nào, chúng tôi luôn sẵn sàng tiếp nhận và biết ơn mọi sự thắc mắc, góp ý của quí khách hàng, chúng tôi sẽ nhanh chóng giải quyết và có thông tin phản hồi kịp thời cho mọi vướng mắc hay mọi sự chưa hài lòng nào đó của quý khách hàng. Lấy sự Hài lòng của khách hàng làm niềm Hạnh phúc của chúng tôi.",
+    "guide_content": "Đội ngũ hướng dẫn viên được đào tạo bài bản, chuyên nghiệp và thân thiện am hiểu văn hóa nước ngoài, có thể giới thiệu cho du khách Việt những thông tin hữu ích, cũng nhằm mục đích tạo cảm tình tốt đẹp giữa người Việt Nam và bạn bè quốc tế.",
+    "resort_content": "Nghỉ dưỡng tại các Resort mổi tiếng nhất, sang trọng hàng đầu thế giới, những điểm đến tuyệt vời nhất được mệnh danh là thiên đường nghỉ dưỡng nơi hạ giới ",
+    "best_content": "Khi đặt mua các sản phẩm tour của công ty chúng tôi, các bạn sẽ cảm thấy hoàn toàn yên tâm và hài lòng về mọi mặt vì công ty luôn cung cấp cho các bạn những điều mà bạn mong muốn và quan tâm, các bạn sẽ được công ty phục vụ theo đúng phương châm Khách hàng là thượng đế."
   },
   "terms": {
     "title": "ĐIỀU KHOẢN SỬ DỤNG",

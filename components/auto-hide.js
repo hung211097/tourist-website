@@ -6,7 +6,12 @@ export default class AutoHide extends React.Component {
 
     static propTypes = {
         children: PropTypes.any.isRequired,
-        duration: PropTypes.number
+        duration: PropTypes.number,
+        display: PropTypes.string
+    }
+
+    static defaultProps = {
+      display: "block"
     }
 
     constructor(props) {
@@ -32,7 +37,7 @@ export default class AutoHide extends React.Component {
         let { children } = this.props
         const transitionStyles = {
             show: {
-                display: 'block'
+                display: this.props.display
             },
             hide: {
                 display: 'none'

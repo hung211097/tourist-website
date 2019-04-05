@@ -78,7 +78,7 @@ class Home extends React.Component {
   }
 
   loadTour(){
-    this.apiService.getToursTurn(1, 6).then((res) => {
+    this.apiService.getToursTurn(1, 6, {isDiscount: true}).then((res) => {
       this.setState({
         topTours: res.data
       })

@@ -116,7 +116,7 @@
     "price": "Price",
     "Adult": "Adult",
     "Children": "Children",
-    "review_for": "{{num_review}} reviews for {{name}}",
+    "review_for": "{{num_review}} reviews for",
     "more": "SHOW MORE",
     "add_review": "Add a review",
     "note": "Your email address will not be published. Required fields are marked",
@@ -130,7 +130,9 @@
     "fullname_required": "Fullname is required!",
     "fullname_format": "Fullname should not contain numbers",
     "email_format": "Email must be in right format!",
-    "email_required": "Email is required!"
+    "email_required": "Email is required!",
+    "success": "Post review successfully!",
+    "There is an error, please try again!": "There is an error, please try again!"
   },
   "wrong_auth": {
     "oops": "Oops!",
@@ -245,7 +247,11 @@
     "support": "SUPPORT",
     "best": "BEST TOURS",
     "resort": "RESORTS",
-    "guide": "MAP GUIDES"
+    "guide": "GUIDES",
+    "support_content": "At any time anywhere, we are always ready to receive and appreciate all your questions and suggestions, we will quickly resolve and have timely feedback for all problems. Any problems or unsatisfactoriness of customers. Get Customer Satisfaction as our Happiness.",
+    "guide_content": "A well-trained, professional and friendly tour guide team who understands foreign culture, can introduce Vietnamese visitors with useful information, also aims to create a good feeling among Vietnamese people. and international friends.",
+    "resort_content": "Resort at the most luxurious and luxurious resorts in the world, the best destinations named as paradise resting place in the world.",
+    "best_content": "When ordering the tour products of our company, you will feel completely assured and satisfied in all aspects because the company always provides you with the things you want and care about, you will served by the company in accordance with the motto Customer is god."
   },
   "terms": {
     "title": "TERMS OF CONDITION",
