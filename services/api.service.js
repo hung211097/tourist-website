@@ -69,6 +69,9 @@ export default () => {
     },
     getReviews: (id, page = 1, limit = 5, params = {}) => {
       let url = baseURL + `reviews/getByTour/${id}?page=${page}&per_page=${limit}`
+      if(params.offset){
+        url = baseURL + `reviews/getByTour/${id}?offset=${params.offset}&per_page=${limit}`
+      }
       return fetchCached(url)
     },
     register: (data) => {

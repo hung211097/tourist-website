@@ -614,13 +614,13 @@ class Header extends React.Component {
                     </div>
                     <div className="col-8 text-center">
                       <Link route="home">
-                        <a className="d-inline-block">
+                        <a className="d-inline-block toggle-menu">
                           <img alt="logo" className="nd_options_float_left logo-sticky" src="/static/images/logo.png" />
                         </a>
                       </Link>
                     </div>
-                    <div className="col-2 no-padding text-right">
-                      <a className="nd_options_open_navigation_2_sidebar_content nd_options_open_navigation_2_sidebar_content"
+                    <div className="col-2 no-padding text-right mobile-logo-container">
+                      <a className="nd_options_open_navigation_2_sidebar_content nd_options_open_navigation_2_sidebar_content mobile-logo"
                         href="javascript:;"
                         onClick={this.toggleSideBar.bind(this)}>
                         <img alt="icon-menu" className="icon-menu" src="/static/svg/icon-menu.svg" />

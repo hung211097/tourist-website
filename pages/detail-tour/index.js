@@ -53,6 +53,7 @@ class DetailTour extends React.Component {
       'adults': 'Adult',
       'children': 'Children'
     }
+    this.per_page = 4
     this.state = {
       tourTurn: this.props.tourInfo,
       tabId: 0,
@@ -69,7 +70,10 @@ class DetailTour extends React.Component {
       action: false,
       actionError: false,
       reviews: [],
-      average_rating: this.props.tourInfo.tour.average_rating
+      average_rating: this.props.tourInfo.tour.average_rating,
+      num_review: this.props.tourInfo.tour.num_review,
+      skip_comment: 0,
+      total_page: 0
     }
   }
 
@@ -101,10 +105,12 @@ class DetailTour extends React.Component {
   }
 
   onLoadMoreReviews(){
-    this.apiService.getReviews(this.state.tourTurn.tour.id, this.state.nextPage, 2).then((res) => {
+    this.apiService.getReviews(this.state.tourTurn.tour.id, this.state.nextPage, this.per_page,
+      {offset: this.state.skip_comment + (this.state.nextPage - 1) * this.per_page}).then((res) => {
       this.setState({
         reviews: [...this.state.reviews, ...res.data],
-        nextPage: res.next_page
+        nextPage: this.state.nextPage + 1,
+        total_page: res.itemCount % this.per_page === 0 ? parseInt(res.itemCount / this.per_page) : parseInt(res.itemCount / this.per_page) + 1
       })
     })
   }
@@ -126,6 +132,8 @@ class DetailTour extends React.Component {
       comment: this.state.comment,
       rate: this.state.rating
     }).then((res) => {
+      let review = res.data.review
+      review.user = res.data.user
       this.setState({
         author: '',
         email: '',
@@ -134,7 +142,9 @@ class DetailTour extends React.Component {
         action: true,
         isSubmit: false,
         average_rating: res.data.average_tour,
-        reviews: [res.data.review, ...this.state.reviews]
+        reviews: [review, ...this.state.reviews],
+        num_review: this.state.num_review + 1,
+        skip_comment: this.state.skip_comment + 1
       })
     }).catch(() => {
       this.setState({
@@ -191,13 +201,12 @@ class DetailTour extends React.Component {
   }
 
   render() {
-    const { tourTurn } = this.state
+    const { tourTurn, num_review } = this.state
     const {t} = this.props
     const distance = distanceFromDays(new Date(tourTurn.start_date), new Date(tourTurn.end_date)) + 1
     const day_left = distanceFromDays(Date.now(), new Date(tourTurn.start_date))
     const slot = tourTurn.num_max_people - tourTurn.num_current_people
     const url = convertFullUrl(this.props.route.parsedUrl.pathname)
-    const num_review = 4
     return (
       <>
         <Layout page="tours" {...this.props}
@@ -340,7 +349,7 @@ class DetailTour extends React.Component {
                       {this.tabs.map((item, key) => {
                           return(
                             <li className={this.state.tabId === key ? "tab_item active" : "tab_item"} role="tab" key={key}>
-                              <a onClick={this.handleChangeTab.bind(this, key)}>{t('detail_tour.' + item)}</a>
+                              <a onClick={this.handleChangeTab.bind(this, key)}>{t('detail_tour.' + item)} {item === 'review' ? '('+ num_review +')' : ''}</a>
                             </li>
                           )
                         })
@@ -443,11 +452,11 @@ class DetailTour extends React.Component {
                               <span className="bold"> {tourTurn.tour.name}</span>
                             </h2>
                             <ol className="commentlist">
-                              {!!this.state.reviews.length && this.state.reviews.map((item, key) => {
+                              {!!this.state.reviews.length && this.state.reviews.map((item) => {
                                   return(
-                                    <li key={key}>
+                                    <li key={item.id}>
                                       <div className="comment-container">
-                                        <img alt="avatar" src="/static/images/avatar.jpg"/>
+                                        <img alt="avatar" src={item.user && item.user.avatar ? item.user.avatar : "/static/images/avatar.jpg"}/>
                                         <div className="comment-text">
                                           <div className="star-rating">
                                             <RatingStar rate={item.rate}/>
@@ -469,7 +478,7 @@ class DetailTour extends React.Component {
                             </ol>
                             <BtnViewMore
                               isLoading={this.state.isLoading}
-                              show={this.state.nextPage > 0}
+                              show={this.state.nextPage <= this.state.total_page}
                               onClick={this.onLoadMoreReviews.bind(this)}
                             />
                           </div>

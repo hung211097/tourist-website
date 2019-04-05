@@ -3,6 +3,9 @@
 .middle{
   padding-top: 138px;
   @media screen and (max-width: 1112px){
+    padding-top: 91px;
+  }
+  @media screen and (max-width: 576px){
     padding-top: 88px;
   }
   .contain{

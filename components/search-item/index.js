@@ -50,7 +50,7 @@ class SearchItem extends React.Component {
                           <i title="views"><FaRegEye /></i>&nbsp;&nbsp;
                           <span style={{color: 'white'}} title="views">{item.view.toLocaleString()}</span>&nbsp;&nbsp;&nbsp;&nbsp;
                           <i title="comments"><FaRegCommentDots /></i>&nbsp;&nbsp;
-                          <span style={{color: 'white'}} title="comments">0</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                          <span style={{color: 'white'}} title="comments">{item.tour.num_review}</span>&nbsp;&nbsp;&nbsp;&nbsp;
                         </div>
                         <div className="col-sm-6 col-12 no-padding ratingstar">
                           <RatingStar isWhite rate={item.tour.average_rating} />
@@ -138,7 +138,7 @@ class SearchItem extends React.Component {
                       <FaRegEye />&nbsp;{item.view.toLocaleString()}
                     </span>
                     <span className="comments" title="comment">
-                      <FaRegCommentDots />&nbsp;10
+                      <FaRegCommentDots />&nbsp;{item.tour.num_review}
                     </span>
                   </div>
                   <div className="clear" />
