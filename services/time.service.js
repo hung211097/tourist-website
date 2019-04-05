@@ -6,8 +6,11 @@ import differenceInDays from 'date-fns/differenceInDays'
 import isValid from 'date-fns/isValid'
 import compareAsc from 'date-fns/compareAsc'
 
-export default function fromNow(date) {
-	return formatDistance(new Date(date), new Date(), {addSuffix: true, locale: locale})
+export function fromNow(date, lng) {
+  if(lng && lng === 'vi'){
+    return formatDistance(new Date(date), new Date(), {addSuffix: true, locale: locale})
+  }
+  return formatDistance(new Date(date), new Date(), {addSuffix: true})
 }
 
 export function formatDate(date, name='dd/MM/yyyy') {

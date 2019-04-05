@@ -94,9 +94,9 @@ export function slugify(str) {
 		.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, 'o')
 		.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, 'u')
 		.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, 'y')
-		// .replace(/đ/g, 'd')
-		// .replace(/\s+/g, '') // Replace spaces with -
-		// .replace(/[^\w-]+/g, '') // Remove all non-word chars
+		.replace(/đ/g, 'd')
+		.replace(/\s+/g, '-') // Replace spaces with -
+		.replace(/[^\w-]+/g, '') // Remove all non-word chars
 		.replace(/--+/g, '-') // Replace multiple - with single -
 		.replace(/^-+/, '') // Trim - from start of text
 		.replace(/-+$/, '')

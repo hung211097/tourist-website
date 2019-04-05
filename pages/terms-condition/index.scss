@@ -3,7 +3,10 @@
 .middle{
   padding-top: 137px;
   @media screen and (max-width: 1112px){
-    padding-top: 124px;
+    padding-top: 91px;
+  }
+  @media screen and (max-width: 576px){
+    padding-top: 88px;
   }
   .content-title{
     background-size: cover;

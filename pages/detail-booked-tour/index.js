@@ -14,6 +14,7 @@ import { getCode, capitalize } from '../../services/utils.service'
 import matchSorter from 'match-sorter'
 import { formatDate, compareDate, distanceFromDays } from '../../services/time.service'
 import { withNamespaces } from "react-i18next"
+import { slugify } from '../../services/utils.service'
 
 const mapStateToProps = (state) => {
     return {
@@ -141,7 +142,7 @@ class DetailBookedTour extends React.Component {
                                   </div>
                                   <div className="col-sm-8">
                                     <h3>
-                                      <Link route="detail-tour" params={{id: tourInfo.id}}>
+                                      <Link route="detail-tour" params={{id: tourInfo.id, name: slugify(tourInfo.tour.name)}}>
                                         <a>{tourInfo.tour.name}</a>
                                       </Link>
                                     </h3>

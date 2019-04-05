@@ -137,7 +137,7 @@ p {
   &.green{
     background: #1BBC9B;
     &:hover{
-      background: #1BBC9B !important;
+      background: #1AAB8D !important;
     }
   }
 }
@@ -551,5 +551,5 @@ p {
 
 .react-autosuggest__suggestions-container{
   overflow: auto;
-  max-height: 250px;  
+  max-height: 250px;
 }

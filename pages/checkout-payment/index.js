@@ -12,7 +12,7 @@ import { formatDate, distanceFromDays } from '../../services/time.service'
 import { getSessionStorage } from '../../services/session-storage.service'
 import { KEY } from '../../constants/session-storage'
 import { UnmountClosed } from 'react-collapse'
-import { getCode } from '../../services/utils.service'
+import { getCode, slugify } from '../../services/utils.service'
 import { useModal } from '../../actions'
 import { modal } from '../../constants'
 import { withNamespaces } from "react-i18next"
@@ -397,7 +397,7 @@ class CheckOutPayment extends React.Component {
                           </div>
                           <div className="info-area">
                             <h3>
-                              <Link route="detail-tour" params={{id: tourInfo.id}}>
+                              <Link route="detail-tour" params={{id: tourInfo.id, name: slugify(tourInfo.tour.name)}}>
                                 <a>{tourInfo.tour.name}</a>
                               </Link>
                             </h3>

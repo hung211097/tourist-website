@@ -3,7 +3,10 @@
 .middle{
   padding-top: 137px;
   @media screen and (max-width: 1112px){
-    padding-top: 124px;
+    padding-top: 91px;
+  }
+  @media screen and (max-width: 576px){
+    padding-top: 88px;
   }
   .content-title{
     background-size: cover;
@@ -116,6 +119,10 @@
               display: inline-block;
               color: #fff !important;
               width: 40%;
+              transition: 0.2s ease-in-out;
+              &:hover{
+                background: #1AAB8D !important;
+              }
               @media screen and (max-width: 576px){
                 width: 60%;
                 margin-bottom: 30px;

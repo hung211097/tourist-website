@@ -6,6 +6,7 @@ import ApiService from '../../services/api.service'
 import { connect } from 'react-redux'
 import { toggleShowTour } from '../../actions'
 import { Link } from 'routes'
+import { slugify } from '../../services/utils.service'
 
 const mapStateToProps = (state) => {
   return {
@@ -110,7 +111,7 @@ class MarkerComponent extends React.Component{
               }
               {this.props.infoLocation.description &&
                 <p>
-                  <span className="bold">{t('marker.description')}: </span> 
+                  <span className="bold">{t('marker.description')}: </span>
                     {this.state.isShowMore ? this.props.infoLocation.description :
                       this.props.infoLocation.description.substring(0, this.maxDes)}
                   <a onClick={this.toggleShowMore.bind(this)}> {this.state.isShowMore ? t('marker.show_less') : '... ' + t('marker.show_more')}</a>
@@ -127,7 +128,7 @@ class MarkerComponent extends React.Component{
                         return(
                           <li className="tour-item" key={item.id}>
                             {item.tour_turns ?
-                              <Link route="detail-tour" params={{id: item.tour_turns.id}}>
+                              <Link route="detail-tour" params={{id: item.tour_turns.id, name: slugify(item.name)}}>
                                 <a>{item.name}</a>
                               </Link>
                               :

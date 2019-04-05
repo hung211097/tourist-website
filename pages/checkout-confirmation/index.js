@@ -11,7 +11,7 @@ import { formatDate, distanceFromDays, compareDate } from '../../services/time.s
 // import { getUserAuth } from 'services/auth.service'
 // import { getSessionStorage, removeItem } from '../../services/session-storage.service'
 // import { KEY } from '../../constants/session-storage'
-import { getCode } from '../../services/utils.service'
+import { getCode, slugify } from '../../services/utils.service'
 import ReactTable from 'react-table'
 import matchSorter from 'match-sorter'
 import InfiniteScroll from 'react-infinite-scroller'
@@ -168,7 +168,7 @@ class CheckOutConfirmation extends React.Component {
                             </div>
                             <div className="col-sm-8">
                               <h3>
-                                <Link route="detail-tour" params={{id: tourInfo.id}}>
+                                <Link route="detail-tour" params={{id: tourInfo.id, name: slugify(tourInfo.tour.name)}}>
                                   <a>{tourInfo.tour.name}</a>
                                 </Link>
                               </h3>

@@ -153,7 +153,7 @@ class UpdateProfile extends React.Component {
             actionError: true
           })
         })
-        this.setState({ action: false })
+        this.setState({ action: false, actionError: false })
     }
 
     handleUploadAvatar() {

@@ -2,8 +2,11 @@
 
 .main-wrapper {
     padding-top: 137px;
-    @media screen and (max-width: 768px){
-      padding-top: 123px;
+    @media screen and (max-width: 1112px){
+      padding-top: 91px;
+    }
+    @media screen and (max-width: 576px){
+      padding-top: 88px;
     }
     .pageTitle{
       position: relative;

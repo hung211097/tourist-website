@@ -53,6 +53,7 @@ class Header extends React.Component {
       isSticky: false,
       keyword: '',
       showChangeLng: false,
+      showChangeLngMobile: false,
       language: [
         {
           label: "en",
@@ -225,6 +226,12 @@ class Header extends React.Component {
   toggleChangeLng(){
     this.setState({
       showChangeLng: !this.state.showChangeLng
+    })
+  }
+
+  toggleChangeLngMobile(){
+    this.setState({
+      showChangeLngMobile: !this.state.showChangeLngMobile
     })
   }
 
@@ -578,18 +585,47 @@ class Header extends React.Component {
                 {/*RESPONSIVE*/}
                 <div className="nd_options_section text-center d-none nd_options_display_block_responsive">
                   <div className="nd_options_section nd_options_height_20" />
-                  <Link route="home">
-                    <a className="d-inline-block">
-                      <img alt="logo" className="nd_options_float_left" src="/static/images/logo.png" />
-                    </a>
-                  </Link>
-                  <div className="nd_options_section nd_options_height_10" />
-                  <div className="nd_options_section">
-                    <a className="nd_options_open_navigation_2_sidebar_content nd_options_open_navigation_2_sidebar_content"
-                      href="javascript:;"
-                      onClick={this.toggleSideBar.bind(this)}>
-                      <img alt="icon-menu" className="icon-menu" src="/static/svg/icon-menu.svg" />
-                    </a>
+                  <div className="nd_options_section row row-center">
+                    <div className="col-2 no-padding text-left">
+                      <div className="multi-lng-mobile" onClick={this.toggleChangeLngMobile.bind(this)}>
+                        {this.chosenLng() &&
+                          <button aria-expanded="false" aria-haspopup="true" className="btn dropdown-toggle" type="button">
+                            <img alt={this.chosenLng().label} src={this.chosenLng().flag}/>&nbsp;&nbsp;
+                            <span className="d-none d-lg-inline">{this.chosenLng().label}</span>&nbsp;
+                          </button>
+                        }
+                        <div className={this.state.showChangeLngMobile ? "dropdown-menu show" : "dropdown-menu"}>
+                          {this.state.language.map((item, key) => {
+                              if(!item.isChoose){
+                                return(
+                                  <div className="wrapper-dropdown-item" key={key} onClick={this.changeLng.bind(this, item)}>
+                                    <a className="dropdown-item">
+                                      <img src={item.flag} alt={item.label}/>&nbsp;
+                                      <span>{item.label}</span>
+                                    </a>
+                                  </div>
+                                )
+                              }
+                              return null
+                            })
+                          }
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-8 text-center">
+                      <Link route="home">
+                        <a className="d-inline-block toggle-menu">
+                          <img alt="logo" className="nd_options_float_left logo-sticky" src="/static/images/logo.png" />
+                        </a>
+                      </Link>
+                    </div>
+                    <div className="col-2 no-padding text-right mobile-logo-container">
+                      <a className="nd_options_open_navigation_2_sidebar_content nd_options_open_navigation_2_sidebar_content mobile-logo"
+                        href="javascript:;"
+                        onClick={this.toggleSideBar.bind(this)}>
+                        <img alt="icon-menu" className="icon-menu" src="/static/svg/icon-menu.svg" />
+                      </a>
+                    </div>
                   </div>
                   <div className="nd_options_section nd_options_height_20" />
                 </div>
@@ -662,18 +698,47 @@ class Header extends React.Component {
               {/*RESPONSIVE*/}
               <div className="nd_options_section text-center d-none nd_options_display_block_responsive">
                 <div className="nd_options_section nd_options_height_20" />
-                <Link route="home">
-                  <a className="d-inline-block">
-                    <img alt="logo" className="nd_options_float_left" src="/static/images/logo.png" />
-                  </a>
-                </Link>
-                <div className="nd_options_section nd_options_height_10" />
-                <div className="nd_options_section">
-                  <a className="nd_options_open_navigation_2_sidebar_content nd_options_open_navigation_2_sidebar_content"
-                    href="javascript:;"
-                    onClick={this.toggleSideBar.bind(this)}>
-                    <img alt="icon-menu" className="icon-menu" src="/static/svg/icon-menu.svg" />
-                  </a>
+                <div className="nd_options_section row row-center">
+                  <div className="col-2 no-padding text-left">
+                    <div className="multi-lng-mobile" onClick={this.toggleChangeLngMobile.bind(this)}>
+                      {this.chosenLng() &&
+                        <button aria-expanded="false" aria-haspopup="true" className="btn dropdown-toggle" type="button">
+                          <img alt={this.chosenLng().label} src={this.chosenLng().flag}/>&nbsp;&nbsp;
+                          <span className="d-none d-lg-inline">{this.chosenLng().label}</span>&nbsp;
+                        </button>
+                      }
+                      <div className={this.state.showChangeLngMobile ? "dropdown-menu show" : "dropdown-menu"}>
+                        {this.state.language.map((item, key) => {
+                            if(!item.isChoose){
+                              return(
+                                <div className="wrapper-dropdown-item" key={key} onClick={this.changeLng.bind(this, item)}>
+                                  <a className="dropdown-item">
+                                    <img src={item.flag} alt={item.label}/>&nbsp;
+                                    <span>{item.label}</span>
+                                  </a>
+                                </div>
+                              )
+                            }
+                            return null
+                          })
+                        }
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-8 text-center">
+                    <Link route="home">
+                      <a className="d-inline-block">
+                        <img alt="logo" className="nd_options_float_left logo-sticky" src="/static/images/logo.png" />
+                      </a>
+                    </Link>
+                  </div>
+                  <div className="col-2 no-padding text-right">
+                    <a className="nd_options_open_navigation_2_sidebar_content nd_options_open_navigation_2_sidebar_content"
+                      href="javascript:;"
+                      onClick={this.toggleSideBar.bind(this)}>
+                      <img alt="icon-menu" className="icon-menu" src="/static/svg/icon-menu.svg" />
+                    </a>
+                  </div>
                 </div>
                 <div className="nd_options_section nd_options_height_20" />
               </div>

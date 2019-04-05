@@ -25,6 +25,7 @@ export default () => {
     getToursTurn: (page = 1, limit = 10, params = {}) => {
       let url = baseURL + `tour_turn/getAll?page=${page}&per_page=${limit}`
       url += params.isUnique ? "&isUniqueTour=true" : ''
+      url += params.isDiscount ? "&isDiscount=true" : ''
       url += params.sortBy ? `&sortBy=${params.sortBy}` : ''
       url += params.sortType ? `&sortType=${params.sortType}` : ''
       return fetchCached(url)
@@ -64,6 +65,13 @@ export default () => {
     },
     getBookToursHistory: (page = 1, limit = 5) => {
       let url = baseURL + `book_tour/getHistoryBookTourByUser?page=${page}&per_page=${limit}`
+      return fetchCached(url)
+    },
+    getReviews: (id, page = 1, limit = 5, params = {}) => {
+      let url = baseURL + `reviews/getByTour/${id}?page=${page}&per_page=${limit}`
+      if(params.offset){
+        url = baseURL + `reviews/getByTour/${id}?offset=${params.offset}&per_page=${limit}`
+      }
       return fetchCached(url)
     },
     register: (data) => {
@@ -124,6 +132,10 @@ export default () => {
     },
     verifyCaptcha: (data) => {
       let url = baseURL + `verifyCaptcha`
+      return httpPost(url, data)
+    },
+    writeReview: (data) => {
+      let url = baseURL + `reviews/create`
       return httpPost(url, data)
     }
   }
