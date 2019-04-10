@@ -2,8 +2,8 @@
 @import 'styles/fonts.scss';
 @import 'styles/variables.scss';
 @import 'styles/react-range-slider.scss';
-
 @import 'styles/react-table.scss';
+@import 'styles/react-calendar.scss';
 /* REQUIRED */
 @import 'node_modules/pretty-checkbox/src/scss/_variables';
 
@@ -25,6 +25,7 @@
 @import "node_modules/slick-carousel/slick/slick.scss";
 @import "node_modules/slick-carousel/slick/slick-theme.scss";
 
+@import 'styles/wp.scss';
 
 html {
   font-size: 10px;
@@ -295,6 +296,10 @@ p {
     height: 50px;
 }
 
+.nd_options_height_90{
+  height: 90px;
+}
+
 .nd_options_height_110{
   height: 110px;
 }
@@ -552,4 +557,34 @@ p {
 .react-autosuggest__suggestions-container{
   overflow: auto;
   max-height: 250px;
+}
+
+.my-gallery-class{
+  width: 100%;
+}
+
+.btn-filled{
+  display: none;
+}
+
+.my-masonry-grid {
+  display: -webkit-box; /* Not needed if autoprefixing */
+  display: -ms-flexbox; /* Not needed if autoprefixing */
+  display: flex;
+  // margin-left: -30px; /* gutter size offset */
+  width: auto;
+}
+.my-masonry-grid_column {
+  // padding-left: 30px; /* gutter size */
+}
+
+// Style your items
+.my-masonry-grid_column > div { /* change div to reference your elements you put in <Masonry> */
+  margin-bottom: 30px;
+}
+
+.fb-comments-count-container{
+  div{
+    display: inline;
+  }
 }

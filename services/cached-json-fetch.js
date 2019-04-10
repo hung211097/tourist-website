@@ -1,5 +1,7 @@
 import fetch from 'isomorphic-fetch'
-import { getAccessToken } from './auth.service'
+import {
+  getAccessToken
+} from './auth.service'
 
 function parseJSON(response) {
   if (response.status === 204 || response.status === 205) {
@@ -112,4 +114,26 @@ export async function httpDelete(url) {
     })
     .then(checkStatus)
     .then(parseJSON)
+}
+
+export function httpWPGetBlog(url) {
+  return fetch(url, {
+      method: 'GET'
+    }).then(checkStatus)
+    .then((response) => {
+      return response.json().then(data => {
+        data.total = +response.headers.get('X-WP-Total')
+        data.totalPage = +response.headers.get('X-WP-TotalPages');
+        return data
+      })
+    })
+}
+
+export function httpWPGet(url) {
+  return fetch(url, {
+      method: 'GET'
+    }).then(checkStatus)
+    .then((response) => {
+      return response.json()
+    })
 }

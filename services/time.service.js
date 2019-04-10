@@ -13,7 +13,10 @@ export function fromNow(date, lng) {
   return formatDistance(new Date(date), new Date(), {addSuffix: true})
 }
 
-export function formatDate(date, name='dd/MM/yyyy') {
+export function formatDate(date, name='dd/MM/yyyy', lng="en") {
+  if(lng && lng === "vi"){
+    return format(new Date(date), name, {locale: locale})
+  }
 	return format(new Date(date), name)
 }
 

@@ -1,7 +1,13 @@
-import fetchCached, { httpPost, httpPutForm, httpPut} from './cached-json-fetch'
+import fetchCached, { httpPost, httpPutForm, httpWPGetBlog, httpWPGet, httpPut} from './cached-json-fetch'
 const baseURL = process.env.API_URL
+const cmsURL = process.env.API_CMS_URL
 const site_captcha_key = process.env.KEY_GOOGLE_RECAPTCHA
 const site_secret_key = process.env.KEY_GOOGLE_RECAPTCHA_SECRET
+import {
+    convertWptoPost,
+    convertWptoPostDetail,
+    convertWpTags
+} from 'services/utils.service'
 
 export default () => {
   let services = {
@@ -73,6 +79,33 @@ export default () => {
         url = baseURL + `reviews/getByTour/${id}?offset=${params.offset}&per_page=${limit}`
       }
       return fetchCached(url)
+    },
+    getBlogs: (page = 1, limit = 4, params = {}) => {
+        params = params || {}
+        let url = cmsURL + `posts?_embed&context=embed&page=${page}&per_page=${limit}`
+        // url += offset >= 0 ? `&offset=${offset}` : ''
+        url += params.categories ? `&categories=${params.categories}` : ''
+        url += params.author ? `&author=${params.author}` : ''
+        url += params.exclude ? `&exclude=${params.exclude}` : ''
+        url += params.keyword ? `&search=${params.keyword}` : ''
+        return httpWPGetBlog(url).then((data) => {
+            let res = {}
+            res.total = data.total
+            res.totalPage = data.totalPage
+            res.nextPage = res.totalPage <= page ? null : ++page
+            res.data = convertWptoPost(data)
+            return res
+        })
+    },
+    getBlogsDetail: (id) => {
+        return httpWPGet(cmsURL + `posts/${id}?_embed`).then((data) => {
+            return convertWptoPostDetail(data)
+        })
+    },
+    getTagsBlog: (id) => {
+      return httpWPGet(cmsURL + `tags?post=${id}`).then((data) => {
+          return convertWpTags(data)
+      })
     },
     register: (data) => {
       let url = baseURL + `user/register`

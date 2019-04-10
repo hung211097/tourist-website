@@ -231,7 +231,7 @@ class UpdateProfile extends React.Component {
                       <div className="profile-info row">
                         <div className="col-md-6">
                           <div className="co-field" id="fullname">
-                              <p>
+                              <p id="fullname_format">
                                   <strong>{t('update_profile.fullname')}*</strong>
                               </p>
                               <input

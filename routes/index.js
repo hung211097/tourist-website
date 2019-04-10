@@ -15,12 +15,15 @@ module.exports = routes()                           // ----                   --
 .add('terms-condition')                             // terms-condition        terms-condition         /terms-condition
 .add('faq')                                         // faq                    faq                     /faq
 .add('contact')                                     // contact                contact                 /contact
-.add('tours')                                       // tours                  tours                   /tours
-.add('detail-tour', '/tours/:name-:id(\\d+)')       // detail-tour            /detail-tour            /tours/:id
-.add('search-result', '/search')                    // search-result          /search                 /search-result?keyword=
+.add('tours', '/tour/:name-:id(\\d+)')                    // tours                  tours                   /tours/:name-:id
+.add('detail-tour', '/tour/:id(\\d+)/:name')       // detail-tour            detail-tour            /tours/:id/:name
+.add('search-result', '/search')                    // search-result          search                 /search-result?keyword=
 .add('checkout-passengers', '/checkout/passengers') // checkout               checkout-passengers     /checkout/passengers
 .add('checkout-payment', '/checkout/payment')       // checkout-payment       checkout-payment        /checkout/payment
 .add('checkout-confirmation', '/checkout/confirmation')// checkout-confirmation    checkout-confirmation        /checkout/confirmation
+.add('news')                                        //news                    news                    /news
+.add('detail-news', '/news/:slug-:id(\\d+)')              //detail-news             detail-news             /news/:slug-:id
+.add('404')
 // .add('user', '/user/:id', 'profile')                // user   profile   /user/:id
 // .add('/:noname/:lang(en|es)/:wow+', 'complex')      // (none) complex   /:noname/:lang(en|es)/:wow+
 // .add({name: 'beta', pattern: '/v3', page: 'v3'})    // beta   v3        /v3

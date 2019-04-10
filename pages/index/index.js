@@ -2,7 +2,7 @@ import React from 'react'
 import { Layout, MyMap, TopPromotionItem, SlickItem, RatingStar } from 'components'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
-import { Router, Link } from 'routes'
+import { Router } from 'routes'
 import { connect } from 'react-redux'
 import { saveRedirectUrl } from 'actions'
 import ApiService from 'services/api.service'
@@ -122,11 +122,6 @@ class Home extends React.Component {
                       )
                     })
                   }
-                </div>
-                <div className="row text-center show-more-area">
-                  <Link route="tours">
-                    <a className="show-more">{t('home.more')}</a>
-                  </Link>
                 </div>
               </div>
             </div>
