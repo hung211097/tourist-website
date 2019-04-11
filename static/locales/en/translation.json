@@ -8,7 +8,34 @@
     "tours": "TOURS",
     "about": "ABOUT US",
     "contact": "CONTACT",
-    "booknow": "BOOK NOW"
+    "booknow": "BOOK NOW",
+    "domestic_tour": "DOMESTIC TOUR",
+    "international_tour": "INTERNATIONAL TOUR",
+    "news": "NEWS",
+    "Miền Bắc": "Northern Vietnam",
+    "Miền Trung": "Central Vietnam",
+    "Miền Nam": "Southern Vietnam",
+    "Châu Á": "Asia",
+    "Châu Âu": "Europe",
+    "Khác": "America - Africa - Australia",
+    "Campuchia": "Cambodia",
+    "Đài Loan": "Taiwan",
+    "Hàn Quốc": "Korea",
+    "Singapore": "Singapore",
+    "Nhật Bản": "Japan",
+    "Thái Lan": "Thailand",
+    "Trung Quốc": "China",
+    "Anh": "England",
+    "Nga": "Russia",
+    "Pháp": "France",
+    "Ý": "Italy",
+    "Đức": "Germany",
+    "Scotland": "Scotland",
+    "Canada": "Canada",
+    "Mỹ": "United States",
+    "Úc": "Australia",
+    "Cuba": "Cuba",
+    "Nam Phi": "South Africa"
   },
   "home": {
     "topsale": "TOP SALE",
@@ -619,6 +646,33 @@
     "note": "Note",
     "note_content": "If you don't login our website, after booking a tour you will see the confirmation at this step and receive the same content email for your usually checking.",
     "back_home": "BACK TO HOMEPAGE"
+  },
+  "news": {
+    "title": "NEWS",
+    "read_more": "READ MORE",
+    "search": "Search news"
+  },
+  "detail_news": {
+    "title": "SINGLE POST",
+    "search": "Search",
+    "title_search": "Search News",
+    "tags": "Tags",
+    "other_news": "Other News",
+    "comment": "COMMENT"
+  },
+  "news_search": {
+    "title": "SEARCH RESULT",
+    "search": "Search news",
+    "num_result_is": "There is {{count}} result for: \"{{keyword}}\"",
+    "num_result_are": "There are {{count}} results for: \"{{keyword}}\""
+  },
+  "breadcrumb": {
+    "news": "News",
+    "keyword_for": "Search for keyword: ",
+    "tags_for": "News with tag: "
+  },
+  "news_tags": {
+    "title": "TAG"
   },
   "checkout": "CHECKOUT",
   "show_more": "SHOW MORE",

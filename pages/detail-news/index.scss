@@ -1,0 +1,168 @@
+@import 'styles/variables.scss';
+
+.middle{
+  padding-top: 137px;
+  @media screen and (max-width: 1112px){
+    padding-top: 91px;
+  }
+  @media screen and (max-width: 576px){
+    padding-top: 88px;
+  }
+  .content-title{
+    background-size: cover;
+    background-position: center;
+    background-image: url('/static/images/p-10.jpg');
+    .overlay{
+      background-color: rgba(67, 74, 84, 0.3);
+      .title-contain{
+        box-sizing: border-box;
+        padding: 15px;
+        text-align: center;
+        h1{
+          font-weight: normal;
+          color: #fff !important;
+          font-size: 30px;
+          line-height: 30px;
+          span{
+            display: block;
+            font-weight: bold;
+          }
+          .underline{
+            display: inline-block;
+            background-color: #ffffff;
+            width: 80px;
+            height: 4px;
+          }
+        }
+      }
+    }
+    .figure-news{
+      text-align: center;
+      .figure-container{
+        position: relative;
+        padding-right: 40px;
+        @media screen and (max-width: 576px){
+          padding-right: 0;
+        }
+        .avatar{
+          border-radius: 100%;
+        }
+        img{
+          left: 0;
+          position: absolute;
+          text-align: center;
+        }
+        .text-figure{
+          padding-left: 45px;
+          h3{
+            font-size: 14px;
+            line-height: 14px;
+            color: #fff !important;
+            text-transform: uppercase;
+          }
+        }
+      }
+    }
+  }
+  .content{
+    margin-top: 50px;
+    .news-detail{
+      .widget{
+        margin-bottom: 40px;
+        h3{
+          margin-bottom: 20px;
+          font-weight: normal;
+        }
+        input{
+          width: 100%;
+          font-weight: normal;
+          background-color: #f9f9f9;
+          border-width: 1px;
+          border-color: #f1f1f1;
+          border-radius: 0px;
+          border-style: solid;
+          padding: 10px 20px;
+          -webkit-appearance: none;
+          color: #a3a3a3;
+        }
+        button{
+          text-transform: uppercase;
+        }
+        &.widget_tag_cloud{
+          a{
+            padding: 10px;
+            border: 1px solid #dbdbdb;
+            border-radius: 0px;
+            display: inline-block;
+            margin: 5px;
+            margin-left: 0px;
+            font-size: 14px !important;
+            line-height: 12px;
+            color: $main-bg-color;
+          }
+        }
+        &.widget_calendar_responsive{
+          margin-top: 30px;
+        }
+        .best-package{
+          margin-top: 35px !important;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+          background-image: url(/static/images/destination-16.jpg);
+          .custom{
+            box-sizing: border-box;
+            width: 100%;
+            padding-top: 82px;
+            padding-right: 30px;
+            padding-bottom: 82px;
+            padding-left: 30px;
+            background-color: rgba(114,116,117,0.29);
+            .wrapper-custom{
+              h5{
+                color: #ffffff;
+                text-align: center;
+                font-size: 18px;
+                line-height: 12px;
+                letter-spacing: 1px;
+                font-weight: normal;
+              }
+              h2{
+                color: #ffffff;
+                text-align: center;
+                font-size: 20px;
+                line-height: 25px;
+                font-weight: normal;
+              }
+            }
+          }
+        }
+        .other-news{
+          margin-bottom: 50px;
+          font-size: 15px;
+          font-weight: bold;
+          font-style: normal;
+          font-stretch: normal;
+          line-height: 1.47;
+          letter-spacing: normal;
+          text-align: left;
+          color: #2b2b2b;
+          .feature-item{
+            min-height: 120px;
+            margin: 0px 0px 30px 0px;
+            h3{
+              font-size: 1.6rem;
+              margin: 0px;
+              padding: 0px;
+              font-weight: 600;
+              transition: color ease 0.3s;
+            }
+          }
+        }
+      }
+    }
+    .comment{
+      margin-top: 30px;
+    }
+  }
+}

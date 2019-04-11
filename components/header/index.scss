@@ -224,6 +224,7 @@
       & > li {
         display: inline-block;
         padding: 0px;
+        line-height: 3.5;
         &:hover{
           & > a{
             color: #717c8c;
@@ -267,6 +268,64 @@
           margin: 0px 18px;
           color: #f1f1f1;
         }
+        &.mega-menu{
+          &:hover{
+            .dropdown-menu{
+              display: flex;
+            }
+          }
+          .dropdown-menu{
+            box-shadow: 0px 2px 5px #f1f1f1;
+            margin: -1px auto 0 auto;
+            right: 15px;
+            border-radius: 5px;
+            position: absolute;
+            display: none;
+            list-style-type: none;
+            @media screen and (min-width: 768px) {
+              left: 15px;
+              padding: 10px 5px 0;
+              width: 720px;
+            }
+            @media screen and (min-width: 992px) {
+              width: 940px;
+            }
+            @media screen and (min-width: 1200px) {
+              width: 1140px;
+              top: 65px;
+            }
+            li{
+              ul{
+                padding-bottom: 15px;
+                li{
+                  line-height: initial;
+                  &:first-child{
+                    padding: 10px 12px;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    font-size: 14px;
+                    color: #222222;
+                  }
+                  a{
+                    padding: 5px 12px;
+                    color: #969696 !important;
+                    font-size: 14px;
+                    line-height: 16px;
+                    width: 100%;
+                    display: block;
+                    background-color: transparent !important;
+                    transition: 0.2s all;
+                    font-weight: 600;
+                    &:hover{
+                      background-color: whitesmoke !important;
+                      color: $main-bg-color !important;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
         &:hover{
           ul.sub-menu{
             display: block;
@@ -299,11 +358,13 @@
   }
 
   .access-location{
+    line-height: 3.5;
     display: table;
     padding-left: 20px;
   }
 
   .nd_options_book_now_btn {
+    line-height: initial !important;
     background-color: #f3a46b;
     a{
       color: #fff !important;

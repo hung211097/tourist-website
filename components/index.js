@@ -20,8 +20,7 @@ import AutoHide from './auto-hide'
 import BtnViewMore from './btn-view-more/index'
 import WizardStep from './wizard-step'
 import Modal from './modal/index'
-
-// import Modal from './modal/index'
+import CommentsFacebook from './comment-facebook'
 
 const MyMap = dynamic(import('./mymap'), defaultLoading)
 const MapComponent = dynamic(import('./map-component'), defaultLoading)
@@ -31,6 +30,8 @@ const MapContact = dynamic(import('./map-contact'), defaultLoading)
 const SlickItem = dynamic(import('./slick-item'), defaultLoading)
 const Lightbox = dynamic(import('./lightbox'), defaultLoading)
 const SearchItem = dynamic(import('./search-item'), defaultLoading)
+const NewsItem = dynamic(import('./news-item'), defaultLoading)
+const Breadcrumb = dynamic(import('./breadcrumb'), defaultLoading)
 
 const MarkerComponent = dynamic(import('./marker'), defaultNoSSR)
 const TopPromotionItem = dynamic(import('./top-promotion-item'), defaultNoSSR)
@@ -61,5 +62,8 @@ export {
     Modal,
     SearchItem,
     PopupLoading,
-    PopupCancelTour
+    PopupCancelTour,
+    NewsItem,
+    Breadcrumb,
+    CommentsFacebook
 }

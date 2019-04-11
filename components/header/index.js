@@ -11,7 +11,7 @@ import { MdLocationOn } from "react-icons/md"
 import { saveLocation, logout, saveRedirectUrl, saveProfile } from '../../actions'
 import { setLocalStorage, getLocalStorage, removeItem } from '../../services/local-storage.service'
 import { KEY } from '../../constants/local-storage'
-import { lng } from '../../constants'
+import { lng, getDosmesticTour, getInternationalTour } from '../../constants'
 import { withNamespaces } from "react-i18next"
 
 const mapStateToProps = (state) => {
@@ -47,6 +47,8 @@ class Header extends React.Component {
   constructor(props) {
     super(props)
     this.apiService = ApiService()
+    this.domesticTour  = getDosmesticTour()
+    this.internationalTour = getInternationalTour()
     this.state = {
       showSidebar: false,
       showSearchBox: false,
@@ -306,9 +308,9 @@ class Header extends React.Component {
                         <a className="effect-hover">{t('header.home')}</a>
                       </Link>
                     </li>
-                    <li className={this.props.page === 'tours' ? 'active' : ''}>
-                      <Link route="tours">
-                        <a className="effect-hover">{t('header.tours')}</a>
+                    <li className={this.props.page === 'domestic_tour' ? 'active' : ''}>
+                      <Link route="tours" params={{id: 1, name: "tour-trong-nuoc"}}>
+                        <a className="effect-hover">{t('header.domestic_tour')}</a>
                       </Link>
                     </li>
                     {/*<li>
@@ -328,14 +330,14 @@ class Header extends React.Component {
                         </li>
                       </ul>
                     </li>*/}
-                    <li className={this.props.page === 'about-us' ? 'active' : ''}>
-                      <Link route="about-us">
-                        <a className="effect-hover">{t('header.about')}</a>
+                    <li className={this.props.page === 'international_tour' ? 'active' : ''}>
+                      <Link route="tours" params={{id: 2, name: "tour-quoc-te"}}>
+                        <a className="effect-hover">{t('header.international_tour')}</a>
                       </Link>
                     </li>
-                    <li className={this.props.page === 'contact' ? 'active' : ''}>
-                      <Link route="contact">
-                        <a className="effect-hover">{t('header.contact')}</a>
+                    <li className={this.props.page === 'news' ? 'active' : ''}>
+                      <Link route="news">
+                        <a className="effect-hover">{t('header.news')}</a>
                       </Link>
                     </li>
                     <li className="no-padding">
@@ -357,9 +359,6 @@ class Header extends React.Component {
                         </Link>
                       </li>
                     }
-                    {/*<li>
-                      <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/search-1/" className="effect-hover">BOOK NOW</a>
-                    </li>*/}
                     <li className="contact-sidebar-zone">
                       <div className="contact-sidebar">
                         <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
@@ -525,7 +524,7 @@ class Header extends React.Component {
               {/*start nd_options_container*/}
               <div className="nd_options_container nd_options_clearfix nd_options_position_relative">
                 <div className="nav-content nd_options_dnone_responsive">
-                  <div style={{height: '10px'}} className="nd_options_section" />
+                  {/*<div style={{height: '10px'}} className="nd_options_section" />*/}
                     {/*LOGO*/}
                     <Link route="home">
                       <a>
@@ -542,10 +541,63 @@ class Header extends React.Component {
                                 <a>{t('header.home')}</a>
                               </Link>
                             </li>
-                            <li className={this.props.page === 'tours' ? 'active' : ''}>
-                              <Link route="tours">
-                                <a>{t('header.tours')}</a>
+                            <li className={this.props.page === 'domestic_tours' ? 'active mega-menu' : 'mega-menu'}>
+                              <Link route="tours" params={{id: 1, name: "tour-trong-nuoc"}}>
+                                <a>{t('header.domestic_tour')}</a>
                               </Link>
+                              <ul className="row dropdown-menu">
+                                {this.domesticTour.map((item, key) => {
+                                    return(
+                                      <li className="col-sm-4 col-12" key={key}>
+                                        <ul className="list-unstyled">
+                                          <li>{t('header.' + item.name)}</li>
+                                          {item.locations.map((item_2, key_2) => {
+                                              return(
+                                                <li key={key_2}>
+                                                  <Link route="tours" params={{id: item_2.id, name: item_2.slug}}>
+                                                    <a>
+                                                      {item_2.name}
+                                                    </a>
+                                                  </Link>
+                                                </li>
+                                              )
+                                            })
+                                          }
+                                        </ul>
+                                      </li>
+                                    )
+                                  })
+                                }
+                              </ul>
+                            </li>
+                            <li className={this.props.page === 'international_tour' ? 'active mega-menu' : 'mega-menu'}>
+                              <Link route="tours" params={{id: 2, name: "tour-quoc-te"}}>
+                                <a>{t('header.international_tour')}</a>
+                              </Link>
+                              <ul className="row dropdown-menu">
+                                {this.internationalTour.map((item, key) => {
+                                    return(
+                                      <li className="col-sm-4 col-12" key={key}>
+                                        <ul className="list-unstyled">
+                                          <li>{t('header.' + item.name)}</li>
+                                          {item.locations.map((item_2, key_2) => {
+                                              return(
+                                                <li key={key_2}>
+                                                  <Link route="tours" params={{id: item_2.id, name: item_2.slug}}>
+                                                    <a>
+                                                      {t('header.' + item_2.name)}
+                                                    </a>
+                                                  </Link>
+                                                </li>
+                                              )
+                                            })
+                                          }
+                                        </ul>
+                                      </li>
+                                    )
+                                  })
+                                }
+                              </ul>
                             </li>
                             {/*<li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/">SHOP</a>
                               <ul className="sub-menu">
@@ -555,14 +607,9 @@ class Header extends React.Component {
                                 <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/my-account/">My account</a></li>
                               </ul>
                             </li>*/}
-                            <li className={this.props.page === 'about-us' ? 'active' : ''}>
-                              <Link route="about-us">
-                                <a>{t('header.about')}</a>
-                              </Link>
-                            </li>
-                            <li className={this.props.page === 'contact' ? 'active' : ''}>
-                              <Link route="contact">
-                                <a>{t('header.contact')}</a>
+                            <li className={this.props.page === 'news' ? 'active' : ''}>
+                              <Link route="news">
+                                <a>{t('header.news')}</a>
                               </Link>
                             </li>
                             <li className="nd_options_book_now_btn">
@@ -580,7 +627,7 @@ class Header extends React.Component {
                       </div>
                     </div>
                   </div>
-                  <div style={{height: '10px'}} className="nd_options_section" />
+                  {/*<div style={{height: '10px'}} className="nd_options_section" />*/}
                 </div>
                 {/*RESPONSIVE*/}
                 <div className="nd_options_section text-center d-none nd_options_display_block_responsive">
@@ -638,7 +685,7 @@ class Header extends React.Component {
           <div className={this.state.isSticky ? "nd_options_section navigation sticky_nav sticky_move_down"  : "nd_options_section navigation sticky_nav sticky_move_up"}>
             <div className="nd_options_container nd_options_position_relative">
               <div className="nav-content nd_options_dnone_responsive">
-                  <div style={{height: '10px'}} className="nd_options_section" />
+                  {/*<div style={{height: '10px'}} className="nd_options_section" />*/}
                     {/*LOGO*/}
                     <Link route="home">
                       <a>
@@ -655,10 +702,63 @@ class Header extends React.Component {
                                 <a>{t('header.home')}</a>
                               </Link>
                             </li>
-                            <li className={this.props.page === 'tours' ? 'active' : ''}>
-                              <Link route="tours">
-                                <a>{t('header.tours')}</a>
+                            <li className={this.props.page === 'domestic_tours' ? 'active mega-menu' : 'mega-menu'}>
+                              <Link route="tours" params={{id: 1, name: "tour-trong-nuoc"}}>
+                                <a>{t('header.domestic_tour')}</a>
                               </Link>
+                              <ul className="row dropdown-menu">
+                                {this.domesticTour.map((item, key) => {
+                                    return(
+                                      <li className="col-sm-4 col-12" key={key}>
+                                        <ul className="list-unstyled">
+                                          <li>{t('header.' + item.name)}</li>
+                                          {item.locations.map((item_2, key_2) => {
+                                              return(
+                                                <li key={key_2}>
+                                                  <Link route="tours" params={{id: item_2.id, name: item_2.slug}}>
+                                                    <a>
+                                                      {item_2.name}
+                                                    </a>
+                                                  </Link>
+                                                </li>
+                                              )
+                                            })
+                                          }
+                                        </ul>
+                                      </li>
+                                    )
+                                  })
+                                }
+                              </ul>
+                            </li>
+                            <li className={this.props.page === 'international_tour' ? 'active mega-menu' : 'mega-menu'}>
+                              <Link route="tours" params={{id: 2, name: "tour-quoc-te"}}>
+                                <a>{t('header.international_tour')}</a>
+                              </Link>
+                              <ul className="row dropdown-menu">
+                                {this.internationalTour.map((item, key) => {
+                                    return(
+                                      <li className="col-sm-4 col-12" key={key}>
+                                        <ul className="list-unstyled">
+                                          <li>{t('header.' + item.name)}</li>
+                                          {item.locations.map((item_2, key_2) => {
+                                              return(
+                                                <li key={key_2}>
+                                                  <Link route="tours" params={{id: item_2.id, name: item_2.slug}}>
+                                                    <a>
+                                                      {t('header.' + item_2.name)}
+                                                    </a>
+                                                  </Link>
+                                                </li>
+                                              )
+                                            })
+                                          }
+                                        </ul>
+                                      </li>
+                                    )
+                                  })
+                                }
+                              </ul>
                             </li>
                             {/*<li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/">SHOP</a>
                               <ul className="sub-menu">
@@ -668,14 +768,9 @@ class Header extends React.Component {
                                 <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/my-account/">My account</a></li>
                               </ul>
                             </li>*/}
-                            <li className={this.props.page === 'about-us' ? 'active' : ''}>
-                              <Link route="about-us">
-                                <a>{t('header.about')}</a>
-                              </Link>
-                            </li>
-                            <li className={this.props.page === 'contact' ? 'active' : ''}>
-                              <Link route="contact">
-                                <a>{t('header.contact')}</a>
+                            <li className={this.props.page === 'news' ? 'active' : ''}>
+                              <Link route="news">
+                                <a>{t('header.news')}</a>
                               </Link>
                             </li>
                             <li className="nd_options_book_now_btn">
@@ -693,7 +788,7 @@ class Header extends React.Component {
                       </div>
                     </div>
                   </div>
-                  <div style={{height: '10px'}} className="nd_options_section" />
+                  {/*<div style={{height: '10px'}} className="nd_options_section" />*/}
                 </div>
               {/*RESPONSIVE*/}
               <div className="nd_options_section text-center d-none nd_options_display_block_responsive">

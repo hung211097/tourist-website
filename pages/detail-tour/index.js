@@ -4,9 +4,9 @@ import PropTypes from 'prop-types'
 import { Layout, AutoHide } from 'components'
 import { connect } from 'react-redux'
 import ApiService from 'services/api.service'
-import { Router, Link } from 'routes'
+import { Link } from 'routes'
 import { RatingStar, BtnViewMore, MyMap, TourItem, Lightbox } from 'components'
-import { getCode, slugify, convertFullUrl } from '../../services/utils.service'
+import { getCode, convertFullUrl } from '../../services/utils.service'
 import { FaRegCalendarAlt, FaEye, FaSuitcase } from "react-icons/fa"
 import { formatDate, distanceFromDays, fromNow } from '../../services/time.service'
 import validateEmail from '../../services/validates/email.js'
@@ -17,6 +17,7 @@ import { FaFacebookF } from 'react-icons/fa'
 import _ from 'lodash'
 import { getLocalStorage } from '../../services/local-storage.service'
 import { KEY } from '../../constants/local-storage'
+import Redirect from 'routes/redirect'
 
 const mapStateToProps = (state) => {
   return {
@@ -31,13 +32,18 @@ class DetailTour extends React.Component {
     tourInfo: PropTypes.object,
     t: PropTypes.func,
     route: PropTypes.object,
-    user: PropTypes.object
+    user: PropTypes.object,
+    query: PropTypes.object
   }
 
-  static async getInitialProps({ query }) {
+  static async getInitialProps({ res, query }) {
       let apiService = ApiService()
-      let tourTurn = await apiService.getToursTurnId(query.id)
-      return { tourInfo: tourTurn.data };
+      try{
+          let tourTurn = await apiService.getToursTurnId(query.id)
+          return { tourInfo: tourTurn.data, query };
+      } catch(e) {
+          Redirect(res, '404')
+      }
   }
 
   constructor(props) {
@@ -78,24 +84,20 @@ class DetailTour extends React.Component {
   }
 
   componentDidMount(){
-    if(!this.state.tourTurn){
-      Router.pushRoute("home")
-    }
     if(this.state.tourTurn){
       this.apiService.getImageByTour(this.state.tourTurn.tour.id).then(imgs => {
         this.setState({
           images: imgs.data
         })
       })
+      this.onLoadMoreReviews()
+      this.apiService.increaseView(this.state.tourTurn.id).then(() => {})
     }
     this.apiService.getToursTurn(1, 4).then((res) => {
       this.setState({
         tourLike: res.data
       })
     })
-
-    this.onLoadMoreReviews()
-    this.apiService.increaseView(this.state.tourTurn.id).then(() => {})
   }
 
   handleChangeTab(index){
@@ -111,6 +113,60 @@ class DetailTour extends React.Component {
         reviews: [...this.state.reviews, ...res.data],
         nextPage: this.state.nextPage + 1,
         total_page: res.itemCount % this.per_page === 0 ? parseInt(res.itemCount / this.per_page) : parseInt(res.itemCount / this.per_page) + 1
+      })
+    })
+  }
+
+  componentDidUpdate(prevProps) {
+    if(+prevProps.query.id !== +this.props.query.id){
+      this.setState(
+        {
+          tourTurn: null,
+          tabId: 0,
+          isLoading: false,
+          nextPage: 1,
+          email: '',
+          author: '',
+          comment: '',
+          rating: 0,
+          isSubmit: false,
+          tourLike: [],
+          images: [],
+          error: '',
+          action: false,
+          actionError: false,
+          reviews: [],
+          average_rating: 0,
+          num_review: 0,
+          skip_comment: 0,
+          total_page: 0
+        },
+        () => {
+          this.init()
+        }
+      )
+    }
+  }
+
+  init() {
+    this.apiService.getToursTurnId(this.props.query.id).then((res) => {
+      this.setState({
+        tourTurn: res.data,
+        average_rating: res.data.tour.average_rating,
+        num_review: res.data.tour.num_review
+      }, () => {
+        this.apiService.getImageByTour(this.state.tourTurn.tour.id).then(imgs => {
+          this.setState({
+            images: imgs.data
+          })
+        })
+        this.onLoadMoreReviews()
+        this.apiService.increaseView(this.state.tourTurn.id).then(() => {})
+      })
+    })
+    this.apiService.getToursTurn(1, 4).then((res) => {
+      this.setState({
+        tourLike: res.data
       })
     })
   }
@@ -201,20 +257,21 @@ class DetailTour extends React.Component {
   }
 
   render() {
+    // console.log(this.state);
     const { tourTurn, num_review } = this.state
     const {t} = this.props
-    const distance = distanceFromDays(new Date(tourTurn.start_date), new Date(tourTurn.end_date)) + 1
-    const day_left = distanceFromDays(Date.now(), new Date(tourTurn.start_date))
-    const slot = tourTurn.num_max_people - tourTurn.num_current_people
+    const distance = tourTurn ? distanceFromDays(new Date(tourTurn.start_date), new Date(tourTurn.end_date)) + 1 : 0
+    const day_left = tourTurn ? distanceFromDays(Date.now(), new Date(tourTurn.start_date)) : 0
+    const slot = tourTurn ? tourTurn.num_max_people - tourTurn.num_current_people : 0
     const url = convertFullUrl(this.props.route.parsedUrl.pathname)
     return (
       <>
         <Layout page="tours" {...this.props}
-          seo={{
+          seo={tourTurn ? {
               title: tourTurn.tour.name,
               description: tourTurn.tour.description.substring(0, 100),
               image: tourTurn.tour.featured_img
-          }}>
+          } : {}}>
           <style jsx>{styles}</style>
           <section className='middle'>
             {/* section box*/}
@@ -288,7 +345,7 @@ class DetailTour extends React.Component {
                                 <div className="col-lg-4 col-md-6 col-sm-4 col-6 mg-10">{t('detail_tour.start_date')}:</div>
                                 <div className="col-lg-4 col-md-6 col-sm-3 col-6">{formatDate(tourTurn.start_date)}</div>
                                 <div className="col-lg-4 col-md-12 col-sm-5 col-12">
-                                  <Link route="search-result" params={{keyword: slugify(tourTurn.tour.name)}}>
+                                  <Link route="search-result" params={{keyword: tourTurn.tour.name}}>
                                     <a style={{color: '#333'}}>
                                       <FaRegCalendarAlt style={{fontSize: '16px', color: 'rgb(67, 74, 84)', position: 'relative', top: '-2px'}}/>
                                       &nbsp;&nbsp;

@@ -1,8 +1,10 @@
 const APP_URL = process.env.APP_URL
+import _ from 'lodash'
+import ReactHtmlParser from 'react-html-parser'
 import { transports } from '../constants/map-option'
-import { getLocalStorage } from './local-storage.service'
+import { getLocalStorag } from './local-storage.service'
 import { KEY } from '../constants/local-storage'
-import { lng } from '../constants'
+import { lng, mainCategoriesList } from '../constants'
 
 export function isServer() {
   return typeof window === 'undefined'
@@ -40,68 +42,154 @@ function _getElementOffset(el) {
   }
 }
 
-export function processMathRoundFix(number, fractionDigits = 1) {
-	return parseFloat(number).toFixed(fractionDigits)
+export function blogTitleString(title, stripLength = 8) {
+  if (!stripLength) {
+    return title
+  }
+  let tokens = title.split(' ')
+  tokens = tokens.splice(0, stripLength)
+  return ReactHtmlParser(tokens.join(' ') + '...')
 }
 
-export function getAirportPoint(routes){
+export function processMathRoundFix(number, fractionDigits = 1) {
+  return parseFloat(number).toFixed(fractionDigits)
+}
+
+export function getAirportPoint(routes) {
   let airport = []
-  for(let i = 0; i < routes.length; i++){
-    if(i < routes.length - 1 && routes[i].transport.name_en === transports.AIRWAY){
+  for (let i = 0; i < routes.length; i++) {
+    if (i < routes.length - 1 && routes[i].transport.name_en === transports.AIRWAY) {
       airport.push([routes[i], routes[++i]])
     }
   }
   return airport
 }
 
-export function getCode(id){
-  if(id < 10){
+export function getCode(id) {
+  if (id < 10) {
     return '0000' + id;
-  }
-  else if(id < 100){
+  } else if (id < 100) {
     return '000' + id
-  }
-  else if(id < 1000){
+  } else if (id < 1000) {
     return '00' + id
-  }
-  else if(id < 10000){
+  } else if (id < 10000) {
     return '0' + id
   }
   return id
 }
 
-export function shrinkCode(string){
+export function shrinkCode(string) {
   return string.replace(/^0+/, '')
 }
 
-export function capitalize(string){
+export function capitalize(string) {
   return string.charAt(0).toUpperCase() + string.substr(1)
 }
 
-export function calcTotalPage(total, per_page){
+export function calcTotalPage(total, per_page) {
   return total % per_page === 0 ? parseInt(total / per_page) : parseInt(total / per_page) + 1
 }
 
 export function slugify(str) {
-	if (!str || str == '') {
-		return 'unknown'
+  if (!str || str == '') {
+    return 'unknown'
+  }
+  str = str
+    .toLowerCase()
+    .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a')
+    .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, 'e')
+    .replace(/ì|í|ị|ỉ|ĩ/g, 'i')
+    .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, 'o')
+    .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, 'u')
+    .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, 'y')
+    .replace(/đ/g, 'd')
+    .replace(/\s+/g, '-') // Replace spaces with -
+    .replace(/[^\w-]+/g, '') // Remove all non-word chars
+    .replace(/--+/g, '-') // Replace multiple - with single -
+    .replace(/^-+/, '') // Trim - from start of text
+    .replace(/-+$/, '')
+  if (!str || str == '') {
+    return 'u';
+  }
+  return str;
+}
+
+function _getCategory(data) {
+	if (!data) {
+		return
 	}
-	str = str
-		.toLowerCase()
-		.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a')
-		.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, 'e')
-		.replace(/ì|í|ị|ỉ|ĩ/g, 'i')
-		.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, 'o')
-		.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, 'u')
-		.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, 'y')
-		.replace(/đ/g, 'd')
-		.replace(/\s+/g, '-') // Replace spaces with -
-		.replace(/[^\w-]+/g, '') // Remove all non-word chars
-		.replace(/--+/g, '-') // Replace multiple - with single -
-		.replace(/^-+/, '') // Trim - from start of text
-		.replace(/-+$/, '')
-	if (!str || str == '') {
-		return 'u';
+	let item = data.find((item) => {
+		return mainCategoriesList.indexOf(item.id) === -1
+	})
+
+	return item ? item : data[0]
+}
+
+function _getMainCategory(data) {
+	if (!data) {
+		return
 	}
-	return str;
+	let item = data.find((item) => {
+		return mainCategoriesList.indexOf(item.id) > -1
+	})
+
+	return item ? item : data[0]
+}
+
+export function convertWptoPost(data) {
+  return data.map((item) => {
+    return _.merge(_.pick(item, ['id', 'date', 'slug']), {
+      title: _.result(item, 'title.rendered'),
+      excerpt: _.result(item, 'excerpt.rendered'),
+      author: _.pick(_.result(item, '_embedded.author[0]'), ['id', 'name']), //_embedded.author[0].avatar_urls[96]
+      category: _getCategory(_.result(item, '_embedded.wp:term[0]')),
+      mainCategory: _getMainCategory(_.result(item, '_embedded.wp:term[0]')),
+      thumnail: _.result(
+        item,
+        "_embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url"
+      ),
+      photo: _.result(
+        item,
+        "_embedded['wp:featuredmedia'][0].media_details.sizes.full.source_url"
+      ),
+      metadesc: _.result(item, 'yoast_meta.yoast_wpseo_metadesc') ? _.result(item, 'yoast_meta.yoast_wpseo_metadesc') : _.result(item, 'title.rendered'),
+      metatitle: _.result(item, 'yoast_meta.yoast_wpseo_title') ? _.result(item, 'yoast_meta.yoast_wpseo_title') : _.result(item, 'title.rendered')
+    })
+  })
+}
+export function convertWptoPostDetail(data) {
+  return _.merge(_.pick(data, ['id', 'date', 'slug']), {
+    title: _.result(data, 'title.rendered'),
+    excerpt: _.result(data, 'excerpt.rendered'),
+    author: _.pick(_.result(data, '_embedded.author[0]'), ['id', 'name', 'description']), //_embedded.author[0].avatar_urls[96],
+    author_Avatar: _.result(data, "_embedded['author'][0].avatar_urls.96"),
+    category: _getCategory(_.result(data, '_embedded.wp:term[0]')),
+    mainCategory: _getMainCategory(_.result(data, '_embedded.wp:term[0]')),
+    thumnail: _.result(
+      data,
+      "_embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url"
+    ),
+    content: _.result(data, 'content.rendered'),
+    photo: _.result(
+      data,
+      "_embedded['wp:featuredmedia'][0].media_details.sizes.full.source_url"
+    ),
+    metadesc: _.result(data, 'yoast_meta.yoast_wpseo_metadesc') ? _.result(data, 'yoast_meta.yoast_wpseo_metadesc') : _.result(data, 'title.rendered'),
+    metatitle: _.result(data, 'yoast_meta.yoast_wpseo_title') ? _.result(data, 'yoast_meta.yoast_wpseo_title') : _.result(data, 'title.rendered')
+  })
+}
+
+export function convertWpTags(data) {
+  return data.map((item) => {
+    return _.pick(item, ['id', 'name', 'slug'])
+  })
+}
+
+export function convertWpTag(data){
+  return _.pick(data, ['id', 'name', 'slug'])
+}
+
+export function replaceInvalidCharacter(string){
+  let temp = string.replace('đ', '%C4%91')
+  return temp
 }
