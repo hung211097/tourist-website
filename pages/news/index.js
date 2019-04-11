@@ -6,6 +6,7 @@ import { withNamespaces } from "react-i18next"
 import ApiService from 'services/api.service'
 import ContentLoader from "react-content-loader"
 import Masonry from 'react-masonry-css'
+import { Router } from 'routes'
 
 class News extends React.Component {
   displayName = 'News'
@@ -21,10 +22,11 @@ class News extends React.Component {
       isLoading: false,
       nextPage: 1,
       news: [],
-      isFirstLoad: false
+      isFirstLoad: false,
+      keyword: ''
     }
     this.breadcrumb = [
-      {name: "Tin tức", route: "news"}
+      {name: props.t('breadcrumb.news'), route: "news"}
     ]
   }
 
@@ -41,6 +43,13 @@ class News extends React.Component {
     })
   }
 
+  UNSAFE_componentWillReceiveProps(props) {
+    let temp = this.breadcrumb.find((item) => {
+      return item.route === 'news'
+    })
+    temp.name = props.t('breadcrumb.news')
+  }
+
   onLoadMore(){
     this.setState({
       isLoading: true
@@ -52,6 +61,25 @@ class News extends React.Component {
         isLoading: false
       })
     })
+  }
+
+  handleChangeKeyword(e){
+    this.setState({
+      keyword: e.target.value
+    })
+  }
+
+  handleSubmit(e){
+    e.preventDefault()
+
+    if(!this.state.keyword){
+      return
+    }
+
+    this.setState({
+      keyword: ''
+    })
+    Router.pushRoute("news-search", {keyword: this.state.keyword})
   }
 
   render() {
@@ -74,6 +102,10 @@ class News extends React.Component {
                       </div>
                     </h1>
                   </div>
+                  <form onSubmit={this.handleSubmit.bind(this)}>
+                      <input type="text" value={this.state.keyword} name="keyword" onChange={this.handleChangeKeyword.bind(this)}
+                         placeholder={t('news.search')} />
+                  </form>
                   <div className="nd_options_section nd_options_height_110"/>
                 </div>
               </div>

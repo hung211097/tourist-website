@@ -184,3 +184,12 @@ export function convertWpTags(data) {
     return _.pick(item, ['id', 'name', 'slug'])
   })
 }
+
+export function convertWpTag(data){
+  return _.pick(data, ['id', 'name', 'slug'])
+}
+
+export function replaceInvalidCharacter(string){
+  let temp = string.replace('đ', '%C4%91')
+  return temp
+}

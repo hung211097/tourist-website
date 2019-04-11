@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import { FacebookProvider, Comments, CommentsCount } from 'react-facebook';
+import { FacebookProvider, Comments } from 'react-facebook';
 import PropTypes from 'prop-types'
 const AppID = process.env.FB_CLIENT_ID
 

@@ -649,7 +649,8 @@
   },
   "news": {
     "title": "TIN TỨC",
-    "read_more": "XEM THÊM"
+    "read_more": "XEM THÊM",
+    "search": "Tìm Kiếm tin tức"
   },
   "detail_news": {
     "title": "BÀI VIẾT CHI TIẾT",
@@ -658,6 +659,20 @@
     "tags": "Thẻ",
     "other_news": "Tin khác",
     "comment": "NHẬN XÉT"
+  },
+  "news_search": {
+    "title": "KẾT QUẢ TÌM KIẾM",
+    "search": "Tìm Kiếm tin tức",
+    "num_result_is": "Có {{count}} kết quả cho từ khóa: \"{{keyword}}\"",
+    "num_result_are": "Có {{count}} kết quả cho từ khóa: \"{{keyword}}\""
+  },
+  "breadcrumb": {
+    "news": "Tin tức",
+    "keyword_for": "Tìm kiếm từ khóa: ",
+    "tags_for": "Các tin tức có gắn thẻ: "
+  },
+  "news_tags": {
+    "title": "THẺ BÀI VIẾT"
   },
   "checkout": "THANH TOÁN",
   "show_more": "XEM THÊM",

@@ -649,7 +649,8 @@
   },
   "news": {
     "title": "NEWS",
-    "read_more": "READ MORE"
+    "read_more": "READ MORE",
+    "search": "Search news"
   },
   "detail_news": {
     "title": "SINGLE POST",
@@ -658,6 +659,20 @@
     "tags": "Tags",
     "other_news": "Other News",
     "comment": "COMMENT"
+  },
+  "news_search": {
+    "title": "SEARCH RESULT",
+    "search": "Search news",
+    "num_result_is": "There is {{count}} result for: \"{{keyword}}\"",
+    "num_result_are": "There are {{count}} results for: \"{{keyword}}\""
+  },
+  "breadcrumb": {
+    "news": "News",
+    "keyword_for": "Search for keyword: ",
+    "tags_for": "News with tag: "
+  },
+  "news_tags": {
+    "title": "TAG"
   },
   "checkout": "CHECKOUT",
   "show_more": "SHOW MORE",

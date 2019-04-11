@@ -8,7 +8,7 @@ import { TiThSmallOutline } from "react-icons/ti"
 import { UnmountClosed } from 'react-collapse'
 import ReactPaginate from 'react-paginate'
 import ApiService from 'services/api.service'
-import { calcTotalPage } from '../../services/utils.service'
+import { calcTotalPage, replaceInvalidCharacter } from '../../services/utils.service'
 import Autosuggest from 'react-autosuggest'
 import { Router } from 'routes'
 import { withNamespaces } from "react-i18next"
@@ -27,7 +27,7 @@ class SearchResult extends React.Component {
     let searchResult = null
     try{
       if(query.keyword){
-        searchResult = await apiService.search(1, 5, {name: query.keyword})
+        searchResult = await apiService.search(1, 5, {name: replaceInvalidCharacter(query.keyword)})
       }
       else{
         searchResult = await apiService.search(1, 5)

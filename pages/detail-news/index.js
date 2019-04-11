@@ -10,7 +10,7 @@ import { formatDate } from '../../services/time.service'
 import { isServer, blogTitleString, convertFullUrl } from '../../services/utils.service'
 import Redirect from 'routes/redirect'
 import Calendar from 'react-calendar/dist/entry.nostyle'
-import { Link } from 'routes'
+import { Router, Link } from 'routes'
 import { FacebookProvider, CommentsCount } from 'react-facebook'
 const AppID = process.env.FB_CLIENT_ID
 
@@ -45,7 +45,7 @@ class DetailNews extends React.Component {
       date: new Date()
     }
     this.breadcrumb = [
-      {name: "Tin tức", route: "news"},
+      {name: props.t('breadcrumb.news'), route: "news"},
       {name: blogTitleString(props.blog.title, 10), title: props.blog.title}
     ]
   }
@@ -66,6 +66,8 @@ class DetailNews extends React.Component {
     if(!this.state.keyword){
       return
     }
+
+    Router.pushRoute("news-search", {keyword: this.state.keyword})
   }
 
   loadSameBlog(excludeId) {
@@ -177,7 +179,9 @@ class DetailNews extends React.Component {
                        <div className="tagcloud">
                          {!!this.props.tags.length && this.props.tags.map((item, key) => {
                             return(
-                              <a key={key}>{item.name}</a>
+                              <Link route="news-tags" params={{id: item.id, slug: item.slug}} key={key}>
+                                <a key={key}>{item.name}</a>
+                              </Link>
                             )
                           })
                          }

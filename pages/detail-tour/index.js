@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Layout, AutoHide } from 'components'
 import { connect } from 'react-redux'
 import ApiService from 'services/api.service'
-import { Router, Link } from 'routes'
+import { Link } from 'routes'
 import { RatingStar, BtnViewMore, MyMap, TourItem, Lightbox } from 'components'
 import { getCode, convertFullUrl } from '../../services/utils.service'
 import { FaRegCalendarAlt, FaEye, FaSuitcase } from "react-icons/fa"
@@ -84,24 +84,20 @@ class DetailTour extends React.Component {
   }
 
   componentDidMount(){
-    if(!this.state.tourTurn){
-      Router.pushRoute("home")
-    }
     if(this.state.tourTurn){
       this.apiService.getImageByTour(this.state.tourTurn.tour.id).then(imgs => {
         this.setState({
           images: imgs.data
         })
       })
+      this.onLoadMoreReviews()
+      this.apiService.increaseView(this.state.tourTurn.id).then(() => {})
     }
     this.apiService.getToursTurn(1, 4).then((res) => {
       this.setState({
         tourLike: res.data
       })
     })
-
-    this.onLoadMoreReviews()
-    this.apiService.increaseView(this.state.tourTurn.id).then(() => {})
   }
 
   handleChangeTab(index){
@@ -121,33 +117,35 @@ class DetailTour extends React.Component {
     })
   }
 
-  UNSAFE_componentWillReceiveProps() {
+  componentDidUpdate(prevProps) {
+    if(+prevProps.query.id !== +this.props.query.id){
       this.setState(
-          {
-            tourTurn: null,
-            tabId: 0,
-            isLoading: false,
-            nextPage: 1,
-            email: '',
-            author: '',
-            comment: '',
-            rating: 0,
-            isSubmit: false,
-            tourLike: [],
-            images: [],
-            error: '',
-            action: false,
-            actionError: false,
-            reviews: [],
-            average_rating: 0,
-            num_review: 0,
-            skip_comment: 0,
-            total_page: 0
-          },
-          () => {
-              this.init()
-          }
+        {
+          tourTurn: null,
+          tabId: 0,
+          isLoading: false,
+          nextPage: 1,
+          email: '',
+          author: '',
+          comment: '',
+          rating: 0,
+          isSubmit: false,
+          tourLike: [],
+          images: [],
+          error: '',
+          action: false,
+          actionError: false,
+          reviews: [],
+          average_rating: 0,
+          num_review: 0,
+          skip_comment: 0,
+          total_page: 0
+        },
+        () => {
+          this.init()
+        }
       )
+    }
   }
 
   init() {
@@ -259,6 +257,7 @@ class DetailTour extends React.Component {
   }
 
   render() {
+    // console.log(this.state);
     const { tourTurn, num_review } = this.state
     const {t} = this.props
     const distance = tourTurn ? distanceFromDays(new Date(tourTurn.start_date), new Date(tourTurn.end_date)) + 1 : 0

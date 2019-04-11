@@ -6,6 +6,7 @@ const site_secret_key = process.env.KEY_GOOGLE_RECAPTCHA_SECRET
 import {
     convertWptoPost,
     convertWptoPostDetail,
+    convertWpTag,
     convertWpTags
 } from 'services/utils.service'
 
@@ -85,6 +86,7 @@ export default () => {
         let url = cmsURL + `posts?_embed&context=embed&page=${page}&per_page=${limit}`
         // url += offset >= 0 ? `&offset=${offset}` : ''
         url += params.categories ? `&categories=${params.categories}` : ''
+        url += params.tags ? `&tags=${params.tags}` : ''
         url += params.author ? `&author=${params.author}` : ''
         url += params.exclude ? `&exclude=${params.exclude}` : ''
         url += params.keyword ? `&search=${params.keyword}` : ''
@@ -105,6 +107,11 @@ export default () => {
     getTagsBlog: (id) => {
       return httpWPGet(cmsURL + `tags?post=${id}`).then((data) => {
           return convertWpTags(data)
+      })
+    },
+    getTagsInfo: (id) => {
+      return httpWPGet(cmsURL + `tags/${id}`).then((data) => {
+          return convertWpTag(data)
       })
     },
     register: (data) => {

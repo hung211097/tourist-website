@@ -22,8 +22,10 @@ module.exports = routes()                           // ----                   --
 .add('checkout-payment', '/checkout/payment')       // checkout-payment       checkout-payment        /checkout/payment
 .add('checkout-confirmation', '/checkout/confirmation')// checkout-confirmation    checkout-confirmation        /checkout/confirmation
 .add('news')                                        //news                    news                    /news
-.add('detail-news', '/news/:slug-:id(\\d+)')              //detail-news             detail-news             /news/:slug-:id
+.add('detail-news', '/news/:slug-:id(\\d+)')        //detail-news             detail-news             /news/:slug-:id
 .add('404')
+.add('news-search', '/news/search')                 //news-search             new-search              /news/search
+.add('news-tags', '/news/tags/:id(\\d+)/:slug')     //news-Tags               news-tags               /news/tags/:id/:slug
 // .add('user', '/user/:id', 'profile')                // user   profile   /user/:id
 // .add('/:noname/:lang(en|es)/:wow+', 'complex')      // (none) complex   /:noname/:lang(en|es)/:wow+
 // .add({name: 'beta', pattern: '/v3', page: 'v3'})    // beta   v3        /v3
