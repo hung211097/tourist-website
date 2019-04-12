@@ -118,7 +118,8 @@
     "concern": "TOP CONCERNED TOUR",
     "book": "BOOK NOW",
     "detail": "DETAIL",
-    "sale": "SALE"
+    "sale": "SALE",
+    "tag_title": "TAG TOUR"
   },
   "detail_tour": {
     "title": "DETAIL TOUR",
@@ -159,7 +160,11 @@
     "email_format": "Email must be in right format!",
     "email_required": "Email is required!",
     "success": "Post review successfully!",
-    "There is an error, please try again!": "There is an error, please try again!"
+    "There is an error, please try again!": "There is an error, please try again!",
+    "domestic_tour": "Domestic tour",
+    "international_tour": "International tour",
+    "category": "Category",
+    "tag": "Tag"
   },
   "wrong_auth": {
     "oops": "Oops!",
@@ -674,6 +679,7 @@
   "news_tags": {
     "title": "TAG"
   },
+  "search_location": "Search location",
   "checkout": "CHECKOUT",
   "show_more": "SHOW MORE",
   "btn_loading": "Loading...",

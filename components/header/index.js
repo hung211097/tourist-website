@@ -541,7 +541,7 @@ class Header extends React.Component {
                                 <a>{t('header.home')}</a>
                               </Link>
                             </li>
-                            <li className={this.props.page === 'domestic_tours' ? 'active mega-menu' : 'mega-menu'}>
+                            <li className={this.props.page === 'domestic_tour' ? 'active mega-menu' : 'mega-menu'}>
                               <Link route="tours" params={{id: 1, name: "tour-trong-nuoc"}}>
                                 <a>{t('header.domestic_tour')}</a>
                               </Link>
@@ -702,7 +702,7 @@ class Header extends React.Component {
                                 <a>{t('header.home')}</a>
                               </Link>
                             </li>
-                            <li className={this.props.page === 'domestic_tours' ? 'active mega-menu' : 'mega-menu'}>
+                            <li className={this.props.page === 'domestic_tour' ? 'active mega-menu' : 'mega-menu'}>
                               <Link route="tours" params={{id: 1, name: "tour-trong-nuoc"}}>
                                 <a>{t('header.domestic_tour')}</a>
                               </Link>

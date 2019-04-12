@@ -114,6 +114,14 @@ export default () => {
           return convertWpTag(data)
       })
     },
+    getTourTurnByCountry: (id, page = 1, limit = 4, params = {}) => {
+      let url = baseURL + `tour_classification/getTourTurnByCountry/${id}?page=${page}&per_page=${limit}`
+      return fetchCached(url)
+    },
+    getTourTurnByProvince: (id, page = 1, limit = 4, params = {}) => {
+      let url = baseURL + `tour_classification/getTourTurnByProvince/${id}?page=${page}&per_page=${limit}`
+      return fetchCached(url)
+    },
     register: (data) => {
       let url = baseURL + `user/register`
       return httpPost(url, data)

@@ -1,0 +1,103 @@
+@import 'styles/variables.scss';
+
+.middle{
+  padding-top: 137px;
+  @media screen and (max-width: 1112px){
+    padding-top: 91px;
+  }
+  @media screen and (max-width: 576px){
+    padding-top: 88px;
+  }
+  .content-title{
+    background-size: cover;
+    background-position: center top;
+    background-image: url('/static/images/p-16.jpg');
+    .overlay{
+      background-color: rgba(67, 74, 84, 0.3);
+      .title-contain{
+        box-sizing: border-box;
+        padding: 15px;
+        text-align: center;
+        h1{
+          font-weight: normal;
+          color: #fff !important;
+          font-size: 30px;
+          line-height: 30px;
+          span{
+            display: block;
+            font-weight: bold;
+          }
+          .underline{
+            display: inline-block;
+            background-color: #ffffff;
+            width: 80px;
+            height: 4px;
+          }
+        }
+      }
+    }
+  }
+  .content{
+    padding: 0px 15px;
+    margin-top: 55px;
+    box-sizing: border-box;
+    .title{
+      margin-top: 10px;
+      h1{
+        font-size: 30px;
+        line-height: 30px;
+        color: $main-title-color;
+      }
+      h3{
+        color: #a4a4a4;
+        font-size: 20px;
+        line-height: 20px;
+      }
+      .underline-title{
+        height: 4px;
+        width: 80px;
+        background-color: #f1f1f1;
+        display: inline-block;
+        margin-bottom: 30px;
+      }
+    }
+  }
+
+  .co-break{
+    display: inline-block;
+    z-index: 1;
+    width: 100%;
+    position: relative;
+    text-align: center;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    color: #7e7e7e;
+    &:before, &:after{
+      z-index: -1;
+      content: "";
+      width: 45%;
+      height: 1px;
+      background: #ddd;
+      position: absolute;
+      top: 50%;
+      text-align: center;
+      color: #7e7e7e
+    }
+    &:before{
+      left: 0;
+    }
+    &:after{
+      right: 0;
+    }
+  }
+  .link-page{
+    color: #a4a4a4;
+    margin-top: 20px;
+    a{
+      color: #0275d8;
+      &:hover{
+        text-decoration: underline;
+      }
+    }
+  }
+}

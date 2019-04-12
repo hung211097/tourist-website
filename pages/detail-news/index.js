@@ -80,7 +80,7 @@ class DetailNews extends React.Component {
 
   UNSAFE_componentWillReceiveProps(props) {
       this.loadSameBlog(props.blog.id)
-      this.breadcrumbs[this.breadcrumbs.length - 1] = { name: blogTitleString(props.blog.title, 8), title: props.blog.title }
+      this.breadcrumb[this.breadcrumb.length - 1] = { name: blogTitleString(props.blog.title, 8), title: props.blog.title }
   }
 
   render() {
