@@ -26,6 +26,8 @@ class TourItem extends React.Component {
 
   render() {
     const { item, t } = this.props
+    const price = item.original_price ? item.original_price : item.price
+    const discountPrice = item.end_price ? item.end_price : price - price * item.discount
     return (
       <div className="tour-item">
         <style jsx>{styles}</style>
@@ -44,9 +46,9 @@ class TourItem extends React.Component {
         </div>
         <div className="price">
           {!!item.discount &&
-            <span className="discount-price">{item.price.toLocaleString()}</span>
+            <span className="discount-price">{price.toLocaleString()}</span>
           }
-          <span className="amout">{!item.discount ? item.price.toLocaleString() : ' ' + (item.price - item.price * item.discount).toLocaleString()} VND</span>
+          <span className="amout"> {discountPrice.toLocaleString()} VND</span>
         </div>
         <div className="action">
           <Link route="checkout-passengers" params={{tour_id: item.id}}>

@@ -35,7 +35,8 @@
     "Mỹ": "Mỹ",
     "Úc": "Úc",
     "Cuba": "Cuba",
-    "Nam Phi": "Nam Phi"
+    "Nam Phi": "Nam Phi",
+    "Thổ Nhĩ Kỳ": "Thổ Nhĩ Kỳ"
   },
   "home": {
     "topsale": "TOP KHUYẾN MÃI",
@@ -118,7 +119,8 @@
     "concern": "TOP TOUR NHIỀU NGƯỜI QUAN TÂM",
     "book": "ĐẶT NGAY",
     "detail": "CHI TIẾT",
-    "sale": "KHUYẾN MÃI"
+    "sale": "KHUYẾN MÃI",
+    "tag_title": "TOUR GẮN THẺ"
   },
   "detail_tour": {
     "title": "CHI TIẾT TOUR",
@@ -159,7 +161,12 @@
     "email_format": "Email chưa đúng định dạng!",
     "email_required": "Email còn trống!",
     "success": "Gửi đánh giá thành công!",
-    "There is an error, please try again!": "Có lỗi xảy ra, hãy thử lại!"
+    "There is an error, please try again!": "Có lỗi xảy ra, hãy thử lại!",
+    "domestic_tour": "Tour trong nước",
+    "international_tour": "Tour quốc tế",
+    "category": "Loại tour",
+    "tag": "Thẻ",
+    "related_tour": "Tour liên quan"
   },
   "wrong_auth": {
     "oops": "Xin lỗi!",
@@ -674,6 +681,12 @@
   "news_tags": {
     "title": "THẺ BÀI VIẾT"
   },
+  "404": {
+    "not_found": "KHÔNG TÌM THẤY TRANG",
+    "content": "Trang bạn đang tìm kiếm có thể đã bị xóa, có tên thay đổi hoặc tạm thời không có.",
+    "homepage": "Trang Chủ"
+  },
+  "search_location": "Tìm địa điểm",
   "checkout": "THANH TOÁN",
   "show_more": "XEM THÊM",
   "btn_loading": "Đang tải...",

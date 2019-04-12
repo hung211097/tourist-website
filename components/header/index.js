@@ -309,7 +309,7 @@ class Header extends React.Component {
                       </Link>
                     </li>
                     <li className={this.props.page === 'domestic_tour' ? 'active' : ''}>
-                      <Link route="tours" params={{id: 1, name: "tour-trong-nuoc"}}>
+                      <Link route="tours" params={{id: 1, name: "trong-nuoc"}}>
                         <a className="effect-hover">{t('header.domestic_tour')}</a>
                       </Link>
                     </li>
@@ -331,7 +331,7 @@ class Header extends React.Component {
                       </ul>
                     </li>*/}
                     <li className={this.props.page === 'international_tour' ? 'active' : ''}>
-                      <Link route="tours" params={{id: 2, name: "tour-quoc-te"}}>
+                      <Link route="tours" params={{id: 2, name: "quoc-te"}}>
                         <a className="effect-hover">{t('header.international_tour')}</a>
                       </Link>
                     </li>
@@ -541,8 +541,8 @@ class Header extends React.Component {
                                 <a>{t('header.home')}</a>
                               </Link>
                             </li>
-                            <li className={this.props.page === 'domestic_tours' ? 'active mega-menu' : 'mega-menu'}>
-                              <Link route="tours" params={{id: 1, name: "tour-trong-nuoc"}}>
+                            <li className={this.props.page === 'domestic_tour' ? 'active mega-menu' : 'mega-menu'}>
+                              <Link route="tours" params={{id: 1, name: "trong-nuoc"}}>
                                 <a>{t('header.domestic_tour')}</a>
                               </Link>
                               <ul className="row dropdown-menu">
@@ -554,7 +554,7 @@ class Header extends React.Component {
                                           {item.locations.map((item_2, key_2) => {
                                               return(
                                                 <li key={key_2}>
-                                                  <Link route="tours" params={{id: item_2.id, name: item_2.slug}}>
+                                                  <Link route="tours-tags" params={{id: item_2.id, name: item_2.slug, mark: 'p'}}>
                                                     <a>
                                                       {item_2.name}
                                                     </a>
@@ -571,7 +571,7 @@ class Header extends React.Component {
                               </ul>
                             </li>
                             <li className={this.props.page === 'international_tour' ? 'active mega-menu' : 'mega-menu'}>
-                              <Link route="tours" params={{id: 2, name: "tour-quoc-te"}}>
+                              <Link route="tours" params={{id: 2, name: "quoc-te"}}>
                                 <a>{t('header.international_tour')}</a>
                               </Link>
                               <ul className="row dropdown-menu">
@@ -583,7 +583,7 @@ class Header extends React.Component {
                                           {item.locations.map((item_2, key_2) => {
                                               return(
                                                 <li key={key_2}>
-                                                  <Link route="tours" params={{id: item_2.id, name: item_2.slug}}>
+                                                  <Link route="tours-tags" params={{id: item_2.id, name: item_2.slug, mark: 'c'}}>
                                                     <a>
                                                       {t('header.' + item_2.name)}
                                                     </a>
@@ -702,8 +702,8 @@ class Header extends React.Component {
                                 <a>{t('header.home')}</a>
                               </Link>
                             </li>
-                            <li className={this.props.page === 'domestic_tours' ? 'active mega-menu' : 'mega-menu'}>
-                              <Link route="tours" params={{id: 1, name: "tour-trong-nuoc"}}>
+                            <li className={this.props.page === 'domestic_tour' ? 'active mega-menu' : 'mega-menu'}>
+                              <Link route="tours" params={{id: 1, name: "trong-nuoc"}}>
                                 <a>{t('header.domestic_tour')}</a>
                               </Link>
                               <ul className="row dropdown-menu">
@@ -715,7 +715,7 @@ class Header extends React.Component {
                                           {item.locations.map((item_2, key_2) => {
                                               return(
                                                 <li key={key_2}>
-                                                  <Link route="tours" params={{id: item_2.id, name: item_2.slug}}>
+                                                  <Link route="tours" params={{id: item_2.id, name: item_2.slug, mark: 'p'}}>
                                                     <a>
                                                       {item_2.name}
                                                     </a>
@@ -732,7 +732,7 @@ class Header extends React.Component {
                               </ul>
                             </li>
                             <li className={this.props.page === 'international_tour' ? 'active mega-menu' : 'mega-menu'}>
-                              <Link route="tours" params={{id: 2, name: "tour-quoc-te"}}>
+                              <Link route="tours" params={{id: 2, name: "quoc-te"}}>
                                 <a>{t('header.international_tour')}</a>
                               </Link>
                               <ul className="row dropdown-menu">
@@ -744,7 +744,7 @@ class Header extends React.Component {
                                           {item.locations.map((item_2, key_2) => {
                                               return(
                                                 <li key={key_2}>
-                                                  <Link route="tours" params={{id: item_2.id, name: item_2.slug}}>
+                                                  <Link route="tours" params={{id: item_2.id, name: item_2.slug, mark: 'c'}}>
                                                     <a>
                                                       {t('header.' + item_2.name)}
                                                     </a>

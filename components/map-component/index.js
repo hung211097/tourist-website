@@ -269,14 +269,15 @@ class MapComponent extends React.Component{
         let directionRoutes = []
         let tempPoint = []
         routes.forEach((item) => {
+          tempPoint.push(item)
           if(item.transport.name_en === transports.AIRWAY){
             directionRoutes.push(tempPoint)
             tempPoint = []
           }
-          else{
-            tempPoint.push(item)
-          }
         })
+        if(tempPoint.length){ //Trường hợp chỉ có 1 lần bay thì đưa những điểm đi bằng đường bộ còn lại vào để vẽ
+          directionRoutes.push(tempPoint)
+        }
         directionRoutes.forEach(item => {
           this.setDirections(item)
         })
@@ -436,7 +437,7 @@ class MapComponent extends React.Component{
                 onPlacesChanged={this.onPlacesChanged.bind(this)}>
                 <input
                   type="text"
-                  placeholder="Search location"
+                  placeholder={t('search_location')}
                   className="search-box-map"
                   style={{
                     boxSizing: `border-box`,

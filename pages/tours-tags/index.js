@@ -7,9 +7,10 @@ import { TourItem } from 'components'
 import ContentLoader from "react-content-loader"
 import { withNamespaces } from "react-i18next"
 import Redirect from 'routes/redirect'
+import { slugify } from '../../services/utils.service'
 
-class Tours extends React.Component {
-  displayName = 'Tours Page'
+class ToursTags extends React.Component {
+  displayName = 'Tours Tags Page'
 
   static propTypes = {
     t: PropTypes.func,
@@ -20,7 +21,13 @@ class Tours extends React.Component {
   static async getInitialProps({ res, query }) {
       let apiService = ApiService()
       try{
-          let tourInfo = await apiService.getTourTurnByType(query.id, 1, 4)
+          let tourInfo = []
+          if(query.mark === 'p'){
+            tourInfo = await apiService.getTourTurnByProvince(query.id, 1, 4)
+          }
+          else if(query.mark === 'c'){
+            tourInfo = await apiService.getTourTurnByCountry(query.id, 1, 4)
+          }
           if(!tourInfo.data.length){
             Redirect(res, '404')
           }
@@ -32,6 +39,7 @@ class Tours extends React.Component {
 
   constructor(props) {
     super(props)
+    this.apiService = ApiService()
     this.apiService = ApiService()
     this.state = {
       tourTurn: props.tourInfo.data,
@@ -47,7 +55,9 @@ class Tours extends React.Component {
       "2": "international_tour"
     }
     this.breadcrumb = [
-      {name: props.t(`detail_tour.${this.categories[props.query.id]}`)}
+      {name: props.t(`detail_tour.${this.categories[props.tourInfo.type_tour.id]}`),
+      route: "tours", params: {id: props.tourInfo.type_tour.id, name: slugify(props.tourInfo.type_tour.name)}},
+      {name: props.query.mark === 'c' ? props.tourInfo.country.name : props.query.mark === 'p' ? props.tourInfo.province.name : ''}
     ]
   }
 
@@ -61,17 +71,31 @@ class Tours extends React.Component {
     this.setState({
       isLoading: true,
     })
-    this.apiService.getTourTurnByType(this.props.query.id, this.state.nextPage, this.per_page).then((res) => {
-      this.setState({
-        tourTurn: [...this.state.tourTurn, ...res.data],
-        isLoading: false,
-        nextPage: res.next_page
+    if(this.props.query.mark === 'c'){
+      this.apiService.getTourTurnByCountry(this.props.query.id, this.state.nextPage, this.per_page).then((res) => {
+        this.setState({
+          tourTurn: [...this.state.tourTurn, ...res.data],
+          isLoading: false,
+          nextPage: res.next_page
+        })
       })
-    })
+    }
+    else if(this.props.query.mark === 'p'){
+      this.apiService.getTourTurnByProvince(this.props.query.id, this.state.nextPage, this.per_page).then((res) => {
+        this.setState({
+          tourTurn: [...this.state.tourTurn, ...res.data],
+          isLoading: false,
+          nextPage: res.next_page
+        })
+      })
+    }
   }
 
   UNSAFE_componentWillReceiveProps(props){
-    this.breadcrumb[this.breadcrumb.length - 1].name = props.t(`detail_tour.${this.categories[props.query.id]}`)
+    this.breadcrumb[this.breadcrumb.length - 2].name = props.t(`detail_tour.${this.categories[props.tourInfo.type_tour.id]}`)
+    this.breadcrumb[this.breadcrumb.length - 2].params = {id: props.tourInfo.type_tour.id, name: slugify(props.tourInfo.type_tour.name)}
+    this.breadcrumb[this.breadcrumb.length - 1].name =  props.query.mark === 'c' ? props.tourInfo.country.name :
+    props.query.mark === 'p' ? props.tourInfo.province.name : ''
   }
 
   componentDidUpdate(prevProps){
@@ -86,12 +110,13 @@ class Tours extends React.Component {
     }
   }
 
+
   render() {
     const {t} = this.props
     return (
       <>
-        <Layout page={+this.props.query.id === this.id_domestic_tour ? 'domestic_tour' :
-          +this.props.query.id === this.id_international_tour ? 'international_tour' : ''} {...this.props}>
+        <Layout page={this.props.tourInfo.type_tour.id === this.id_domestic_tour ? 'domestic_tour' :
+          this.props.tourInfo.type_tour.id === this.id_international_tour ? 'international_tour' : ''} {...this.props}>
           <style jsx>{styles}</style>
           <section className='middle'>
             {/* section box*/}
@@ -101,7 +126,7 @@ class Tours extends React.Component {
                   <div className="nd_options_section nd_options_height_110"/>
                   <div className="nd_options_section title-contain">
                     <h1>
-                      <span>{t('tours.title')}</span>
+                      <span>{t('tours.tag_title')}</span>
                       <div className="nd_options_section">
                         <span className="underline"></span>
                       </div>
@@ -157,4 +182,4 @@ class Tours extends React.Component {
   }
 }
 
-export default withNamespaces('translation')(Tours)
+export default withNamespaces('translation')(ToursTags)

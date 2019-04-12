@@ -35,7 +35,8 @@
     "Mỹ": "United States",
     "Úc": "Australia",
     "Cuba": "Cuba",
-    "Nam Phi": "South Africa"
+    "Nam Phi": "South Africa",
+    "Thổ Nhĩ Kỳ": "Turkey"
   },
   "home": {
     "topsale": "TOP SALE",
@@ -118,7 +119,8 @@
     "concern": "TOP CONCERNED TOUR",
     "book": "BOOK NOW",
     "detail": "DETAIL",
-    "sale": "SALE"
+    "sale": "SALE",
+    "tag_title": "TAG TOUR"
   },
   "detail_tour": {
     "title": "DETAIL TOUR",
@@ -159,7 +161,12 @@
     "email_format": "Email must be in right format!",
     "email_required": "Email is required!",
     "success": "Post review successfully!",
-    "There is an error, please try again!": "There is an error, please try again!"
+    "There is an error, please try again!": "There is an error, please try again!",
+    "domestic_tour": "Domestic tour",
+    "international_tour": "International tour",
+    "category": "Category",
+    "tag": "Tag",
+    "related_tour": "Related tour"
   },
   "wrong_auth": {
     "oops": "Oops!",
@@ -674,6 +681,12 @@
   "news_tags": {
     "title": "TAG"
   },
+  "404": {
+    "not_found": "Page not found",
+    "content": "The page you are looking for might have been removed had its name changed or is temporarily unavailable.",
+    "homepage": "Home Page"
+  },
+  "search_location": "Search location",
   "checkout": "CHECKOUT",
   "show_more": "SHOW MORE",
   "btn_loading": "Loading...",

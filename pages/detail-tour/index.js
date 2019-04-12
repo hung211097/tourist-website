@@ -5,8 +5,8 @@ import { Layout, AutoHide } from 'components'
 import { connect } from 'react-redux'
 import ApiService from 'services/api.service'
 import { Link } from 'routes'
-import { RatingStar, BtnViewMore, MyMap, TourItem, Lightbox } from 'components'
-import { getCode, convertFullUrl } from '../../services/utils.service'
+import { RatingStar, BtnViewMore, MyMap, TourItem, Lightbox, Breadcrumb } from 'components'
+import { getCode, convertFullUrl, slugify } from '../../services/utils.service'
 import { FaRegCalendarAlt, FaEye, FaSuitcase } from "react-icons/fa"
 import { formatDate, distanceFromDays, fromNow } from '../../services/time.service'
 import validateEmail from '../../services/validates/email.js'
@@ -60,6 +60,12 @@ class DetailTour extends React.Component {
       'children': 'Children'
     }
     this.per_page = 4
+    this.id_domestic_tour = 1
+    this.id_international_tour = 2
+    this.categories = {
+      "1": "domestic_tour",
+      "2": "international_tour"
+    }
     this.state = {
       tourTurn: this.props.tourInfo,
       tabId: 0,
@@ -71,6 +77,7 @@ class DetailTour extends React.Component {
       rating: 0,
       isSubmit: false,
       tourLike: [],
+      relatedTour: [],
       images: [],
       error: '',
       action: false,
@@ -81,6 +88,11 @@ class DetailTour extends React.Component {
       skip_comment: 0,
       total_page: 0
     }
+    this.breadcrumb = [
+      {name: props.t(`detail_tour.${this.categories[props.tourInfo.tour.type_tour.id]}`),
+      route: "tours", params: {id: props.tourInfo.tour.type_tour.id, name: slugify(props.tourInfo.tour.type_tour.name)}},
+      {name: props.tourInfo.tour.name}
+    ]
   }
 
   componentDidMount(){
@@ -92,10 +104,19 @@ class DetailTour extends React.Component {
       })
       this.onLoadMoreReviews()
       this.apiService.increaseView(this.state.tourTurn.id).then(() => {})
+      this.loadOtherTour()
     }
+  }
+
+  loadOtherTour(){
     this.apiService.getToursTurn(1, 4).then((res) => {
       this.setState({
         tourLike: res.data
+      })
+    })
+    this.apiService.getTourTurnByType(this.state.tourTurn.tour.type_tour.id).then((res) => {
+      this.setState({
+        relatedTour: res.data
       })
     })
   }
@@ -115,6 +136,14 @@ class DetailTour extends React.Component {
         total_page: res.itemCount % this.per_page === 0 ? parseInt(res.itemCount / this.per_page) : parseInt(res.itemCount / this.per_page) + 1
       })
     })
+  }
+
+  UNSAFE_componentWillReceiveProps(props){
+    let temp = this.breadcrumb.find((item) => {
+      return item.params && item.params.id === this.state.tourTurn.tour.type_tour.id
+    })
+    temp.name = props.t(`detail_tour.${this.categories[props.tourInfo.tour.type_tour.id]}`)
+    temp.params = {id: props.tourInfo.tour.type_tour.id, name: slugify(props.tourInfo.tour.type_tour.name)}
   }
 
   componentDidUpdate(prevProps) {
@@ -162,12 +191,9 @@ class DetailTour extends React.Component {
         })
         this.onLoadMoreReviews()
         this.apiService.increaseView(this.state.tourTurn.id).then(() => {})
+        this.loadOtherTour()
       })
-    })
-    this.apiService.getToursTurn(1, 4).then((res) => {
-      this.setState({
-        tourLike: res.data
-      })
+      this.breadcrumb[this.breadcrumb.length - 1] = { name: this.state.tourTurn.tour.name }
     })
   }
 
@@ -257,7 +283,6 @@ class DetailTour extends React.Component {
   }
 
   render() {
-    // console.log(this.state);
     const { tourTurn, num_review } = this.state
     const {t} = this.props
     const distance = tourTurn ? distanceFromDays(new Date(tourTurn.start_date), new Date(tourTurn.end_date)) + 1 : 0
@@ -266,7 +291,8 @@ class DetailTour extends React.Component {
     const url = convertFullUrl(this.props.route.parsedUrl.pathname)
     return (
       <>
-        <Layout page="tours" {...this.props}
+        <Layout page={tourTurn && tourTurn.tour.type_tour.id === this.id_domestic_tour ? 'domestic_tour' :
+        tourTurn && tourTurn.tour.type_tour.id === this.id_international_tour ? 'international_tour' : ''} {...this.props}
           seo={tourTurn ? {
               title: tourTurn.tour.name,
               description: tourTurn.tour.description.substring(0, 100),
@@ -294,6 +320,11 @@ class DetailTour extends React.Component {
             {tourTurn &&
               <div className="nd_options_container nd_options_clearfix content">
                 <div className="content-page">
+                  <div className="row">
+                    <div className="col-12">
+                      <Breadcrumb data={this.breadcrumb} />
+                    </div>
+                  </div>
                   <div className="inner">
                     <div className="row img-tour">
                       <div className="col-sm-6 no-padding">
@@ -387,16 +418,33 @@ class DetailTour extends React.Component {
                                 <span>Share</span>
                               </div>
                             </FacebookShareButton>
-                            {/*<div className="product_meta">
+                            <div className="product_meta">
                               <span className="posted-in">
-                                Category:&nbsp;
-                                <a href="javascript:;" rel="tag">Travel</a>
+                                {t('detail_tour.category')}:&nbsp;
+                                <Link route="tours" params={{id: tourTurn.tour.type_tour.id, name: slugify(tourTurn.tour.type_tour.name)}}>
+                                  <a rel="tag">{t(`detail_tour.${this.categories[tourTurn.tour.type_tour.id]}`)}</a>
+                                </Link>
                               </span>
                               <span className="tagged-as">
-                                Tag:&nbsp;
-                                <a href="javascript:;" rel="tag">Promotion</a>
+                                {t('detail_tour.tag')}:&nbsp;
+                                {!!tourTurn.tour.tour_countries.length && tourTurn.tour.tour_countries.map((item, key) => {
+                                    return(
+                                      <Link route="tours-tags" params={{id: item.country.id, name: slugify(item.country.name), mark: "c"}} key={key}>
+                                        <a rel="tag" key={key}>{item.country.name}</a>
+                                      </Link>
+                                    )
+                                  })
+                                }
+                                {!!tourTurn.tour.tour_provinces.length && tourTurn.tour.tour_provinces.map((item, key) => {
+                                    return(
+                                      <Link route="tours-tags" params={{id: item.province.id, name: slugify(item.province.name), mark: "p"}} key={key}>
+                                        <a rel="tag" key={key}>{item.province.name}</a>
+                                      </Link>
+                                    )
+                                  })
+                                }
                               </span>
-                            </div>*/}
+                            </div>
                           </div>
                       </div>
                     </div>
@@ -615,6 +663,18 @@ class DetailTour extends React.Component {
                     <h2>{t('detail_tour.you_May_like')}</h2>
                     <div className="row">
                       {!!this.state.tourLike.length && this.state.tourLike.map((item) => {
+                          return(
+                            <div className="col-sm-3" key={item.id}>
+                              <TourItem item={item} t={t}/>
+                            </div>
+                          )
+                        })
+                      }
+                    </div>
+                    <div className="nd_options_height_40" />
+                    <h2>{t('detail_tour.related_tour')}</h2>
+                    <div className="row">
+                      {!!this.state.relatedTour.length && this.state.relatedTour.map((item) => {
                           return(
                             <div className="col-sm-3" key={item.id}>
                               <TourItem item={item} t={t}/>
