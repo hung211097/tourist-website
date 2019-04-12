@@ -3,8 +3,9 @@ import PropTypes from 'prop-types'
 import { Layout } from 'components'
 import styles from '../styles/error.scss'
 import { Link } from 'routes'
+import { withNamespaces } from "react-i18next"
 
-export default class Error extends React.Component {
+class Error extends React.Component {
     displayName = 'Error Page'
 
     static getInitialProps ({ res, err }) {
@@ -13,10 +14,12 @@ export default class Error extends React.Component {
     }
 
     static propTypes = {
-        statusCode: PropTypes.number
+        statusCode: PropTypes.number,
+        t: PropTypes.func
     }
 
     render () {
+      const {t} = this.props
         return(
             <>
                 <Layout page = "error" {...this.props}>
@@ -29,10 +32,10 @@ export default class Error extends React.Component {
                               <div className="notfound-404">
                                 <h1>:(</h1>
                               </div>
-                              <h2>404 - Page not found</h2>
-                              <p>The page you are looking for might have been removed had its name changed or is temporarily unavailable.</p>
+                              <h2>404 - {t('404.not_found')}</h2>
+                              <p>{t('404.content')}</p>
                               <Link route="home">
-                                <a>home page</a>
+                                <a>{t('404.homepage')}</a>
                               </Link>
                             </div>
                           </div>
@@ -44,3 +47,5 @@ export default class Error extends React.Component {
         )
     }
 }
+
+export default  withNamespaces('translation')(Error)

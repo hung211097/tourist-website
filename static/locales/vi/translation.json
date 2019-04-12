@@ -35,7 +35,8 @@
     "Mỹ": "Mỹ",
     "Úc": "Úc",
     "Cuba": "Cuba",
-    "Nam Phi": "Nam Phi"
+    "Nam Phi": "Nam Phi",
+    "Thổ Nhĩ Kỳ": "Thổ Nhĩ Kỳ"
   },
   "home": {
     "topsale": "TOP KHUYẾN MÃI",
@@ -164,7 +165,8 @@
     "domestic_tour": "Tour trong nước",
     "international_tour": "Tour quốc tế",
     "category": "Loại tour",
-    "tag": "Thẻ"
+    "tag": "Thẻ",
+    "related_tour": "Tour liên quan"
   },
   "wrong_auth": {
     "oops": "Xin lỗi!",
@@ -678,6 +680,11 @@
   },
   "news_tags": {
     "title": "THẺ BÀI VIẾT"
+  },
+  "404": {
+    "not_found": "KHÔNG TÌM THẤY TRANG",
+    "content": "Trang bạn đang tìm kiếm có thể đã bị xóa, có tên thay đổi hoặc tạm thời không có.",
+    "homepage": "Trang Chủ"
   },
   "search_location": "Tìm địa điểm",
   "checkout": "THANH TOÁN",

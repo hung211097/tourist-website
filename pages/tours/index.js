@@ -1,60 +1,97 @@
 import React from 'react'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
-import { Layout, SlickItem } from 'components'
+import { Layout, Breadcrumb, BtnViewMore } from 'components'
 import ApiService from '../../services/api.service'
 import { TourItem } from 'components'
 import ContentLoader from "react-content-loader"
 import { withNamespaces } from "react-i18next"
+import Redirect from 'routes/redirect'
 
 class Tours extends React.Component {
   displayName = 'Tours Page'
 
   static propTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
+    tourInfo: PropTypes.object,
+    query: PropTypes.object,
+  }
+
+  static async getInitialProps({ res, query }) {
+      let apiService = ApiService()
+      try{
+          let tourInfo = await apiService.getTourTurnByType(query.id, 1, 4)
+          if(!tourInfo.data.length){
+            Redirect(res, '404')
+          }
+          return { tourInfo, query };
+      } catch(e) {
+          Redirect(res, '404')
+      }
   }
 
   constructor(props) {
     super(props)
     this.apiService = ApiService()
     this.state = {
-      toursPopular: [],
-      toursView: [],
-      toursRating: [],
-      isLoadContent: true
+      tourTurn: props.tourInfo.data,
+      isLoadContent: true,
+      isLoading: false,
+      nextPage: props.tourInfo.next_page
     }
+    this.per_page = 4
+    this.id_domestic_tour = 1
+    this.id_international_tour = 2
+    this.categories = {
+      "1": "domestic_tour",
+      "2": "international_tour"
+    }
+    this.breadcrumb = [
+      {name: props.t(`detail_tour.${this.categories[props.query.id]}`)}
+    ]
   }
 
   componentDidMount() {
-    this.onLoadMore()
+    this.setState({
+      isLoadContent: false
+    })
   }
 
   onLoadMore(){
-    this.apiService.getToursTurn(1, 5, {sortBy: 'booking', sortType: "DESC"}).then((res) => {
+    this.setState({
+      isLoading: true,
+    })
+    this.apiService.getTourTurnByType(this.props.query.id, this.state.nextPage, this.per_page).then((res) => {
       this.setState({
-        toursPopular: [...this.state.toursPopular, ...res.data],
-        isLoadContent: false
+        tourTurn: [...this.state.tourTurn, ...res.data],
+        isLoading: false,
+        nextPage: res.next_page
       })
     })
+  }
 
-    this.apiService.getToursTurn(1, 5, {sortBy: 'view', sortType: "DESC"}).then((res) => {
-      this.setState({
-        toursView: [...this.state.toursView, ...res.data],
-      })
-    })
+  UNSAFE_componentWillReceiveProps(props){
+    this.breadcrumb[this.breadcrumb.length - 1].name = props.t(`detail_tour.${this.categories[props.query.id]}`)
+  }
 
-    this.apiService.getToursTurn(1, 5, {sortBy: 'price', sortType: "DESC"}).then((res) => {
+  componentDidUpdate(prevProps){
+    if(this.props.query.id !== prevProps.query.id){
       this.setState({
-        toursRating: [...this.state.toursRating, ...res.data],
+        tourTurn:[],
+        isLoading: false,
+        nextPage: 1
+      }, () => {
+        this.onLoadMore()
       })
-    })
+    }
   }
 
   render() {
     const {t} = this.props
     return (
       <>
-        <Layout page="tours" {...this.props}>
+        <Layout page={+this.props.query.id === this.id_domestic_tour ? 'domestic_tour' :
+          +this.props.query.id === this.id_international_tour ? 'international_tour' : ''} {...this.props}>
           <style jsx>{styles}</style>
           <section className='middle'>
             {/* section box*/}
@@ -76,30 +113,20 @@ class Tours extends React.Component {
             </div>
             <div className="nd_options_container nd_options_clearfix content">
               <div className="row list-tour top-popular">
-                <div className="col-sm-12 title">
-                  <div className="wrapper text-center">
-                    <h1>{t('tours.popular')}</h1>
-                    <div className="nd_options_height_10" />
-                    <div className="nd_options_section nd_options_line_height_0 text-center">
-                      <span className="underline-title"/>
-                    </div>
-                  </div>
+                <div className="col-12">
+                  <Breadcrumb data={this.breadcrumb} />
                 </div>
-                <div className="col-sm-12">
-                  <SlickItem small>
-                    {!!this.state.toursPopular && this.state.toursPopular.map((item, key) => {
-                        return(
-                          <div className="col-12" key={key}>
-                            <TourItem item={item} t={t}/>
-                          </div>
-                        )
-                      })
-                    }
-                  </SlickItem>
-                </div>
-                {!this.state.toursPopular.length && this.state.isLoadContent && [1,2,3,4].map((item, key) => {
+                {!!this.state.tourTurn && this.state.tourTurn.map((item, key) => {
                     return(
-                      <div className="col-sm-6 col-md-4 col-lg-3" key={key}>
+                      <div className="col-sm-3 mt-4" key={key}>
+                        <TourItem item={item} t={t}/>
+                      </div>
+                    )
+                  })
+                }
+                {!this.state.tourTurn.length && this.state.isLoadContent && [1,2,3,4].map((item, key) => {
+                    return(
+                      <div className="col-sm-3" key={key}>
                         <ContentLoader
                           height={340}
                           width={270}
@@ -117,59 +144,11 @@ class Tours extends React.Component {
                   })
                 }
               </div>
-              <div className="nd_options_height_20" />
-              <div className="row list-tour top-rating">
-                <div className="col-sm-12 title">
-                  <div className="wrapper text-center">
-                    <h1>{t('tours.rating')}</h1>
-                    <div className="nd_options_height_10" />
-                    <div className="nd_options_section nd_options_line_height_0 text-center">
-                      <span className="underline-title"/>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-sm-12">
-                  <SlickItem small>
-                    {!!this.state.toursRating && this.state.toursRating.map((item, key) => {
-                        return(
-                          <div className="col-12" key={key}>
-                            <TourItem item={item} t={t}/>
-                          </div>
-                        )
-                      })
-                    }
-                  </SlickItem>
-                </div>
-              </div>
-              <div className="nd_options_height_20" />
-              <div className="row list-tour top-view">
-                <div className="col-sm-12 title">
-                  <div className="wrapper text-center">
-                    <h1>{t('tours.concern')}</h1>
-                    <div className="nd_options_height_10" />
-                    <div className="nd_options_section nd_options_line_height_0 text-center">
-                      <span className="underline-title"/>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-sm-12">
-                  <SlickItem small>
-                    {!!this.state.toursView && this.state.toursView.map((item, key) => {
-                        return(
-                          <div className="col-12" key={key}>
-                            <TourItem item={item} t={t}/>
-                          </div>
-                        )
-                      })
-                    }
-                  </SlickItem>
-                </div>
-              </div>
-              {/*<BtnViewMore
+              <BtnViewMore
                 isLoading={this.state.isLoading}
                 show={this.state.nextPage > 0}
                 onClick={this.onLoadMore.bind(this)}
-              />*/}
+              />
             </div>
           </section>
         </Layout>

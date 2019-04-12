@@ -35,7 +35,8 @@
     "Mỹ": "United States",
     "Úc": "Australia",
     "Cuba": "Cuba",
-    "Nam Phi": "South Africa"
+    "Nam Phi": "South Africa",
+    "Thổ Nhĩ Kỳ": "Turkey"
   },
   "home": {
     "topsale": "TOP SALE",
@@ -164,7 +165,8 @@
     "domestic_tour": "Domestic tour",
     "international_tour": "International tour",
     "category": "Category",
-    "tag": "Tag"
+    "tag": "Tag",
+    "related_tour": "Related tour"
   },
   "wrong_auth": {
     "oops": "Oops!",
@@ -678,6 +680,11 @@
   },
   "news_tags": {
     "title": "TAG"
+  },
+  "404": {
+    "not_found": "Page not found",
+    "content": "The page you are looking for might have been removed had its name changed or is temporarily unavailable.",
+    "homepage": "Home Page"
   },
   "search_location": "Search location",
   "checkout": "CHECKOUT",

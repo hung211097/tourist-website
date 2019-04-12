@@ -77,6 +77,7 @@ class DetailTour extends React.Component {
       rating: 0,
       isSubmit: false,
       tourLike: [],
+      relatedTour: [],
       images: [],
       error: '',
       action: false,
@@ -103,10 +104,19 @@ class DetailTour extends React.Component {
       })
       this.onLoadMoreReviews()
       this.apiService.increaseView(this.state.tourTurn.id).then(() => {})
+      this.loadOtherTour()
     }
+  }
+
+  loadOtherTour(){
     this.apiService.getToursTurn(1, 4).then((res) => {
       this.setState({
         tourLike: res.data
+      })
+    })
+    this.apiService.getTourTurnByType(this.state.tourTurn.tour.type_tour.id).then((res) => {
+      this.setState({
+        relatedTour: res.data
       })
     })
   }
@@ -133,6 +143,7 @@ class DetailTour extends React.Component {
       return item.params && item.params.id === this.state.tourTurn.tour.type_tour.id
     })
     temp.name = props.t(`detail_tour.${this.categories[props.tourInfo.tour.type_tour.id]}`)
+    temp.params = {id: props.tourInfo.tour.type_tour.id, name: slugify(props.tourInfo.tour.type_tour.name)}
   }
 
   componentDidUpdate(prevProps) {
@@ -180,13 +191,9 @@ class DetailTour extends React.Component {
         })
         this.onLoadMoreReviews()
         this.apiService.increaseView(this.state.tourTurn.id).then(() => {})
+        this.loadOtherTour()
       })
       this.breadcrumb[this.breadcrumb.length - 1] = { name: this.state.tourTurn.tour.name }
-    })
-    this.apiService.getToursTurn(1, 4).then((res) => {
-      this.setState({
-        tourLike: res.data
-      })
     })
   }
 
@@ -276,7 +283,6 @@ class DetailTour extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     const { tourTurn, num_review } = this.state
     const {t} = this.props
     const distance = tourTurn ? distanceFromDays(new Date(tourTurn.start_date), new Date(tourTurn.end_date)) + 1 : 0
@@ -657,6 +663,18 @@ class DetailTour extends React.Component {
                     <h2>{t('detail_tour.you_May_like')}</h2>
                     <div className="row">
                       {!!this.state.tourLike.length && this.state.tourLike.map((item) => {
+                          return(
+                            <div className="col-sm-3" key={item.id}>
+                              <TourItem item={item} t={t}/>
+                            </div>
+                          )
+                        })
+                      }
+                    </div>
+                    <div className="nd_options_height_40" />
+                    <h2>{t('detail_tour.related_tour')}</h2>
+                    <div className="row">
+                      {!!this.state.relatedTour.length && this.state.relatedTour.map((item) => {
                           return(
                             <div className="col-sm-3" key={item.id}>
                               <TourItem item={item} t={t}/>
