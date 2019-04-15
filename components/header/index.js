@@ -41,7 +41,7 @@ class Header extends React.Component {
     user: PropTypes.object,
     logout: PropTypes.func,
     i18n: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
   }
 
   constructor(props) {
@@ -267,8 +267,13 @@ class Header extends React.Component {
     })
   }
 
+  handleShowRecommendation(){
+
+  }
+
   render() {
     const { t } = this.props
+    // console.log(this.props);
     return (
       <div itemScope="itemScope" itemType="http://schema.org/WPHeader">
         <style jsx>{styles}</style>
@@ -612,10 +617,15 @@ class Header extends React.Component {
                                 <a>{t('header.news')}</a>
                               </Link>
                             </li>
-                            <li className="nd_options_book_now_btn">
-                              <Link route="search-result">
-                                <a>{t('header.booknow')}</a>
-                              </Link>
+                            <li className="nd_options_recommend">
+                              <div className="count-location">
+                                <span>5</span>
+                              </div>
+                              <div className="recommend-container">
+                                <a onClick={this.handleShowRecommendation.bind(this)} title="Recommendation">
+                                  <img alt="icon" src="/static/images/luggage.png"/>
+                                </a>
+                              </div>
                             </li>
                           </ul>
                           <div className="access-location">
@@ -773,10 +783,15 @@ class Header extends React.Component {
                                 <a>{t('header.news')}</a>
                               </Link>
                             </li>
-                            <li className="nd_options_book_now_btn">
-                              <Link route="search-result">
-                                <a>{t('header.booknow')}</a>
-                              </Link>
+                            <li className="nd_options_recommend">
+                              <div className="count-location">
+                                <span>5</span>
+                              </div>
+                              <div className="recommend-container">
+                                <a onClick={this.handleShowRecommendation.bind(this)} title="Recommendation">
+                                  <img alt="icon" src="/static/images/luggage.png"/>
+                                </a>
+                              </div>
                             </li>
                           </ul>
                           <div className="access-location">

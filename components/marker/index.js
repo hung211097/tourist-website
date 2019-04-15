@@ -4,19 +4,28 @@ import PropTypes from 'prop-types'
 import { FaEye, FaEyeSlash } from "react-icons/fa"
 import ApiService from '../../services/api.service'
 import { connect } from 'react-redux'
-import { toggleShowTour } from '../../actions'
+import { toggleShowTour, addRecommendLocaiton } from '../../actions'
 import { Link } from 'routes'
 import { slugify } from '../../services/utils.service'
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
+  let isInSuitcase = false
+  let temp = state.recommendLocation.find((item) => {
+    return item.id === props.infoLocation.id && !props.isMe
+  })
+  if(temp){
+    isInSuitcase = true
+  }
   return {
-    isShowTour: state.isShowTour
+    isShowTour: state.isShowTour,
+    isInSuitcase
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleShowTour: (isShow) => {dispatch(toggleShowTour(isShow))}
+    toggleShowTour: (isShow) => {dispatch(toggleShowTour(isShow))},
+    addRecommendLocaiton: (location) => {dispatch(addRecommendLocaiton(location))}
   }
 }
 
@@ -29,7 +38,9 @@ class MarkerComponent extends React.Component{
     toggleShowTour: PropTypes.func,
     isShowTour: PropTypes.bool,
     isSetTour: PropTypes.bool,
-    t: PropTypes.func
+    t: PropTypes.func,
+    isInSuitcase: PropTypes.bool,
+    addRecommendLocaiton: PropTypes.func
   }
 
   static defaultProps = {
