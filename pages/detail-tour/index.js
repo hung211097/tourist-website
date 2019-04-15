@@ -15,6 +15,7 @@ import { validateStringWithoutNumber } from '../../services/validates'
 import { FacebookShareButton } from 'react-share'
 import { FaFacebookF } from 'react-icons/fa'
 import _ from 'lodash'
+import { metaData } from '../../constants/meta-data'
 import { getLocalStorage } from '../../services/local-storage.service'
 import { KEY } from '../../constants/local-storage'
 import Redirect from 'routes/redirect'
@@ -294,7 +295,7 @@ class DetailTour extends React.Component {
         <Layout page={tourTurn && tourTurn.tour.type_tour.id === this.id_domestic_tour ? 'domestic_tour' :
         tourTurn && tourTurn.tour.type_tour.id === this.id_international_tour ? 'international_tour' : ''} {...this.props}
           seo={tourTurn ? {
-              title: tourTurn.tour.name,
+              title: metaData.TOUR_DETAIL.title.replace('[PRODUCTNAME]', tourTurn.tour.name),
               description: tourTurn.tour.description.substring(0, 100),
               image: tourTurn.tour.featured_img
           } : {}}>

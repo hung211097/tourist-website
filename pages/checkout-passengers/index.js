@@ -16,6 +16,7 @@ import { KEY } from '../../constants/session-storage'
 import { getCode, moveToElementId, slugify } from '../../services/utils.service'
 import { withNamespaces } from "react-i18next"
 import { validateStringWithoutNumber } from '../../services/validates'
+import { metaData } from '../../constants/meta-data'
 
 const mapStateToProps = state => {
   return {
@@ -245,7 +246,7 @@ class CheckOutPassengers extends React.Component {
     const { t } = this.props
     return (
       <>
-        <Layout page="checkout" {...this.props}>
+        <Layout page="checkout" seo={{title: metaData.CHECKOUT.title, description: metaData.CHECKOUT.description}} {...this.props}>
           <style jsx>{styles}</style>
           <section className='middle'>
             {/* section box*/}

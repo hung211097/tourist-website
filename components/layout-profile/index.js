@@ -13,6 +13,7 @@ import { checkLogin } from 'services/auth.service'
 import { removeItem } from '../../services/local-storage.service'
 import { KEY } from '../../constants/local-storage'
 import { withNamespaces } from "react-i18next"
+import { metaData } from '../../constants/meta-data'
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -59,7 +60,7 @@ class LayoutProfile extends React.Component {
         const {t} = this.props
         return (
             <>
-                <Layout page="profile" {...this.props}>
+                <Layout page="profile" seo={{title: metaData.PROFILE.title, description: metaData.PROFILE.description}} {...this.props}>
                     <style jsx="jsx">{styles}</style>
                     <div className="main-wrapper">
                       <section className="pageTitle">

@@ -7,6 +7,7 @@ import { withNamespaces } from "react-i18next"
 import { Router } from 'routes'
 import Masonry from 'react-masonry-css'
 import Redirect from 'routes/redirect'
+import { metaData } from '../../constants/meta-data'
 
 class NewsTags extends React.Component {
     displayName = 'News Tags Page'
@@ -108,7 +109,7 @@ class NewsTags extends React.Component {
       const { t } = this.props
         return (
           <>
-            <Layout page="news" {...this.props}>
+            <Layout page="news" seo={{title: metaData.NEWS.title, description: metaData.NEWS.description}} {...this.props}>
               <style jsx>{styles}</style>
               <section className='middle'>
                 {/* section box*/}

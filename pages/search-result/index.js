@@ -12,6 +12,7 @@ import { calcTotalPage, replaceInvalidCharacter } from '../../services/utils.ser
 import Autosuggest from 'react-autosuggest'
 import { Router } from 'routes'
 import { withNamespaces } from "react-i18next"
+import { metaData } from '../../constants/meta-data'
 
 class SearchResult extends React.Component {
   displayName = 'Search Result'
@@ -19,7 +20,8 @@ class SearchResult extends React.Component {
   static propTypes = {
     searchResult: PropTypes.object,
     query: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
+    route: PropTypes.object
   }
 
   static async getInitialProps({ query }) {
@@ -249,7 +251,11 @@ class SearchResult extends React.Component {
     const {t} = this.props
     return (
       <>
-        <Layout page="search" {...this.props}>
+        <Layout page="search"
+          seo={{
+              title: metaData.SEARCH_RESULT.title.replace('[KEYWORD]', this.props.route.query.keyword),
+              description: metaData.SEARCH_RESULT.description
+          }} {...this.props}>
           <style jsx>{styles}</style>
           <section className='middle'>
             {/* section box*/}

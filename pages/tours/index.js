@@ -7,6 +7,7 @@ import { TourItem } from 'components'
 import ContentLoader from "react-content-loader"
 import { withNamespaces } from "react-i18next"
 import Redirect from 'routes/redirect'
+import { metaData } from '../../constants/meta-data'
 
 class Tours extends React.Component {
   displayName = 'Tours Page'
@@ -91,7 +92,8 @@ class Tours extends React.Component {
     return (
       <>
         <Layout page={+this.props.query.id === this.id_domestic_tour ? 'domestic_tour' :
-          +this.props.query.id === this.id_international_tour ? 'international_tour' : ''} {...this.props}>
+          +this.props.query.id === this.id_international_tour ? 'international_tour' : ''}
+          seo={{title: metaData.TOUR.title, description: metaData.TOUR.description}} {...this.props}>
           <style jsx>{styles}</style>
           <section className='middle'>
             {/* section box*/}

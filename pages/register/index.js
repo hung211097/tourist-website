@@ -163,6 +163,10 @@ class Register extends React.Component {
       return false
     }
 
+    if(this.state.password !== this.state.confirmPassword){
+      return false
+    }
+
     if(!this.state.email || !validateEmail(this.state.email)){
       return false
     }
