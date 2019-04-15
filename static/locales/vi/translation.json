@@ -218,7 +218,8 @@
     "tour_pass": "Một số tour đi qua điểm này",
     "order": "Thứ tự đi đến điểm này trong lộ trình",
     "show_more": "Xem thêm",
-    "show_less": "Rút gọn"
+    "show_less": "Rút gọn",
+    "put": "Đưa vào hành trình để chúng tôi tìm ra tour thích hợp cho bạn!"
   },
   "search": {
     "title": "TÌM KIẾM",

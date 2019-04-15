@@ -17,6 +17,7 @@ import { withNamespaces } from "react-i18next"
 const mapStateToProps = (state) => {
   return {
     user: state.user,
+    recommendLocation: state.recommendLocation
   }
 }
 
@@ -42,6 +43,7 @@ class Header extends React.Component {
     logout: PropTypes.func,
     i18n: PropTypes.object,
     t: PropTypes.func,
+    recommendLocation: PropTypes.array
   }
 
   constructor(props) {
@@ -618,9 +620,11 @@ class Header extends React.Component {
                               </Link>
                             </li>
                             <li className="nd_options_recommend">
-                              <div className="count-location">
-                                <span>5</span>
-                              </div>
+                              {this.props.recommendLocation &&
+                                <div className="count-location">
+                                  <span>{this.props.recommendLocation.length}</span>
+                                </div>
+                              }
                               <div className="recommend-container">
                                 <a onClick={this.handleShowRecommendation.bind(this)} title="Recommendation">
                                   <img alt="icon" src="/static/images/luggage.png"/>
@@ -784,9 +788,11 @@ class Header extends React.Component {
                               </Link>
                             </li>
                             <li className="nd_options_recommend">
-                              <div className="count-location">
-                                <span>5</span>
-                              </div>
+                              {this.props.recommendLocation &&
+                                <div className="count-location">
+                                  <span>{this.props.recommendLocation.length}</span>
+                                </div>
+                              }
                               <div className="recommend-container">
                                 <a onClick={this.handleShowRecommendation.bind(this)} title="Recommendation">
                                   <img alt="icon" src="/static/images/luggage.png"/>
