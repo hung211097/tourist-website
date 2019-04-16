@@ -48,7 +48,7 @@ export default (state = {isShowTour: false}, action) => {
           const location_2 = action.payload
           return {
               ...state,
-              recommendLocation: state.recommendLocation.filter((item) => {return item.id === location_2.id})
+              recommendLocation: state.recommendLocation.filter((item) => {return item.id !== location_2.id})
           }
       case actionTypes.REMOVE_ALL_RECOMMEND_LOCATION:
           return {

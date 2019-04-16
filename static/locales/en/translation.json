@@ -687,6 +687,20 @@
     "content": "The page you are looking for might have been removed had its name changed or is temporarily unavailable.",
     "homepage": "Home Page"
   },
+  "recommendation": {
+    "title": "RECOMMENDED TOUR",
+    "address": "Address",
+    "get": "GET RECOMMEND TOUR",
+    "no_location": "There is no location in your trip!",
+    "searching": "Searching suitable tours...",
+    "no_result": "Sorry, we cannot find out any suitable tour for your trip!",
+    "clear_all": "Clear all",
+    "back": "BACK",
+    "origin_price": "Original price",
+    "sale_price": "Price",
+    "max_people": "Maximum passengers",
+    "rest_people": "Accepted passengers"
+  },
   "search_location": "Search location",
   "checkout": "CHECKOUT",
   "show_more": "SHOW MORE",

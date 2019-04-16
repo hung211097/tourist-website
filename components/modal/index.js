@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { PopupInfo, PopupLoading } from 'components'
+import { PopupInfo, PopupLoading, PopupRecommend } from 'components'
 import { useModal, saveRedirectUrl } from '../../actions'
 import { Link, Router } from 'routes'
 import { modal } from '../../constants'
@@ -61,6 +61,8 @@ class Modal extends React.Component {
               </PopupInfo>
               : this.props.modal.type === modal.LOADING ?
               <PopupLoading show={this.props.modal.isOpen} onClose={this.handleClosePopup.bind(this)} />
+              : this.props.modal.type === modal.RECOMMEND ?
+              <PopupRecommend show={this.props.modal.isOpen} onClose={this.handleClosePopup.bind(this)} />
               : null
             }
           </>

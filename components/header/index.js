@@ -8,11 +8,12 @@ import ApiService from 'services/api.service'
 import { ClickOutside } from 'components'
 import { FaSearch, FaTimesCircle, FaSignOutAlt, FaSignInAlt, FaEnvelope, FaPhone } from "react-icons/fa"
 import { MdLocationOn } from "react-icons/md"
-import { saveLocation, logout, saveRedirectUrl, saveProfile } from '../../actions'
+import { saveLocation, logout, saveRedirectUrl, saveProfile, useModal } from '../../actions'
 import { setLocalStorage, getLocalStorage, removeItem } from '../../services/local-storage.service'
 import { KEY } from '../../constants/local-storage'
 import { lng, getDosmesticTour, getInternationalTour } from '../../constants'
 import { withNamespaces } from "react-i18next"
+import { modal } from '../../constants'
 
 const mapStateToProps = (state) => {
   return {
@@ -26,7 +27,8 @@ const mapDispatchToProps = (dispatch) => {
     saveLocation: (location, err) => {dispatch(saveLocation(location, err))},
     saveRedirectUrl: (url) => {dispatch(saveRedirectUrl(url))},
     saveProfile: () => {dispatch(saveProfile())},
-    logout: () => {dispatch(logout())}
+    logout: () => {dispatch(logout())},
+    useModal: (data) => {dispatch(useModal(data))}
   }
 }
 
@@ -43,7 +45,8 @@ class Header extends React.Component {
     logout: PropTypes.func,
     i18n: PropTypes.object,
     t: PropTypes.func,
-    recommendLocation: PropTypes.array
+    recommendLocation: PropTypes.array,
+    useModal: PropTypes.func
   }
 
   constructor(props) {
@@ -270,12 +273,11 @@ class Header extends React.Component {
   }
 
   handleShowRecommendation(){
-
+    this.props.useModal && this.props.useModal({type: modal.RECOMMEND, isOpen: true, data: ''})
   }
 
   render() {
     const { t } = this.props
-    // console.log(this.props);
     return (
       <div itemScope="itemScope" itemType="http://schema.org/WPHeader">
         <style jsx>{styles}</style>

@@ -104,9 +104,8 @@ export const removeRecommendLocaiton = (data) => {
   }
 }
 
-export const removeAllRecommendLocaiton = (data) => {
+export const removeAllRecommendLocaiton = () => {
   return{
-    type: actionTypes.REMOVE_ALL_RECOMMEND_LOCATION,
-    payload: data
+    type: actionTypes.REMOVE_ALL_RECOMMEND_LOCATION
   }
 }

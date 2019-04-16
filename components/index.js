@@ -16,6 +16,7 @@ import ClickOutside from './click-outside'
 import PopupInfo from './popup-info'
 import PopupLoading from './popup-loading'
 import PopupCancelTour from './popup-cancel-tour'
+import PopupRecommend from './popup-recommend'
 import AutoHide from './auto-hide'
 import BtnViewMore from './btn-view-more/index'
 import WizardStep from './wizard-step'
@@ -65,5 +66,6 @@ export {
     PopupCancelTour,
     NewsItem,
     Breadcrumb,
-    CommentsFacebook
+    CommentsFacebook,
+    PopupRecommend
 }

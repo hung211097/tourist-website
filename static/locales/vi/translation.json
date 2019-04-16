@@ -687,6 +687,20 @@
     "content": "Trang bạn đang tìm kiếm có thể đã bị xóa, có tên thay đổi hoặc tạm thời không có.",
     "homepage": "Trang Chủ"
   },
+  "recommendation": {
+    "title": "TOUR KHUYẾN NGHỊ",
+    "address": "Địa chỉ",
+    "get": "GỬI YÊU CẦU",
+    "no_location": "Không có địa điểm nào trong hành trình của bạn!",
+    "searching": "Đang tìm kiếm tour thích hợp...",
+    "no_result": "Rất tiếc, chúng tôi không tìm thấy tour thích hợp nào cho hành trình của bạn!",
+    "clear_all": "Xóa hết",
+    "back": "QUAY LẠI",
+    "origin_price": "Giá gốc",
+    "sale_price": "Giá tour",
+    "max_people": "Số hành khách tối đa",
+    "rest_people": "Số hành khách còn nhận"
+  },
   "search_location": "Tìm địa điểm",
   "checkout": "THANH TOÁN",
   "show_more": "XEM THÊM",
