@@ -8,8 +8,6 @@ import ApiService from '../../services/api.service'
 import { wizardStep } from '../../constants'
 import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaUserSecret, FaChild, FaRegCalendarAlt, FaChevronDown, FaCheck } from "react-icons/fa"
 import { formatDate, distanceFromDays } from '../../services/time.service'
-// import { getUserAuth } from 'services/auth.service'
-import { UnmountClosed } from 'react-collapse'
 import { getCode, slugify } from '../../services/utils.service'
 import { useModal } from '../../actions'
 import { modal } from '../../constants'
@@ -78,18 +76,17 @@ class CheckOutPayment extends React.Component {
 
   componentDidMount() {
     const { passengerInfo } = this.props
-    if(!passengerInfo){
-      Router.pushRoute("checkout-passengers", {tour_id: this.state.tourInfo.id})
-    }
-    else{
+    if(passengerInfo){
       this.setState({
-         num_adult: passengerInfo.num_adult,
-         num_child: passengerInfo.num_child,
-         contactInfo: passengerInfo.contactInfo,
-         passengers: passengerInfo.passengers
+        num_adult: passengerInfo.num_adult,
+        num_child: passengerInfo.num_child,
+        contactInfo: passengerInfo.contactInfo,
+        passengers: passengerInfo.passengers
       })
     }
-
+    else{
+      Router.pushRoute('checkout-passengers', {id: this.state.tourInfo.id})
+    }
     {/*let user = this.props.user
     if(!user){
       user = getUserAuth()
@@ -103,6 +100,18 @@ class CheckOutPayment extends React.Component {
     }*/}
   }
 
+  // UNSAFE_componentWillReceiveProps(props){
+  //   const { passengerInfo } = props
+  //   if(passengerInfo){
+  //     this.setState({
+  //       num_adult: passengerInfo.num_adult,
+  //       num_child: passengerInfo.num_child,
+  //       contactInfo: passengerInfo.contactInfo,
+  //       passengers: passengerInfo.passengers
+  //     })
+  //   }
+  // }
+
   componentWillUnmount(){
     this.timeout && clearTimeout(this.timeout)
   }
@@ -112,6 +121,10 @@ class CheckOutPayment extends React.Component {
     this.setState({
       isSubmit: true
     })
+
+    if(!this.props.passengerInfo){
+      return
+    }
 
     if(!this.validate()){
       return
@@ -274,7 +287,7 @@ class CheckOutPayment extends React.Component {
                                     <i><FaChevronDown /></i>
                                   }
                                 </label>
-                                <UnmountClosed isOpened={this.state.isShowMethod1} springConfig={{stiffness: 150, damping: 20}}>
+                                <div className={this.state.isShowMethod1 ? "collapse-container show" : "collapse-container"}>
                                   <div className="collapse-content">
                                     <h2>{t('checkout_payment.office')}</h2>
                                     <div className="nd_options_section nd_options_height_10"/>
@@ -284,7 +297,7 @@ class CheckOutPayment extends React.Component {
                                     <div className="nd_options_section nd_options_height_5"/>
                                     <strong>Email:</strong>&nbsp;<a href="mailto:traveltour@gmail.com">traveltour@gmail.com</a><br />
                                   </div>
-                                </UnmountClosed>
+                                </div>
                               </div>
                             </div>
                             <div className="method">
@@ -307,7 +320,7 @@ class CheckOutPayment extends React.Component {
                                     <i><FaChevronDown /></i>
                                   }
                                 </label>
-                                <UnmountClosed isOpened={this.state.isShowMethod2} springConfig={{stiffness: 150, damping: 20}}>
+                                <div className={this.state.isShowMethod2 ? "collapse-container show" : "collapse-container"}>
                                   <div className="collapse-content">
                                     <h2>{t('checkout_payment.account')}</h2>
                                     <div className="nd_options_section nd_options_height_10"/>
@@ -323,7 +336,7 @@ class CheckOutPayment extends React.Component {
                                     <br/>
                                     <p>{t('checkout_payment.thank')}</p>
                                   </div>
-                                </UnmountClosed>
+                                </div>
                               </div>
                             </div>
                             {/*<div className="method">

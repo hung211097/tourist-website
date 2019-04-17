@@ -167,7 +167,10 @@
     "international_tour": "Tour quốc tế",
     "category": "Loại tour",
     "tag": "Thẻ",
-    "related_tour": "Tour liên quan"
+    "related_tour": "Tour liên quan",
+    "day": "Ngày",
+    "arrive_at": "Đến vào lúc",
+    "leave_at": "Rời khỏi lúc"
   },
   "wrong_auth": {
     "oops": "Xin lỗi!",

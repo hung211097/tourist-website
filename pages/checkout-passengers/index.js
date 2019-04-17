@@ -87,10 +87,6 @@ class CheckOutPassengers extends React.Component {
     }
   }
 
-  componentWillUnmount(){
-    this.timeout && clearTimeout(this.timeout)
-  }
-
   handleChangeName(e){
     this.setState({
       name: e.target.value
@@ -151,13 +147,7 @@ class CheckOutPassengers extends React.Component {
       num_child: this.state.child,
       passengers: this.state.passengers
     })
-    this.timeout = setTimeout(() => {
-      this.setState({
-        loading: false
-      })
-      clearTimeout(this.timeout)
-      Router.pushRoute("checkout-payment", {tour_id: this.state.tourInfo.id})
-    }, 1000)
+    Router.pushRoute("checkout-payment", {tour_id: this.state.tourInfo.id})
   }
 
   validate(){

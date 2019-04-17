@@ -167,7 +167,10 @@
     "international_tour": "International tour",
     "category": "Category",
     "tag": "Tag",
-    "related_tour": "Related tour"
+    "related_tour": "Related tour",
+    "day": "Day",
+    "arrive_at": "Arrive at",
+    "leave_at": "Leave at"
   },
   "wrong_auth": {
     "oops": "Oops!",
