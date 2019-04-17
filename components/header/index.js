@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import ApiService from 'services/api.service'
 import { ClickOutside } from 'components'
-import { FaSearch, FaTimesCircle, FaSignOutAlt, FaSignInAlt, FaEnvelope, FaPhone } from "react-icons/fa"
+import { FaSearch, FaTimesCircle, FaSignOutAlt, FaSignInAlt, FaEnvelope, FaPhone, FaChevronRight, FaChevronLeft } from "react-icons/fa"
 import { MdLocationOn } from "react-icons/md"
 import { saveLocation, logout, saveRedirectUrl, saveProfile, useModal } from '../../actions'
 import { setLocalStorage, getLocalStorage, removeItem } from '../../services/local-storage.service'
@@ -61,6 +61,9 @@ class Header extends React.Component {
       keyword: '',
       showChangeLng: false,
       showChangeLngMobile: false,
+      showMenuLv2: false,
+      menuLv2: null,
+      menuTitleLv2: null,
       language: [
         {
           label: "en",
@@ -276,6 +279,20 @@ class Header extends React.Component {
     this.props.useModal && this.props.useModal({type: modal.RECOMMEND, isOpen: true, data: ''})
   }
 
+  handleShowMenuLv2(menu, route){
+    this.setState({
+      menuLv2: menu,
+      menuTitleLv2: route,
+      showMenuLv2: true
+    })
+  }
+
+  handleBackLv1(){
+    this.setState({
+      showMenuLv2: false,
+    })
+  }
+
   render() {
     const { t } = this.props
     return (
@@ -285,6 +302,18 @@ class Header extends React.Component {
         <header className="header">
           <ClickOutside onClickOutside={this.handleClickOutSide.bind(this)}>
             <div className={this.state.showSidebar ? "navigation_responsive" : "navigation_responsive hidden_sidebar"}>
+              <div className="suitcase-container">
+                <div className="suitcase-relative">
+                  {this.props.recommendLocation &&
+                    <div className="count-location">
+                      <span>{this.props.recommendLocation.length}</span>
+                    </div>
+                  }
+                  <a onClick={this.handleShowRecommendation.bind(this)} title="Recommendation">
+                    <img alt="icon" src="/static/images/luggage.png"/>
+                  </a>
+                </div>
+              </div>
               <img alt="close" className="nd_options_close_navigation_2_sidebar_content nd_options_cursor_pointer nd_options_right_20 nd_options_top_20 nd_options_position_absolute"
                 src='/static/svg/icon-close-white.svg' width={25} onClick={this.toggleSideBar.bind(this)}/>
               <div className="nd_options_navigation_2_sidebar">
@@ -317,32 +346,21 @@ class Header extends React.Component {
                         <a className="effect-hover">{t('header.home')}</a>
                       </Link>
                     </li>
-                    <li className={this.props.page === 'domestic_tour' ? 'active' : ''}>
-                      <Link route="tours" params={{id: 1, name: "trong-nuoc"}}>
-                        <a className="effect-hover">{t('header.domestic_tour')}</a>
-                      </Link>
+                    <li className={this.props.page === 'domestic_tour' ? 'active has-child' : 'has-child'}>
+                      <a className="effect-hover" onClick={this.handleShowMenuLv2.bind(this, this.domesticTour,
+                          {name: 'domestic_tour', params: {id: 1, name: "trong-nuoc"}})}>{t('header.domestic_tour')}</a>
+                      <span className="arr"
+                        onClick={this.handleShowMenuLv2.bind(this, this.domesticTour, {name: 'domestic_tour', params: {id: 1, name: "trong-nuoc"}})}>
+                        <i><FaChevronRight /></i>
+                      </span>
                     </li>
-                    {/*<li>
-                      <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/" className="effect-hover">SHOP</a>
-                      <ul className="sub-menu">
-                        <li>
-                          <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/">Shop</a>
-                        </li>
-                        <li>
-                          <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/cart/">Cart</a>
-                        </li>
-                        <li>
-                          <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/checkout/">Checkout</a>
-                        </li>
-                        <li>
-                          <a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/my-account/">My account</a>
-                        </li>
-                      </ul>
-                    </li>*/}
-                    <li className={this.props.page === 'international_tour' ? 'active' : ''}>
-                      <Link route="tours" params={{id: 2, name: "quoc-te"}}>
-                        <a className="effect-hover">{t('header.international_tour')}</a>
-                      </Link>
+                    <li className={this.props.page === 'international_tour has-child' ? 'active' : 'has-child'}>
+                      <a className="effect-hover" onClick={this.handleShowMenuLv2.bind(this, this.internationalTour,
+                          {name: 'international_tour', params: {id: 2, name: "quoc-te"}})}>{t('header.international_tour')}</a>
+                      <span className="arr"
+                        onClick={this.handleShowMenuLv2.bind(this, this.internationalTour, {name: 'international_tour', params: {id: 2, name: "quoc-te"}})}>
+                        <i><FaChevronRight /></i>
+                      </span>
                     </li>
                     <li className={this.props.page === 'news' ? 'active' : ''}>
                       <Link route="news">
@@ -354,14 +372,14 @@ class Header extends React.Component {
                     </li>
                     {!_.isEmpty(this.props.user) ?
                       <li>
-                        <a onClick={this.handleLogout.bind(this)} href="javascript:;">
+                        <a onClick={this.handleLogout.bind(this)} href="javascript:;" className="effect-hover">
                           {t('header.logout')} <FaSignOutAlt style={{fontSize: '18px', color: 'white', marginLeft: '8px'}}/>
                         </a>
                       </li>
                       :
                       <li>
                         <Link route="login">
-                          <a>
+                          <a className="effect-hover">
                             {t('header.login')}
                             <FaSignInAlt style={{fontSize: '18px', color: 'white', marginLeft: '8px'}}/>
                           </a>
@@ -393,6 +411,45 @@ class Header extends React.Component {
                   </ul>
                 </div>
               </div>
+            </div>
+            <div className={this.state.showMenuLv2 ? "navigation_responsive lv2" : "navigation_responsive lv2 hidden_sidebar"}>
+              <ul className="menu-lv2">
+                <li>
+                  <a className="mm-item back-lv1 inactive" onClick={this.handleBackLv1.bind(this)}>
+                    <span><i><FaChevronLeft /></i></span>&nbsp;
+                    <p> &nbsp;{t('header.back')}</p>
+                  </a>
+                </li>
+                {this.state.menuTitleLv2 &&
+                  <li>
+                    <Link route="tours" params={this.state.menuTitleLv2.params}>
+                      <a className="mm-item active">{t(`header.${this.state.menuTitleLv2.name}`)}</a>
+                    </Link>
+                  </li>
+                }
+                {this.state.menuLv2 && this.state.menuLv2.map((item, key) => {
+                    return(
+                      <li key={key}>
+                        <a className="mm-item">{t('header.' + item.name)}</a>
+                        <ul className="sub-menu list-unstyled">
+                          {item.locations.map((item_2, key_2) => {
+                              return(
+                                <li key={key_2}>
+                                  <Link route="tours-tags" params={{id: item_2.id, name: item_2.slug, mark: this.state.menuTitleLv2.name === 'domestic_tour' ? 'p' : 'c'}}>
+                                    <a className="mm-item effect-hover">
+                                      {item_2.name}
+                                    </a>
+                                  </Link>
+                                </li>
+                              )
+                            })
+                          }
+                        </ul>
+                      </li>
+                    )
+                  })
+                }
+              </ul>
             </div>
           </ClickOutside>
 
@@ -608,14 +665,6 @@ class Header extends React.Component {
                                 }
                               </ul>
                             </li>
-                            {/*<li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/">SHOP</a>
-                              <ul className="sub-menu">
-                                <li ><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/">Shop</a></li>
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/cart/">Cart</a></li>
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/checkout/">Checkout</a></li>
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/my-account/">My account</a></li>
-                              </ul>
-                            </li>*/}
                             <li className={this.props.page === 'news' ? 'active' : ''}>
                               <Link route="news">
                                 <a>{t('header.news')}</a>
@@ -776,14 +825,6 @@ class Header extends React.Component {
                                 }
                               </ul>
                             </li>
-                            {/*<li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/">SHOP</a>
-                              <ul className="sub-menu">
-                                <li ><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/shop/">Shop</a></li>
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/cart/">Cart</a></li>
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/checkout/">Checkout</a></li>
-                                <li><a href="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/my-account/">My account</a></li>
-                              </ul>
-                            </li>*/}
                             <li className={this.props.page === 'news' ? 'active' : ''}>
                               <Link route="news">
                                 <a>{t('header.news')}</a>

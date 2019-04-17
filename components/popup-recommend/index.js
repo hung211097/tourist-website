@@ -16,11 +16,11 @@ let customStyles = {
     maxWidth: '800px',
     overflow: 'auto',
     maxHeight: '560px',
-    zIndex: '999'
+    zIndex: '10000'
 }
 
 let customStyleOverlay = {
-
+  zIndex: '10000'
 }
 
 const mapStateToProps = (state) => {
@@ -103,7 +103,6 @@ class PopupRecommend extends React.Component {
     }
 
     render() {
-      console.log(this.state);
         if(this.props.customContent){
           customStyles = this.props.customContent
         }

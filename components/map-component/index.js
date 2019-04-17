@@ -33,8 +33,8 @@ class MapComponent extends React.Component{
     myLocation: PropTypes.object,
     toggleShowTour: PropTypes.func,
     isShowTour: PropTypes.bool,
-    isSetTour: PropTypes.bool,
-    idTourSet: PropTypes.number,
+    isSetTour: PropTypes.bool,  //Có thể hiện tour đã chọn sẵn hay không? Ở trang chi tiết tour
+    idTourSet: PropTypes.number,  //Id tour cần show sẵn, trang chi tiết tour
     t: PropTypes.func
   }
 
@@ -55,17 +55,17 @@ class MapComponent extends React.Component{
     this.state = {
       bounds: null,
       markerChoose: null, //Điểm marker click trên map
-      locationNearCenter: [],
+      locationNearCenter: [], //Mảng location trên map quét theo khung hình
       zoom: 15,
       address: '',
       center: this.props.center,
-      isChangeCenter: false,
+      isChangeCenter: false,  //Mặc định ban đầu center là vị trí nơi người dùng cho phép truy cập vị trí cá nhân, nếu không thì theo center mặc định trên props
       idTourChosen: null,
-      locationsInTour: [],
-      directions: [],
+      locationsInTour: [],  //Các điểm trong tour đang show, đánh dấu bằng marker khác
+      directions: [], //Mảng direction để vẽ
       showFilter: false,
-      filterOptions: [],
-      airport: []
+      filterOptions: [],  //Mảng location type cần filter
+      airport: [] //Mảng các điểm sân bay để vẽ polyline
     }
   }
 
