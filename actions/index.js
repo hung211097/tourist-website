@@ -14,6 +14,7 @@ export const actionTypes = {
   LOGOUT: 'LOGOUT',
   SAVE_PROFILE: 'SAVE_PROFILE',
   USE_MODAL: 'USE_MODAL',
+  ADD_INFO_PASSENGERS: 'ADD_INFO_PASSENGERS',
   ADD_RECOMMEND_LOCATION: 'ADD_RECOMMEND_LOCATION',
   REMOVE_RECOMMEND_LOCATION: 'REMOVE_RECOMMEND_LOCATION',
   REMOVE_ALL_RECOMMEND_LOCATION: 'REMOVE_ALL_RECOMMEND_LOCATION',
@@ -107,5 +108,12 @@ export const removeRecommendLocaiton = (data) => {
 export const removeAllRecommendLocaiton = () => {
   return{
     type: actionTypes.REMOVE_ALL_RECOMMEND_LOCATION
+  }
+}
+
+export const addInfoPassengers = (data) => {
+  return{
+    type: actionTypes.ADD_INFO_PASSENGERS,
+    payload: data
   }
 }

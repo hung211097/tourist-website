@@ -504,7 +504,8 @@
     "other": "Other",
     "Adult": "Adult",
     "Children": "Children",
-    "days": "days"
+    "days": "days",
+    "tracking": "TRACKING THIS TOUR"
   },
   "cancel_tour": {
     "title": "CANCEL TOUR",

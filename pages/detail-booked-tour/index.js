@@ -15,6 +15,7 @@ import matchSorter from 'match-sorter'
 import { formatDate, compareDate, distanceFromDays } from '../../services/time.service'
 import { withNamespaces } from "react-i18next"
 import { slugify } from '../../services/utils.service'
+import Redirect from 'routes/redirect'
 
 const mapStateToProps = (state) => {
     return {
@@ -27,7 +28,25 @@ class DetailBookedTour extends React.Component {
     static propTypes = {
         dispatch: PropTypes.func,
         user: PropTypes.object,
-        t: PropTypes.func
+        t: PropTypes.func,
+        tourInfo: PropTypes.object
+    }
+
+    static async getInitialProps({ res, query }) {
+        let apiService = ApiService()
+        if(!query.id){
+          Redirect(res, '404')
+        }
+        try{
+          let tourInfo = await apiService.getBookTourHistoryById(query.id, {isTour: true})
+          if(!tourInfo.data){
+            Redirect(res, '404')
+          }
+          return { tourInfo: tourInfo.data };
+        }
+        catch(e){
+          Redirect(res, '404')
+        }
     }
 
     constructor(props) {
@@ -41,7 +60,8 @@ class DetailBookedTour extends React.Component {
         page: 1,
         hasMore: true,
         passengers: [],
-        bookTour: null
+        bookTour: props.tourInfo,
+        trackingTour: false
       }
     }
 
@@ -59,12 +79,6 @@ class DetailBookedTour extends React.Component {
     }
 
     componentDidMount(){
-      const id = Router.query.id
-      this.apiService.getBookTourHistoryById(id, {isTour: true}).then((res) => {
-        this.setState({
-          bookTour: res.data
-        })
-      })
       this.loadMore()
     }
 
@@ -109,6 +123,12 @@ class DetailBookedTour extends React.Component {
       return number
     }
 
+    handleTrackingTour(){
+      this.setState({
+        trackingTour: true
+      })
+    }
+
     render() {
       const {t} = this.props
       let tourInfo = null
@@ -133,6 +153,12 @@ class DetailBookedTour extends React.Component {
                           <div className="finish">
                             {tourInfo &&
                               <div className="tour-info">
+                                <div className="tracking-tour">
+                                  <button type="button" className="co-btn green" onClick={this.handleTrackingTour.bind(this)}>
+                                    <img alt="icon" src="/static/images/gps.png"/>
+                                    &nbsp;&nbsp;{t('detail_booked_tour.tracking')}
+                                  </button>
+                                </div>
                                 <div className="header-title has-top-border">{t('detail_booked_tour.tour_info')}
                                   <span className="icon"><FaInfoCircle style={{fontSize: '25px', position: 'relative', top: '-1px'}}/></span>
                                 </div>

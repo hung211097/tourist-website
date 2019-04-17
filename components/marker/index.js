@@ -104,7 +104,7 @@ class MarkerComponent extends React.Component{
         icon={this.props.isMe ? '/static/images/person.png' :
           this.props.infoLocation.isInTour ? {url: '/static/images/location.png', labelOrigin: new google.maps.Point(20, 16)} :
           this.props.infoLocation.type ? `/static/images/${this.props.infoLocation.type.marker}.png` : null}
-        animation={google.maps.Animation.DROP}
+        animation={this.props.isMe ? null : google.maps.Animation.DROP}
         label={this.props.infoLocation.isInTour && this.props.infoLocation.order.indexOf(',') < 0 ?
                 {color: "black", text: this.props.infoLocation.order, fontWeight: '600'} :
                 this.props.infoLocation.isInTour && this.props.infoLocation.order.indexOf(',') >= 0 ?

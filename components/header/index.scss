@@ -1,6 +1,9 @@
 @import 'styles/variables.scss';
 
 .header{
+  .search-input::placeholder{
+    color: silver;
+  }
   .account-zone-responsive{
     img{
       border-radius: 50%;

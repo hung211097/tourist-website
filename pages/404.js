@@ -4,6 +4,7 @@ import { Layout } from 'components'
 import styles from '../styles/error.scss'
 import { Link } from 'routes'
 import { withNamespaces } from "react-i18next"
+import { FaRegFrown } from "react-icons/fa"
 
 class Error extends React.Component {
     displayName = 'Error Page'
@@ -30,7 +31,7 @@ class Error extends React.Component {
                           <div id="notfound">
                             <div className="notfound">
                               <div className="notfound-404">
-                                <h1>:(</h1>
+                                <h1><i><FaRegFrown /></i></h1>
                               </div>
                               <h2>404 - {t('404.not_found')}</h2>
                               <p>{t('404.content')}</p>

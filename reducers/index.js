@@ -55,6 +55,11 @@ export default (state = {isShowTour: false}, action) => {
               ...state,
               recommendLocation: []
           }
+      case actionTypes.ADD_INFO_PASSENGERS:
+          return {
+            ...state,
+            passengerInfo: action.payload
+          }
         default:
           return state
     }
