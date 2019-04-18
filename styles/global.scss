@@ -584,3 +584,22 @@ p {
     display: inline;
   }
 }
+
+.put-into{
+  font-weight: 600;
+  font-size: 14px;
+  margin-top: 15px;
+  display: block;
+  span, i{
+    color: $main-bg-color;
+  }
+  &:hover{
+    span, i{
+      color: black;
+    }
+  }
+}
+
+.w-30{
+  width: 30%;
+}

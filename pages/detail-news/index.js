@@ -11,6 +11,7 @@ import { isServer, blogTitleString, convertFullUrl } from '../../services/utils.
 import Redirect from 'routes/redirect'
 import Calendar from 'react-calendar/dist/entry.nostyle'
 import { Router, Link } from 'routes'
+import { metaData } from '../../constants/meta-data'
 import { FacebookProvider, CommentsCount } from 'react-facebook'
 const AppID = process.env.FB_CLIENT_ID
 
@@ -88,7 +89,12 @@ class DetailNews extends React.Component {
     const url = convertFullUrl(this.props.route.parsedUrl.pathname)
     return (
       <>
-        <Layout page="news" {...this.props}>
+        <Layout page="news"
+          seo={{
+              title: metaData.NEWS_DETAIL.title.replace('[TITLE]', this.props.blog.metatitle),
+              description: metaData.NEWS_DETAIL.description.replace('[DESCRIPTION]', this.props.blog.metadesc),
+              image: this.props.blog.photo
+          }} {...this.props}>
           <style jsx>{styles}</style>
           <section className='middle'>
             {/* section box*/}

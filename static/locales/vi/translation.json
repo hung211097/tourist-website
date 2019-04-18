@@ -12,6 +12,7 @@
     "domestic_tour": "TOUR TRONG NƯỚC",
     "international_tour": "TOUR QUỐC TẾ",
     "news": "TIN TỨC",
+    "back": "QUAY LẠI",
     "Miền Bắc": "Miền Bắc",
     "Miền Trung": "Miền Trung",
     "Miền Nam": "Miền Nam",
@@ -62,7 +63,7 @@
     "hour": "GIỜ",
     "connect": "Kết Nối Với Chúng Tôi",
     "social": "KÊNH TRUYỀN THÔNG",
-    "about": "Thông tin",
+    "about": "Giới thiệu",
     "faq": "Câu hỏi thường gặp",
     "contact": "Liên hệ",
     "terms": "Điều khoản",
@@ -166,7 +167,10 @@
     "international_tour": "Tour quốc tế",
     "category": "Loại tour",
     "tag": "Thẻ",
-    "related_tour": "Tour liên quan"
+    "related_tour": "Tour liên quan",
+    "day": "Ngày",
+    "arrive_at": "Đến vào lúc",
+    "leave_at": "Rời khỏi lúc"
   },
   "wrong_auth": {
     "oops": "Xin lỗi!",
@@ -218,7 +222,8 @@
     "tour_pass": "Một số tour đi qua điểm này",
     "order": "Thứ tự đi đến điểm này trong lộ trình",
     "show_more": "Xem thêm",
-    "show_less": "Rút gọn"
+    "show_less": "Rút gọn",
+    "put": "Đưa vào hành trình để chúng tôi tìm ra tour thích hợp cho bạn!"
   },
   "search": {
     "title": "TÌM KIẾM",
@@ -502,7 +507,11 @@
     "other": "Khác",
     "Adult": "Người lớn",
     "Children": "Trẻ em",
-    "days": "ngày"
+    "days": "ngày",
+    "tracking": "THEO DÕI TOUR",
+    "just_come": "BẠN ĐÃ VỪA ĐẾN",
+    "just_come_lower": "Bạn đã vừa đến",
+    "reach_location": "Đến địa điểm trong lộ trình"
   },
   "cancel_tour": {
     "title": "HỦY TOUR",
@@ -685,6 +694,20 @@
     "not_found": "KHÔNG TÌM THẤY TRANG",
     "content": "Trang bạn đang tìm kiếm có thể đã bị xóa, có tên thay đổi hoặc tạm thời không có.",
     "homepage": "Trang Chủ"
+  },
+  "recommendation": {
+    "title": "TOUR KHUYẾN NGHỊ",
+    "address": "Địa chỉ",
+    "get": "GỬI YÊU CẦU",
+    "no_location": "Không có địa điểm nào trong hành trình của bạn!",
+    "searching": "Đang tìm kiếm tour thích hợp...",
+    "no_result": "Rất tiếc, chúng tôi không tìm thấy tour thích hợp nào cho hành trình của bạn!",
+    "clear_all": "Xóa hết",
+    "back": "QUAY LẠI",
+    "origin_price": "Giá gốc",
+    "sale_price": "Giá tour",
+    "max_people": "Số hành khách tối đa",
+    "rest_people": "Số hành khách còn nhận"
   },
   "search_location": "Tìm địa điểm",
   "checkout": "THANH TOÁN",

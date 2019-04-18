@@ -1,6 +1,9 @@
 @import 'styles/variables.scss';
 
 .header{
+  .search-input::placeholder{
+    color: silver;
+  }
   .account-zone-responsive{
     img{
       border-radius: 50%;
@@ -30,6 +33,9 @@
     padding: 40px 0;
     width: 300px;
     height: 100%;
+    &.lv2{
+      padding-top: 0;
+    }
     &.hidden_sidebar{
       right: -300px;
     }
@@ -38,6 +44,82 @@
         a{
           font-size: 14px !important;
           text-transform: none;
+        }
+      }
+    }
+    .suitcase-container{
+      position: absolute;
+      left: 40px;
+      top: 20px;
+      .suitcase-relative{
+        position: relative;
+        .count-location{
+          position: absolute;
+          color: $main-bg-color;
+          background: white;
+          padding: 3px 7px;
+          border-radius: 50%;
+          top: -10px;
+          right: -20px;
+          z-index: 9;
+          font-size: 13px;
+        }
+      }
+    }
+    .menu-lv2{
+      padding: 0;
+      margin: 0;
+      li{
+        display: block;
+        // border-bottom: 1px solid #dddddd;
+        position: relative;
+        .mm-item{
+          display: block;
+          padding: 15px 15px;
+          font-size: 1.5rem;
+          font-weight: 700;
+          cursor: pointer;
+          position: relative;
+          white-space: pre-wrap;
+          padding-right: 20px;
+          text-transform: uppercase;
+          color: white;
+          transition: 0.2s all;
+          span{
+            float: left;
+          }
+          p{
+            position: absolute;
+            top: 16px;
+            left: 30px;
+            color: white;
+          }
+          // &.inactive{
+          //   background: #fff !important;
+          // }
+          &.active{
+            background: #5B6677;
+            a{
+              font-weight: bold !important;
+            }
+          }
+          &.effect-hover{
+            &:hover{
+              background: #5B6677;
+            }
+          }
+        }
+        ul.sub-menu {
+          margin: 0px;
+          padding: 0px;
+          list-style: none;
+          li {
+            padding: 0px 20px;
+            text-align: left;
+            a {
+              font-size: 1.3rem;
+            }
+          }
         }
       }
     }
@@ -88,6 +170,18 @@
       .apart{
         height: 4px;
         background: black;
+      }
+      &.has-child{
+        position: relative;
+        span{
+          position: absolute;
+          top: 44%;
+          right: 15px;
+          margin: -10px 0 0;
+          cursor: pointer;
+          color: white;
+          font-size: 18px;
+        }
       }
     }
   }
@@ -358,23 +452,40 @@
   }
 
   .access-location{
-    line-height: 3.5;
+    line-height: 3.3;
     display: table;
     padding-left: 20px;
   }
 
-  .nd_options_book_now_btn {
+  .nd_options_recommend {
     line-height: initial !important;
-    background-color: #f3a46b;
-    a{
-      color: #fff !important;
-      text-transform: uppercase;
-      font-size: 11px !important;
-      padding: 0px 15px;
-      letter-spacing: 2px;
-      border-bottom-width: 0px !important;
-      line-height: 27px !important;
+    position: relative;
+    width: 40px;
+    .count-location{
+      position: absolute;
+      color: white;
+      background: $main-bg-color;
+      padding: 3px 7px;
+      border-radius: 50%;
+      top: -14px;
+      right: -15px;
+      z-index: 9;
+      font-size: 13px;
     }
+    .recommend-container{
+      position: absolute;
+      top: -9px;
+      left: 0;
+    }
+    // a{
+    //   color: #fff !important;
+    //   text-transform: uppercase;
+    //   font-size: 11px !important;
+    //   padding: 0px 15px;
+    //   letter-spacing: 2px;
+    //   border-bottom-width: 0px !important;
+    //   line-height: 27px !important;
+    // }
   }
 
   .icon-menu{
@@ -463,8 +574,8 @@
           color: #2980b9;
           font-size: 30px;
           position: absolute;
-          top: -9px;
-          left: 7px;
+          top: -10px;
+          left: 8px;
           cursor: pointer;
           z-index: 1;
       }

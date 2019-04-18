@@ -203,21 +203,30 @@
                 font-size: 13px;
               }
             }
-            .collapse-content{
-              display: block;
-              width: 100%;
-              font-size: 13px;
-              padding: 10px;
-              border: 1px solid #bfbfbf;
-              border-radius: 5px;
-              background: #f6f6f6;
-              box-sizing: border-box;
-              strong{
-                margin: 10px 0;
+
+            .collapse-container{
+              transition: 1s;
+              overflow: hidden;
+              max-height: 0;
+              &.show{
+                max-height: 1000px;
               }
-              h2{
-                font-size: 14px;
-                font-weight: bold;
+              .collapse-content{
+                display: block;
+                width: 100%;
+                font-size: 13px;
+                padding: 10px;
+                border: 1px solid #bfbfbf;
+                border-radius: 5px;
+                background: #f6f6f6;
+                box-sizing: border-box;
+                strong{
+                  margin: 10px 0;
+                }
+                h2{
+                  font-size: 14px;
+                  font-weight: bold;
+                }
               }
             }
           }

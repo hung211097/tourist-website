@@ -3,6 +3,7 @@ import styles from './index.scss'
 import { Layout } from 'components'
 import PropTypes from 'prop-types'
 import { withNamespaces } from "react-i18next"
+import { metaData } from '../../constants/meta-data'
 
 class TermsCondition extends React.Component {
   displayName = 'Terms Condition'
@@ -23,7 +24,7 @@ class TermsCondition extends React.Component {
     const {t} = this.props
     return (
       <>
-        <Layout page="terms-condition" {...this.props}>
+        <Layout page="terms-condition" seo={{title: metaData.TERMS_CONDITION.title, description: metaData.TERMS_CONDITION.description}} {...this.props}>
           <style jsx>{styles}</style>
           <section className='middle'>
             {/* section box*/}

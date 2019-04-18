@@ -8,18 +8,25 @@ import validateEmail from '../../services/validates/email.js'
 import validatePhone from '../../services/validates/phone.js'
 import ApiService from '../../services/api.service'
 import { wizardStep } from '../../constants'
+import { addInfoPassengers } from '../../actions'
 import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaUserSecret, FaChild, FaRegCalendarAlt } from "react-icons/fa"
 import { formatDate, distanceFromDays } from '../../services/time.service'
 import { getUserAuth } from 'services/auth.service'
-import { setSessionStorage, removeItem } from '../../services/session-storage.service'
-import { KEY } from '../../constants/session-storage'
 import { getCode, moveToElementId, slugify } from '../../services/utils.service'
 import { withNamespaces } from "react-i18next"
 import { validateStringWithoutNumber } from '../../services/validates'
+import { metaData } from '../../constants/meta-data'
+import Redirect from 'routes/redirect'
 
 const mapStateToProps = state => {
   return {
     user: state.user,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addInfoPassengers: (data) => {dispatch(addInfoPassengers(data))}
   }
 }
 
@@ -29,16 +36,22 @@ class CheckOutPassengers extends React.Component {
   static propTypes = {
     user: PropTypes.object,
     tourInfo: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
+    addInfoPassengers: PropTypes.func
   }
 
-  static async getInitialProps({ query }) {
+  static async getInitialProps({ res, query }) {
       let apiService = ApiService()
       if(!query.tour_id){
-        return { tourInfo: null }
+        Redirect(res, '404')
       }
-      let tourInfo = await apiService.getToursTurnId(query.tour_id)
-      return { tourInfo: tourInfo.data };
+      try{
+        let tourInfo = await apiService.getToursTurnId(query.tour_id)
+        return { tourInfo: tourInfo.data };
+      }
+      catch(e){
+        Redirect(res, '404')
+      }
   }
 
   constructor(props) {
@@ -59,11 +72,7 @@ class CheckOutPassengers extends React.Component {
   }
 
   componentDidMount() {
-    if(!this.state.tourInfo){
-      Router.pushRoute("home")
-    }
-    removeItem(KEY.PASSENGER)
-
+    this.props.addInfoPassengers && this.props.addInfoPassengers(null)
     let user = this.props.user
     if(!user){
       user = getUserAuth()
@@ -76,10 +85,6 @@ class CheckOutPassengers extends React.Component {
             address: user.address ?  user.address : ''
         })
     }
-  }
-
-  componentWillUnmount(){
-    this.timeout && clearTimeout(this.timeout)
   }
 
   handleChangeName(e){
@@ -130,7 +135,8 @@ class CheckOutPassengers extends React.Component {
     this.setState({
       loading: true
     })
-    const tourInfo = JSON.stringify({
+
+    this.props.addInfoPassengers && this.props.addInfoPassengers({
       contactInfo: {
         name: this.state.name,
         email: this.state.email,
@@ -141,15 +147,7 @@ class CheckOutPassengers extends React.Component {
       num_child: this.state.child,
       passengers: this.state.passengers
     })
-
-    setSessionStorage(KEY.PASSENGER, tourInfo)
-    this.timeout = setTimeout(() => {
-      this.setState({
-        loading: false
-      })
-      clearTimeout(this.timeout)
-      Router.pushRoute("checkout-payment", {tour_id: this.state.tourInfo.id})
-    }, 1000)
+    Router.pushRoute("checkout-payment", {tour_id: this.state.tourInfo.id})
   }
 
   validate(){
@@ -245,7 +243,7 @@ class CheckOutPassengers extends React.Component {
     const { t } = this.props
     return (
       <>
-        <Layout page="checkout" {...this.props}>
+        <Layout page="checkout" seo={{title: metaData.CHECKOUT.title, description: metaData.CHECKOUT.description}} {...this.props}>
           <style jsx>{styles}</style>
           <section className='middle'>
             {/* section box*/}
@@ -377,7 +375,7 @@ class CheckOutPassengers extends React.Component {
                               </div>
                             </div>
                           </div>
-                          <div className="row passenger">
+                          <div className="passenger">
                             {[...Array(this.state.adult)].map((item, key) => {
                                 return(
                                   <PassengerInfo index={key} age={"adults"} isSubmit={this.state.isSubmit} key={key}
@@ -495,4 +493,4 @@ class CheckOutPassengers extends React.Component {
   }
 }
 
-export default withNamespaces('translation')(connect(mapStateToProps)(CheckOutPassengers))
+export default withNamespaces('translation')(connect(mapStateToProps, mapDispatchToProps)(CheckOutPassengers))

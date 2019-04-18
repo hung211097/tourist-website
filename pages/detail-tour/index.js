@@ -6,15 +6,16 @@ import { connect } from 'react-redux'
 import ApiService from 'services/api.service'
 import { Link } from 'routes'
 import { RatingStar, BtnViewMore, MyMap, TourItem, Lightbox, Breadcrumb } from 'components'
-import { getCode, convertFullUrl, slugify } from '../../services/utils.service'
+import { getCode, convertFullUrl, slugify, groupDayRoute } from '../../services/utils.service'
 import { FaRegCalendarAlt, FaEye, FaSuitcase } from "react-icons/fa"
-import { formatDate, distanceFromDays, fromNow } from '../../services/time.service'
+import { formatDate, distanceFromDays, fromNow, addDay } from '../../services/time.service'
 import validateEmail from '../../services/validates/email.js'
 import { withNamespaces, Trans } from "react-i18next"
 import { validateStringWithoutNumber } from '../../services/validates'
 import { FacebookShareButton } from 'react-share'
 import { FaFacebookF } from 'react-icons/fa'
 import _ from 'lodash'
+import { metaData } from '../../constants/meta-data'
 import { getLocalStorage } from '../../services/local-storage.service'
 import { KEY } from '../../constants/local-storage'
 import Redirect from 'routes/redirect'
@@ -83,6 +84,7 @@ class DetailTour extends React.Component {
       action: false,
       actionError: false,
       reviews: [],
+      timeline: [],
       average_rating: this.props.tourInfo.tour.average_rating,
       num_review: this.props.tourInfo.tour.num_review,
       skip_comment: 0,
@@ -105,6 +107,11 @@ class DetailTour extends React.Component {
       this.onLoadMoreReviews()
       this.apiService.increaseView(this.state.tourTurn.id).then(() => {})
       this.loadOtherTour()
+      this.apiService.getRouteByTour(this.state.tourTurn.tour.id).then((res) => {
+        this.setState({
+          timeline: groupDayRoute(res.data)
+        })
+      })
     }
   }
 
@@ -192,6 +199,11 @@ class DetailTour extends React.Component {
         this.onLoadMoreReviews()
         this.apiService.increaseView(this.state.tourTurn.id).then(() => {})
         this.loadOtherTour()
+        this.apiService.getRouteByTour(this.state.tourTurn.tour.id).then((result) => {
+          this.setState({
+            timeline: groupDayRoute(result.data)
+          })
+        })
       })
       this.breadcrumb[this.breadcrumb.length - 1] = { name: this.state.tourTurn.tour.name }
     })
@@ -294,7 +306,7 @@ class DetailTour extends React.Component {
         <Layout page={tourTurn && tourTurn.tour.type_tour.id === this.id_domestic_tour ? 'domestic_tour' :
         tourTurn && tourTurn.tour.type_tour.id === this.id_international_tour ? 'international_tour' : ''} {...this.props}
           seo={tourTurn ? {
-              title: tourTurn.tour.name,
+              title: metaData.TOUR_DETAIL.title.replace('[PRODUCTNAME]', tourTurn.tour.name),
               description: tourTurn.tour.description.substring(0, 100),
               image: tourTurn.tour.featured_img
           } : {}}>
@@ -503,6 +515,41 @@ class DetailTour extends React.Component {
                                     </div>
                                   </div>
                                   <p className="timeline">{tourTurn.tour.detail}</p>
+                                </div>
+                              </div>
+                              <div className="col-sm-4">
+                                <div className="timeline-detail">
+                                  <ul className="list-timeline">
+                                    {!!this.state.timeline.length && this.state.timeline.map((item, key) => {
+                                      return(
+                                          <li key={key} className="item-timeline">
+                                            <div className="timeline-wrapper">
+                                              <span>{t('detail_tour.day')} {item.day} - {formatDate(addDay(tourTurn.start_date, item.day - 1))}</span>
+                                            </div>
+                                            <ul className="sub-timeline">
+                                              {!!item.routes.length && item.routes.map((item_2, key_2) => {
+                                                  return(
+                                                    <li key={key_2}>
+                                                      {item_2.arrive_time && item_2.leave_time &&
+                                                        <p>{item_2.arrive_time} - {item_2.leave_time}</p>
+                                                      }
+                                                      {item_2.arrive_time && !item_2.leave_time &&
+                                                        <p>{t('detail_tour.arrive_at')} {item_2.arrive_time}</p>
+                                                      }
+                                                      {!item_2.arrive_time && item_2.leave_time &&
+                                                        <p>{t('detail_tour.leave_at')} {item_2.leave_time}</p>
+                                                      }
+                                                      <p>{item_2.location.name} - {item_2.location.type.name}</p>
+                                                    </li>
+                                                  )
+                                                })
+                                              }
+                                            </ul>
+                                          </li>
+                                        )
+                                      })
+                                    }
+                                  </ul>
                                 </div>
                               </div>
                             </div>

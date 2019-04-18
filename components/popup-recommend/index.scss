@@ -1,0 +1,220 @@
+@import 'styles/variables.scss';
+
+.modal-annouce-success {
+    padding: 40px 30px 40px 30px;
+    min-height: 180px;
+    h1 {
+        font-size: 2.4rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin: 0px 0px 20px 0px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    h3 {
+        margin: 0;
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+    .break{
+      border-top: 1px dotted #ccc;
+      display: block;
+      width: 100%;
+    }
+    label{
+      font-size: 1.75rem;
+    }
+    .underline-zone{
+      line-height: 0;
+      .underline{
+        height: 2px;
+        width: 30px;
+        background-color: #f1f1f1;
+        display: inline-block;
+        line-height: 0px;
+      }
+    }
+    .confirm-zone{
+      width: 35%;
+      @media screen and (max-width: 576px){
+        width: 80%;
+      }
+      text-align: center;
+      margin: auto;
+      margin-top: 20px;
+    }
+    .no-location{
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      p{
+        font-weight: 600;
+        font-size: 18px;
+        @media screen and (max-width: 576px){
+          font-size: 15px;
+        }
+      }
+    }
+    .no-result{
+      .inform{
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f8f8;
+        i{
+          font-size: 50px;
+          width: 100%;
+          display: block;
+          text-align: center;
+        }
+        p{
+          font-weight: 600;
+          font-size: 16px;
+          text-align: center;
+        }
+      }
+    }
+    .loading-zone{
+      text-align: center;
+      p{
+        font-weight: 600;
+        font-size: 16px;
+      }
+    }
+    .clear{
+      font-weight: 600;
+      color: #4078da;
+      font-size: 16px;
+      margin-top: 5px;
+      display: inline-block;
+      float: right;
+      &:hover{
+        text-decoration: underline;
+      }
+    }
+    .get{
+      width: 40%;
+      margin: auto;
+      display: block;
+      margin-top: 10px;
+      @media screen and (max-width: 576px){
+        width: 100%;
+        margin-top: 20px;
+      }
+    }
+    .list-location{
+      background: #f8f8f8;
+      padding: 0px 15px;
+      max-height: 300px;
+      overflow: auto;
+      .location{
+        padding: 20px 0;
+        border-bottom: 1px solid #bfbfbf;
+        &:last-child{
+          border: 0;
+        }
+        .name-location{
+          @media screen and (max-width: 576px){
+            margin-top: 15px;
+          }
+        }
+        .location-img{
+          position: relative;
+          a{
+            position: absolute;
+            top: 0;
+            right: 5px;
+            font-size: 20px;
+            &:hover{
+              color: #7a7a7a;
+            }
+          }
+        }
+        .icon, .remove-icon{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .remove-icon{
+          a{
+            font-size: 24px;
+            &:hover{
+              color: #7a7a7a;
+            }
+          }
+        }
+      }
+    }
+    .list-tour{
+      background: #f8f8f8;
+      padding: 0px 15px;
+      max-height: 300px;
+      overflow: auto;
+      .tour{
+        padding: 20px 0;
+        border-bottom: 1px solid #bfbfbf;
+        p{
+          margin: 5px 0;
+          i{
+            position: relative;
+            top: -2px;
+            margin-right: 2px;
+          }
+        }
+        &:last-child{
+          border: 0;
+        }
+        .name-tour{
+          @media screen and (max-width: 576px){
+            margin-top: 15px;
+          }
+        }
+        .tour-img{
+          position: relative;
+        }
+      }
+    }
+}
+
+.sale{
+  top: 20px !important;
+  right: 20px !important;
+  left: initial !important;
+  margin: -.5em -.5em 0 0;
+  border-radius: 0px;
+  min-width: initial;
+  min-height: initial;
+  padding: 8px;
+  line-height: 13px;
+  font-size: 13px;
+  text-transform: uppercase;
+  font-weight: normal;
+  background-color: #1bbc9b;
+  position: absolute;
+  text-align: center;
+  color: #fff;
+  z-index: 9;
+}
+
+.error{
+  color: red;
+  margin: 5px 0;
+}
+
+.close-modal {
+    background-image: url(/static/svg/ico-search_clear-text.svg);
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 10px;
+    right: 5px;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-size: 30px 30px;
+    opacity: 0.9;
+    &:hover {
+        opacity: 1;
+    }
+}

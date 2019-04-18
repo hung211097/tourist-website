@@ -193,3 +193,28 @@ export function replaceInvalidCharacter(string){
   let temp = string.replace('đ', '%C4%91')
   return temp
 }
+
+export function groupDayRoute(arr){
+  let res = []
+  let tempArr = []
+  for(let i = 0; i < arr.length; i++){
+    if(!tempArr.length || arr[i].day === tempArr[tempArr.length - 1].day){
+      tempArr.push(arr[i])
+    }
+    if(arr[i].day !== tempArr[tempArr.length - 1].day){
+     res.push({
+       day: tempArr[tempArr.length - 1].day,
+       routes: tempArr
+     })
+     tempArr = []
+     tempArr.push(arr[i])
+   }
+  }
+  if(tempArr.length){
+    res.push({
+      day: tempArr[tempArr.length - 1].day,
+      routes: tempArr
+    })
+  }
+  return res
+}

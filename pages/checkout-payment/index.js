@@ -8,18 +8,17 @@ import ApiService from '../../services/api.service'
 import { wizardStep } from '../../constants'
 import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaUserSecret, FaChild, FaRegCalendarAlt, FaChevronDown, FaCheck } from "react-icons/fa"
 import { formatDate, distanceFromDays } from '../../services/time.service'
-// import { getUserAuth } from 'services/auth.service'
-import { getSessionStorage } from '../../services/session-storage.service'
-import { KEY } from '../../constants/session-storage'
-import { UnmountClosed } from 'react-collapse'
 import { getCode, slugify } from '../../services/utils.service'
 import { useModal } from '../../actions'
 import { modal } from '../../constants'
 import { withNamespaces } from "react-i18next"
+import { metaData } from '../../constants/meta-data'
+import Redirect from 'routes/redirect'
 
 const mapStateToProps = state => {
   return {
     user: state.user,
+    passengerInfo: state.passengerInfo
   }
 }
 
@@ -36,16 +35,22 @@ class CheckOutPayment extends React.Component {
     user: PropTypes.object,
     tourInfo: PropTypes.object,
     useModal: PropTypes.func,
-    t: PropTypes.func
+    t: PropTypes.func,
+    passengerInfo: PropTypes.object
   }
 
-  static async getInitialProps({ query }) {
+  static async getInitialProps({ res, query }) {
       let apiService = ApiService()
       if(!query.tour_id){
-        return { tourInfo: null }
+        Redirect(res, '404')
       }
-      let tourInfo = await apiService.getToursTurnId(query.tour_id)
-      return { tourInfo: tourInfo.data };
+      try{
+        let tourInfo = await apiService.getToursTurnId(query.tour_id)
+        return { tourInfo: tourInfo.data };
+      }
+      catch(e){
+        Redirect(res, '404')
+      }
   }
 
   constructor(props) {
@@ -62,7 +67,8 @@ class CheckOutPayment extends React.Component {
       isShowMethod1: false,
       isShowMethod2: false,
       isShowMethod3: false,
-      method: ''
+      method: '',
+      block: false
     }
     this.method_1 = React.createRef()
     this.method_2 = React.createRef()
@@ -70,17 +76,8 @@ class CheckOutPayment extends React.Component {
   }
 
   componentDidMount() {
-    if(!this.state.tourInfo){
-      Router.pushRoute("home")
-    }
-
-    let passengerInfo = getSessionStorage(KEY.PASSENGER)
-    // console.log(passengerInfo);
-    if(!passengerInfo){
-      Router.pushRoute("checkout-passengers", {tour_id: this.state.tourInfo.id})
-    }
-    else{
-      passengerInfo = JSON.parse(passengerInfo)
+    const { passengerInfo } = this.props
+    if(passengerInfo){
       this.setState({
         num_adult: passengerInfo.num_adult,
         num_child: passengerInfo.num_child,
@@ -88,7 +85,9 @@ class CheckOutPayment extends React.Component {
         passengers: passengerInfo.passengers
       })
     }
-
+    else{
+      Router.pushRoute('checkout-passengers', {id: this.state.tourInfo.id})
+    }
     {/*let user = this.props.user
     if(!user){
       user = getUserAuth()
@@ -102,9 +101,17 @@ class CheckOutPayment extends React.Component {
     }*/}
   }
 
-  componentWillUnmount(){
-    this.timeout && clearTimeout(this.timeout)
-  }
+  // UNSAFE_componentWillReceiveProps(props){
+  //   const { passengerInfo } = props
+  //   if(passengerInfo){
+  //     this.setState({
+  //       num_adult: passengerInfo.num_adult,
+  //       num_child: passengerInfo.num_child,
+  //       contactInfo: passengerInfo.contactInfo,
+  //       passengers: passengerInfo.passengers
+  //     })
+  //   }
+  // }
 
   handleSubmit(e){
     e.preventDefault()
@@ -112,12 +119,22 @@ class CheckOutPayment extends React.Component {
       isSubmit: true
     })
 
+    if(!this.props.passengerInfo){
+      return
+    }
+
     if(!this.validate()){
       return
     }
 
-    this.props.useModal && this.props.useModal({type: modal.LOADING, isOpen: true, data: ''})
+    if(this.state.block){
+      return
+    }
 
+    this.props.useModal && this.props.useModal({type: modal.LOADING, isOpen: true, data: ''})
+    this.setState({
+      block: true
+    })
     this.apiService.bookTour({
       fullname: this.state.contactInfo.name,
       phone: this.state.contactInfo.phone,
@@ -128,21 +145,17 @@ class CheckOutPayment extends React.Component {
       payment: this.state.method,
       passengers: this.state.passengers
     }).then((data) => {
-      this.timeout = setTimeout(() => {
-        Router.pushRoute("checkout-confirmation", {book_completed: data.book_tour.code})
-        this.props.useModal && this.props.useModal({type: modal.LOADING, isOpen: false, data: ''})
-      }, 1000)
+      this.props.useModal && this.props.useModal({type: modal.LOADING, isOpen: false, data: ''})
+      Router.pushRoute("checkout-confirmation", {book_completed: data.book_tour.code})
     }).catch((e) => {
       let error = "There is an error, please try book tour again!"
-      this.timeout = setTimeout(() => {
-        this.props.useModal && this.props.useModal({type: modal.LOADING, isOpen: false, data: ''})
-        if(e.result === 'This tour is full'){
-          error = 'This tour is full slot'
-        }
-        this.setState({
-          error: error
-        })
-      }, 1000)
+      this.props.useModal && this.props.useModal({type: modal.LOADING, isOpen: false, data: ''})
+      if(e.result === 'This tour is full'){
+        error = 'This tour is full slot'
+      }
+      this.setState({
+        error: error
+      })
     })
   }
 
@@ -218,7 +231,7 @@ class CheckOutPayment extends React.Component {
     const {t} = this.props
     return (
       <>
-        <Layout page="checkout" {...this.props}>
+        <Layout page="checkout" seo={{title: metaData.CHECKOUT.title, description: metaData.CHECKOUT.description}} {...this.props}>
           <style jsx>{styles}</style>
           <section className='middle'>
             {/* section box*/}
@@ -273,7 +286,7 @@ class CheckOutPayment extends React.Component {
                                     <i><FaChevronDown /></i>
                                   }
                                 </label>
-                                <UnmountClosed isOpened={this.state.isShowMethod1} springConfig={{stiffness: 150, damping: 20}}>
+                                <div className={this.state.isShowMethod1 ? "collapse-container show" : "collapse-container"}>
                                   <div className="collapse-content">
                                     <h2>{t('checkout_payment.office')}</h2>
                                     <div className="nd_options_section nd_options_height_10"/>
@@ -283,7 +296,7 @@ class CheckOutPayment extends React.Component {
                                     <div className="nd_options_section nd_options_height_5"/>
                                     <strong>Email:</strong>&nbsp;<a href="mailto:traveltour@gmail.com">traveltour@gmail.com</a><br />
                                   </div>
-                                </UnmountClosed>
+                                </div>
                               </div>
                             </div>
                             <div className="method">
@@ -306,7 +319,7 @@ class CheckOutPayment extends React.Component {
                                     <i><FaChevronDown /></i>
                                   }
                                 </label>
-                                <UnmountClosed isOpened={this.state.isShowMethod2} springConfig={{stiffness: 150, damping: 20}}>
+                                <div className={this.state.isShowMethod2 ? "collapse-container show" : "collapse-container"}>
                                   <div className="collapse-content">
                                     <h2>{t('checkout_payment.account')}</h2>
                                     <div className="nd_options_section nd_options_height_10"/>
@@ -322,7 +335,7 @@ class CheckOutPayment extends React.Component {
                                     <br/>
                                     <p>{t('checkout_payment.thank')}</p>
                                   </div>
-                                </UnmountClosed>
+                                </div>
                               </div>
                             </div>
                             {/*<div className="method">

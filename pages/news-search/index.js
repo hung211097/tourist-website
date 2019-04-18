@@ -7,6 +7,7 @@ import { withNamespaces, Trans } from "react-i18next"
 import { replaceInvalidCharacter } from '../../services/utils.service'
 import { Router } from 'routes'
 import Masonry from 'react-masonry-css'
+import { metaData } from '../../constants/meta-data'
 
 class NewsSearch extends React.Component {
     displayName = 'News Search Page'
@@ -102,7 +103,12 @@ class NewsSearch extends React.Component {
       const keyword = this.props.query.keyword
         return (
           <>
-            <Layout page="news" {...this.props}>
+            <Layout page="news"
+              seo={{
+                  title: metaData.SEARCH_RESULT.title.replace('[KEYWORD]', this.props.route.query.keyword),
+                  description: metaData.SEARCH_RESULT.description
+              }}
+              {...this.props}>
               <style jsx>{styles}</style>
               <section className='middle'>
                 {/* section box*/}

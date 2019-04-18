@@ -21,7 +21,8 @@ export default class extends React.Component {
         onClose: PropTypes.func,
         children: PropTypes.any,
         customContent: PropTypes.object,
-        customOverlay: PropTypes.object
+        customOverlay: PropTypes.object,
+        timeOut: PropTypes.number
     }
 
     constructor(props) {
@@ -30,6 +31,18 @@ export default class extends React.Component {
 
     handleClose() {
         this.props.onClose && this.props.onClose()
+    }
+
+    componentWillUnmount(){
+      this.timeout && clearTimeout(this.timeout)
+    }
+
+    componentDidMount(){
+      if(this.props.timeOut){
+        this.timeout = setTimeout(() => {
+          this.handleClose()
+        }, this.props.timeOut)
+      }
     }
 
     render() {

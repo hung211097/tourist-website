@@ -33,9 +33,11 @@ class MapComponent extends React.Component{
     myLocation: PropTypes.object,
     toggleShowTour: PropTypes.func,
     isShowTour: PropTypes.bool,
-    isSetTour: PropTypes.bool,
-    idTourSet: PropTypes.number,
-    t: PropTypes.func
+    isSetTour: PropTypes.bool,  //Có thể hiện tour đã chọn sẵn hay không? Ở trang chi tiết tour
+    idTourSet: PropTypes.number,  //Id tour cần show sẵn, trang chi tiết tour
+    t: PropTypes.func,
+    currentLocation: PropTypes.any, // Điểm đi tới trong lộ trình hiện tại,
+    styleDetailBookedFilter: PropTypes.bool
   }
 
   static defaultProps = {
@@ -55,17 +57,18 @@ class MapComponent extends React.Component{
     this.state = {
       bounds: null,
       markerChoose: null, //Điểm marker click trên map
-      locationNearCenter: [],
+      locationNearCenter: [], //Mảng location trên map quét theo khung hình
       zoom: 15,
       address: '',
       center: this.props.center,
-      isChangeCenter: false,
+      isChangeCenter: false,  //Mặc định ban đầu center là vị trí nơi người dùng cho phép truy cập vị trí cá nhân, nếu không thì theo center mặc định trên props
       idTourChosen: null,
-      locationsInTour: [],
-      directions: [],
+      locationsInTour: [],  //Các điểm trong tour đang show, đánh dấu bằng marker khác
+      directions: [], //Mảng direction để vẽ
       showFilter: false,
-      filterOptions: [],
-      airport: []
+      filterOptions: [],  //Mảng location type cần filter
+      airport: [], //Mảng các điểm sân bay để vẽ polyline,
+      routes: []
     }
   }
 
@@ -103,7 +106,10 @@ class MapComponent extends React.Component{
     }
     if(this.props.isSetTour && this.props.idTourSet){
       this.apiService.getRouteByTour(this.props.idTourSet).then((res) => {
-        this.onDrawDirection(res.data, this.props.idTourSet)
+        this.setState({
+          routes: res.data
+        })
+        this.onDrawDirection(res.data, this.props.idTourSet, this.props.currentLocation, true)
       })
     }
   }
@@ -203,10 +209,10 @@ class MapComponent extends React.Component{
     // refs.map.fitBounds(bounds);
   }
 
-  onDrawDirection(routes, idTour){
+  onDrawDirection(routes, idTour, currentLocation = null, firstLoad = false){
     if(!this.state.idTourChosen || this.state.idTourChosen != idTour){  //Xét tồn tại tour đã chọn chưa hoặc chọn hiển thị tour khác
       if(!this.state.idTourChosen){ //Chưa chọn tour nào để hiển thị
-        this.changeTourToDisplay(routes, idTour)
+        this.changeTourToDisplay(routes, idTour, currentLocation, firstLoad)
       }
       else{
         let temp = this.state.locationNearCenter
@@ -224,33 +230,58 @@ class MapComponent extends React.Component{
           directions: [],
           airport: []
         }, () => {
-          this.changeTourToDisplay(routes, idTour)
+          this.changeTourToDisplay(routes, idTour, currentLocation, firstLoad)
         })
       }
     }
     else{ //Tắt hiển thị
-      this.resetMarker()
+      if(!currentLocation){
+        this.resetMarker()
+      }
+      else{
+        this.changeTourToDisplay(routes, idTour, currentLocation, firstLoad)
+      }
     }
   }
 
-  changeTourToDisplay(routes, idTour){
+  UNSAFE_componentWillReceiveProps(props){
+    if(props.currentLocation){
+      this.onDrawDirection(this.state.routes, props.idTourSet, props.currentLocation)
+    }
+  }
+
+  changeTourToDisplay(routes, idTour, currentLocation, firstLoad){
     let temp = this.state.locationNearCenter
+    if(currentLocation){
+      for(let i = 0 ; i < routes.length; i++){
+        routes[i].isPass = true
+        if(routes[i].id === currentLocation.id){
+          break
+        }
+      }
+    }
     routes.forEach((item, key) => {
       let tempItem = temp.find((filterItem) => {
         return item.location.id === filterItem.id
       })
       if(tempItem){
         tempItem.isInTour = true
-        if(tempItem.order){
-          tempItem.order = tempItem.order + ', ' + (key + 1).toString()
+        if(!tempItem.isPass){ //Trùng điểm nên điểm sau sẽ đè đánh dấu điểm trước, kiểm tra ở đây
+          tempItem.isPass = item.isPass ? item.isPass : false
         }
-        else{
-          tempItem.order = (key + 1).toString()
+        if(firstLoad){
+          if(tempItem.order){
+            tempItem.order = tempItem.order + ', ' + (key + 1).toString()
+          }
+          else{
+            tempItem.order = (key + 1).toString()
+          }
         }
       }
       else{
         let addItem = item.location
         addItem.isInTour = true
+        addItem.isPass = item.isPass ? item.isPass : false
         addItem.order = (key + 1).toString()
         temp.push(addItem)
         this.traceAddedLocation[addItem.id] = true
@@ -261,29 +292,31 @@ class MapComponent extends React.Component{
       locationNearCenter: temp,
       idTourChosen: idTour
     }, () => {
-      let airport = getAirportPoint(routes)
-      if(!airport.length){  //Nếu không xuất hiện các điểm sân bay thì vẽ đường đi bằng xe bình thường
-        this.setDirections(routes)
-      }
-      else{   //Nếu có xuất hiện các điểm sân bay thì tách các đoạn đi bằng xe ra vẽ riêng, đi bằng đường hàng không vẽ riêng
-        let directionRoutes = []
-        let tempPoint = []
-        routes.forEach((item) => {
-          tempPoint.push(item)
-          if(item.transport.name_en === transports.AIRWAY){
-            directionRoutes.push(tempPoint)
-            tempPoint = []
-          }
-        })
-        if(tempPoint.length){ //Trường hợp chỉ có 1 lần bay thì đưa những điểm đi bằng đường bộ còn lại vào để vẽ
-          directionRoutes.push(tempPoint)
+      if(!currentLocation || (currentLocation && firstLoad)){ //Không tracking thì mới vẽ lại direction
+        let airport = getAirportPoint(routes)
+        if(!airport.length){  //Nếu không xuất hiện các điểm sân bay thì vẽ đường đi bằng xe bình thường
+          this.setDirections(routes)
         }
-        directionRoutes.forEach(item => {
-          this.setDirections(item)
-        })
-        this.setState({
-          airport: airport
-        })
+        else{   //Nếu có xuất hiện các điểm sân bay thì tách các đoạn đi bằng xe ra vẽ riêng, đi bằng đường hàng không vẽ riêng
+          let directionRoutes = []
+          let tempPoint = []
+          routes.forEach((item) => {
+            tempPoint.push(item)
+            if(item.transport.name_en === transports.AIRWAY){
+              directionRoutes.push(tempPoint)
+              tempPoint = []
+            }
+          })
+          if(tempPoint.length){ //Trường hợp chỉ có 1 lần bay thì đưa những điểm đi bằng đường bộ còn lại vào để vẽ
+            directionRoutes.push(tempPoint)
+          }
+          directionRoutes.forEach(item => {
+            this.setDirections(item)
+          })
+          this.setState({
+            airport: airport
+          })
+        }
       }
     })
   }
@@ -291,7 +324,7 @@ class MapComponent extends React.Component{
   setDirections(routes){
     const DirectionsService = new google.maps.DirectionsService();
     let maximumWaypoints = 22 //actually is 23, index from 0
-    if(routes.length <= maximumWaypoints + 1){  //Số điểm trung gian ít hơn 23 (giới hạn api google map)
+    if(routes.length <= maximumWaypoints + 1 && routes.length >= 2){  //Số điểm trung gian ít hơn 23 (giới hạn api google map)
       let request = {}
       routes.forEach((item, i) => {
         if (i == 0) request.origin = new google.maps.LatLng(item.location.latitude, item.location.longitude);
@@ -314,7 +347,7 @@ class MapComponent extends React.Component{
         }
       })
     }
-    else{
+    else if(routes.length > maximumWaypoints + 1){
       let numRequests = parseInt(routes.length / (maximumWaypoints + 1))
       if(routes.length % maximumWaypoints !== 0){
         numRequests = numRequests + 1
@@ -357,6 +390,7 @@ class MapComponent extends React.Component{
       if(tempItem){
         tempItem.isInTour = false
         tempItem.order = null
+        tempItem.isPass = false
       }
 
       this.setState({
@@ -556,7 +590,8 @@ class MapComponent extends React.Component{
             <FaEyeSlash style={{fontSize: '20px'}}/>
           </a>
         }
-        <a className={this.props.isSetTour ? "filter detail" : "filter"} title="Filter" onClick={this.onFilterTour.bind(this)}>
+        <a className={this.props.isSetTour && !this.props.styleDetailBookedFilter ? "filter detail" :
+          this.props.styleDetailBookedFilter ? "filter detail-booked" : "filter"} title="Filter" onClick={this.onFilterTour.bind(this)}>
           <FaFilter style={{fontSize: '20px'}}/>
         </a>
         <PopupInfo show={this.state.showFilter} onClose={this.handleClose.bind(this)} customContent={customStyles}>

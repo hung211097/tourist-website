@@ -11,4 +11,20 @@
       top: 89%;
     }
   }
+  &.detail-booked{
+    top: 87%;
+    left: 4%;
+    @media screen and (max-width: 834px){
+      top: 88%;
+      left: 5%;
+    }
+    @media screen and (max-width: 768px){
+      top: 88%;
+      left: 7%;
+    }
+    @media screen and (max-width: 576px){
+      left: 11%;
+      top: 90%;
+    }
+  }
 }

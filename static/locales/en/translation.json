@@ -12,6 +12,7 @@
     "domestic_tour": "DOMESTIC TOUR",
     "international_tour": "INTERNATIONAL TOUR",
     "news": "NEWS",
+    "back": "BACK",
     "Miền Bắc": "Northern Vietnam",
     "Miền Trung": "Central Vietnam",
     "Miền Nam": "Southern Vietnam",
@@ -166,7 +167,10 @@
     "international_tour": "International tour",
     "category": "Category",
     "tag": "Tag",
-    "related_tour": "Related tour"
+    "related_tour": "Related tour",
+    "day": "Day",
+    "arrive_at": "Arrive at",
+    "leave_at": "Leave at"
   },
   "wrong_auth": {
     "oops": "Oops!",
@@ -218,7 +222,8 @@
     "tour_pass": "Some tour pass over",
     "order": "Numerical of order",
     "show_more": "Show more",
-    "show_less": "Show less"
+    "show_less": "Show less",
+    "put": "Put into your trip so that we can recommend suitable tour for you!"
   },
   "search": {
     "title": "SEARCH",
@@ -502,7 +507,11 @@
     "other": "Other",
     "Adult": "Adult",
     "Children": "Children",
-    "days": "days"
+    "days": "days",
+    "tracking": "TRACKING THIS TOUR",
+    "just_come": "YOU JUST COME TO",
+    "just_come_lower": "You just come to",
+    "reach_location": "Reach location"
   },
   "cancel_tour": {
     "title": "CANCEL TOUR",
@@ -685,6 +694,20 @@
     "not_found": "Page not found",
     "content": "The page you are looking for might have been removed had its name changed or is temporarily unavailable.",
     "homepage": "Home Page"
+  },
+  "recommendation": {
+    "title": "RECOMMENDED TOUR",
+    "address": "Address",
+    "get": "GET RECOMMEND TOUR",
+    "no_location": "There is no location in your trip!",
+    "searching": "Searching suitable tours...",
+    "no_result": "Sorry, we cannot find out any suitable tour for your trip!",
+    "clear_all": "Clear all",
+    "back": "BACK",
+    "origin_price": "Original price",
+    "sale_price": "Price",
+    "max_people": "Maximum passengers",
+    "rest_people": "Accepted passengers"
   },
   "search_location": "Search location",
   "checkout": "CHECKOUT",

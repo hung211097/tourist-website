@@ -10,7 +10,8 @@ export const wizardStep = {
 export const modal = {
   EXPIRED: 'EXPIRED',
   LOADING: 'LOADING',
-  CANCEL: 'CANCEL'
+  CANCEL: 'CANCEL',
+  RECOMMEND: 'RECOMMEND'
 }
 
 export const lng = {

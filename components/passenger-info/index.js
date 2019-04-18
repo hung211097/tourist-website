@@ -107,7 +107,7 @@ class PassengerInfo extends React.Component {
   render() {
     const {t} = this.props
     return (
-      <div className="passenger-info" id={"passenger-" + this.props.index}>
+      <div className="passenger-info row" id={"passenger-" + this.props.index}>
         <style jsx>{styles}</style>
         <div className="col-md-12 col-sm-12 col-12">
           <div className="title">

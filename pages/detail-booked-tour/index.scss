@@ -4,6 +4,17 @@
   .content{
     margin-top: 20px;
     .finish{
+      margin-top: 20px;
+      .tracking-tour{
+        button{
+          display: inline-block;
+          width: auto;
+          margin-top: 0;
+        }
+        text-align: center;
+        padding: 20px 0;
+        border-top: 1px dashed #ebebeb;
+      }
       .header-title {
         color: #212121;
         font-size: 23px;
@@ -49,7 +60,7 @@
         }
       }
       .tour-info{
-        margin-top: 20px;
+        margin-top: 0;
         .title{
           margin-bottom: 20px;
         }
@@ -178,6 +189,23 @@
     span{
       color: $main-bg-color;
       font-weight: bold;
+    }
+  }
+}
+
+.content-popup{
+  .featured_img{
+    width: 55%;
+    margin-bottom: 20px;
+  }
+  h1{
+    @media screen and (max-width: 576px){
+      font-size: 2rem;
+    }
+  }
+  .co-btn{
+    @media screen and (max-width: 576px){
+      width: 50% !important;
     }
   }
 }

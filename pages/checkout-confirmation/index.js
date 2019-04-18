@@ -2,26 +2,30 @@ import React from 'react'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { Layout, WizardStep } from 'components'
-import { Router, Link } from 'routes'
+import { Link } from 'routes'
 import { connect } from 'react-redux'
 import ApiService from '../../services/api.service'
 import { wizardStep } from '../../constants'
 import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaUserSecret, FaChild, FaRegCalendarAlt, FaPlaneDeparture, FaMoneyBill } from "react-icons/fa"
 import { formatDate, distanceFromDays, compareDate } from '../../services/time.service'
-// import { getUserAuth } from 'services/auth.service'
-// import { getSessionStorage, removeItem } from '../../services/session-storage.service'
-// import { KEY } from '../../constants/session-storage'
 import { getCode, slugify } from '../../services/utils.service'
 import ReactTable from 'react-table'
 import matchSorter from 'match-sorter'
 import InfiniteScroll from 'react-infinite-scroller'
-import { removeItem } from '../../services/session-storage.service'
-import { KEY } from '../../constants/session-storage'
 import { withNamespaces } from "react-i18next"
+import { metaData } from '../../constants/meta-data'
+import Redirect from 'routes/redirect'
+import { addInfoPassengers } from '../../actions'
 
 const mapStateToProps = state => {
   return {
     user: state.user,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addInfoPassengers: (data) => {dispatch(addInfoPassengers(data))}
   }
 }
 
@@ -31,26 +35,30 @@ class CheckOutConfirmation extends React.Component {
   static propTypes = {
     user: PropTypes.object,
     bookInfo: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
+    addInfoPassengers: PropTypes.func
   }
 
-  static async getInitialProps({ query }) {
+  static async getInitialProps({ res, query }) {
       let apiService = ApiService()
-      let res = {
+      let result = {
         bookInfo: null
       }
       if(!query.book_completed){
-        res.bookInfo = null
+        result.bookInfo = null
       }
 
       try{
         let bookInfo = await apiService.getBookTourHistoryByCode(query.book_completed, {isTour: true})
-        res.bookInfo = bookInfo.data
+        result.bookInfo = bookInfo.data
       }
       catch(e){
-        return res
+        Redirect(res, '404')
       }
-      return res
+      if(!result.bookInfo){
+        Redirect(res, '404')
+      }
+      return result
   }
 
   constructor(props) {
@@ -82,26 +90,8 @@ class CheckOutConfirmation extends React.Component {
   }
 
   componentDidMount() {
-    if(!this.state.bookInfo){
-      Router.pushRoute("home")
-    }
-
-    removeItem(KEY.PASSENGER)
+    this.props.addInfoPassengers && this.props.addInfoPassengers(null)
     this.loadMore()
-
-    // let passengerInfo = getSessionStorage(KEY.PASSENGER)
-    // if(!passengerInfo){
-    //   Router.pushRoute("home")
-    // }
-    // else{
-    //   passengerInfo = JSON.parse(passengerInfo)
-    //   this.setState({
-    //     num_adult: passengerInfo.num_adult,
-    //     num_child: passengerInfo.num_child,
-    //     contactInfo: passengerInfo.contactInfo,
-    //     passengers: passengerInfo.passengers
-    //   })
-    // }
 
     // let user = this.props.user
     // if(!user){
@@ -122,7 +112,7 @@ class CheckOutConfirmation extends React.Component {
     const {t} = this.props
     return (
       <>
-        <Layout page="checkout" {...this.props}>
+        <Layout page="checkout" seo={{title: metaData.CHECKOUT.title, description: metaData.CHECKOUT.description}} {...this.props}>
           <style jsx>{styles}</style>
           <section className='middle'>
             {/* section box*/}
@@ -356,4 +346,4 @@ class CheckOutConfirmation extends React.Component {
   }
 }
 
-export default withNamespaces('translation')(connect(mapStateToProps)(CheckOutConfirmation))
+export default withNamespaces('translation')(connect(mapStateToProps, mapDispatchToProps)(CheckOutConfirmation))

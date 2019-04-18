@@ -3,6 +3,7 @@ import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { Layout } from 'components'
 import { withNamespaces } from "react-i18next"
+import { metaData } from '../../constants/meta-data'
 
 class AboutUs extends React.Component {
   displayName = 'About Us'
@@ -23,7 +24,8 @@ class AboutUs extends React.Component {
     const {t} = this.props
     return (
       <>
-        <Layout page="about-us" {...this.props}>
+        <Layout page="about-us"
+          seo={{title: metaData.ABOUT.title, description: metaData.ABOUT.description}} {...this.props}>
           <style jsx>{styles}</style>
           <section className='middle'>
             {/* section box*/}

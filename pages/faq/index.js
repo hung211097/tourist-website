@@ -8,6 +8,7 @@ import { FaCheck } from "react-icons/fa"
 import PropTypes from 'prop-types'
 import { withNamespaces } from "react-i18next"
 import { validateStringWithoutNumber } from '../../services/validates'
+import { metaData } from '../../constants/meta-data'
 
 class FAQ extends React.Component {
   displayName = 'FAQ'
@@ -166,7 +167,7 @@ class FAQ extends React.Component {
     const {t} = this.props
     return (
       <>
-        <Layout page="faq" {...this.props}>
+        <Layout page="faq" seo={{title: metaData.FAQ.title, description: metaData.FAQ.description}} {...this.props}>
           <style jsx>{styles}</style>
           <section className='middle'>
             {/* section box*/}

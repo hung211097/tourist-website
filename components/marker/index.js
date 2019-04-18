@@ -1,22 +1,31 @@
 import React from 'react'
 import { Marker, InfoWindow } from "react-google-maps"
 import PropTypes from 'prop-types'
-import { FaEye, FaEyeSlash } from "react-icons/fa"
+import { FaEye, FaEyeSlash, FaPlusCircle } from "react-icons/fa"
 import ApiService from '../../services/api.service'
 import { connect } from 'react-redux'
-import { toggleShowTour } from '../../actions'
+import { toggleShowTour, addRecommendLocaiton } from '../../actions'
 import { Link } from 'routes'
 import { slugify } from '../../services/utils.service'
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
+  let isInSuitcase = false
+  let temp = state.recommendLocation.find((item) => {
+    return item.id === props.infoLocation.id && !props.isMe
+  })
+  if(temp){
+    isInSuitcase = true
+  }
   return {
-    isShowTour: state.isShowTour
+    isShowTour: state.isShowTour,
+    isInSuitcase
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleShowTour: (isShow) => {dispatch(toggleShowTour(isShow))}
+    toggleShowTour: (isShow) => {dispatch(toggleShowTour(isShow))},
+    addRecommendLocaiton: (location) => {dispatch(addRecommendLocaiton(location))}
   }
 }
 
@@ -29,7 +38,9 @@ class MarkerComponent extends React.Component{
     toggleShowTour: PropTypes.func,
     isShowTour: PropTypes.bool,
     isSetTour: PropTypes.bool,
-    t: PropTypes.func
+    t: PropTypes.func,
+    isInSuitcase: PropTypes.bool,
+    addRecommendLocaiton: PropTypes.func
   }
 
   static defaultProps = {
@@ -76,8 +87,12 @@ class MarkerComponent extends React.Component{
       isOpen: false
     })
     this.apiService.getRouteByTour(id).then((res) => {
-      this.props.onDrawDirection(res.data, id);
+      this.props.onDrawDirection(res.data, id, null, true);
     })
+  }
+
+  handlePutInSuitcase(){
+    this.props.addRecommendLocaiton && this.props.addRecommendLocaiton(this.props.infoLocation)
   }
 
   render(){
@@ -87,9 +102,10 @@ class MarkerComponent extends React.Component{
         position={{lat: this.props.infoLocation.latitude, lng: this.props.infoLocation.longitude}}
         onClick={this.toggleOpen.bind(this)}
         icon={this.props.isMe ? '/static/images/person.png' :
-          this.props.infoLocation.isInTour ? {url: '/static/images/location.png', labelOrigin: new google.maps.Point(20, 16)} :
+          this.props.infoLocation.isInTour && !this.props.infoLocation.isPass ? {url: '/static/images/location.png', labelOrigin: new google.maps.Point(20, 17)} :
+          this.props.infoLocation.isInTour && this.props.infoLocation.isPass ? {url: '/static/images/pass.png', labelOrigin: new google.maps.Point(20, 17)} :
           this.props.infoLocation.type ? `/static/images/${this.props.infoLocation.type.marker}.png` : null}
-        animation={google.maps.Animation.DROP}
+        animation={this.props.isMe ? null : google.maps.Animation.DROP}
         label={this.props.infoLocation.isInTour && this.props.infoLocation.order.indexOf(',') < 0 ?
                 {color: "black", text: this.props.infoLocation.order, fontWeight: '600'} :
                 this.props.infoLocation.isInTour && this.props.infoLocation.order.indexOf(',') >= 0 ?
@@ -151,6 +167,11 @@ class MarkerComponent extends React.Component{
               }
               {this.props.infoLocation.isInTour && this.props.infoLocation.order.indexOf(',') >= 0 &&
                 <p><span className="bold">{t('marker.order')}: </span> {this.props.infoLocation.order}</p>
+              }
+              {!this.props.isInSuitcase && !this.props.isMe &&
+                <a onClick={this.handlePutInSuitcase.bind(this)} className="put-into" title="Add this location">
+                  <span><i><FaPlusCircle /></i> {t('marker.put')}</span>
+                </a>
               }
             </div>
           </div>
