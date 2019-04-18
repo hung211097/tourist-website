@@ -508,7 +508,8 @@
     "Adult": "Adult",
     "Children": "Children",
     "days": "days",
-    "tracking": "TRACKING THIS TOUR"
+    "tracking": "TRACKING THIS TOUR",
+    "just_come": "YOU JUST COME TO"
   },
   "cancel_tour": {
     "title": "CANCEL TOUR",

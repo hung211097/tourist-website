@@ -126,6 +126,10 @@ export default () => {
       let url = baseURL + `tour_classification/getTourTurnByType/${id}?page=${page}&per_page=${limit}`
       return fetchCached(url)
     },
+    getCurrentRoute: (data) => {
+      let url = baseURL + `route/getCurrentRoute`
+      return httpPost(url, data)
+    },
     register: (data) => {
       let url = baseURL + `user/register`
       return httpPost(url, data)

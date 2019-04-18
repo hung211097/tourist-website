@@ -192,3 +192,20 @@
     }
   }
 }
+
+.content-popup{
+  .featured_img{
+    width: 55%;
+    margin-bottom: 20px;
+  }
+  h1{
+    @media screen and (max-width: 576px){
+      font-size: 2rem;
+    }
+  }
+  .co-btn{
+    @media screen and (max-width: 576px){
+      width: 50% !important;
+    }
+  }
+}

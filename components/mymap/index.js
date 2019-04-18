@@ -33,6 +33,7 @@ class MyMap extends React.Component {
     isMarkerShown: false,
     isSearchBox: false,
     isSetTour: false,
+    currentPosition: null
   }
 
   static propTypes = {
@@ -44,7 +45,9 @@ class MyMap extends React.Component {
     isSetTour: PropTypes.bool,
     idTourSet: PropTypes.number,
     customStyles: PropTypes.any,
-    t: PropTypes.func
+    t: PropTypes.func,
+    trackingPosition: PropTypes.object, //Vị trí hiện tại để watch
+    currentLocation: PropTypes.any // Điểm đi tới trong lộ trình hiện tại
   }
 
   constructor(props) {
@@ -52,12 +55,14 @@ class MyMap extends React.Component {
     this.apiService = ApiService()
     this.state = {
       myLocation: '',
+      position: null
     }
   }
 
   componentDidMount() {
-    if(this.props.location){
-      Geocode.fromLatLng(this.props.location.latitude, this.props.location.longitude).then((result) => {
+    let location = this.props.trackingPosition ? this.props.trackingPosition : this.props.location
+    if(location){
+      Geocode.fromLatLng(location.latitude, location.longitude).then((result) => {
         this.setState({
           myLocation: result.results[0].formatted_address
         })
@@ -83,6 +88,7 @@ class MyMap extends React.Component {
 
   render() {
     const {t} = this.props
+    const position = this.props.trackingPosition ? this.props.trackingPosition : this.props.location
     return (
       <div className="custom-map" style={this.props.customStyles}>
         <style jsx>{styles}</style>
@@ -93,11 +99,12 @@ class MyMap extends React.Component {
           loadingElement={<div style={{ height: `100%` }} />}
           containerElement={<div style={{ height: `100%` }} />}
           mapElement={<div style={{ height: `100%` }} />}
-          myLocation={{position: this.props.location, address: this.state.myLocation}}
+          myLocation={{position: position, address: this.state.myLocation}}
           toggleShowTour={this.onToggleShowTour.bind(this)}
           isShowTour={this.props.isShowTour}
           isSetTour={this.props.isSetTour}
           idTourSet={this.props.idTourSet}
+          currentLocation={this.props.currentLocation}
           t={t}/>
       </div>
     )

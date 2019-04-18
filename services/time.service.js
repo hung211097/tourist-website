@@ -6,6 +6,7 @@ import differenceInDays from 'date-fns/differenceInDays'
 import isValid from 'date-fns/isValid'
 import compareAsc from 'date-fns/compareAsc'
 import addDays from 'date-fns/addDays'
+import isSameDay from 'date-fns/isSameDay'
 
 export function fromNow(date, lng) {
   if(lng && lng === 'vi'){
@@ -39,4 +40,8 @@ export function compareDate(dateLeft, dateRight){
 
 export function addDay(date, amount){
   return addDays(new Date(date), amount)
+}
+
+export function isSameDate(dateLeft, dateRight){
+  return isSameDay(new Date(dateLeft), new Date(dateRight))
 }

@@ -67,7 +67,8 @@ class CheckOutPayment extends React.Component {
       isShowMethod1: false,
       isShowMethod2: false,
       isShowMethod3: false,
-      method: ''
+      method: '',
+      block: false
     }
     this.method_1 = React.createRef()
     this.method_2 = React.createRef()
@@ -112,10 +113,6 @@ class CheckOutPayment extends React.Component {
   //   }
   // }
 
-  componentWillUnmount(){
-    this.timeout && clearTimeout(this.timeout)
-  }
-
   handleSubmit(e){
     e.preventDefault()
     this.setState({
@@ -130,8 +127,14 @@ class CheckOutPayment extends React.Component {
       return
     }
 
-    this.props.useModal && this.props.useModal({type: modal.LOADING, isOpen: true, data: ''})
+    if(this.state.block){
+      return
+    }
 
+    this.props.useModal && this.props.useModal({type: modal.LOADING, isOpen: true, data: ''})
+    this.setState({
+      block: true
+    })
     this.apiService.bookTour({
       fullname: this.state.contactInfo.name,
       phone: this.state.contactInfo.phone,
@@ -142,21 +145,17 @@ class CheckOutPayment extends React.Component {
       payment: this.state.method,
       passengers: this.state.passengers
     }).then((data) => {
+      this.props.useModal && this.props.useModal({type: modal.LOADING, isOpen: false, data: ''})
       Router.pushRoute("checkout-confirmation", {book_completed: data.book_tour.code})
-      this.timeout = setTimeout(() => {
-        this.props.useModal && this.props.useModal({type: modal.LOADING, isOpen: false, data: ''})
-      }, 1000)
     }).catch((e) => {
       let error = "There is an error, please try book tour again!"
-      this.timeout = setTimeout(() => {
-        this.props.useModal && this.props.useModal({type: modal.LOADING, isOpen: false, data: ''})
-        if(e.result === 'This tour is full'){
-          error = 'This tour is full slot'
-        }
-        this.setState({
-          error: error
-        })
-      }, 1000)
+      this.props.useModal && this.props.useModal({type: modal.LOADING, isOpen: false, data: ''})
+      if(e.result === 'This tour is full'){
+        error = 'This tour is full slot'
+      }
+      this.setState({
+        error: error
+      })
     })
   }
 

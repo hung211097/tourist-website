@@ -87,7 +87,7 @@ class MarkerComponent extends React.Component{
       isOpen: false
     })
     this.apiService.getRouteByTour(id).then((res) => {
-      this.props.onDrawDirection(res.data, id);
+      this.props.onDrawDirection(res.data, id, null, true);
     })
   }
 
@@ -102,7 +102,8 @@ class MarkerComponent extends React.Component{
         position={{lat: this.props.infoLocation.latitude, lng: this.props.infoLocation.longitude}}
         onClick={this.toggleOpen.bind(this)}
         icon={this.props.isMe ? '/static/images/person.png' :
-          this.props.infoLocation.isInTour ? {url: '/static/images/location.png', labelOrigin: new google.maps.Point(20, 16)} :
+          this.props.infoLocation.isInTour && !this.props.infoLocation.isPass ? {url: '/static/images/location.png', labelOrigin: new google.maps.Point(20, 17)} :
+          this.props.infoLocation.isInTour && this.props.infoLocation.isPass ? {url: '/static/images/pass.png', labelOrigin: new google.maps.Point(20, 17)} :
           this.props.infoLocation.type ? `/static/images/${this.props.infoLocation.type.marker}.png` : null}
         animation={this.props.isMe ? null : google.maps.Animation.DROP}
         label={this.props.infoLocation.isInTour && this.props.infoLocation.order.indexOf(',') < 0 ?
