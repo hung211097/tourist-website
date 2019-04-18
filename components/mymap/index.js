@@ -33,10 +33,12 @@ class MyMap extends React.Component {
     isMarkerShown: false,
     isSearchBox: false,
     isSetTour: false,
+    styleDetailBookedFilter: false,
     currentPosition: null
   }
 
   static propTypes = {
+    styleDetailBookedFilter: PropTypes.bool,
     location: PropTypes.any,
     isMarkerShown: PropTypes.bool,
     isSearchBox: PropTypes.bool,
@@ -105,6 +107,7 @@ class MyMap extends React.Component {
           isSetTour={this.props.isSetTour}
           idTourSet={this.props.idTourSet}
           currentLocation={this.props.currentLocation}
+          styleDetailBookedFilter={this.props.styleDetailBookedFilter}
           t={t}/>
       </div>
     )

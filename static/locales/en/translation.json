@@ -509,7 +509,9 @@
     "Children": "Children",
     "days": "days",
     "tracking": "TRACKING THIS TOUR",
-    "just_come": "YOU JUST COME TO"
+    "just_come": "YOU JUST COME TO",
+    "just_come_lower": "You just come to",
+    "reach_location": "Reach location"
   },
   "cancel_tour": {
     "title": "CANCEL TOUR",

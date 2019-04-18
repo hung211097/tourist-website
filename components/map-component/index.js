@@ -36,7 +36,8 @@ class MapComponent extends React.Component{
     isSetTour: PropTypes.bool,  //Có thể hiện tour đã chọn sẵn hay không? Ở trang chi tiết tour
     idTourSet: PropTypes.number,  //Id tour cần show sẵn, trang chi tiết tour
     t: PropTypes.func,
-    currentLocation: PropTypes.any // Điểm đi tới trong lộ trình hiện tại
+    currentLocation: PropTypes.any, // Điểm đi tới trong lộ trình hiện tại,
+    styleDetailBookedFilter: PropTypes.bool
   }
 
   static defaultProps = {
@@ -589,7 +590,8 @@ class MapComponent extends React.Component{
             <FaEyeSlash style={{fontSize: '20px'}}/>
           </a>
         }
-        <a className={this.props.isSetTour ? "filter detail" : "filter"} title="Filter" onClick={this.onFilterTour.bind(this)}>
+        <a className={this.props.isSetTour && !this.props.styleDetailBookedFilter ? "filter detail" :
+          this.props.styleDetailBookedFilter ? "filter detail-booked" : "filter"} title="Filter" onClick={this.onFilterTour.bind(this)}>
           <FaFilter style={{fontSize: '20px'}}/>
         </a>
         <PopupInfo show={this.state.showFilter} onClose={this.handleClose.bind(this)} customContent={customStyles}>

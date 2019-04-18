@@ -16,6 +16,7 @@ import { formatDate, compareDate, distanceFromDays, isSameDate } from '../../ser
 import { withNamespaces } from "react-i18next"
 import { slugify } from '../../services/utils.service'
 import Redirect from 'routes/redirect'
+import ReactNotifications from 'react-browser-notifications'
 
 const mapStateToProps = (state) => {
     return {
@@ -64,7 +65,10 @@ class DetailBookedTour extends React.Component {
         trackingTour: false,
         position: null,
         currentLocation: null,
-        showPopup: false
+        showPopup: false,
+        title: '',
+        body: '',
+        passLocation: []
       }
       this.time = {
         "10.7683": "2019-04-24T08:05:00.000",
@@ -76,6 +80,7 @@ class DetailBookedTour extends React.Component {
         "10.7799": "2019-04-24T15:12:00.000",
         "10.7682": "2019-04-24T17:09:00.000"
       } //Test data
+      this.handleClick = this.handleClick.bind(this);
     }
 
     loadMore(){
@@ -108,7 +113,7 @@ class DetailBookedTour extends React.Component {
 
     requestGeolocation(){
       if (navigator.geolocation) {
-        this.watchID = navigator.geolocation.watchPosition(this.showLocation.bind(this), this.showError.bind(this), {timeout: 5000, enableHighAccuracy: true});
+        this.watchID = navigator.geolocation.watchPosition(this.showLocation.bind(this), this.showError.bind(this), {maximumAge:Infinity, timeout:60000, enableHighAccuracy: false});
       } else {
         this.setState({
           trackingTour: false
@@ -125,15 +130,34 @@ class DetailBookedTour extends React.Component {
       })
       this.apiService.getCurrentRoute({id: this.state.bookTour.tour_turn.id, lat: objLocation.latitude, lng: objLocation.longitude,
         cur_time: this.time[objLocation.latitude]}).then((res) => { //Thay this.time bằng new Date()
-          this.setState({
-            currentLocation: res.data ? res.data[0] : null,
-            showPopup: res.data ? true : false
-          })
+          if(res.data && !this.checkExistPassLocation(res.data[0])){
+            this.setState({
+              currentLocation: res.data[0],
+              showPopup: true,
+              title: this.props.t('detail_booked_tour.reach_location'),
+              body: `${this.props.t('detail_booked_tour.just_come_lower')} ${res.data[0].location.name}`
+            }, () => {
+              this.showNotifications()
+            })
+          }
         }).catch(() => {
           this.setState({
             currentLocation: null
           })
         })
+    }
+
+    checkExistPassLocation(location){
+      let temp = this.state.passLocation.find((item) => {
+        return item.id === location.id
+      })
+      if(!temp){
+        this.setState({
+          passLocation: [...this.state.passLocation, location]
+        })
+      }
+
+      return temp ? true : false
     }
 
     showError() {
@@ -194,6 +218,9 @@ class DetailBookedTour extends React.Component {
     }
 
     handleTrackingTour(){
+      this.setState({
+        passLocation: []
+      })
       this.requestGeolocation()
     }
 
@@ -203,7 +230,10 @@ class DetailBookedTour extends React.Component {
       }
       else{
         this.setState({
-          trackingTour: false
+          trackingTour: false,
+          passLocation: [],
+          title: '',
+          body: ''
         })
         this.clearWatch()
       }
@@ -215,6 +245,18 @@ class DetailBookedTour extends React.Component {
       })
     }
 
+    handleClick(event){
+      window.focus()
+      this.n.close(event.target.tag)
+    }
+
+    showNotifications() {
+      // If the Notifications API is supported by the browser
+      // then show the notification
+      if(this.n.supported()){
+        this.n.show()
+      }
+    }
 
     render() {
       const {t} = this.props
@@ -442,6 +484,7 @@ class DetailBookedTour extends React.Component {
                                   trackingPosition={this.state.position}
                                   currentLocation={this.state.currentLocation}
                                   idTourSet={tourInfo.tour.id}
+                                  styleDetailBookedFilter
                                   customStyles={{height: '500px'}}/>
                             </div>
                           }
@@ -451,7 +494,7 @@ class DetailBookedTour extends React.Component {
                   }
                 </div>
                 {this.state.showPopup &&
-                  <PopupInfo show={true} onClose={this.handleClose.bind(this)} timeOut={10000}
+                  <PopupInfo show={true} onClose={this.handleClose.bind(this)} timeOut={5000}
                     customContent={{maxWidth: '500px', width: '90%'}}>
                       {this.state.currentLocation &&
                         <div className="content-popup">
@@ -471,6 +514,15 @@ class DetailBookedTour extends React.Component {
                       }
                   </PopupInfo>
                 }
+                <ReactNotifications
+                  onRef={ref => (this.n = ref)}
+                  title={this.state.title}
+                  body={this.state.body}
+                  icon='/static/images/logo_mobile.png'
+                  tag={new Date()}
+                  timeout="5000"
+                  onClick={event => this.handleClick(event)}
+                />
             </LayoutProfile>
         )
     }

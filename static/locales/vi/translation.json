@@ -509,7 +509,9 @@
     "Children": "Trẻ em",
     "days": "ngày",
     "tracking": "THEO DÕI TOUR",
-    "just_come": "BẠN ĐÃ VỪA ĐẾN"
+    "just_come": "BẠN ĐÃ VỪA ĐẾN",
+    "just_come_lower": "Bạn đã vừa đến",
+    "reach_location": "Đến địa điểm trong lộ trình"
   },
   "cancel_tour": {
     "title": "HỦY TOUR",
