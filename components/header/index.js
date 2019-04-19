@@ -92,7 +92,7 @@ class Header extends React.Component {
     }
     else{
       let findItem = temp.find((item) => {
-        return item.label === lng.EN
+        return item.label === lng.VI
       })
       findItem.isChoose = true
     }

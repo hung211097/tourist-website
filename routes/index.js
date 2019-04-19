@@ -21,7 +21,7 @@ module.exports = routes()                           // ----                   --
 .add('search-result', '/search')                    // search-result          search                 /search-result?keyword=
 .add('checkout-payment', '/checkout/payment')       // checkout-payment       checkout-payment        /checkout/payment
 .add('checkout-passengers', '/checkout/passengers') // checkout               checkout-passengers     /checkout/passengers
-.add('checkout-confirmation', '/checkout/confirmation')// checkout-confirmation    checkout-confirmation        /checkout/confirmation
+.add('checkout-complete', '/checkout/complete')     // checkout-complete      checkout-complete        /checkout/complete
 .add('news')                                        //news                    news                    /news
 .add('detail-news', '/news/:slug-:id(\\d+)')        //detail-news             detail-news             /news/:slug-:id
 .add('404')

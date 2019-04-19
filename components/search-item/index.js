@@ -14,11 +14,13 @@ class SearchItem extends React.Component {
   static propTypes = {
     item: PropTypes.object,
     isGrid: PropTypes.bool,
-    t: PropTypes.func
+    t: PropTypes.func,
+    isLast: PropTypes.bool
   }
 
   static defaultProps = {
-    isGrid: false
+    isGrid: false,
+    isLast: false
   }
   constructor(props) {
     super(props)
@@ -100,7 +102,7 @@ class SearchItem extends React.Component {
       )
     }
     return (
-      <div className="search-item">
+      <div className={this.props.isLast ? "search-item no-border-bot" : "search-item"}>
         <style jsx>{styles}</style>
         <div className="search-container row">
           <div className="col-lg-3 col-md-3 col-sm-12 featured_image-container">

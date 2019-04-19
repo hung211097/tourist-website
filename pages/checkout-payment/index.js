@@ -146,7 +146,7 @@ class CheckOutPayment extends React.Component {
       passengers: this.state.passengers
     }).then((data) => {
       this.props.useModal && this.props.useModal({type: modal.LOADING, isOpen: false, data: ''})
-      Router.pushRoute("checkout-confirmation", {book_completed: data.book_tour.code})
+      Router.pushRoute("checkout-complete", {book_completed: data.book_tour.code})
     }).catch((e) => {
       let error = "There is an error, please try book tour again!"
       this.props.useModal && this.props.useModal({type: modal.LOADING, isOpen: false, data: ''})
@@ -295,6 +295,8 @@ class CheckOutPayment extends React.Component {
                                     <strong>{t('checkout_payment.phone')}:</strong> <a href="tel:0963186896">0963186896</a><br />
                                     <div className="nd_options_section nd_options_height_5"/>
                                     <strong>Email:</strong>&nbsp;<a href="mailto:traveltour@gmail.com">traveltour@gmail.com</a><br />
+                                    <br/>
+                                    <p className="bold">{t('checkout_payment.note_pay')}</p>
                                   </div>
                                 </div>
                               </div>
@@ -332,6 +334,8 @@ class CheckOutPayment extends React.Component {
                                     <br/>
                                     <p>{t('checkout_payment.bank')}</p>
                                     <p>{t('checkout_payment.account_number')}: <strong>13422518A41</strong></p>
+                                    <br/>
+                                    <p className="bold">{t('checkout_payment.note_pay')}</p>
                                     <br/>
                                     <p>{t('checkout_payment.thank')}</p>
                                   </div>

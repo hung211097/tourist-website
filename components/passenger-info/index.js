@@ -13,7 +13,12 @@ class PassengerInfo extends React.Component {
     isSubmit: PropTypes.bool,
     age: PropTypes.string.isRequired,
     onChangePassenger: PropTypes.func,
-    t: PropTypes.func
+    t: PropTypes.func,
+    traveler: PropTypes.object
+  }
+
+  static defaultProps = {
+    traveler: null
   }
 
   constructor(props) {
@@ -28,17 +33,51 @@ class PassengerInfo extends React.Component {
       'children': 'Children'
     }
     this.state = {
-      fullname: '',
-      phone: '',
+      fullname: props.traveler && props.traveler.name ? props.traveler.name : '',
+      phone: props.traveler && props.traveler.phone ? props.traveler.phone : '',
       passport: '',
-      sex: '',
-      birthdate: '',
+      sex: props.traveler && props.traveler.sex ? props.traveler.sex : '',
+      birthdate: props.traveler && props.traveler.birthdate ? props.traveler.birthdate : '',
       type: this.props.age
     }
   }
 
-  componentDidMount() {
-  }
+  // static getDerivedStateFromProps (nextProps, prevState){
+  //   if(!nextProps.traveler){
+  //     return{
+  //       fullname: '',
+  //       phone: '',
+  //       passport: '',
+  //       sex: '',
+  //       birthdate: '',
+  //       type: nextProps.age
+  //     }
+  //   }
+  //   else if(nextProps.traveler){
+  //     return{
+  //       fullname: nextProps.traveler.name ? nextProps.traveler.name : '',
+  //       phone: nextProps.traveler.phone ? nextProps.traveler.phone : '',
+  //       passport: '',
+  //       sex: nextProps.traveler.sex ? nextProps.traveler.sex : '',
+  //       birthdate: nextProps.traveler.birthdate ? nextProps.traveler.birthdate : '',
+  //       type: nextProps.age
+  //     }
+  //   }
+  //   return null
+  // }
+
+  // UNSAFE_componentWillReceiveProps(props){
+  //   if(!props.traveler){
+  //     this.setState({
+  //       fullname: '',
+  //       phone: '',
+  //       passport: '',
+  //       sex: '',
+  //       birthdate: '',
+  //       type: props.age
+  //     })
+  //   }
+  // }
 
   changePassengerInfo(){
     this.props.onChangePassenger && this.props.onChangePassenger(this.state, this.props.index)
@@ -178,13 +217,13 @@ class PassengerInfo extends React.Component {
                 }
               </div>
             </div>
-            <div className="form-group col-sm-6 col-12">
+            {/*<div className="form-group col-sm-6 col-12">
               <div className="form-group">
                 <label htmlFor={"passport" + this.props.index}>{t('checkout_passenger.passport')}</label>
                 <input type="text" name="passport" id={"passport" + this.props.index} value={this.state.passport}
                   onChange={this.handleChangePassport.bind(this)}/>
               </div>
-            </div>
+            </div>*/}
           </div>
         </div>
       </div>

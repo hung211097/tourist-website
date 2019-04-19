@@ -134,7 +134,7 @@ class CheckOutConfirmation extends React.Component {
             </div>
             <div className="nd_options_container nd_options_clearfix content">
               <div className="wizard-step-zone">
-                <WizardStep step={wizardStep.CONFIRMATION} t={t}/>
+                <WizardStep step={wizardStep.COMPLETE} t={t}/>
               </div>
               {tourInfo && bookInfo &&
                 <div className="confirmation-info">

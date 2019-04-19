@@ -567,7 +567,7 @@
     "step": "Bước",
     "passenger_info": "Thông tin hành khách",
     "payment_info": "Thông tin thanh toán",
-    "confirm": "Xác nhận đặt tour"
+    "complete": "Hoàn Tất Đặt Tour"
   },
   "checkout_passenger": {
     "num_passenger": "SỐ HÀNH KHÁCH",
@@ -606,7 +606,11 @@
     "minimum": "Cần tối thiểu 1 người",
     "sale": "KHUYẾN MÃI",
     "days": "ngày",
-    "choose_gender": "Chọn giới tính"
+    "choose_gender": "Chọn giới tính",
+    "question": "QUÝ KHÁCH LÀ NGƯỜI ĐI DU LỊCH HAY ĐẶT TOUR GIÚP?",
+    "traveler": "Người đi du lịch",
+    "help_book": "Đặt tour giúp",
+    "note_radio": "Nếu quý khách là người đi du lịch thì chúng tôi sẽ hỗ trợ điền sẵn thông tin có trong hồ sơ của quý khách vào thông tin hành khách đầu tiên, ngược lại quý khách vui lòng điền đầy đủ và chính xác thông tin."
   },
   "checkout_payment": {
     "title": "PHƯƠNG THỨC THANH TOÁN",
@@ -631,7 +635,8 @@
     "book": "ĐẶT TOUR",
     "choose_method": "Hãy chọn một phương thức thanh toán!",
     "There is an error, please try book tour again!": "Có lỗi xảy ra, xin hãy đặt tour lại!",
-    "This tour is full slot": "Tour này đã hết chỗ, quý khách vui lòng đặt tour khác!"
+    "This tour is full slot": "Tour này đã hết chỗ, quý khách vui lòng đặt tour khác!",
+    "note_pay": "Quý khách vui lòng thanh toán trước 1 tuần tour khởi hành. Nếu đặt tour trong vòng 1 tuần trước khi khởi hành thì hạn chót thanh toán là 3 ngày trước khi tour khởi hành, sau đó nếu chưa thanh toán thì bên công ty sẽ hủy tour của quý khách"
   },
   "checkout_confirmation": {
     "title": "THÔNG TIN ĐẶT TOUR",
@@ -713,5 +718,6 @@
   "checkout": "THANH TOÁN",
   "show_more": "XEM THÊM",
   "btn_loading": "Đang tải...",
-  "processing": "Đang xử lý!"
+  "processing": "Đang xử lý!",
+  "not_rated": "Chưa đánh giá"
 }

@@ -4,7 +4,7 @@ const NEWS = 2
 export const wizardStep = {
   PASSENGER: 'passengers',
   PAYMENT: 'payment',
-  CONFIRMATION: 'confirmation'
+  COMPLETE: 'complete'
 }
 
 export const modal = {

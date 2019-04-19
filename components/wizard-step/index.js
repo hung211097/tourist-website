@@ -66,13 +66,13 @@ class WizardStep extends React.Component {
               </div>
             </a>
           </li>
-          <li role="tab" className={step === wizardStep.CONFIRMATION ? "last current"
+          <li role="tab" className={step === wizardStep.COMPLETE ? "last current"
             : ""} aria-disabled="true">
             <a id="form-total-t-2" aria-controls="form-total-p-2" onClick={this.handleClickConfirmation.bind(this)}>
               <div className="title">
                 <span className="step-icon"><i><FaReceipt/></i></span>
                 <span className="step-number">{t('wizard_step.step')} 3</span>
-                <span className="step-text">{t('wizard_step.confirm')}</span>
+                <span className="step-text">{t('wizard_step.complete')}</span>
               </div>
             </a>
           </li>

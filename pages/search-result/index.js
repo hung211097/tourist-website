@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
-import { Layout, RatingStar, SearchItem } from 'components'
+import { Layout, SearchItem } from 'components' //Bỏ RatingStar
 import Slider from 'react-rangeslider'
 import { FaFilter, FaChevronDown, FaChevronUp, FaChevronLeft, FaChevronRight, FaList } from "react-icons/fa"
 import { TiThSmallOutline } from "react-icons/ti"
@@ -431,9 +431,9 @@ class SearchResult extends React.Component {
                                       </div>
                                     </div>
                                     <div className="nd_options_height_10" />
-                                    <div className="break" />
+                                    {/*<div className="break" />*/}
                                   </div>
-                                  <div className="rating-box">
+                                  {/*<div className="rating-box">
                                     <div className="acc-content">
                                       <div className="nd_travel_section">
                                         <h3>{t('search.rating')}:</h3>
@@ -512,7 +512,7 @@ class SearchResult extends React.Component {
                                         </div>
                                       </div>
                                     </div>
-                                  </div>
+                                  </div>*/}
                                   <div className="confirm-zone">
                                     <div className="text-center">
                                       <button type="submit" className="co-btn green" onClick={this.handleSubmitFilter.bind(this)}>{t('search.apply')}</button>
@@ -608,9 +608,9 @@ class SearchResult extends React.Component {
                               </div>
                             </div>
                             <div className="nd_options_height_10" />
-                            <div className="break" />
+                            {/*<div className="break" />*/}
                           </div>
-                          <div className="rating-box">
+                          {/*<div className="rating-box">
                             <div className="acc-content">
                               <div className="nd_travel_section">
                                 <h3>{t('search.rating')}:</h3>
@@ -689,7 +689,7 @@ class SearchResult extends React.Component {
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          </div>*/}
                           <div className="confirm-zone">
                             <div className="text-center">
                               <button type="submit" className="co-btn green" onClick={this.handleSubmitFilter.bind(this)}>{t('search.apply')}</button>
@@ -723,13 +723,13 @@ class SearchResult extends React.Component {
                           <div className="search-list-item row no-margin">
                             {this.state.searchResult && !!this.state.searchResult.length && this.state.searchResult.map((item, key) => {
                                 return(
-                                  <SearchItem key={key} isGrid={!this.state.isListView} item={item} t={t}/>
+                                  <SearchItem key={key} isGrid={!this.state.isListView} item={item} t={t} isLast={key === this.state.searchResult.length - 1}/>
                                 )
                               })
                             }
                           </div>
                         </div>
-                        {this.state.searchResult && !!this.state.searchResult.length &&
+                        {this.state.searchResult && !!this.state.searchResult.length && this.state.totalPage > 1 &&
                           <div className="pagination row text-center">
                             <ReactPaginate
                               previousLabel={<FaChevronLeft />}

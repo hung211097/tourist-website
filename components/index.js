@@ -67,5 +67,5 @@ export {
     NewsItem,
     Breadcrumb,
     CommentsFacebook,
-    PopupRecommend
+    PopupRecommend,
 }

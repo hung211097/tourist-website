@@ -567,7 +567,7 @@
     "step": "Step",
     "passenger_info": "Passenger Infomation",
     "payment_info": "Payment Infomation",
-    "confirm": "Confirm Your Booking"
+    "complete": "Complete Booking"
   },
   "checkout_passenger": {
     "num_passenger": "NUMBER OF PASSENGERS",
@@ -606,7 +606,11 @@
     "minimum": "This field is required minimum 1",
     "sale": "SALE",
     "days": "days",
-    "choose_gender": "Choose your gender"
+    "choose_gender": "Choose your gender",
+    "question": "ARE YOU A TRAVELER OR HELPING OTHERS BOOK TOUR?",
+    "traveler": "A Traveler",
+    "help_book": "Helping book tour",
+    "note_radio": "If you are a traveler, we will help you to fill in the first passenger's information. If not, please fill in below forms carefully."
   },
   "checkout_payment": {
     "title": "PAYMENT METHOD",
@@ -631,7 +635,8 @@
     "book": "BOOK",
     "choose_method": "Please choose a payment method!",
     "There is an error, please try book tour again!": "There is an error, please try book tour again!",
-    "This tour is full slot": "This tour is full slot, please book another tour!"
+    "This tour is full slot": "This tour is full slot, please book another tour!",
+    "note_pay": "Please pay 1 week before departure tour. If the tour is booked within 1 week before departure, the payment deadline is 3 days before the tour departure, then if not paid, the company will cancel your tour"
   },
   "checkout_confirmation": {
     "title": "BOOKING CONFIRMATION",
@@ -713,5 +718,6 @@
   "checkout": "CHECKOUT",
   "show_more": "SHOW MORE",
   "btn_loading": "Loading...",
-  "processing": "Processing!"
+  "processing": "Processing!",
+  "not_rated": "Not yet rated"
 }

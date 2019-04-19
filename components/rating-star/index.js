@@ -2,8 +2,9 @@ import React from 'react'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 import {processMathRoundFix} from 'services/utils.service'
+import { withNamespaces } from "react-i18next"
 
-export default class extends React.Component {
+class RatingStar extends React.Component {
   displayName = 'Rating Item'
 
   static defaultProps = {
@@ -24,7 +25,8 @@ export default class extends React.Component {
     title: PropTypes.string,
     onWriteReview: PropTypes.func,
     smallTextReview: PropTypes.bool,
-    isWhite: PropTypes.bool
+    isWhite: PropTypes.bool,
+    t: PropTypes.func
   }
 
   constructor(props) {
@@ -48,6 +50,7 @@ export default class extends React.Component {
   }
 
   render() {
+    const {t} = this.props
     let process = [100, 100, 100, 100, 100]
     const value = Math.floor(this.state.rate)
     process[value] = Math.round((this.state.rate - value) * 10000) / 100
@@ -72,7 +75,7 @@ export default class extends React.Component {
             </span>)
           }
           {
-            !this.props.hideNumber &&
+            !this.props.hideNumber && this.props.rate > 0 &&
             (<span className={this.props.isWhite && !this.props.smallTextReview ?
               "rating-number white" :
               !this.props.isWhite && this.props.smallTextReview ?
@@ -83,8 +86,13 @@ export default class extends React.Component {
               {processMathRoundFix(this.state.rate, 1)}
             </span>)
           }
+          {this.props.rate === 0 && !this.props.editor &&
+            <span className="not_rated">&nbsp;&nbsp;{t('not_rated')}</span>
+          }
         </div>
       </div>
     )
   }
 }
+
+export default withNamespaces('translation')(RatingStar)
