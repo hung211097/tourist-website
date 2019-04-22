@@ -433,7 +433,7 @@ class CheckOutPayment extends React.Component {
                               <p className="error">{t('checkout_payment.' + this.state.error)}</p>
                             </div>
                           }
-                          {this.state.method === 'online' && !this.state.isPay &&
+                          {this.state.method === 'online' && !this.state.isPay && this.state.isSubmit &&
                             <p className="error mt-3">{t('checkout_payment.pay_fail')}</p>
                           }
                           <div className="col-12 no-padding">
@@ -443,7 +443,10 @@ class CheckOutPayment extends React.Component {
                                   <a onClick={this.handleBack.bind(this)} className="co-btn">{t('checkout_payment.back')}</a>
                                 </li>
                                 <li className="pull-right">
-                                  <a onClick={this.handleSubmit.bind(this)} className="co-btn disabled">{t('checkout_payment.book')}</a>
+                                  <a onClick={this.handleSubmit.bind(this)}
+                                    className={this.state.method && this.state.method !== 'online' ? "co-btn" : "co-btn disabled"}>
+                                    {t('checkout_payment.book')}
+                                  </a>
                                 </li>
                               </ul>
                             </div>

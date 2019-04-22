@@ -17,6 +17,7 @@ import { withNamespaces } from "react-i18next"
 import { validateStringWithoutNumber } from '../../services/validates'
 import { metaData } from '../../constants/meta-data'
 import Redirect from 'routes/redirect'
+import _ from 'lodash'
 
 const mapStateToProps = state => {
   return {
@@ -418,28 +419,30 @@ class CheckOutPassengers extends React.Component {
                             </div>
                           </div>
                           <div className="nd_options_height_10"/>
-                          <div className="title">
-                            <h3>{t('checkout_passenger.question')}</h3>
-                          </div>
-                          <div className="nd_options_height_10"/>
-                          <div className="question">
-                            <div className="input-group">
-                              <label>
-                                <input type="radio" checked={this.state.isTraveler === 'true'} value={true}
-                                  onChange={this.handleChangeTraveler.bind(this)} name="traveler"/>
-                                <span>{t('checkout_passenger.traveler')}</span>
-                              </label>
+                          {!_.isEmpty(this.props.user) &&
+                            <div className="question">
+                              <div className="title">
+                                <h3>{t('checkout_passenger.question')}</h3>
+                              </div>
+                              <div className="nd_options_height_10"/>
+                              <div className="input-group">
+                                <label>
+                                  <input type="radio" checked={this.state.isTraveler === 'true'} value={true}
+                                    onChange={this.handleChangeTraveler.bind(this)} name="traveler"/>
+                                  <span>{t('checkout_passenger.traveler')}</span>
+                                </label>
+                              </div>
+                              <div className="nd_options_height_20"/>
+                              <div className="input-group">
+                                <label>
+                                  <input type="radio" checked={this.state.isTraveler === 'false'} value={false}
+                                    onChange={this.handleChangeTraveler.bind(this)} name="traveler"/>
+                                  <span>{t('checkout_passenger.help_book')}</span>
+                                </label>
+                              </div>
+                              <p className="note_radio">{t('checkout_passenger.note_radio')}</p>
                             </div>
-                            <div className="nd_options_height_20"/>
-                            <div className="input-group">
-                              <label>
-                                <input type="radio" checked={this.state.isTraveler === 'false'} value={false}
-                                  onChange={this.handleChangeTraveler.bind(this)} name="traveler"/>
-                                <span>{t('checkout_passenger.help_book')}</span>
-                              </label>
-                            </div>
-                            <p className="note_radio">{t('checkout_passenger.note_radio')}</p>
-                          </div>
+                          }
                           <div className="passenger">
                             {this.state.isTraveler === 'true' &&
                               <PassengerInfo index={0} age={"adults"} isSubmit={this.state.isSubmit}
