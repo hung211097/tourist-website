@@ -3,6 +3,8 @@ const baseURL = process.env.API_URL
 const cmsURL = process.env.API_CMS_URL
 const site_captcha_key = process.env.KEY_GOOGLE_RECAPTCHA
 const site_secret_key = process.env.KEY_GOOGLE_RECAPTCHA_SECRET
+const convert_currency_key = process.env.KEY_CONVERT_CURRENCY
+const convertURL = process.env.API_CONVERT_CURRENCY
 import {
     convertWptoPost,
     convertWptoPostDetail,
@@ -193,6 +195,10 @@ export default () => {
     writeReview: (data) => {
       let url = baseURL + `reviews/create`
       return httpPost(url, data)
+    },
+    getRateCurrency: () => {
+      let url = convertURL + `live?access_key=${convert_currency_key}&currencies=USD,VND&format=1`
+      return httpWPGet(url)
     }
   }
 

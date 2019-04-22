@@ -218,3 +218,7 @@ export function groupDayRoute(arr){
   }
   return res
 }
+
+export function convertCurrencyToUSD(money, rate){
+  return _.round(money / rate, 2)
+}

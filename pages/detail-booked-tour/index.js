@@ -460,17 +460,17 @@ class DetailBookedTour extends React.Component {
                                           filterAll: true,
                                           filterMethod: (filter, rows) =>
                                             matchSorter(rows, filter.value, { keys: ["age"] }),
-                                        },
-                                        {
-                                          Header: t('detail_booked_tour.passport'),
-                                          id: 'passport',
-                                          accessor: 'passport',
-                                          filterAll: true,
-                                          filterMethod: (filter, rows) =>
-                                            matchSorter(rows, filter.value, { keys: ["passport"] }),
                                         }
                                       ]}
                                     />
+                                    {/*,{
+                                      Header: t('detail_booked_tour.passport'),
+                                      id: 'passport',
+                                      accessor: 'passport',
+                                      filterAll: true,
+                                      filterMethod: (filter, rows) =>
+                                        matchSorter(rows, filter.value, { keys: ["passport"] }),
+                                    }*/}
                                   </InfiniteScroll>
                                 </div>
                               </div>

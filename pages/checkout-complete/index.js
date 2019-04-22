@@ -304,17 +304,17 @@ class CheckOutConfirmation extends React.Component {
                                         filterAll: true,
                                         filterMethod: (filter, rows) =>
                                           matchSorter(rows, filter.value, { keys: ["age"] }),
-                                      },
-                                      {
-                                        Header: t('checkout_confirmation.passport'),
-                                        id: 'passport',
-                                        accessor: 'passport',
-                                        filterAll: true,
-                                        filterMethod: (filter, rows) =>
-                                          matchSorter(rows, filter.value, { keys: ["passport"] }),
                                       }
                                     ]}
                                   />
+                                  {/*,{
+                                    Header: t('checkout_confirmation.passport'),
+                                    id: 'passport',
+                                    accessor: 'passport',
+                                    filterAll: true,
+                                    filterMethod: (filter, rows) =>
+                                      matchSorter(rows, filter.value, { keys: ["passport"] }),
+                                  }*/}
                                 </InfiniteScroll>
                               </div>
                             </div>

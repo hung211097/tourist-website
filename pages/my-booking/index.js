@@ -109,8 +109,11 @@ class MyBooking extends React.Component {
                             loadMore={this.loadMore.bind(this)}
                             hasMore={this.state.page > 0}
                             useWindow={false}
-                            threshold={400}
+                            threshold={20}
                             initialLoad={false}>
+                            {/*<div className="book-item row">
+                              <div className="col-sm-4 featured_img"></div>
+                            </div>*/}
                             <ReactTable
                               data={this.state.bookTours}
                               className="-striped -highlight"

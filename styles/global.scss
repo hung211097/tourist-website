@@ -137,6 +137,9 @@ p {
       background: #1AAB8D !important;
     }
   }
+  &.disabled{
+    background-color: #8c8c8c !important;
+  }
 }
 
 .example-appear {
@@ -602,4 +605,13 @@ p {
 
 .w-30{
   width: 30%;
+}
+
+.zoid-outlet{
+  height: 100% !important;
+  width: 35% !important;
+}
+
+.paypal-button.paypal-button-shape-pill{
+  border-radius: 10px !important;
 }

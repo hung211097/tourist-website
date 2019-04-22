@@ -6,14 +6,16 @@ import { Router, Link } from 'routes'
 import { connect } from 'react-redux'
 import ApiService from '../../services/api.service'
 import { wizardStep } from '../../constants'
-import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaUserSecret, FaChild, FaRegCalendarAlt, FaChevronDown, FaCheck } from "react-icons/fa"
+import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaUserSecret, FaChild, FaRegCalendarAlt, FaChevronDown, FaCheck, FaPaypal } from "react-icons/fa"
 import { formatDate, distanceFromDays } from '../../services/time.service'
-import { getCode, slugify } from '../../services/utils.service'
+import { getCode, slugify, isServer, convertCurrencyToUSD } from '../../services/utils.service'
 import { useModal } from '../../actions'
 import { modal } from '../../constants'
 import { withNamespaces } from "react-i18next"
 import { metaData } from '../../constants/meta-data'
 import Redirect from 'routes/redirect'
+import PaypalExpressBtn from 'react-paypal-express-checkout'
+const client_id_paypal = process.env.CLIENT_ID_PAYPAL
 
 const mapStateToProps = state => {
   return {
@@ -32,6 +34,7 @@ class CheckOutPayment extends React.Component {
   displayName = 'Checkout Payment Page'
 
   static propTypes = {
+    query: PropTypes.object,
     user: PropTypes.object,
     tourInfo: PropTypes.object,
     useModal: PropTypes.func,
@@ -46,7 +49,7 @@ class CheckOutPayment extends React.Component {
       }
       try{
         let tourInfo = await apiService.getToursTurnId(query.tour_id)
-        return { tourInfo: tourInfo.data };
+        return { tourInfo: tourInfo.data, query };
       }
       catch(e){
         Redirect(res, '404')
@@ -68,7 +71,8 @@ class CheckOutPayment extends React.Component {
       isShowMethod2: false,
       isShowMethod3: false,
       method: '',
-      block: false
+      block: false,
+      isPay: false
     }
     this.method_1 = React.createRef()
     this.method_2 = React.createRef()
@@ -76,6 +80,11 @@ class CheckOutPayment extends React.Component {
   }
 
   componentDidMount() {
+    this.apiService.getRateCurrency().then((res) => {
+      this.setState({
+        rateCurrency: res.quotes.USDVND
+      })
+    })
     const { passengerInfo } = this.props
     if(passengerInfo){
       this.setState({
@@ -86,8 +95,9 @@ class CheckOutPayment extends React.Component {
       })
     }
     else{
-      Router.pushRoute('checkout-passengers', {id: this.state.tourInfo.id})
+      Router.pushRoute('checkout-passengers', {tour_id: this.props.query.tour_id})
     }
+
     {/*let user = this.props.user
     if(!user){
       user = getUserAuth()
@@ -115,6 +125,10 @@ class CheckOutPayment extends React.Component {
 
   handleSubmit(e){
     e.preventDefault()
+    this.submitData()
+  }
+
+  submitData(){
     this.setState({
       isSubmit: true
     })
@@ -161,6 +175,10 @@ class CheckOutPayment extends React.Component {
 
   validate(){
     if(!this.state.method){
+      return false
+    }
+
+    if(this.state.method === 'online' && !this.state.isPay){
       return false
     }
 
@@ -223,6 +241,36 @@ class CheckOutPayment extends React.Component {
   handleChangeMethod(e){
     this.setState({
       method: e.target.value
+    })
+  }
+
+  onSuccess(){
+    // Congratulation, it came here means everything's fine!
+    // console.log("The payment was succeeded!", payment);
+    // You can bind the "payment" object's value to your state or props or whatever here, please see below for sample returned data
+    this.setState({
+      isPay: true
+    }, () => {
+      this.submitData()
+    })
+  }
+
+  onCancel(){
+    // User pressed "cancel" or close Paypal's popup!
+    // console.log('The payment was cancelled!', data);
+    // You can bind the "data" object's value to your state or props or whatever here, please see below for sample returned data
+    this.setState({
+      isPay: false
+    })
+  }
+
+  onError(){
+    // The main Paypal's script cannot be loaded or somethings block the loading of that script!
+    // console.log("Error!", err);
+    // Because the Paypal's main script is loaded asynchronously from "https://www.paypalobjects.com/api/checkout.js"
+    // => sometimes it may take about 0.5 second for everything to get set, or for the button to appear
+    this.setState({
+      isPay: false
     })
   }
 
@@ -342,7 +390,7 @@ class CheckOutPayment extends React.Component {
                                 </div>
                               </div>
                             </div>
-                            {/*<div className="method">
+                            <div className="method">
                               <input style={{display: 'none'}} value="online"
                                 type="radio" id="pament-method3" className="payment-method" name="method" ref={this.method_3}
                                 onChange={this.handleChangeMethod.bind(this)} checked={this.state.method === 'online'}/>
@@ -350,11 +398,11 @@ class CheckOutPayment extends React.Component {
                                 <label className={this.state.isShowMethod3 ? "title active" : "title"}
                                   onClick={this.handleChooseMethod_3.bind(this)}>
                                   <h4 style={{margin: '0 0 10px'}}>
-                                    Pay in cash at Travel Tour Office
-                                    <span><img alt="incash" src="/static/images/incash.png" className="incash"/></span>
+                                    {t('checkout_payment.online')}
+                                    <span><FaPaypal style={{fontSize: '20px', marginLeft: '5px'}}/></span>
                                   </h4>
                                   <div className="description">
-                                    Please come to Travel Tour Office for payment and receive ticket.
+                                    {t('checkout_payment.sub_online')}
                                   </div>
                                   {this.state.isShowMethod3 ?
                                     <i><FaCheck /></i>
@@ -362,29 +410,31 @@ class CheckOutPayment extends React.Component {
                                     <i><FaChevronDown /></i>
                                   }
                                 </label>
-                                <UnmountClosed isOpened={this.state.isShowMethod3} springConfig={{stiffness: 150, damping: 20}}>
-                                  <div className="collapse-content">
-                                    <h2>TRAVELTOUR OFFICE</h2>
-                                    <div className="nd_options_section nd_options_height_10"/>
-                                    <strong>Address:</strong> 162 Ba Tháng Hai, Phường 12, Quận 10, TP.HCM<br />
-                                    <div className="nd_options_section nd_options_height_5"/>
-                                    <strong>Phone number:</strong> <a href="tel:0963186896">0963186896</a><br />
-                                    <div className="nd_options_section nd_options_height_5"/>
-                                    <strong>Email:</strong>&nbsp;<a href="mailto:traveltour@gmail.com">traveltour@gmail.com</a><br />
+                                <div className={this.state.isShowMethod3 ? "collapse-container show" : "collapse-container"}>
+                                  <div className="collapse-content text-center">
+                                    {!isServer() &&
+                                      <PaypalExpressBtn client={{sandbox: client_id_paypal}}
+                                        currency={'USD'} total={convertCurrencyToUSD(this.getTotalPrice(), this.state.rateCurrency)}
+                                        onError={this.onError.bind(this)} onSuccess={this.onSuccess.bind(this)}
+                                        onCancel={this.onCancel.bind(this)} shipping={1} />
+                                    }
                                   </div>
-                                </UnmountClosed>
+                                </div>
                               </div>
-                            </div>*/}
+                            </div>
                           </div>
                           {this.state.isSubmit && !this.state.method &&
-                            <div className="error-announce">
+                            <div className="error-announce mt-3">
                               <p className="error">{t('checkout_payment.choose_method')}</p>
                             </div>
                           }
                           {this.state.error &&
-                            <div className="error-announce">
+                            <div className="error-announce mt-3">
                               <p className="error">{t('checkout_payment.' + this.state.error)}</p>
                             </div>
+                          }
+                          {this.state.method === 'online' && !this.state.isPay &&
+                            <p className="error mt-3">{t('checkout_payment.pay_fail')}</p>
                           }
                           <div className="col-12 no-padding">
                             <div className="button-area">
@@ -393,7 +443,7 @@ class CheckOutPayment extends React.Component {
                                   <a onClick={this.handleBack.bind(this)} className="co-btn">{t('checkout_payment.back')}</a>
                                 </li>
                                 <li className="pull-right">
-                                  <a onClick={this.handleSubmit.bind(this)} className="co-btn">{t('checkout_payment.book')}</a>
+                                  <a onClick={this.handleSubmit.bind(this)} className="co-btn disabled">{t('checkout_payment.book')}</a>
                                 </li>
                               </ul>
                             </div>
