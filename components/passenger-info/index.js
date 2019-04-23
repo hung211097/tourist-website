@@ -66,18 +66,11 @@ class PassengerInfo extends React.Component {
   //   return null
   // }
 
-  // UNSAFE_componentWillReceiveProps(props){
-  //   if(!props.traveler){
-  //     this.setState({
-  //       fullname: '',
-  //       phone: '',
-  //       passport: '',
-  //       sex: '',
-  //       birthdate: '',
-  //       type: props.age
-  //     })
-  //   }
-  // }
+  UNSAFE_componentWillReceiveProps(props){
+    this.genders.forEach((item) => {
+      item.label = props.t('checkout_passenger.' + item.value)
+    })
+  }
 
   changePassengerInfo(){
     this.props.onChangePassenger && this.props.onChangePassenger(this.state, this.props.index)

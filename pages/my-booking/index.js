@@ -1,17 +1,16 @@
 import React from 'react'
-import { LayoutProfile, PopupCancelTour } from 'components'
+import { LayoutProfile, PopupCancelTour, BookedTourItem } from 'components'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import ApiService from 'services/api.service'
-import { formatDate } from '../../services/time.service'
-// import _ from 'lodash'
-import { Link } from 'routes'
 import InfiniteScroll from 'react-infinite-scroller'
-import ReactTable from 'react-table'
-import { getCode, shrinkCode, capitalize } from '../../services/utils.service'
-import matchSorter from 'match-sorter'
+import { getCode, capitalize } from '../../services/utils.service'
 import { withNamespaces } from "react-i18next"
+import Select from 'react-select'
+import arraySort from 'array-sort'
+// import matchSorter from 'match-sorter'
+// import ReactTable from 'react-table'
 
 const mapStateToProps = (state) => {
     return {
@@ -35,13 +34,21 @@ class MyBooking extends React.Component {
         hasMore: true,
         bookTours: [],
         showPopup: false,
-        dataPopup: null
+        dataPopup: null,
+        bookingCode: '',
+        sort: 'bookDayDesc',
       }
+      this.sorts = [
+        { value: 'bookDayDesc', label: props.t('my_booking.bookDayDesc') },
+        { value: 'bookDayAsc', label: props.t('my_booking.bookDayAsc') },
+        { value: 'priceDesc', label: props.t('my_booking.priceDesc') },
+        { value: 'priceAsc', label: props.t('my_booking.priceAsc') }
+      ]
     }
 
     loadMore(){
       if(this.state.page > 0){
-        this.apiService.getBookToursHistory(this.state.page, 6).then((res) => {
+        this.apiService.getBookToursHistory(this.state.page, 3).then((res) => {
           this.setState({
             bookTours: [...this.state.bookTours, ...res.data],
             page: res.next_page,
@@ -91,8 +98,48 @@ class MyBooking extends React.Component {
       })
     }
 
+    handleChangeBookingCode(e){
+      this.setState({
+        bookingCode: e.target.value
+      })
+    }
+
+    handleChangeSort(e){
+      this.setState({
+        sort: e.value
+      })
+    }
+
+    UNSAFE_componentWillReceiveProps(props){
+      this.sorts.forEach((item) => {
+        item.label = props.t('my_booking.' + item.value)
+      })
+    }
+
+    sortArray(arr){
+      switch(this.state.sort){
+        case 'bookDayDesc':
+          arraySort(arr, 'book_time', {reverse: true})
+          break
+        case 'bookDayAsc':
+          arraySort(arr, 'book_time')
+          break
+        case 'priceDesc':
+          arraySort(arr, 'total_pay', {reverse: true})
+          break
+        case 'priceAsc':
+          arraySort(arr, 'total_pay')
+          break
+      }
+      return arr
+    }
+
     render() {
         const {t} = this.props
+        let displayArray = this.state.bookTours.filter((item) => {
+          return getCode(item.id).search(this.state.bookingCode.toString()) > -1
+        })
+        displayArray = this.sortArray(displayArray);
         return (
             <LayoutProfile page="profile" tabName="my-booking" {...this.props}>
                 <style jsx>{styles}</style>
@@ -103,6 +150,27 @@ class MyBooking extends React.Component {
                     </div>
                     <div className="row content">
                       <div className="col-md-12">
+                        <div className="filter-zone">
+                          <div className="row">
+                            <div className="col-lg-4">
+                              <input type="text" value={this.state.bookingCode} onChange={this.handleChangeBookingCode.bind(this)}
+                                className="form-control" placeholder={t('my_booking.code')}/>
+                            </div>
+                            <div className="col-lg-4">
+
+                            </div>
+                            <div className="col-lg-4">
+                              <div className="select-zone">
+                                <Select
+                                  instanceId="sort"
+                                  value={this.state.sort}
+                                  onChange={this.handleChangeSort.bind(this)}
+                                  placeholder={t('my_booking.' + this.state.sort)}
+                                  options={this.sorts}/>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                         <div className="my-booking table-responsive">
                           <InfiniteScroll
                             pageStart={0}
@@ -111,10 +179,7 @@ class MyBooking extends React.Component {
                             useWindow={false}
                             threshold={20}
                             initialLoad={false}>
-                            {/*<div className="book-item row">
-                              <div className="col-sm-4 featured_img"></div>
-                            </div>*/}
-                            <ReactTable
+                            {/*<ReactTable
                               data={this.state.bookTours}
                               className="-striped -highlight"
                               showPagination={false}
@@ -227,7 +292,13 @@ class MyBooking extends React.Component {
                                   }
                                 }
                               ]}
-                            />
+                            />*/}
+                            {!!displayArray.length && displayArray.map((item, key) => {
+                                return(
+                                  <BookedTourItem key={key} t={t} item={item} onCancelTour={this.handleCancelTour.bind(this)}/>
+                                )
+                              })
+                            }
                           </InfiniteScroll>
                         </div>
                       </div>

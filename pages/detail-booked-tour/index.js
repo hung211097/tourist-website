@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 // import _ from 'lodash'
 import InfiniteScroll from 'react-infinite-scroller'
-import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaRegCalendarAlt, FaMoneyBill,
+import { FaRegCalendarMinus, FaRegCalendarPlus, FaRegCalendarAlt, FaMoneyBill,
   FaPhone, FaUsers, FaArrowLeft, FaInfoCircle } from "react-icons/fa"
 import { Router, Link } from 'routes'
 import ApiService from 'services/api.service'
@@ -308,11 +308,6 @@ class DetailBookedTour extends React.Component {
                                       </h3>
                                       <div className="row mt-4">
                                         <div className="col-sm-6">
-                                          <p>
-                                            <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
-                                            {t('detail_booked_tour.code')}:&nbsp;
-                                            <span>{getCode(tourInfo.id)}</span>
-                                          </p>
                                           <p>
                                             <i className="fa fa-calendar-minus-o" aria-hidden="true"><FaRegCalendarMinus /></i>
                                             {t('detail_booked_tour.start_date')}:&nbsp;

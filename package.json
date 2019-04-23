@@ -16,6 +16,7 @@
   "author": "Ta Nguyen Hung",
   "license": "ISC",
   "dependencies": {
+    "array-sort": "^1.0.0",
     "babel-core": "^6.26.3",
     "babel-plugin-import-static-files": "^1.0.4",
     "babel-plugin-module-resolver": "^3.1.1",

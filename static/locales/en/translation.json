@@ -463,7 +463,7 @@
   },
   "my_booking": {
     "title": "MY BOOKING",
-    "code": "Tour code",
+    "code": "Booking code",
     "book_day": "Booking day",
     "total_slot": "Total slot",
     "total_money": "Total money",
@@ -472,9 +472,13 @@
     "cancel": "Cancel",
     "pending": "Pending",
     "solved": "Solved",
-    "booked": "Booked",
+    "booked": "Not paid yet",
     "paid": "Paid",
-    "cancelled": "Cancelled"
+    "cancelled": "Cancelled",
+    "bookDayDesc": "Booking Day Descending",
+    "bookDayAsc": "Booking Day Ascending",
+    "priceDesc": "Price Descending",
+    "priceAsc": "Price Ascending"
   },
   "detail_booked_tour": {
     "title": "DETAIL BOOKED TOUR INFORMATION",
@@ -523,7 +527,7 @@
     "reason": "Your reason",
     "terms": "Terms of condition",
     "have_read": "I have read and accepted with these above terms of condition",
-    "send": "SEND REQUEST",
+    "send": "CANCEL TOUR",
     "domestic": "CONDITIONS FOR CANCELLATION IN THE DOMESTIC TOUR",
     "domestic_week_day": "For weekdays:",
     "domestic_week_day_1": "Cancellation of tickets 5-7 days before departure: 40% cancellation fee of tour.",

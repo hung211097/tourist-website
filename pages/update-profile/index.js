@@ -74,6 +74,12 @@ class UpdateProfile extends React.Component {
         }
     }
 
+    UNSAFE_componentWillReceiveProps(props){
+      this.genders.forEach((item) => {
+        item.label = props.t('update_profile.' + item.value)
+      })
+    }
+
     handleNameChange(event) {
         this.setState({
             fullname: event.target.value

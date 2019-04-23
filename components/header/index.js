@@ -89,6 +89,7 @@ class Header extends React.Component {
           item.isChoose = true
         }
       })
+      this.props.i18n.changeLanguage(lang)
     }
     else{
       let findItem = temp.find((item) => {
