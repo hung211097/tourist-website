@@ -80,7 +80,7 @@ class PopupCancelTour extends React.Component {
         this.setState({
           isSend: true
         })
-      }).catch((e) => {
+      }).catch(() => {
         this.setState({
           error: 'There is an error, please try again!'
         })

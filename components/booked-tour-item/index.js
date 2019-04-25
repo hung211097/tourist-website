@@ -30,7 +30,6 @@ class BookedTourItem extends React.Component {
 
   render() {
     const { item, t } = this.props
-    console.log(item);
     // const price = item.original_price ? item.original_price : item.price
     // const discountPrice = item.end_price ? item.end_price : price - price * item.discount
     return (
