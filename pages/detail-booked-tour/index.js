@@ -419,6 +419,7 @@ class DetailBookedTour extends React.Component {
                                           accessor: 'fullname',
                                           id: 'fullname',
                                           filterAll: true,
+                                          className: 'text-center',
                                           filterMethod: (filter, rows) =>
                                             matchSorter(rows, filter.value, { keys: ["fullname"] }),
                                         },
@@ -427,6 +428,7 @@ class DetailBookedTour extends React.Component {
                                           accessor: 'phone',
                                           id: 'phone',
                                           filterAll: true,
+                                          className: 'text-center',
                                           filterMethod: (filter, rows) =>
                                             matchSorter(rows, filter.value, { keys: ["phone"] }),
                                         },
@@ -435,6 +437,7 @@ class DetailBookedTour extends React.Component {
                                           accessor: d => formatDate(d.birthdate),
                                           id: 'birthdate',
                                           filterAll: true,
+                                          className: 'text-center',
                                           filterMethod: (filter, rows) =>
                                             matchSorter(rows, filter.value, { keys: ["birthdate"] }),
                                           sortMethod: (a, b) =>
@@ -445,6 +448,7 @@ class DetailBookedTour extends React.Component {
                                           accessor: d => t('detail_booked_tour.' + d.sex),
                                           id: 'gender',
                                           filterAll: true,
+                                          className: 'text-center',
                                           filterMethod: (filter, rows) =>
                                             matchSorter(rows, filter.value.toLocaleString(), { keys: ["gender"] }),
                                         },
@@ -453,6 +457,7 @@ class DetailBookedTour extends React.Component {
                                           accessor: d => t('detail_booked_tour.' + this.ages[d.type_passenger.name]),
                                           id: 'age',
                                           filterAll: true,
+                                          className: 'text-center',
                                           filterMethod: (filter, rows) =>
                                             matchSorter(rows, filter.value, { keys: ["age"] }),
                                         }

@@ -479,14 +479,17 @@
     "bookDayDesc": "Booking Day Descending",
     "bookDayAsc": "Booking Day Ascending",
     "priceDesc": "Price Descending",
-    "priceAsc": "Price Ascending"
+    "priceAsc": "Price Ascending",
+    "no_tour": "You have no tour in your Booking History now."
   },
   "detail_booked_tour": {
     "title": "DETAIL BOOKED TOUR INFORMATION",
     "status": "Status",
-    "booked": "Booked",
+    "booked": "Not Paid Yet",
     "paid": "Paid",
     "cancelled": "Cancelled",
+    "pending_cancel": "Pending Cancel",
+    "finished": "Finished Tour",
     "tour_info": "Tour information",
     "checkout_info": "Checkout information",
     "contact_info": "Contact information",

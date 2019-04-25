@@ -85,13 +85,14 @@ class MyBooking extends React.Component {
       })
     }
 
-    handleChangeStatus(id, status){
+    handleChangeStatus(id, status, flag){
       let arr = this.state.bookTours
       let temp = arr.find((item) => {
         return item.id === id
       })
       if(temp){
-        temp.statusCancel = capitalize(status)
+        temp.status = capitalize(status)
+        temp.isCancelBooking = flag
       }
       this.setState({
         bookTours: arr
@@ -299,7 +300,11 @@ class MyBooking extends React.Component {
                                 )
                               })
                             }
+
                           </InfiniteScroll>
+                          {!this.state.bookTours.length &&
+                            <p className="no-tour">{t('my_booking.no_tour')}</p>
+                          }
                         </div>
                       </div>
                     </div>

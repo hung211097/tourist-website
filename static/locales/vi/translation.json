@@ -479,14 +479,17 @@
     "bookDayDesc": "Ngày đặt gần nhất",
     "bookDayAsc": "Ngày đặt xa nhất",
     "priceDesc": "Giá cao nhất",
-    "priceAsc": "Giá thấp nhất"
+    "priceAsc": "Giá thấp nhất",
+    "no_tour": "Hiện bạn không có tour nào trong lịch sử đặt tour."
   },
   "detail_booked_tour": {
     "title": "CHI TIẾT ĐẶT TOUR",
     "status": "Trạng thái",
-    "booked": "Đã đặt",
+    "booked": "Chưa thanh toán",
     "paid": "Đã thanh toán",
     "cancelled": "Đã hủy",
+    "pending_cancel": "Chờ hủy",
+    "finished": "Đã hoàn thành tour",
     "tour_info": "Thông tin tour",
     "checkout_info": "Thông tin thanh toán",
     "contact_info": "Thông tin liên lạc",
