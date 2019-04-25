@@ -505,7 +505,7 @@ class DetailTour extends React.Component {
                                   </div>
                                 </div>
                               </div>
-                              <div className="col-sm-8">
+                              <div className="col-sm-12">
                                 <div className="wrapper-detail">
                                   <div className="wrapper-title">
                                     <h3 className="timeline-title">{t('detail_tour.timeline')}</h3>
@@ -514,42 +514,40 @@ class DetailTour extends React.Component {
                                       <span className="underline"></span>
                                     </div>
                                   </div>
-                                  <p className="timeline">{tourTurn.tour.detail}</p>
-                                </div>
-                              </div>
-                              <div className="col-sm-4">
-                                <div className="timeline-detail">
-                                  <ul className="list-timeline">
-                                    {!!this.state.timeline.length && this.state.timeline.map((item, key) => {
-                                      return(
-                                          <li key={key} className="item-timeline">
-                                            <div className="timeline-wrapper">
-                                              <span>{t('detail_tour.day')} {item.day} - {formatDate(addDay(tourTurn.start_date, item.day - 1))}</span>
-                                            </div>
-                                            <ul className="sub-timeline">
-                                              {!!item.routes.length && item.routes.map((item_2, key_2) => {
-                                                  return(
-                                                    <li key={key_2}>
-                                                      {item_2.arrive_time && item_2.leave_time &&
-                                                        <p>{item_2.arrive_time} - {item_2.leave_time}</p>
-                                                      }
-                                                      {item_2.arrive_time && !item_2.leave_time &&
-                                                        <p>{t('detail_tour.arrive_at')} {item_2.arrive_time}</p>
-                                                      }
-                                                      {!item_2.arrive_time && item_2.leave_time &&
-                                                        <p>{t('detail_tour.leave_at')} {item_2.leave_time}</p>
-                                                      }
-                                                      <p>{item_2.location.name} - {item_2.location.type.name}</p>
-                                                    </li>
-                                                  )
-                                                })
-                                              }
-                                            </ul>
-                                          </li>
-                                        )
-                                      })
-                                    }
-                                  </ul>
+                                  <div className="timeline-detail">
+                                    <ul className="list-timeline">
+                                      {!!this.state.timeline.length && this.state.timeline.map((item, key) => {
+                                        return(
+                                            <li key={key} className="item-timeline">
+                                              <div className="timeline-wrapper">
+                                                <span>{t('detail_tour.day')} {item.day} - {formatDate(addDay(tourTurn.start_date, item.day - 1))}</span>
+                                              </div>
+                                              <ul className="sub-timeline">
+                                                {!!item.routes.length && item.routes.map((item_2, key_2) => {
+                                                    return(
+                                                      <li key={key_2}>
+                                                        {item_2.arrive_time && item_2.leave_time &&
+                                                          <h4 className="time">{item_2.arrive_time} - {item_2.leave_time}</h4>
+                                                        }
+                                                        {item_2.arrive_time && !item_2.leave_time &&
+                                                          <h4 className="time">{t('detail_tour.arrive_at')} {item_2.arrive_time}</h4>
+                                                        }
+                                                        {!item_2.arrive_time && item_2.leave_time &&
+                                                          <h4 className="time">{t('detail_tour.leave_at')} {item_2.leave_time}</h4>
+                                                        }
+                                                        <h4 className="name-location">&nbsp;- {item_2.location.name} ({item_2.location.type.name})</h4>
+                                                        <p>{item_2.detail}</p>
+                                                      </li>
+                                                    )
+                                                  })
+                                                }
+                                              </ul>
+                                            </li>
+                                          )
+                                        })
+                                      }
+                                    </ul>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -563,7 +561,7 @@ class DetailTour extends React.Component {
                           <div className="col-12">
                             <div className="wrapper">
                               <div className="addtional-info">
-                                <p>
+                                <p className="bold">
                                   <i><FaSuitcase style={{position: 'relative', top: '-2px'}}/></i> {t('detail_tour.price_tour')}
                                 </p>
                                 {!!tourTurn.price_passengers.length &&
@@ -587,6 +585,170 @@ class DetailTour extends React.Component {
                                     </tbody>
                                   </table>
                                 }
+                                <div className="nd_options_height_20"/>
+                                <p className="bold"><img alt="icon" src="/static/svg/policy.svg" /> {t('detail_tour.policy')}</p>
+                                <p className="mt-3">{tourTurn.tour.policy}</p>
+                                <p className="bold">Giá vé dành cho trẻ em:</p>
+                                <ul>
+                                  <li>
+                                    Trẻ em dưới 5 tuổi: không thu phí dịch vụ, bố mẹ tự lo cho bé và thanh toán các chi phí phát sinh
+                                    (đối với các dịch vụ tính phí theo chiều cao…). Hai người lớn chỉ được kèm 1 trẻ em dưới 5 tuổi, trẻ em thứ 2 sẽ
+                                    đóng phí theo quy định dành cho độ tuổi từ 5 đến dưới 12 tuổi và phụ thu phòng đơn.
+                                    Vé máy bay, tàu hỏa, phương tiện vận chuyển công cộng mua vé theo quy định của các đơn vị vận chuyển.
+                                  </li>
+                                  <li>
+                                    Trẻ em từ 5 tuổi đến dưới 12 tuổi: 75% giá tour người lớn (không có chế độ giường riêng).
+                                    Hai người lớn chỉ được kèm 1 trẻ em từ 5 - dưới 12 tuổi, em thứ hai trở lên phải mua 1 suất giường đơn.
+                                  </li>
+                                  <li>Từ 11 tuổi trở lên: 100% giá tour và tiêu chuẩn như người lớn.</li>
+                                </ul>
+                                <p className="bold">Điều kiện thanh toán:</p>
+                                <p className="no-margin">Thanh toán hết trước ngày khởi hành 7 ngày (tour ngày thường), 20-25 ngày (tour lễ tết).</p>
+                                <p className="bold">Các điều kiện khi đăng ký tour:</p>
+                                <ul>
+                                  <li>
+                                    Khi đăng ký vui lòng cung cấp giấy tờ tùy thân tất cả người đi: Chứng minh nhân dân/Hộ chiếu
+                                    (Passport)/Giấy khai sinh (trẻ em dưới 14 tuổi). Trong trường hợp đăng ký trực tuyến qua
+                                    <a href="www.travel-tour.com">www.travel-tour.com</a> vui lòng nhập tên chính xác theo thứ tự: Họ/tên lót/tên xuất vé máy bay.
+                                    Quý khách khi đăng ký cung cấp tên theo giấy tờ tùy thân nào, khi đi tour mang theo giấy tờ
+                                    tùy thân đó.
+                                  </li>
+                                  <li>
+                                    Quy định giấy tờ tùy thân khi đi tour :<br/>
+                                    Khách quốc tịch Việt Nam: Trẻ em dưới 14 tuổi Giấy khai sinh bản chính/Hộ chiếu bản chính còn giá trị sử dụng.
+                                    Trẻ em từ 14 tuổi trở lên và Người lớn CMND/ Hộ chiếu bản chính còn giá trị sử dụng. Lưu ý trẻ em trên 14 tuổi bắt buộc
+                                    phải có CMND/Hộ chiếu làm thủ tục lên máy bay hoặc Giấy xác nhận nhân thân theo mẫu quy định và chỉ có giá trị trong vòng
+                                    30 ngày kể từ ngày xác nhận.
+                                    Khách quốc tịch nước ngoài hoặc là Việt kiều: Khi đi tour vui lòng mang theo hộ chiếu bản chính (Passport) hoặc thẻ
+                                    xanh kèm thị thực nhập cảnh (visa dán vào hộ chiếu hoặc tờ rời hoặc cuốn miễn thị thực, các loại giấy tờ này phải có dấu
+                                    nhập cảnh Việt Nam và còn giá trị sử dụng theo quy định khi đi tour).
+                                  </li>
+                                  <li>
+                                    Thông tin tập trung: Tại sân bay Tân Sơn Nhất, Ga đi trong nước, trước giờ bay 2 tiếng
+                                    (áp dụng ngày thường), trước 2 tiếng 30 phút (áp dụng lễ tết). Trong trường hợp bay hãng
+                                    hàng không Vietjet cột 5, trong trường hợp bay hãng hàng không Vietnam, Jetstar cột 12
+                                    Quầy TravelTour
+                                  </li>
+                                  <li>
+                                    Thông tin hành lý khi đi tour, xách tay dưới 7kg/1khách - kích thước không quá:
+                                    56cm x 36cm x 23 cm, chất lỏng với thể tích không quá 100ml. Ký gửi 20kg/1khách -
+                                    kích thước không quá: 119cm x 119cm x 81cm. Các vật phẩm không được chấp nhận dưới dạng
+                                    hành lý ký gởi hoặc vận chuyển trong hành lý theo quy định hàng không
+                                  </li>
+                                  <li>
+                                    Do các chuyến bay phụ thuộc vào các hãng Hàng Không (Vietnam, Vietjet, Jetstar,..)
+                                    nên trong một số trường hợp giá vé, chuyến bay, giờ bay có thể thay đổi mà không được báo trước.
+                                    Tùy vào tình hình thực tế, chương trình và điểm tham quan có thể linh động thay đổi thứ tự các
+                                    điểm phù hợp điều kiện giờ bay và thời tiết thực tế. TravelTour sẽ không chịu trách nhiệm bảo đảm
+                                    các điểm tham quan trong trường hợp:
+                                    <ul>
+                                      <li>Xảy ra thiên tai: bão lụt, hạn hán, động đất...</li>
+                                      <li>Sự cố về an ninh: khủng bố, biểu tình</li>
+                                      <li>Sự cố về hàng không: trục trặc kỹ thuật, an ninh, dời, hủy, hoãn chuyến bay.</li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                                <p className="no-margin">
+                                  Nếu những trường hợp trên xảy ra, TravelTour sẽ xem xét để hoàn trả chi phí không tham quan cho khách
+                                  trong điều kiện có thể (sau khi đã trừ lại các dịch vụ đã thực hiện... .và không chịu trách nhiệm bồi
+                                  thường thêm bất kỳ chi phí nào khác).
+                                </p>
+                                <ul>
+                                  <li>
+                                    Sau khi Quý khách đã làm thủ tục Hàng Không và nhận thẻ lên máy bay,
+                                    đề nghị Quý khách giữ cẩn thận và lưu ý lên máy bay đúng giờ. TravelTour không chịu
+                                    trách nhiệm trong trường hợp khách làm mất thẻ lên máy bay và không lên máy bay đúng
+                                    theo giờ quy định của Hàng Không.
+                                  </li>
+                                  <li>
+                                    Đối với các chương trình tham quan biển đảo, trong trường hợp Quý khách không khỏe,
+                                    có tiền sử bệnh hoặc có chất kích thích trong người (rượu, bia…) thì không nên tắm & lặn biển để đảm bảo sự an toàn.
+                                  </li>
+                                  <li>
+                                    Cam kết đã được tư vấn hiểu rõ và đồng ý các quy định liên quan về điều kiện sức khỏe khi
+                                    tham gia chương trình du lịch. Khách nữ từ 55 tuổi trở lên và khách nam từ 60 trở lên: nên
+                                    có người thân dưới 55 tuổi (đầy đủ sức khỏe) đi cùng. Riêng khách từ 70 tuổi trở lên:
+                                    Bắt buộc phải có người thân dưới 55 tuổi (đầy đủ sức khỏe) đi cùng. Hạn chế nhận khách từ 80
+                                    tuổi trở lên. Khách từ 80 tuổi không có chế độ bảo hiểm. Quý khách mang thai vui lòng báo
+                                    cho nhân viên bán tour ngay tại thời điểm đăng ký. Phải có ý kiến của bác sĩ trước khi đi tour,
+                                    tự chịu trách nhiệm về sức khỏe của mình và thai nhi trong suốt thời gian tham gia chương trình du lịch.
+                                    Khi đi tour phải mang theo sổ khám thai và giấy tờ tùy thân theo quy định hãng hàng không.
+                                    Tuần thai từ 28 tuần trở đi phải mang theo giấy khám thai trong vòng 7 ngày trở lại. Cam kết bản thân và
+                                    người thân hoàn toàn có đủ sức khỏe để đi du lịch theo chương trình. Đồng ý miễn trừ toàn bộ trách nhiệm
+                                    pháp lý, không khiếu nại, không yêu cầu bồi thường đối với TravelTour nói chung và nhân viên TravelTour nói
+                                    riêng về tất cả các vấn đề xảy ra liên quan đến tình trạng sức khỏe của khách hàng khi tham gia tour hoặc
+                                    sử dụng các dịch vụ do TravelTour cung cấp. Quý khách cam kết tự chịu mọi chi phí phát sinh ngoài chương
+                                    trình tour liên quan đến việc giải quyết các rủi ro về sức khỏe (lưu trú, vận chuyển, chi phí khám chữa bệnh...)
+                                  </li>
+                                  <li>
+                                    Quý khách có nhu cầu cần xuất hóa đơn vui lòng cung cấp thông tin xuất hóa đơn cho nhân
+                                    viên bán tour khi ngay khi đăng ký hoặc trước khi thanh toán hết, không nhận xuất hóa đơn
+                                    sau khi tour đã kết thúc.
+                                  </li>
+                                  <li>
+                                    Quý khách vui lòng đọc kỹ chương trình, giá tour, các khoản bao gồm cũng như không bao gồm trong chương trình,
+                                    các điều kiện hủy tour trên biên nhận đóng tiền. Tùy thời điểm đăng ký, kênh bán, giá tour có thể thay đổi.
+                                    Trong trường hợp Quý khách không trực tiếp đến đăng ký tour mà do người khác đến đăng ký thì Quý khách vui
+                                    lòng tìm hiểu kỹ chương trình từ người đăng ký cho mình.
+                                  </li>
+                                </ul>
+                                <p className="bold">Lưu ý khi chuyển/hủy tour:</p>
+                                <p className="no-margin">
+                                  Sau khi thanh toán tiền, nếu Quý khách muốn chuyển/hủy tour xin vui lòng mang Vé Du Lịch đến văn
+                                  phòng đăng ký tour để làm thủ tục chuyển/hủy tour và chịu chi phí theo quy định của TravelTour.
+                                  Không giải quyết các trường hợp liên hệ chuyển/hủy tour qua điện thoại.
+                                </p>
+                                <p className="bold">Các điều kiện hủy tour: (đối với ngày thường)</p>
+                                <ul>
+                                  <li>
+                                    Được chuyển sang các tuyến du lịch khác trước ngày khởi hành 20 ngày : Không mất chi phí.
+                                  </li>
+                                  <li>
+                                    Nếu hủy hoặc chuyển sang các chuyến du lịch khác ngay sau khi đăng ký đến từ 15-19 ngày trước ngày
+                                    khởi hành: Chi phí hủy tour: 50% tiền cọc tour.
+                                  </li>
+                                  <li>
+                                    Nếu hủy hoặc chuyển sang các chuyến du lịch khác từ 12-14 ngày trước ngày khởi hành: Chi phí hủy tour: 100% tiền cọc tour.
+                                  </li>
+                                  <li>
+                                    Nếu hủy chuyến du lịch trong vòng từ 08-11 ngày trước ngày khởi hành: Chi phí hủy tour: 50% trên giá tour du lịch.
+                                  </li>
+                                  <li>
+                                    Nếu hủy chuyến du lịch trong vòng từ 05-07 ngày trước ngày khởi hành: Chi phí hủy tour: 70% trên giá tour du lịch.
+                                  </li>
+                                  <li>
+                                    Nếu hủy chuyến du lịch trong vòng từ 02-04 ngày trước ngày khởi hành: Chi phí hủy tour: 90% trên giá vé du lịch.
+                                  </li>
+                                  <li>
+                                    Nếu hủy chuyến du lịch trong vòng 1 ngày trước ngày khởi hành : Chi phí hủy tour: 100% trên giá vé du lịch.
+                                  </li>
+                                </ul>
+                                <p className="bold">Các điều kiện hủy tour: (đối với ngày lễ, tết)</p>
+                                <ul>
+                                  <li>
+                                    Được chuyển sang các tuyến du lịch khác trước ngày khởi hành 30 ngày : Không mất chi phí
+                                  </li>
+                                  <li>
+                                    Nếu hủy hoặc chuyển sang các chuyến khác ngay sau khi đăng ký đến từ 25-29 ngày trước ngày khởi hành: Chi phí hủy tour: 50% tiền cọc tour.
+                                  </li>
+                                  <li>
+                                    Nếu hủy hoặc chuyển sang các chuyến khác từ 20-24 ngày trước ngày khởi hành: Chi phí hủy tour: 100% tiền cọc tour.
+                                  </li>
+                                  <li>
+                                    Nếu hủy chuyến du lịch trong vòng từ 17-19 ngày trước ngày khởi hành: Chi phí hủy tour: 50% trên giá tour du lịch.
+                                  </li>
+                                  <li>
+                                    Nếu hủy chuyến du lịch trong vòng từ 08-16 ngày trước ngày khởi hành: Chi phí hủy tour: 70% trên giá tour du lịch.
+                                  </li>
+                                  <li>
+                                    Nếu hủy chuyến du lịch trong vòng từ 02-07 ngày trước ngày khởi hành: Chi phí hủy tour: 90% trên giá vé du lịch.
+                                  </li>
+                                  <li>
+                                    Nếu hủy chuyến du lịch trong vòng 1 ngày trước ngày khởi hành : Chi phí hủy tour: 100% trên giá vé du lịch.
+                                  </li>
+                                </ul>
+                                <p className="bold">Các tour Lễ, Tết là tour có thời gian diễn ra rơi vào một trong các ngày Lễ, Tết theo quy định</p>
+                                <p className="bold">Thời gian hủy được tính cho ngày làm việc, không tính thứ 7, Chủ Nhật và các ngày Lễ, Tết.</p>
                               </div>
                             </div>
                           </div>
@@ -711,7 +873,7 @@ class DetailTour extends React.Component {
                     <div className="row">
                       {!!this.state.tourLike.length && this.state.tourLike.map((item) => {
                           return(
-                            <div className="col-sm-3" key={item.id}>
+                            <div className="col-lg-3 col-sm-6" key={item.id}>
                               <TourItem item={item} t={t}/>
                             </div>
                           )
@@ -723,7 +885,7 @@ class DetailTour extends React.Component {
                     <div className="row">
                       {!!this.state.relatedTour.length && this.state.relatedTour.map((item) => {
                           return(
-                            <div className="col-sm-3" key={item.id}>
+                            <div className="col-lg-3 col-sm-6" key={item.id}>
                               <TourItem item={item} t={t}/>
                             </div>
                           )
