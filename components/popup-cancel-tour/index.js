@@ -75,8 +75,8 @@ class PopupCancelTour extends React.Component {
       this.apiService.cancelTour({
         idBookTour: this.props.tour.id,
         message: this.state.reason
-      }).then((data) => {
-        this.props.changeStatus && this.props.changeStatus(this.props.tour.id, data.status)
+      }).then((res) => {
+        this.props.changeStatus && this.props.changeStatus(this.props.tour.id, res.data.status, res.data.isCancelBooking)
         this.setState({
           isSend: true
         })
@@ -161,7 +161,7 @@ class PopupCancelTour extends React.Component {
                                         </Link>
                                       </li>
                                       <li>{t('cancel_tour.start_date')}: {formatDate(tourInfo.start_date)}</li>
-                                      <li>{t('cancel_tour.book_at')}: {formatDate(tour.book_time, 'dd/MM/yyyy HH:MM')}</li>
+                                      <li>{t('cancel_tour.book_at')}: {formatDate(tour.book_time, "dd/MM/yyyy HH:mm")}</li>
                                       <li>{t('cancel_tour.num_people')}: {tour.num_passenger}</li>
                                       <li>{t('cancel_tour.total_money')}: {tour.total_pay.toLocaleString()} VND</li>
                                     </ul>

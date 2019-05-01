@@ -3,6 +3,16 @@
 .profile-detail {
   .content{
     margin-top: 20px;
+    .filter-zone{
+      padding: 0 15px;
+      margin-bottom: 15px;
+      .col-lg-4{
+        margin: 5px 0;
+      }
+      input{
+        font-size: 1.5rem;
+      }
+    }
   }
   .title{
     @media screen and (max-width: 767px){
@@ -15,11 +25,14 @@
   .table-responsive{
     overflow-y: auto;
     overflow-x: hidden;
-    max-height: 300px;
+    max-height: 600px;
+    padding: 15px;
     @media screen and (max-width: 767px){
       width: 100%;
       margin-bottom: 15px;
-      border: 1px solid #ddd;
+    }
+    .no-tour{
+      font-style: italic;
     }
   }
   table{
@@ -78,26 +91,6 @@
           }
         }
       }
-    }
-  }
-  .detail-btn{
-    display: inline-block;
-    padding: 3px 9px;
-    color: #fff;
-    background-color: #337ab7;
-    &:hover{
-      opacity: 0.8;
-      outline: 0;
-    }
-  }
-  .cancel-btn{
-    display: inline-block;
-    padding: 3px 9px;
-    color: #fff;
-    background: #D9534F;
-    &:hover{
-      opacity: 0.8;
-      outline: 0;
     }
   }
 }

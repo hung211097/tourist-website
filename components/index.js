@@ -26,6 +26,7 @@ import CommentsFacebook from './comment-facebook'
 const MyMap = dynamic(import('./mymap'), defaultLoading)
 const MapComponent = dynamic(import('./map-component'), defaultLoading)
 const TourItem = dynamic(import('./tour-item'), defaultLoading)
+const BookedTourItem = dynamic(import('./booked-tour-item'), defaultLoading)
 const RatingStar = dynamic(import('./rating-star'), defaultLoading)
 const MapContact = dynamic(import('./map-contact'), defaultLoading)
 const SlickItem = dynamic(import('./slick-item'), defaultLoading)
@@ -67,5 +68,6 @@ export {
     NewsItem,
     Breadcrumb,
     CommentsFacebook,
-    PopupRecommend
+    PopupRecommend,
+    BookedTourItem
 }

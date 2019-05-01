@@ -170,7 +170,8 @@
     "related_tour": "Tour liên quan",
     "day": "Ngày",
     "arrive_at": "Đến vào lúc",
-    "leave_at": "Rời khỏi lúc"
+    "leave_at": "Rời khỏi lúc",
+    "policy": "CHÍNH SÁCH"
   },
   "wrong_auth": {
     "oops": "Xin lỗi!",
@@ -463,25 +464,32 @@
   },
   "my_booking": {
     "title": "LỊCH SỬ ĐẶT TOUR",
-    "code": "Mã tour",
+    "code": "Mã đặt tour",
     "book_day": "Ngày đặt",
     "total_slot": "Tổng số chỗ",
     "total_money": "Tổng tiền",
     "status": "Trạng thái",
     "detail": "Chi tiết",
-    "cancel": "Hủy bỏ",
+    "cancel": "Hủy tour",
     "pending": "Chờ xử lý",
     "solved": "Đã xử lý",
-    "booked": "Đã đặt",
+    "booked": "Chưa thanh toán",
     "paid": "Đã thanh toán",
-    "cancelled": "Đã hủy"
+    "cancelled": "Đã hủy",
+    "bookDayDesc": "Ngày đặt gần nhất",
+    "bookDayAsc": "Ngày đặt xa nhất",
+    "priceDesc": "Giá cao nhất",
+    "priceAsc": "Giá thấp nhất",
+    "no_tour": "Hiện bạn không có tour nào trong lịch sử đặt tour."
   },
   "detail_booked_tour": {
     "title": "CHI TIẾT ĐẶT TOUR",
     "status": "Trạng thái",
-    "booked": "Đã đặt",
+    "booked": "Chưa thanh toán",
     "paid": "Đã thanh toán",
     "cancelled": "Đã hủy",
+    "pending_cancel": "Chờ hủy",
+    "finished": "Đã hoàn thành tour",
     "tour_info": "Thông tin tour",
     "checkout_info": "Thông tin thanh toán",
     "contact_info": "Thông tin liên lạc",
@@ -523,7 +531,7 @@
     "reason": "Lý do của bạn",
     "terms": "Điều khoản hủy tour",
     "have_read": "Tôi đã đọc và đồng ý với các điều khoản hủy tour trên",
-    "send": "GỬI YÊU CẦU",
+    "send": "HỦY TOUR",
     "domestic": "ĐIỀU KIỆN HỦY TOUR TRONG NƯỚC",
     "domestic_week_day": "Đối với ngày thường:",
     "domestic_week_day_1": "Hủy vé 5-7 ngày trước ngày khởi hành: phí hủy 40% tiền tour.",
@@ -567,7 +575,7 @@
     "step": "Bước",
     "passenger_info": "Thông tin hành khách",
     "payment_info": "Thông tin thanh toán",
-    "confirm": "Xác nhận đặt tour"
+    "complete": "Hoàn Tất Đặt Tour"
   },
   "checkout_passenger": {
     "num_passenger": "SỐ HÀNH KHÁCH",
@@ -606,7 +614,11 @@
     "minimum": "Cần tối thiểu 1 người",
     "sale": "KHUYẾN MÃI",
     "days": "ngày",
-    "choose_gender": "Chọn giới tính"
+    "choose_gender": "Chọn giới tính",
+    "question": "QUÝ KHÁCH LÀ NGƯỜI ĐI DU LỊCH HAY ĐẶT TOUR GIÚP?",
+    "traveler": "Người đi du lịch",
+    "help_book": "Đặt tour giúp",
+    "note_radio": "Nếu quý khách là người đi du lịch thì chúng tôi sẽ hỗ trợ điền sẵn thông tin có trong hồ sơ của quý khách vào thông tin hành khách đầu tiên, ngược lại quý khách vui lòng điền đầy đủ và chính xác thông tin."
   },
   "checkout_payment": {
     "title": "PHƯƠNG THỨC THANH TOÁN",
@@ -618,6 +630,10 @@
     "phone": "Số điện thoại",
     "transfer": "Chuyển khoản ngân hàng",
     "sub_transfer": "Sau khi chuyển tiền thành công, nhân viên của chúng tôi sẽ liên lạc với bạn qua điện thoại hoặc email",
+    "online": "Thánh toán qua Paypal",
+    "sub_online": "Sau khi thanh toán thành công, hệ thống Travel Tour sẽ gửi vé điện tử của quý khách qua email",
+    "pay_success": "Quý đã thanh toán thành công, hãy nhấn vào nút \"ĐẶT TOUR\" ở bên dưới để hoàn tất việc đặt tour",
+    "pay_fail": "Quý chưa thanh toán qua Paypal thành công, vui lòng thanh toán để hoàn thành việc đặt tour",
     "account": "TÀI KHOẢN NGÂN HÀNG CỦA TRAVEL TOUR",
     "note": "Lưu ý",
     "note_content": "Hãy liên hệ với nhân viên của chúng tôi trước khi thực hiện chuyển khoản",
@@ -631,7 +647,8 @@
     "book": "ĐẶT TOUR",
     "choose_method": "Hãy chọn một phương thức thanh toán!",
     "There is an error, please try book tour again!": "Có lỗi xảy ra, xin hãy đặt tour lại!",
-    "This tour is full slot": "Tour này đã hết chỗ, quý khách vui lòng đặt tour khác!"
+    "This tour is full slot": "Tour này đã hết chỗ, quý khách vui lòng đặt tour khác!",
+    "note_pay": "Quý khách vui lòng thanh toán trước 1 tuần tour khởi hành. Nếu đặt tour trong vòng 1 tuần trước khi khởi hành thì hạn chót thanh toán là 3 ngày trước khi tour khởi hành, sau đó nếu chưa thanh toán thì bên công ty sẽ hủy tour của quý khách"
   },
   "checkout_confirmation": {
     "title": "THÔNG TIN ĐẶT TOUR",
@@ -713,5 +730,6 @@
   "checkout": "THANH TOÁN",
   "show_more": "XEM THÊM",
   "btn_loading": "Đang tải...",
-  "processing": "Đang xử lý!"
+  "processing": "Đang xử lý!",
+  "not_rated": "Chưa đánh giá"
 }

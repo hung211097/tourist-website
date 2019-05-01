@@ -42,7 +42,7 @@ class TourItem extends React.Component {
           </a>
         </Link>
         <div className="rating-star">
-          <RatingStar hideNumber rate={item.tour.average_rating}/>
+          <RatingStar rate={item.tour.average_rating}/>
         </div>
         <div className="price">
           {!!item.discount &&

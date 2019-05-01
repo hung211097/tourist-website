@@ -134,7 +134,7 @@ class CheckOutConfirmation extends React.Component {
             </div>
             <div className="nd_options_container nd_options_clearfix content">
               <div className="wizard-step-zone">
-                <WizardStep step={wizardStep.CONFIRMATION} t={t}/>
+                <WizardStep step={wizardStep.COMPLETE} t={t}/>
               </div>
               {tourInfo && bookInfo &&
                 <div className="confirmation-info">
@@ -268,6 +268,7 @@ class CheckOutConfirmation extends React.Component {
                                         accessor: 'fullname',
                                         id: 'fullname',
                                         filterAll: true,
+                                        className: 'text-center',
                                         filterMethod: (filter, rows) =>
                                           matchSorter(rows, filter.value, { keys: ["fullname"] }),
                                       },
@@ -276,6 +277,7 @@ class CheckOutConfirmation extends React.Component {
                                         accessor: 'phone',
                                         id: 'phone',
                                         filterAll: true,
+                                        className: 'text-center',
                                         filterMethod: (filter, rows) =>
                                           matchSorter(rows, filter.value, { keys: ["phone"] }),
                                       },
@@ -284,6 +286,7 @@ class CheckOutConfirmation extends React.Component {
                                         accessor: d => formatDate(d.birthdate),
                                         id: 'birthdate',
                                         filterAll: true,
+                                        className: 'text-center',
                                         filterMethod: (filter, rows) =>
                                           matchSorter(rows, filter.value, { keys: ["birthdate"] }),
                                         sortMethod: (a, b) =>
@@ -294,6 +297,7 @@ class CheckOutConfirmation extends React.Component {
                                         accessor: d => t('checkout_confirmation.' + d.sex),
                                         id: 'gender',
                                         filterAll: true,
+                                        className: 'text-center',
                                         filterMethod: (filter, rows) =>
                                           matchSorter(rows, filter.value.toLocaleString(), { keys: ["gender"] }),
                                       },
@@ -302,19 +306,20 @@ class CheckOutConfirmation extends React.Component {
                                         accessor: d => t('checkout_confirmation.' + this.ages[d.type_passenger.name]),
                                         id: 'age',
                                         filterAll: true,
+                                        className: 'text-center',
                                         filterMethod: (filter, rows) =>
                                           matchSorter(rows, filter.value, { keys: ["age"] }),
-                                      },
-                                      {
-                                        Header: t('checkout_confirmation.passport'),
-                                        id: 'passport',
-                                        accessor: 'passport',
-                                        filterAll: true,
-                                        filterMethod: (filter, rows) =>
-                                          matchSorter(rows, filter.value, { keys: ["passport"] }),
                                       }
                                     ]}
                                   />
+                                  {/*,{
+                                    Header: t('checkout_confirmation.passport'),
+                                    id: 'passport',
+                                    accessor: 'passport',
+                                    filterAll: true,
+                                    filterMethod: (filter, rows) =>
+                                      matchSorter(rows, filter.value, { keys: ["passport"] }),
+                                  }*/}
                                 </InfiniteScroll>
                               </div>
                             </div>

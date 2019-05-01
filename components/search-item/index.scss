@@ -5,6 +5,9 @@
   background: #fff;
   border-bottom: 1px solid silver;
   padding: 10px 0;
+  &.no-border-bot{
+    border-bottom: 0;
+  }
   i{
     position: relative;
     top: -1px;

@@ -170,7 +170,8 @@
     "related_tour": "Related tour",
     "day": "Day",
     "arrive_at": "Arrive at",
-    "leave_at": "Leave at"
+    "leave_at": "Leave at",
+    "policy": "POLICY"
   },
   "wrong_auth": {
     "oops": "Oops!",
@@ -463,7 +464,7 @@
   },
   "my_booking": {
     "title": "MY BOOKING",
-    "code": "Tour code",
+    "code": "Booking code",
     "book_day": "Booking day",
     "total_slot": "Total slot",
     "total_money": "Total money",
@@ -472,16 +473,23 @@
     "cancel": "Cancel",
     "pending": "Pending",
     "solved": "Solved",
-    "booked": "Booked",
+    "booked": "Not paid yet",
     "paid": "Paid",
-    "cancelled": "Cancelled"
+    "cancelled": "Cancelled",
+    "bookDayDesc": "Booking Day Descending",
+    "bookDayAsc": "Booking Day Ascending",
+    "priceDesc": "Price Descending",
+    "priceAsc": "Price Ascending",
+    "no_tour": "You have no tour in your Booking History now."
   },
   "detail_booked_tour": {
     "title": "DETAIL BOOKED TOUR INFORMATION",
     "status": "Status",
-    "booked": "Booked",
+    "booked": "Not Paid Yet",
     "paid": "Paid",
     "cancelled": "Cancelled",
+    "pending_cancel": "Pending Cancel",
+    "finished": "Finished Tour",
     "tour_info": "Tour information",
     "checkout_info": "Checkout information",
     "contact_info": "Contact information",
@@ -523,7 +531,7 @@
     "reason": "Your reason",
     "terms": "Terms of condition",
     "have_read": "I have read and accepted with these above terms of condition",
-    "send": "SEND REQUEST",
+    "send": "CANCEL TOUR",
     "domestic": "CONDITIONS FOR CANCELLATION IN THE DOMESTIC TOUR",
     "domestic_week_day": "For weekdays:",
     "domestic_week_day_1": "Cancellation of tickets 5-7 days before departure: 40% cancellation fee of tour.",
@@ -567,7 +575,7 @@
     "step": "Step",
     "passenger_info": "Passenger Infomation",
     "payment_info": "Payment Infomation",
-    "confirm": "Confirm Your Booking"
+    "complete": "Complete Booking"
   },
   "checkout_passenger": {
     "num_passenger": "NUMBER OF PASSENGERS",
@@ -606,7 +614,11 @@
     "minimum": "This field is required minimum 1",
     "sale": "SALE",
     "days": "days",
-    "choose_gender": "Choose your gender"
+    "choose_gender": "Choose your gender",
+    "question": "ARE YOU A TRAVELER OR HELPING OTHERS BOOK TOUR?",
+    "traveler": "A Traveler",
+    "help_book": "Helping book tour",
+    "note_radio": "If you are a traveler, we will help you to fill in the first passenger's information. If not, please fill in below forms carefully."
   },
   "checkout_payment": {
     "title": "PAYMENT METHOD",
@@ -618,6 +630,10 @@
     "phone": "Phone number",
     "transfer": "Pay by transfer money through bankingtransfer",
     "sub_transfer": "After you transfer money successfully, our staff will contact you by email or telephone",
+    "online": "Pay by Paypal",
+    "sub_online": "After your successfully payment, we will send eTicket to your email",
+    "pay_success": "Your payment is successfully, please click \"BOOK TOUR\" below to finish booking tour",
+    "pay_fail": "Your payment is not succefully, please conduct your payment through paypal to finish booking tour",
     "account": "TRAVELTOUR'S BANKING ACCOUNT",
     "note": "Note",
     "note_content": "Please contact our staffs to confirm your booking before transferring",
@@ -631,7 +647,8 @@
     "book": "BOOK",
     "choose_method": "Please choose a payment method!",
     "There is an error, please try book tour again!": "There is an error, please try book tour again!",
-    "This tour is full slot": "This tour is full slot, please book another tour!"
+    "This tour is full slot": "This tour is full slot, please book another tour!",
+    "note_pay": "Please pay 1 week before departure tour. If the tour is booked within 1 week before departure, the payment deadline is 3 days before the tour departure, then if not paid, the company will cancel your tour"
   },
   "checkout_confirmation": {
     "title": "BOOKING CONFIRMATION",
@@ -713,5 +730,6 @@
   "checkout": "CHECKOUT",
   "show_more": "SHOW MORE",
   "btn_loading": "Loading...",
-  "processing": "Processing!"
+  "processing": "Processing!",
+  "not_rated": "Not yet rated"
 }

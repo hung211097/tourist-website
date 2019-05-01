@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 // import _ from 'lodash'
 import InfiniteScroll from 'react-infinite-scroller'
-import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaRegCalendarAlt, FaMoneyBill,
+import { FaRegCalendarMinus, FaRegCalendarPlus, FaRegCalendarAlt, FaMoneyBill,
   FaPhone, FaUsers, FaArrowLeft, FaInfoCircle } from "react-icons/fa"
 import { Router, Link } from 'routes'
 import ApiService from 'services/api.service'
@@ -309,11 +309,6 @@ class DetailBookedTour extends React.Component {
                                       <div className="row mt-4">
                                         <div className="col-sm-6">
                                           <p>
-                                            <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
-                                            {t('detail_booked_tour.code')}:&nbsp;
-                                            <span>{getCode(tourInfo.id)}</span>
-                                          </p>
-                                          <p>
                                             <i className="fa fa-calendar-minus-o" aria-hidden="true"><FaRegCalendarMinus /></i>
                                             {t('detail_booked_tour.start_date')}:&nbsp;
                                             <span>{formatDate(tourInfo.start_date)}</span>
@@ -424,6 +419,7 @@ class DetailBookedTour extends React.Component {
                                           accessor: 'fullname',
                                           id: 'fullname',
                                           filterAll: true,
+                                          className: 'text-center',
                                           filterMethod: (filter, rows) =>
                                             matchSorter(rows, filter.value, { keys: ["fullname"] }),
                                         },
@@ -432,6 +428,7 @@ class DetailBookedTour extends React.Component {
                                           accessor: 'phone',
                                           id: 'phone',
                                           filterAll: true,
+                                          className: 'text-center',
                                           filterMethod: (filter, rows) =>
                                             matchSorter(rows, filter.value, { keys: ["phone"] }),
                                         },
@@ -440,6 +437,7 @@ class DetailBookedTour extends React.Component {
                                           accessor: d => formatDate(d.birthdate),
                                           id: 'birthdate',
                                           filterAll: true,
+                                          className: 'text-center',
                                           filterMethod: (filter, rows) =>
                                             matchSorter(rows, filter.value, { keys: ["birthdate"] }),
                                           sortMethod: (a, b) =>
@@ -450,6 +448,7 @@ class DetailBookedTour extends React.Component {
                                           accessor: d => t('detail_booked_tour.' + d.sex),
                                           id: 'gender',
                                           filterAll: true,
+                                          className: 'text-center',
                                           filterMethod: (filter, rows) =>
                                             matchSorter(rows, filter.value.toLocaleString(), { keys: ["gender"] }),
                                         },
@@ -458,19 +457,20 @@ class DetailBookedTour extends React.Component {
                                           accessor: d => t('detail_booked_tour.' + this.ages[d.type_passenger.name]),
                                           id: 'age',
                                           filterAll: true,
+                                          className: 'text-center',
                                           filterMethod: (filter, rows) =>
                                             matchSorter(rows, filter.value, { keys: ["age"] }),
-                                        },
-                                        {
-                                          Header: t('detail_booked_tour.passport'),
-                                          id: 'passport',
-                                          accessor: 'passport',
-                                          filterAll: true,
-                                          filterMethod: (filter, rows) =>
-                                            matchSorter(rows, filter.value, { keys: ["passport"] }),
                                         }
                                       ]}
                                     />
+                                    {/*,{
+                                      Header: t('detail_booked_tour.passport'),
+                                      id: 'passport',
+                                      accessor: 'passport',
+                                      filterAll: true,
+                                      filterMethod: (filter, rows) =>
+                                        matchSorter(rows, filter.value, { keys: ["passport"] }),
+                                    }*/}
                                   </InfiniteScroll>
                                 </div>
                               </div>

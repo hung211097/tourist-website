@@ -17,6 +17,7 @@ import { withNamespaces } from "react-i18next"
 import { validateStringWithoutNumber } from '../../services/validates'
 import { metaData } from '../../constants/meta-data'
 import Redirect from 'routes/redirect'
+import _ from 'lodash'
 
 const mapStateToProps = state => {
   return {
@@ -63,11 +64,14 @@ class CheckOutPassengers extends React.Component {
       email: '',
       phone: '',
       address: '',
+      sex: '',
+      birthdate: '',
       tourInfo: this.props.tourInfo,
       adult: 1,
       child: 0,
       passengers: [],
-      loading: false
+      loading: false,
+      isTraveler: 'true',
     }
   }
 
@@ -82,7 +86,11 @@ class CheckOutPassengers extends React.Component {
             name: user.fullname ? user.fullname : '',
             email: user.email ? user.email : '',
             phone: user.phone ?  user.phone : '',
-            address: user.address ?  user.address : ''
+            address: user.address ?  user.address : '',
+            sex: user.sex ? user.sex : '',
+            birthdate: user.birthdate ? user.birthdate : ''
+        }, () => {
+          this.fillInTraveler()
         })
     }
   }
@@ -238,6 +246,39 @@ class CheckOutPassengers extends React.Component {
     return price
   }
 
+  handleChangeTraveler(e){
+    this.setState({
+      isTraveler: e.target.value,
+    }, () => {
+      this.fillInTraveler()
+    })
+
+  }
+
+  fillInTraveler(){
+    let temp = this.state.passengers
+    if(this.state.isTraveler === 'true'){
+      temp[0] = {
+        birthdate: this.state.birthdate,
+        fullname: this.state.name,
+        phone: this.state.phone,
+        sex: this.state.sex,
+        type: 'adults'
+      }
+    }else{
+      temp[0] = {
+        birthdate: '',
+        fullname: '',
+        phone: '',
+        sex: '',
+        type: 'adults'
+      }
+    }
+    this.setState({
+      passengers: temp
+    })
+  }
+
   render() {
     const { tourInfo } = this.state
     const { t } = this.props
@@ -281,7 +322,7 @@ class CheckOutPassengers extends React.Component {
                               <div className="col-md-5 col-sm-5 col-12">
                                 <div className="form-group">
                                   <label htmlFor="adult">{t('checkout_passenger.Adult')} (*)</label>
-                                  <input type="number" name="adult" className={this.state.isSubmit && !+this.state.adult ? "error" : ""}
+                                  <input type="number" name="adult" className={this.state.isSubmit && !+this.state.adult ? "custom-input error" : "custom-input"}
                                     id="adult" value={this.state.adult} min={1} pattern="^\d+$"
                                     onChange={this.handleChangeAdult.bind(this)}/>
                                   {this.state.isSubmit && !this.state.adult &&
@@ -299,7 +340,7 @@ class CheckOutPassengers extends React.Component {
                               <div className="col-md-5 col-sm-5 col-12">
                                 <div className="form-group">
                                   <label>{t('checkout_passenger.Children')} </label>
-                                  <input type="number" name="child" value={this.state.child} min={0} pattern="^\d+$"
+                                  <input type="number" name="child" value={this.state.child} min={0} pattern="^\d+$" className="custom-input"
                                     onChange={this.handleChangeChild.bind(this)}/>
                                   <span className="error" />
                                 </div>
@@ -320,7 +361,7 @@ class CheckOutPassengers extends React.Component {
                                 <label htmlFor="name">{t('checkout_passenger.fullname')} (*)</label>
                                 <input type="text" name="name" id="name" value={this.state.name}
                                   onChange={this.handleChangeName.bind(this)} required="required" data-validation="required"
-                                  className={this.state.isSubmit && !this.state.name ? "error" : ""} />
+                                  className={this.state.isSubmit && !this.state.name ? "error custom-input" : "custom-input"} />
                                   {this.state.isSubmit && !this.state.name &&
                                     <p className="error">{t('checkout_passenger.fullname_required')}</p>
                                   }
@@ -336,7 +377,8 @@ class CheckOutPassengers extends React.Component {
                                   onChange={this.handleChangePhone.bind(this)}
                                   required="required" maxLength={15} data-validation="required custom length"
                                   data-validation-length="max15"
-                                  className={(this.state.isSubmit && !this.state.phone) || (this.state.isSubmit && this.state.phone && !validatePhone(this.state.phone)) ? "error" : "" }/>
+                                  className={(this.state.isSubmit && !this.state.phone) || (this.state.isSubmit && this.state.phone && !validatePhone(this.state.phone))
+                                    ? "error custom-input" : "custom-input" }/>
                                 {this.state.isSubmit && !this.state.phone &&
                                   <p className="error">{t('checkout_passenger.phone_required')}</p>
                                 }
@@ -353,7 +395,8 @@ class CheckOutPassengers extends React.Component {
                                 <input type="email" id="email" name="email" data-validation="required email"
                                   value={this.state.email}
                                   onChange={this.handleChangeEmail.bind(this)}
-                                  className={(this.state.isSubmit && !this.state.email) || (this.state.isSubmit && this.state.email && !validateEmail(this.state.email)) ? "error" : "" }/>
+                                  className={(this.state.isSubmit && !this.state.email) || (this.state.isSubmit && this.state.email && !validateEmail(this.state.email))
+                                    ? "error custom-input" : "custom-input" }/>
                                 {this.state.isSubmit && !this.state.email &&
                                   <p className="error">{t('checkout_passenger.email_required')}</p>
                                 }
@@ -368,17 +411,56 @@ class CheckOutPassengers extends React.Component {
                                 <input type="text" id="address" name="address" data-validation="required"
                                   value={this.state.address}
                                   onChange={this.handleChangeAddress.bind(this)}
-                                  className={this.state.isSubmit && !this.state.address ? "error" : ""}/>
+                                  className={this.state.isSubmit && !this.state.address ? "error custom-input" : "custom-input"}/>
                                 {this.state.isSubmit && !this.state.address &&
                                   <p className="error">{t('checkout_passenger.address_required')}</p>
                                 }
                               </div>
                             </div>
                           </div>
+                          <div className="nd_options_height_10"/>
+                          {!_.isEmpty(this.props.user) &&
+                            <div className="question">
+                              <div className="title">
+                                <h3>{t('checkout_passenger.question')}</h3>
+                              </div>
+                              <div className="nd_options_height_10"/>
+                              <div className="input-group">
+                                <label>
+                                  <input type="radio" checked={this.state.isTraveler === 'true'} value={true}
+                                    onChange={this.handleChangeTraveler.bind(this)} name="traveler"/>
+                                  <span>{t('checkout_passenger.traveler')}</span>
+                                </label>
+                              </div>
+                              <div className="nd_options_height_20"/>
+                              <div className="input-group">
+                                <label>
+                                  <input type="radio" checked={this.state.isTraveler === 'false'} value={false}
+                                    onChange={this.handleChangeTraveler.bind(this)} name="traveler"/>
+                                  <span>{t('checkout_passenger.help_book')}</span>
+                                </label>
+                              </div>
+                              <p className="note_radio">{t('checkout_passenger.note_radio')}</p>
+                            </div>
+                          }
                           <div className="passenger">
-                            {[...Array(this.state.adult)].map((item, key) => {
+                            {this.state.isTraveler === 'true' &&
+                              <PassengerInfo index={0} age={"adults"} isSubmit={this.state.isSubmit}
+                                onChangePassenger={this.handleChangePassenger.bind(this)} t={t}
+                                traveler={this.state.isTraveler === 'true' ? {
+                                  name: this.state.name,
+                                  phone: this.state.phone,
+                                  sex: this.state.sex,
+                                  birthdate: this.state.birthdate,
+                                }: null}/>
+                            }
+                            {this.state.isTraveler === 'false' &&
+                              <PassengerInfo index={0} age={"adults"} isSubmit={this.state.isSubmit}
+                                onChangePassenger={this.handleChangePassenger.bind(this)} t={t}/>
+                            }
+                            {[...Array(this.state.adult - 1)].map((item, key) => {
                                 return(
-                                  <PassengerInfo index={key} age={"adults"} isSubmit={this.state.isSubmit} key={key}
+                                  <PassengerInfo index={key + 1} age={"adults"} isSubmit={this.state.isSubmit} key={key}
                                     onChangePassenger={this.handleChangePassenger.bind(this)} t={t}/>
                                 )
                               })

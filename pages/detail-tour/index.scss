@@ -9,7 +9,9 @@
     padding-top: 88px;
   }
   .content{
-    padding: 0 15px;
+    @media screen and (min-width: 768px){
+      padding: 0 15px;
+    }
   }
   .paddingResponsive{
     padding-left: 30px;
@@ -242,10 +244,11 @@
           p{
             text-transform: uppercase;
             color: #333;
-            font-weight: bold;
             font-size: 15px;
-            margin-bottom: 15px;
-            margin-top: 10px;
+            margin-top: 15px;
+            img{
+              width: 24px;
+            }
           }
           table{
             thead{
@@ -426,7 +429,10 @@
             color: #fff;
             position: relative;
             height: 35px;
-            width: 50%;
+            width: 25%;
+            @media screen and (max-width: 1024px){
+              width: 30%;
+            }
             @media screen and (max-width: 576px){
               width: 70%;
             }
@@ -451,10 +457,24 @@
           .sub-timeline{
             padding-left: 10px;
             li{
-              margin: 10px 0;
+              margin: 10px 0 20px;
               p{
+                font-size: 15px;
                 &:first-child{
                   color: $main-bg-color;
+                  font-weight: 600;
+                }
+              }
+              h4{
+                display: inline-block;
+                color: $main-bg-color;
+                &.time{
+                  font-size: 18px;
+                  font-weight: 600;
+                }
+                &.name-location{
+                  font-size: 18px;
+                  margin-bottom: 5px;
                   font-weight: 600;
                 }
               }
