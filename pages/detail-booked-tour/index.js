@@ -130,12 +130,12 @@ class DetailBookedTour extends React.Component {
       })
       this.apiService.getCurrentRoute({id: this.state.bookTour.tour_turn.id, lat: objLocation.latitude, lng: objLocation.longitude,
         cur_time: this.time[objLocation.latitude]}).then((res) => { //Thay this.time bằng new Date()
-          if(res.data && !this.checkExistPassLocation(res.data[0])){
+          if(res.data && !this.checkExistPassLocation(res.data)){
             this.setState({
-              currentLocation: res.data[0],
+              currentLocation: res.data,
               showPopup: true,
               title: this.props.t('detail_booked_tour.reach_location'),
-              body: `${this.props.t('detail_booked_tour.just_come_lower')} ${res.data[0].location.name}`
+              body: `${this.props.t('detail_booked_tour.just_come_lower')} ${res.data.location.name}`
             }, () => {
               this.showNotifications()
             })
