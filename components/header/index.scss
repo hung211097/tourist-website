@@ -24,7 +24,7 @@
 
   .navigation_responsive{
     background-color: $main-bg-color;
-    right: 0px;
+    left: 0px;
     transition: all 0.8s ease;
     z-index: 9999;
     overflow: hidden;
@@ -37,7 +37,7 @@
       padding-top: 0;
     }
     &.hidden_sidebar{
-      right: -300px;
+      left: -300px;
     }
     .contact-sidebar-zone{
       .contact-sidebar{
@@ -603,21 +603,28 @@
     padding-top: 3px;
   }
   .toggle-menu{
-    @media screen and (max-width: 576px) {
-      position: relative;
-      left: 10px;
-    }
+    // @media screen and (max-width: 576px) {
+    //   position: relative;
+    //   left: 10px;
+    // }
   }
   .mobile-logo-container{
-    @media screen and (min-width: 577px) and (max-width: 834px) {
+    @media screen and (min-width: 577px) and (max-width: 1024px) {
       text-align: center !important;
     }
     .mobile-logo{
-      @media screen and (max-width: 576px) {
-        position: relative;
-        left: 10px;
-      }
+      // @media screen and (max-width: 576px) {
+      //   position: relative;
+      //   left: 10px;
+      // }
     }
+  }
+}
+
+.multi-mobile{
+  @media screen and (min-width: 576px) {
+    display: flex;
+    justify-content: center;
   }
 }
 
@@ -625,7 +632,10 @@
   // margin: 0px 10px 0px 15px;
   position: relative;
   line-height: 4;
-  float: right;
+  float: none;
+  @media screen and (min-width: 1024px) {
+    float: right;
+  }
   display: table;
   padding-bottom: 3px;
   @media screen and (max-width: 1112px) {
@@ -667,7 +677,7 @@
       display: inline-block;
       width: 0;
       height: 0;
-      margin-left: .3em;
+      margin-left: 0em;
       vertical-align: middle;
       content: "";
       border-top: .4em solid;
@@ -734,7 +744,7 @@
 }
 
 .multi-lng-mobile{
-  @media screen and (min-width: 834px) {
+  @media screen and (min-width: 1024px) {
     float: none
   }
 }

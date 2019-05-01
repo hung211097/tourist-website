@@ -699,7 +699,21 @@ class Header extends React.Component {
                 <div className="nd_options_section text-center d-none nd_options_display_block_responsive">
                   <div className="nd_options_section nd_options_height_20" />
                   <div className="nd_options_section row row-center">
-                    <div className="col-2 no-padding text-left">
+                    <div className="col-2 no-padding text-left mobile-logo-container">
+                      <a className="nd_options_open_navigation_2_sidebar_content nd_options_open_navigation_2_sidebar_content mobile-logo"
+                        href="javascript:;"
+                        onClick={this.toggleSideBar.bind(this)}>
+                        <img alt="icon-menu" className="icon-menu" src="/static/svg/icon-menu.svg" />
+                      </a>
+                    </div>
+                    <div className="col-8 text-center">
+                      <Link route="home">
+                        <a className="d-inline-block toggle-menu">
+                          <img alt="logo" className="nd_options_float_left logo-sticky" src="/static/images/logo.png" />
+                        </a>
+                      </Link>
+                    </div>
+                    <div className="col-2 no-padding multi-mobile">
                       <div className="multi-lng-mobile" onClick={this.toggleChangeLngMobile.bind(this)}>
                         {this.chosenLng() &&
                           <button aria-expanded="false" aria-haspopup="true" className="btn dropdown-toggle" type="button">
@@ -724,20 +738,6 @@ class Header extends React.Component {
                           }
                         </div>
                       </div>
-                    </div>
-                    <div className="col-8 text-center">
-                      <Link route="home">
-                        <a className="d-inline-block toggle-menu">
-                          <img alt="logo" className="nd_options_float_left logo-sticky" src="/static/images/logo.png" />
-                        </a>
-                      </Link>
-                    </div>
-                    <div className="col-2 no-padding text-right mobile-logo-container">
-                      <a className="nd_options_open_navigation_2_sidebar_content nd_options_open_navigation_2_sidebar_content mobile-logo"
-                        href="javascript:;"
-                        onClick={this.toggleSideBar.bind(this)}>
-                        <img alt="icon-menu" className="icon-menu" src="/static/svg/icon-menu.svg" />
-                      </a>
                     </div>
                   </div>
                   <div className="nd_options_section nd_options_height_20" />
@@ -860,6 +860,20 @@ class Header extends React.Component {
                 <div className="nd_options_section nd_options_height_20" />
                 <div className="nd_options_section row row-center">
                   <div className="col-2 no-padding text-left">
+                    <a className="nd_options_open_navigation_2_sidebar_content nd_options_open_navigation_2_sidebar_content"
+                      href="javascript:;"
+                      onClick={this.toggleSideBar.bind(this)}>
+                      <img alt="icon-menu" className="icon-menu" src="/static/svg/icon-menu.svg" />
+                    </a>
+                  </div>
+                  <div className="col-8 text-center">
+                    <Link route="home">
+                      <a className="d-inline-block">
+                        <img alt="logo" className="nd_options_float_left logo-sticky" src="/static/images/logo.png" />
+                      </a>
+                    </Link>
+                  </div>
+                  <div className="col-2 no-padding text-left">
                     <div className="multi-lng-mobile" onClick={this.toggleChangeLngMobile.bind(this)}>
                       {this.chosenLng() &&
                         <button aria-expanded="false" aria-haspopup="true" className="btn dropdown-toggle" type="button">
@@ -884,20 +898,6 @@ class Header extends React.Component {
                         }
                       </div>
                     </div>
-                  </div>
-                  <div className="col-8 text-center">
-                    <Link route="home">
-                      <a className="d-inline-block">
-                        <img alt="logo" className="nd_options_float_left logo-sticky" src="/static/images/logo.png" />
-                      </a>
-                    </Link>
-                  </div>
-                  <div className="col-2 no-padding text-right">
-                    <a className="nd_options_open_navigation_2_sidebar_content nd_options_open_navigation_2_sidebar_content"
-                      href="javascript:;"
-                      onClick={this.toggleSideBar.bind(this)}>
-                      <img alt="icon-menu" className="icon-menu" src="/static/svg/icon-menu.svg" />
-                    </a>
                   </div>
                 </div>
                 <div className="nd_options_section nd_options_height_20" />
