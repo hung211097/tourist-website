@@ -77,5 +77,8 @@
     &:hover{
       background: #f6f6f6b3;
     }
+    &.disabled{
+      color: silver !important;
+    }
   }
 }

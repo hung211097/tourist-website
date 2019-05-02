@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Layout, AutoHide } from 'components'
 import { connect } from 'react-redux'
 import ApiService from 'services/api.service'
-import { Link } from 'routes'
+import { Link, Router } from 'routes'
 import { RatingStar, BtnViewMore, MyMap, TourItem, Lightbox, Breadcrumb } from 'components'
 import { getCode, convertFullUrl, slugify, groupDayRoute } from '../../services/utils.service'
 import { FaRegCalendarAlt, FaEye, FaSuitcase } from "react-icons/fa"
@@ -19,10 +19,18 @@ import { metaData } from '../../constants/meta-data'
 import { getLocalStorage } from '../../services/local-storage.service'
 import { KEY } from '../../constants/local-storage'
 import Redirect from 'routes/redirect'
+import { useModal } from '../../actions'
+import { modal } from '../../constants'
 
 const mapStateToProps = (state) => {
   return {
     user: state.user,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    useModal: (data) => {dispatch(useModal(data))}
   }
 }
 
@@ -34,7 +42,8 @@ class DetailTour extends React.Component {
     t: PropTypes.func,
     route: PropTypes.object,
     user: PropTypes.object,
-    query: PropTypes.object
+    query: PropTypes.object,
+    useModal: PropTypes.func
   }
 
   static async getInitialProps({ res, query }) {
@@ -88,7 +97,8 @@ class DetailTour extends React.Component {
       average_rating: this.props.tourInfo.tour.average_rating,
       num_review: this.props.tourInfo.tour.num_review,
       skip_comment: 0,
-      total_page: 0
+      total_page: 0,
+      showPopup: false
     }
     this.breadcrumb = [
       {name: props.t(`detail_tour.${this.categories[props.tourInfo.tour.type_tour.id]}`),
@@ -294,6 +304,21 @@ class DetailTour extends React.Component {
     return true
   }
 
+  handleBook(){
+    const { tourTurn } = this.state
+    if(tourTurn.num_max_people - tourTurn.num_current_people === 0){
+      this.props.useModal && this.props.useModal({type: modal.NO_BOOK, isOpen: true, data: ''})
+      return
+    }
+    Router.pushRoute("checkout-passengers", {tour_id: tourTurn.id})
+  }
+
+  handleClosePopup(){
+    this.setState({
+      showPopup: false
+    })
+  }
+
   render() {
     const { tourTurn, num_review } = this.state
     const {t} = this.props
@@ -418,9 +443,7 @@ class DetailTour extends React.Component {
                                 </div>
                               </div>
                             </div>
-                            <Link route="checkout-passengers" params={{tour_id: tourTurn.id}}>
-                              <a className="co-btn green w-auto mt-4">{t('detail_tour.book')}</a>
-                            </Link>
+                            <a className={slot ? "co-btn green w-auto mt-4" : "co-btn silver w-auto mt-4"} onClick={this.handleBook.bind(this)}>{t('detail_tour.book')}</a>
                             <FacebookShareButton
                               url={url}
                               quote={tourTurn.tour.name}
@@ -903,4 +926,4 @@ class DetailTour extends React.Component {
   }
 }
 
-export default withNamespaces('translation')(connect(mapStateToProps)(DetailTour))
+export default withNamespaces('translation')(connect(mapStateToProps, mapDispatchToProps)(DetailTour))

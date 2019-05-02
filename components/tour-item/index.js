@@ -2,17 +2,27 @@ import React from 'react'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { RatingStar } from 'components'
-import { Link } from 'routes'
+import { Link, Router } from 'routes'
 import { FaRegCalendarAlt } from "react-icons/fa"
 import { formatDate } from '../../services/time.service'
 import { slugify } from '../../services/utils.service'
+import { useModal } from '../../actions'
+import { modal } from '../../constants'
+import { connect } from 'react-redux'
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    useModal: (data) => {dispatch(useModal(data))}
+  }
+}
 
 class TourItem extends React.Component {
   displayName = 'Tour Item'
 
   static propTypes = {
     item: PropTypes.object.isRequired,
-    t: PropTypes.func
+    t: PropTypes.func,
+    useModal: PropTypes.func
   }
 
   constructor(props) {
@@ -22,6 +32,15 @@ class TourItem extends React.Component {
 
   componentDidMount() {
 
+  }
+
+  handleBook(){
+    const { item } = this.props
+    if(item.num_max_people - item.num_current_people === 0){
+      this.props.useModal && this.props.useModal({type: modal.NO_BOOK, isOpen: true, data: ''})
+      return
+    }
+    Router.pushRoute("checkout-passengers", {tour_id: item.id})
   }
 
   render() {
@@ -51,9 +70,7 @@ class TourItem extends React.Component {
           <span className="amout"> {discountPrice.toLocaleString()} VND</span>
         </div>
         <div className="action">
-          <Link route="checkout-passengers" params={{tour_id: item.id}}>
-            <a className="button">{t('tours.book')}</a>
-          </Link>
+          <a className={item.num_max_people - item.num_current_people === 0 ? "button disabled" : "button"} onClick={this.handleBook.bind(this)}>{t('tours.book')}</a>
           <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
             <a className="button ml-4">{t('tours.detail')}</a>
           </Link>
@@ -63,4 +80,4 @@ class TourItem extends React.Component {
   }
 }
 
-export default TourItem
+export default connect(null, mapDispatchToProps)(TourItem)

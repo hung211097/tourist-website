@@ -48,6 +48,9 @@ class CheckOutPassengers extends React.Component {
       }
       try{
         let tourInfo = await apiService.getToursTurnId(query.tour_id)
+        if(tourInfo.data.num_max_people - tourInfo.data.num_current_people === 0){
+          Redirect(res, '/')
+        }
         return { tourInfo: tourInfo.data };
       }
       catch(e){
