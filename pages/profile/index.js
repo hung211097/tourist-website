@@ -34,7 +34,7 @@ class Profile extends React.Component {
                       <h1 className="my-profile__title">{t('profile.personal_info')}</h1>
                     </div>
                     <div className="row content">
-                      <div className="col-md-6">
+                      <div className="col-md-8">
                         {!_.isEmpty(this.props.user) &&
                           <ul>
                             <li className="d-md-none d-block"><span>{t('profile.avatar')}:</span>
@@ -50,7 +50,7 @@ class Profile extends React.Component {
                           </ul>
                         }
                       </div>
-                      <div className="col-md-6 d-none d-md-block">
+                      <div className="col-md-4 d-none d-md-block">
                         <div className="avatar-contain">
                           {this.props.user &&
                             <img alt="avatar" src={this.props.user.avatar ? (this.props.user.avatar) : "/static/images/default-avatar.png"} />

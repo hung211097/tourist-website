@@ -306,7 +306,7 @@ class DetailTour extends React.Component {
 
   handleBook(){
     const { tourTurn } = this.state
-    if(tourTurn.num_max_people - tourTurn.num_current_people === 0){
+    if(tourTurn.num_max_people - tourTurn.num_current_people === 0 || !tourTurn.isAllowBooking){
       this.props.useModal && this.props.useModal({type: modal.NO_BOOK, isOpen: true, data: ''})
       return
     }
@@ -443,7 +443,9 @@ class DetailTour extends React.Component {
                                 </div>
                               </div>
                             </div>
-                            <a className={slot ? "co-btn green w-auto mt-4" : "co-btn silver w-auto mt-4"} onClick={this.handleBook.bind(this)}>{t('detail_tour.book')}</a>
+                            <a className={slot && tourTurn.isAllowBooking ? "co-btn green w-auto mt-4" : "co-btn silver w-auto mt-4"}
+                              onClick={this.handleBook.bind(this)}>{t('detail_tour.book')}
+                            </a>
                             <FacebookShareButton
                               url={url}
                               quote={tourTurn.tour.name}

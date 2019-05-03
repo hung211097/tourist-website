@@ -188,6 +188,10 @@ export default () => {
       let url = baseURL + `tour/searchByName?name=${name}&per_page=${limit}`
       return fetchCached(url)
     },
+    getRecommendationTour: (data) => {
+      let url = baseURL + `tour_turn/getRecommendation`
+      return httpPost(url, data)
+    },
     verifyCaptcha: (data) => {
       let url = baseURL + `verifyCaptcha`
       return httpPost(url, data)

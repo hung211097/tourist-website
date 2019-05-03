@@ -65,10 +65,6 @@ class PopupRecommend extends React.Component {
 
     }
 
-    componentWillUnmount(){
-      this.timeout && clearTimeout(this.timeout)
-    }
-
     handleClose() {
       this.props.onClose && this.props.onClose()
     }
@@ -85,14 +81,12 @@ class PopupRecommend extends React.Component {
       this.setState({
         step: 2
       })
-      this.timeout = setTimeout(() => {
-        this.apiService.getToursTurn(1, 4).then((res) => {
-          this.setState({
-            tour: res.data,
-            isLoading: false
-          })
+      this.apiService.getRecommendationTour({locations: this.props.recommendLocation}).then((res) => {
+        this.setState({
+          tour: res.data,
+          isLoading: false
         })
-      }, 3000)
+      })
     }
 
     handleBack(){
@@ -227,13 +221,13 @@ class PopupRecommend extends React.Component {
                                                       <p>
                                                         <i aria-hidden="true"><FaMoneyBill /></i>
                                                         {t('recommendation.origin_price')}:&nbsp;
-                                                        <span>{item.original_price.toLocaleString()} VND</span>
+                                                        <span>{item.price.toLocaleString()} VND</span>
                                                       </p>
                                                     }
                                                     <p>
                                                       <i aria-hidden="true"><FaMoneyBill /></i>
                                                       {t('recommendation.sale_price')}:&nbsp;
-                                                      <span>{item.end_price.toLocaleString()} VND</span>
+                                                      <span>{item.discount ? (item.price - item.discount * item.price).toLocaleString() : item.price.toLocaleString()} VND</span>
                                                     </p>
                                                     <p>
                                                       <i aria-hidden="true"><FaUsers /></i>

@@ -36,7 +36,7 @@ class TourItem extends React.Component {
 
   handleBook(){
     const { item } = this.props
-    if(item.num_max_people - item.num_current_people === 0){
+    if(item.num_max_people - item.num_current_people === 0 || !item.isAllowBooking){
       this.props.useModal && this.props.useModal({type: modal.NO_BOOK, isOpen: true, data: ''})
       return
     }
@@ -70,7 +70,9 @@ class TourItem extends React.Component {
           <span className="amout"> {discountPrice.toLocaleString()} VND</span>
         </div>
         <div className="action">
-          <a className={item.num_max_people - item.num_current_people === 0 ? "button disabled" : "button"} onClick={this.handleBook.bind(this)}>{t('tours.book')}</a>
+          <a className={item.num_max_people - item.num_current_people === 0 || !item.isAllowBooking ? "button disabled" : "button"}
+            onClick={this.handleBook.bind(this)}>{t('tours.book')}
+          </a>
           <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
             <a className="button ml-4">{t('tours.detail')}</a>
           </Link>

@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
-import { Layout, SearchItem } from 'components' //Bỏ RatingStar
+import { Layout, SearchItem, RatingStar } from 'components' //Bỏ RatingStar
 import Slider from 'react-rangeslider'
 import { FaFilter, FaChevronDown, FaChevronUp, FaChevronLeft, FaChevronRight, FaList } from "react-icons/fa"
 import { TiThSmallOutline } from "react-icons/ti"
@@ -93,9 +93,9 @@ class SearchResult extends React.Component {
     if(this.state.date){
       params.date = this.state.date
     }
-    // if(this.state.rate){
-    //   params.rate = this.state.rate
-    // }
+    if(this.state.rate){
+      params.rating = this.state.rate
+    }
     if(this.state.lasting){
       params.lasting = this.state.lasting
     }
@@ -433,7 +433,7 @@ class SearchResult extends React.Component {
                                     <div className="nd_options_height_10" />
                                     {/*<div className="break" />*/}
                                   </div>
-                                  {/*<div className="rating-box">
+                                  <div className="rating-box">
                                     <div className="acc-content">
                                       <div className="nd_travel_section">
                                         <h3>{t('search.rating')}:</h3>
@@ -512,7 +512,7 @@ class SearchResult extends React.Component {
                                         </div>
                                       </div>
                                     </div>
-                                  </div>*/}
+                                  </div>
                                   <div className="confirm-zone">
                                     <div className="text-center">
                                       <button type="submit" className="co-btn green" onClick={this.handleSubmitFilter.bind(this)}>{t('search.apply')}</button>
@@ -610,7 +610,7 @@ class SearchResult extends React.Component {
                             <div className="nd_options_height_10" />
                             {/*<div className="break" />*/}
                           </div>
-                          {/*<div className="rating-box">
+                          <div className="rating-box">
                             <div className="acc-content">
                               <div className="nd_travel_section">
                                 <h3>{t('search.rating')}:</h3>
@@ -689,7 +689,7 @@ class SearchResult extends React.Component {
                                 </div>
                               </div>
                             </div>
-                          </div>*/}
+                          </div>
                           <div className="confirm-zone">
                             <div className="text-center">
                               <button type="submit" className="co-btn green" onClick={this.handleSubmitFilter.bind(this)}>{t('search.apply')}</button>
