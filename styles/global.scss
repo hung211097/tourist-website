@@ -137,6 +137,12 @@ p {
       background: #1AAB8D !important;
     }
   }
+  &.silver{
+    background: silver;
+    &:hover{
+      background: silver !important;
+    }
+  }
   &.disabled{
     background-color: #8c8c8c !important;
   }

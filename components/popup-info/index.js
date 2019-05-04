@@ -25,6 +25,11 @@ export default class extends React.Component {
         timeOut: PropTypes.number
     }
 
+    static defaultProps = {
+      customContent: null,
+      customOverlay: null
+    }
+
     constructor(props) {
         super(props)
     }

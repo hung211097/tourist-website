@@ -226,8 +226,8 @@ class Login extends React.Component {
                       <span> {t('login.login_fb')}</span>
                     </button>
                     <p className="link-page">
-                      {t('login.no_account')}
-                      <Link route="register"><a> {t('login.register_here')}</a></Link>
+                      {t('login.no_account')}&nbsp;
+                      <Link route="register"><a>{t('login.register_here')}</a></Link>
                     </p>
                   </form>
                 </div>

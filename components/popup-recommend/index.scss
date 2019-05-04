@@ -173,26 +173,29 @@
         }
         .tour-img{
           position: relative;
+          img{
+            height: 150px;
+          }
         }
       }
     }
 }
 
 .sale{
-  top: 20px !important;
-  right: 20px !important;
-  left: initial !important;
+  // top: 20px !important;
+  // right: 20px !important;
+  // left: initial !important;
+  // position: absolute;
   margin: -.5em -.5em 0 0;
   border-radius: 0px;
   min-width: initial;
   min-height: initial;
-  padding: 8px;
+  padding: 5px;
   line-height: 13px;
-  font-size: 13px;
+  font-size: 12px;
   text-transform: uppercase;
   font-weight: normal;
   background-color: #1bbc9b;
-  position: absolute;
   text-align: center;
   color: #fff;
   z-index: 9;

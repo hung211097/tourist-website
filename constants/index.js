@@ -11,7 +11,8 @@ export const modal = {
   EXPIRED: 'EXPIRED',
   LOADING: 'LOADING',
   CANCEL: 'CANCEL',
-  RECOMMEND: 'RECOMMEND'
+  RECOMMEND: 'RECOMMEND',
+  NO_BOOK: 'NO_BOOK'
 }
 
 export const lng = {

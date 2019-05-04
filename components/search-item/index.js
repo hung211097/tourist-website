@@ -48,13 +48,13 @@ class SearchItem extends React.Component {
                     }
                     <div className="tour-statistic">
                       <div className="row figure">
-                        <div className="col-sm-6 col-12 text-left no-padding">
+                        <div className="col-sm-4 col-12 text-left no-padding">
                           <i title="views"><FaRegEye /></i>&nbsp;&nbsp;
                           <span style={{color: 'white'}} title="views">{item.view.toLocaleString()}</span>&nbsp;&nbsp;&nbsp;&nbsp;
                           <i title="comments"><FaRegCommentDots /></i>&nbsp;&nbsp;
                           <span style={{color: 'white'}} title="comments">{item.tour.num_review}</span>&nbsp;&nbsp;&nbsp;&nbsp;
                         </div>
-                        <div className="col-sm-6 col-12 no-padding ratingstar">
+                        <div className="col-sm-8 col-12 no-padding ratingstar">
                           <RatingStar isWhite rate={item.tour.average_rating} />
                         </div>
                       </div>

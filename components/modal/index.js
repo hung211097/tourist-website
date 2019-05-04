@@ -63,6 +63,12 @@ class Modal extends React.Component {
               <PopupLoading show={this.props.modal.isOpen} onClose={this.handleClosePopup.bind(this)} />
               : this.props.modal.type === modal.RECOMMEND ?
               <PopupRecommend show={this.props.modal.isOpen} onClose={this.handleClosePopup.bind(this)} />
+              : this.props.modal.type === modal.NO_BOOK ?
+              <PopupInfo show={this.props.modal.isOpen} onClose={this.handleClosePopup.bind(this)}>
+                <p>{t('detail_tour.no_book')}</p>
+                <div className="nd_options_height_10" />
+                <a className="co-btn w-50" onClick={this.handleClosePopup.bind(this)}>{t('register.OK')}</a>
+              </PopupInfo>
               : null
             }
           </>

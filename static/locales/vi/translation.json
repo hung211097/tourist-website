@@ -171,7 +171,8 @@
     "day": "Ngày",
     "arrive_at": "Đến vào lúc",
     "leave_at": "Rời khỏi lúc",
-    "policy": "CHÍNH SÁCH"
+    "policy": "CHÍNH SÁCH",
+    "no_book": "Tour đã hết chỗ trống hoặc đã quá hạn đặt tour, vui lòng tìm ngày đi khác!"
   },
   "wrong_auth": {
     "oops": "Xin lỗi!",

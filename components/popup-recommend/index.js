@@ -65,10 +65,6 @@ class PopupRecommend extends React.Component {
 
     }
 
-    componentWillUnmount(){
-      this.timeout && clearTimeout(this.timeout)
-    }
-
     handleClose() {
       this.props.onClose && this.props.onClose()
     }
@@ -85,14 +81,12 @@ class PopupRecommend extends React.Component {
       this.setState({
         step: 2
       })
-      this.timeout = setTimeout(() => {
-        this.apiService.getToursTurn(1, 4).then((res) => {
-          this.setState({
-            tour: res.data,
-            isLoading: false
-          })
+      this.apiService.getRecommendationTour({locations: this.props.recommendLocation}).then((res) => {
+        this.setState({
+          tour: res.data,
+          isLoading: false
         })
-      }, 3000)
+      })
     }
 
     handleBack(){
@@ -202,9 +196,6 @@ class PopupRecommend extends React.Component {
                                                 <div className="tour-img">
                                                   <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
                                                     <a>
-                                                      {!!item.discount &&
-                                                        <span className="sale">{t('tours.sale')}!</span>
-                                                      }
                                                       <img alt="featured_img" src={item.tour.featured_img ? item.tour.featured_img : '/static/images/no_image.jpg'} />
                                                     </a>
                                                   </Link>
@@ -215,6 +206,12 @@ class PopupRecommend extends React.Component {
                                                   <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
                                                     <a>{item.tour.name}</a>
                                                   </Link>
+                                                  {!!item.discount &&
+                                                    <div className="d-inline">
+                                                      &nbsp;&nbsp;&nbsp;
+                                                      <span className="sale">{t('tours.sale')}!</span>
+                                                    </div>
+                                                  }
                                                 </h3>
                                                 <div className="row">
                                                   <div className="col-sm-6">

@@ -99,7 +99,7 @@ class MarkerComponent extends React.Component{
     const {t} = this.props
     return(
       <Marker
-        position={{lat: this.props.infoLocation.latitude, lng: this.props.infoLocation.longitude}}
+        position={{lat: +this.props.infoLocation.latitude, lng: +this.props.infoLocation.longitude}}
         onClick={this.toggleOpen.bind(this)}
         icon={this.props.isMe ? '/static/images/person.png' :
           this.props.infoLocation.isInTour && !this.props.infoLocation.isPass ? {url: '/static/images/location.png', labelOrigin: new google.maps.Point(20, 17)} :
