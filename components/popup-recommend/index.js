@@ -196,9 +196,6 @@ class PopupRecommend extends React.Component {
                                                 <div className="tour-img">
                                                   <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
                                                     <a>
-                                                      {!!item.discount &&
-                                                        <span className="sale">{t('tours.sale')}!</span>
-                                                      }
                                                       <img alt="featured_img" src={item.tour.featured_img ? item.tour.featured_img : '/static/images/no_image.jpg'} />
                                                     </a>
                                                   </Link>
@@ -209,6 +206,12 @@ class PopupRecommend extends React.Component {
                                                   <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
                                                     <a>{item.tour.name}</a>
                                                   </Link>
+                                                  {!!item.discount &&
+                                                    <div className="d-inline">
+                                                      &nbsp;&nbsp;&nbsp;
+                                                      <span className="sale">{t('tours.sale')}!</span>
+                                                    </div>
+                                                  }
                                                 </h3>
                                                 <div className="row">
                                                   <div className="col-sm-6">
@@ -221,13 +224,13 @@ class PopupRecommend extends React.Component {
                                                       <p>
                                                         <i aria-hidden="true"><FaMoneyBill /></i>
                                                         {t('recommendation.origin_price')}:&nbsp;
-                                                        <span>{item.price.toLocaleString()} VND</span>
+                                                        <span>{item.original_price.toLocaleString()} VND</span>
                                                       </p>
                                                     }
                                                     <p>
                                                       <i aria-hidden="true"><FaMoneyBill /></i>
                                                       {t('recommendation.sale_price')}:&nbsp;
-                                                      <span>{item.discount ? (item.price - item.discount * item.price).toLocaleString() : item.price.toLocaleString()} VND</span>
+                                                      <span>{item.end_price.toLocaleString()} VND</span>
                                                     </p>
                                                     <p>
                                                       <i aria-hidden="true"><FaUsers /></i>
