@@ -481,7 +481,8 @@
     "bookDayAsc": "Ngày đặt xa nhất",
     "priceDesc": "Giá cao nhất",
     "priceAsc": "Giá thấp nhất",
-    "no_tour": "Hiện bạn không có tour nào trong lịch sử đặt tour."
+    "no_tour": "Hiện bạn không có tour nào trong lịch sử đặt tour.",
+    "search_tour": "Tên tour"
   },
   "detail_booked_tour": {
     "title": "CHI TIẾT ĐẶT TOUR",

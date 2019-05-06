@@ -481,7 +481,8 @@
     "bookDayAsc": "Booking Day Ascending",
     "priceDesc": "Price Descending",
     "priceAsc": "Price Ascending",
-    "no_tour": "You have no tour in your Booking History now."
+    "no_tour": "You have no tour in your Booking History now.",
+    "search_tour": "Tour's name"
   },
   "detail_booked_tour": {
     "title": "DETAIL BOOKED TOUR INFORMATION",

@@ -10,7 +10,7 @@ import { FaRegCalendarMinus, FaRegCalendarPlus, FaRegCalendarAlt, FaMoneyBill,
 import { Router, Link } from 'routes'
 import ApiService from 'services/api.service'
 import ReactTable from 'react-table'
-import { getCode, capitalize } from '../../services/utils.service'
+import { capitalize } from '../../services/utils.service'
 import matchSorter from 'match-sorter'
 import { formatDate, compareDate, distanceFromDays, isSameDate } from '../../services/time.service'
 import { withNamespaces } from "react-i18next"
@@ -39,7 +39,7 @@ class DetailBookedTour extends React.Component {
           Redirect(res, '404')
         }
         try{
-          let tourInfo = await apiService.getBookTourHistoryById(query.id, {isTour: true})
+          let tourInfo = await apiService.getBookTourHistoryByCode(query.id, {isTour: true})
           if(!tourInfo.data){
             Redirect(res, '404')
           }
@@ -84,7 +84,7 @@ class DetailBookedTour extends React.Component {
     }
 
     loadMore(){
-      const id = Router.query.id
+      const id = this.state.bookTour.id
       if(this.state.page > 0){
         this.apiService.getPassengersInBookTour(id, this.state.page, 5).then((res) => {
           this.setState({
@@ -272,7 +272,7 @@ class DetailBookedTour extends React.Component {
                     <div className="title">
                       <div className="text-center title-contain">
                         <a className="back" onClick={this.handleBack.bind(this)}><FaArrowLeft style={{fontSize: '25px'}}/></a>
-                        <h1 className="my-profile__title">{t('detail_booked_tour.title')} <span>#{getCode(this.state.bookTour.id)}</span></h1>
+                        <h1 className="my-profile__title">{t('detail_booked_tour.title')} <span>#{this.state.bookTour.code}</span></h1>
                         <h3 className="booking-status">{t('detail_booked_tour.status')}: <span>{capitalize(t('detail_booked_tour.' + this.state.bookTour.status))}</span></h3>
                       </div>
                       <div className="content">

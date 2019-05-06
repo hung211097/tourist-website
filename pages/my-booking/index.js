@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import ApiService from 'services/api.service'
 import InfiniteScroll from 'react-infinite-scroller'
-import { getCode, capitalize } from '../../services/utils.service'
+import { capitalize } from '../../services/utils.service'
 import { withNamespaces } from "react-i18next"
 import Select from 'react-select'
 import arraySort from 'array-sort'
@@ -36,6 +36,7 @@ class MyBooking extends React.Component {
         showPopup: false,
         dataPopup: null,
         bookingCode: '',
+        searchTour: '',
         sort: 'bookDayDesc',
       }
       this.sorts = [
@@ -105,6 +106,12 @@ class MyBooking extends React.Component {
       })
     }
 
+    handleChangeSearchTour(e){
+      this.setState({
+        searchTour: e.target.value
+      })
+    }
+
     handleChangeSort(e){
       this.setState({
         sort: e.value
@@ -138,7 +145,8 @@ class MyBooking extends React.Component {
     render() {
         const {t} = this.props
         let displayArray = this.state.bookTours.filter((item) => {
-          return getCode(item.id).search(this.state.bookingCode.toString()) > -1
+          return item.code.search(this.state.bookingCode.toString()) > -1 &&
+          item.tour_turn.tour.name.toLowerCase().search(this.state.searchTour.toLowerCase()) > -1
         })
         displayArray = this.sortArray(displayArray);
         return (
@@ -158,7 +166,8 @@ class MyBooking extends React.Component {
                                 className="form-control" placeholder={t('my_booking.code')}/>
                             </div>
                             <div className="col-lg-4">
-
+                              <input type="text" value={this.state.searchTour} onChange={this.handleChangeSearchTour.bind(this)}
+                                className="form-control" placeholder={t('my_booking.search_tour')}/>
                             </div>
                             <div className="col-lg-4">
                               <div className="select-zone">
