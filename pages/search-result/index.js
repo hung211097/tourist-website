@@ -25,7 +25,7 @@ class SearchResult extends React.Component {
   }
 
   static async getInitialProps({ query }) {
-    let apiService = ApiService()
+    const apiService = ApiService()
     let searchResult = null
     try{
       if(query.keyword){

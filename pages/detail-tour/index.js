@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import ApiService from 'services/api.service'
 import { Link, Router } from 'routes'
 import { RatingStar, BtnViewMore, MyMap, TourItem, Lightbox, Breadcrumb } from 'components'
-import { getCode, convertFullUrl, slugify, groupDayRoute } from '../../services/utils.service'
+import { convertFullUrl, slugify, groupDayRoute } from '../../services/utils.service'
 import { FaRegCalendarAlt, FaEye, FaSuitcase } from "react-icons/fa"
 import { formatDate, distanceFromDays, fromNow, addDay } from '../../services/time.service'
 import validateEmail from '../../services/validates/email.js'
@@ -407,7 +407,7 @@ class DetailTour extends React.Component {
                             <div className="col-12">
                               <div className="row" style={{marginBottom: '15px', marginTop: '30px'}}>
                                 <div className="col-md-4 col-sm-4 col-6">{t('detail_tour.tour_code')}:</div>
-                                <div className="col-md-8 col-sm-8 col-6">{getCode(tourTurn.id)}</div>
+                                <div className="col-md-8 col-sm-8 col-6">{tourTurn.code}</div>
                               </div>
                               <div className="row">
                                 <div className="col-lg-4 col-md-6 col-sm-4 col-6 mg-10">{t('detail_tour.start_date')}:</div>

@@ -12,7 +12,7 @@ import { addInfoPassengers } from '../../actions'
 import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaUserSecret, FaChild, FaRegCalendarAlt } from "react-icons/fa"
 import { formatDate, distanceFromDays } from '../../services/time.service'
 import { getUserAuth } from 'services/auth.service'
-import { getCode, moveToElementId, slugify } from '../../services/utils.service'
+import { moveToElementId, slugify } from '../../services/utils.service'
 import { withNamespaces } from "react-i18next"
 import { validateStringWithoutNumber } from '../../services/validates'
 import { metaData } from '../../constants/meta-data'
@@ -513,7 +513,7 @@ class CheckOutPassengers extends React.Component {
                               <li>
                                 <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
                                 {t('checkout_passenger.code')}:&nbsp;
-                                <span>{getCode(tourInfo.id)}</span>
+                                <span>{tourInfo.code}</span>
                               </li>
                               <li>
                                 <i className="fa fa-calendar-minus-o" aria-hidden="true"><FaRegCalendarMinus /></i>

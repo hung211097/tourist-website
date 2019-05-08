@@ -8,7 +8,7 @@ import ApiService from '../../services/api.service'
 import { wizardStep } from '../../constants'
 import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaUserSecret, FaChild, FaRegCalendarAlt, FaPlaneDeparture, FaMoneyBill } from "react-icons/fa"
 import { formatDate, distanceFromDays, compareDate } from '../../services/time.service'
-import { getCode, slugify } from '../../services/utils.service'
+import { slugify } from '../../services/utils.service'
 import ReactTable from 'react-table'
 import matchSorter from 'match-sorter'
 import InfiniteScroll from 'react-infinite-scroller'
@@ -167,12 +167,12 @@ class CheckOutConfirmation extends React.Component {
                                   <p>
                                     <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
                                     {t('checkout_confirmation.book_code')}:&nbsp;
-                                    <span>{getCode(bookInfo.id)}</span>
+                                    <span>{bookInfo.code}</span>
                                   </p>
                                   <p>
                                     <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
                                       {t('checkout_confirmation.code')}:&nbsp;:&nbsp;
-                                    <span>{getCode(tourInfo.id)}</span>
+                                    <span>{tourInfo.code}</span>
                                   </p>
                                   {!!bookInfo.type_passenger_detail.length && bookInfo.type_passenger_detail.map((item, key) => {
                                       return(

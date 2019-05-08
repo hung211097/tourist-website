@@ -9,7 +9,7 @@ import { withNamespaces } from "react-i18next"
 import { connect } from 'react-redux'
 import { removeRecommendLocaiton, removeAllRecommendLocaiton } from '../../actions'
 import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaRegCalendarAlt, FaMoneyBill, FaTimes, FaRegFrown, FaUser, FaUsers } from "react-icons/fa"
-import { getCode, slugify } from '../../services/utils.service'
+import { slugify } from '../../services/utils.service'
 
 let customStyles = {
     width: '90%',
@@ -218,7 +218,7 @@ class PopupRecommend extends React.Component {
                                                     <p>
                                                       <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
                                                       {t('checkout_confirmation.code')}:&nbsp;
-                                                      <span>{getCode(item.id)}</span>
+                                                      <span>{item.code}</span>
                                                     </p>
                                                     {!!item.discount &&
                                                       <p>

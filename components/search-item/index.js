@@ -5,7 +5,6 @@ import { RatingStar } from 'components'
 import { Link } from 'routes'
 import { FaRegCommentDots, FaRegEye, FaBarcode, FaCalendarAlt, FaClock, FaUserAlt, FaRegCalendarAlt } from "react-icons/fa"
 import { formatDate, distanceFromDays } from '../../services/time.service'
-import { getCode } from '../../services/utils.service'
 import { slugify } from '../../services/utils.service'
 
 class SearchItem extends React.Component {
@@ -48,14 +47,14 @@ class SearchItem extends React.Component {
                     }
                     <div className="tour-statistic">
                       <div className="row figure">
-                        <div className="col-sm-4 col-12 text-left no-padding">
+                        <div className="col-sm-5 col-12 text-left no-padding">
                           <i title="views"><FaRegEye /></i>&nbsp;&nbsp;
                           <span style={{color: 'white'}} title="views">{item.view.toLocaleString()}</span>&nbsp;&nbsp;&nbsp;&nbsp;
                           <i title="comments"><FaRegCommentDots /></i>&nbsp;&nbsp;
                           <span style={{color: 'white'}} title="comments">{item.tour.num_review}</span>&nbsp;&nbsp;&nbsp;&nbsp;
                         </div>
-                        <div className="col-sm-8 col-12 no-padding ratingstar">
-                          <RatingStar isWhite rate={item.tour.average_rating} />
+                        <div className="col-sm-7 col-12 no-padding ratingstar">
+                          <RatingStar isWhite rate={item.tour.average_rating} notRateStyle={{fontSize: '13px'}}/>
                         </div>
                       </div>
                       <div className="row no-margin">
@@ -149,7 +148,7 @@ class SearchItem extends React.Component {
               <div className="col-sm-12 statistic-content">
                 <div className="row mg-listtour">
                   <div className="col-lg-6 col-md-6 mg-bot10">
-                    <i><FaBarcode /></i>&nbsp;&nbsp;{t('search.tour_code')}: {getCode(item.id)}
+                    <i><FaBarcode /></i>&nbsp;&nbsp;{t('search.tour_code')}: {item.code}
                   </div>
                   <div className="col-lg-6 col-md-6 mg-bot10">
                     <i><FaCalendarAlt /></i>&nbsp;&nbsp;{t('search.start_date')}: {formatDate(item.start_date)}

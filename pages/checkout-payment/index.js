@@ -8,7 +8,7 @@ import ApiService from '../../services/api.service'
 import { wizardStep } from '../../constants'
 import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaUserSecret, FaChild, FaRegCalendarAlt, FaChevronDown, FaCheck, FaPaypal } from "react-icons/fa"
 import { formatDate, distanceFromDays } from '../../services/time.service'
-import { getCode, slugify, isServer, convertCurrencyToUSD } from '../../services/utils.service'
+import { slugify, isServer, convertCurrencyToUSD } from '../../services/utils.service'
 import { useModal } from '../../actions'
 import { modal } from '../../constants'
 import { withNamespaces } from "react-i18next"
@@ -476,7 +476,7 @@ class CheckOutPayment extends React.Component {
                               <li>
                                 <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
                                 {t('checkout_passenger.code')}:&nbsp;
-                                <span>{getCode(tourInfo.id)}</span>
+                                <span>{tourInfo.code}</span>
                               </li>
                               <li>
                                 <i className="fa fa-calendar-minus-o" aria-hidden="true"><FaRegCalendarMinus /></i>
