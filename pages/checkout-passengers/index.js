@@ -158,7 +158,7 @@ class CheckOutPassengers extends React.Component {
       num_child: this.state.child,
       passengers: this.state.passengers
     })
-    Router.pushRoute("checkout-payment", {tour_id: this.state.tourInfo.id})
+    Router.pushRoute("checkout-payment", {tour_id: this.state.tourInfo.code})
   }
 
   validate(){
@@ -342,14 +342,13 @@ class CheckOutPassengers extends React.Component {
                             <div className="row child-zone">
                               <div className="col-md-5 col-sm-5 col-12">
                                 <div className="form-group">
-                                  <label>{t('checkout_passenger.Children')} </label>
+                                  <label>{t('checkout_passenger.Children')} (<span className="caption-text">{t('checkout_passenger.note_children')}</span>)</label>
                                   <input type="number" name="child" value={this.state.child} min={0} pattern="^\d+$" className="custom-input"
                                     onChange={this.handleChangeChild.bind(this)}/>
                                   <span className="error" />
                                 </div>
                               </div>
                               <div className="col-md-7 col-sm-7 col-12">
-                                <p className="caption-text">{t('checkout_passenger.note_children')}</p>
                               </div>
                               <div className="nd_options_height_10"/>
                             </div>

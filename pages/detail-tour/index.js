@@ -552,13 +552,13 @@ class DetailTour extends React.Component {
                                                     return(
                                                       <li key={key_2}>
                                                         {item_2.arrive_time && item_2.leave_time &&
-                                                          <h4 className="time">{item_2.arrive_time} - {item_2.leave_time}</h4>
+                                                          <h4 className="time">{item_2.arrive_time.replace(':00', '')} - {item_2.leave_time.replace(':00', '')}</h4>
                                                         }
                                                         {item_2.arrive_time && !item_2.leave_time &&
-                                                          <h4 className="time">{t('detail_tour.arrive_at')} {item_2.arrive_time}</h4>
+                                                          <h4 className="time">{t('detail_tour.arrive_at')} {item_2.arrive_time.replace(':00', '')}</h4>
                                                         }
                                                         {!item_2.arrive_time && item_2.leave_time &&
-                                                          <h4 className="time">{t('detail_tour.leave_at')} {item_2.leave_time}</h4>
+                                                          <h4 className="time">{t('detail_tour.leave_at')} {item_2.leave_time.replace(':00', '')}</h4>
                                                         }
                                                         <h4 className="name-location">&nbsp;- {item_2.location.name} ({item_2.location.type.name})</h4>
                                                         <p>{item_2.detail}</p>
@@ -717,17 +717,14 @@ class DetailTour extends React.Component {
                                     lòng tìm hiểu kỹ chương trình từ người đăng ký cho mình.
                                   </li>
                                 </ul>
-                                <p className="bold">Lưu ý khi chuyển/hủy tour:</p>
+                                <p className="bold">Lưu ý khi hủy tour:</p>
                                 <p className="no-margin">
-                                  Sau khi thanh toán tiền, nếu Quý khách muốn chuyển/hủy tour xin vui lòng mang Vé Du Lịch đến văn
-                                  phòng đăng ký tour để làm thủ tục chuyển/hủy tour và chịu chi phí theo quy định của TravelTour.
-                                  Không giải quyết các trường hợp liên hệ chuyển/hủy tour qua điện thoại.
+                                  Sau khi thanh toán tiền, nếu Quý khách muốn hủy tour xin vui lòng mang Vé Du Lịch đến văn
+                                  phòng đăng ký tour để làm thủ tục hủy tour và chịu chi phí theo quy định của TravelTour.
+                                  Không giải quyết các trường hợp liên hệ hủy tour qua điện thoại.
                                 </p>
                                 <p className="bold">Các điều kiện hủy tour: (đối với ngày thường)</p>
                                 <ul>
-                                  <li>
-                                    Được chuyển sang các tuyến du lịch khác trước ngày khởi hành 20 ngày : Không mất chi phí.
-                                  </li>
                                   <li>
                                     Nếu hủy hoặc chuyển sang các chuyến du lịch khác ngay sau khi đăng ký đến từ 15-19 ngày trước ngày
                                     khởi hành: Chi phí hủy tour: 50% tiền cọc tour.
@@ -750,9 +747,6 @@ class DetailTour extends React.Component {
                                 </ul>
                                 <p className="bold">Các điều kiện hủy tour: (đối với ngày lễ, tết)</p>
                                 <ul>
-                                  <li>
-                                    Được chuyển sang các tuyến du lịch khác trước ngày khởi hành 30 ngày : Không mất chi phí
-                                  </li>
                                   <li>
                                     Nếu hủy hoặc chuyển sang các chuyến khác ngay sau khi đăng ký đến từ 25-29 ngày trước ngày khởi hành: Chi phí hủy tour: 50% tiền cọc tour.
                                   </li>

@@ -349,8 +349,11 @@ class DetailBookedTour extends React.Component {
                                           <span className="value">{this.getPriceByAge('children').toLocaleString()} VND</span>
                                         </div>
                                       }
-                                      <div className="item-row">
-                                        <span className="item-label bold">{t('detail_booked_tour.total_price')}</span>
+                                      <br/>
+                                      <div className="item-row" style={{fontSize: '18px'}}>
+                                        <span className="item-label bold" style={{fontSize: '18px', fontWeight: 'bold'}}>
+                                          {t('detail_booked_tour.total_price')}
+                                        </span>
                                         <span className="value">{this.state.bookTour.total_pay.toLocaleString()} VND</span>
                                       </div>
                                     </div>

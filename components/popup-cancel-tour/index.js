@@ -166,21 +166,23 @@ class PopupCancelTour extends React.Component {
                                         <li>{t('cancel_tour.domestic_week_day_3')}</li>
                                         <li>{t('cancel_tour.domestic_week_day_4')}</li>
                                         <li>{t('cancel_tour.domestic_week_day_5')}</li>
+                                        <li>{t('cancel_tour.domestic_week_day_6')}</li>
                                       </ul>
                                       <br/>
                                       <h4><strong>{t('cancel_tour.domestic_holiday')}</strong></h4>
                                       <ul>
                                         <li>{t('cancel_tour.domestic_holiday_1')}</li>
-                                        <li>{t('cancel_tour.domestic_holiday-2')}</li>
+                                        <li>{t('cancel_tour.domestic_holiday_2')}</li>
                                         <li>{t('cancel_tour.domestic_holiday_3')}</li>
                                         <li>{t('cancel_tour.domestic_holiday_4')}</li>
                                         <li>{t('cancel_tour.domestic_holiday_5')}</li>
+                                        <li>{t('cancel_tour.domestic_holiday_6')}</li>
                                       </ul>
                                       <br/>
                                       <h4><strong>{t('cancel_tour.note')}</strong></h4>
                                       <p>{t('cancel_tour.note_content')}</p>
                                       <br/>
-                                      <h3>{t('cancel_tour.foreign')}</h3>
+                                      {/*<h3>{t('cancel_tour.foreign')}</h3>
                                       <h4><strong>{t('cancel_tour.foreign_week_day')}</strong></h4>
                                       <ul>
                                         <li>{t('cancel_tour.foreign_week_day_1')}</li>
@@ -204,7 +206,7 @@ class PopupCancelTour extends React.Component {
                                       </ul>
                                       <br/>
                                       <h4><strong>{t('cancel_tour.note')}</strong></h4>
-                                      <p>{t('cancel_tour.note_content')}</p>
+                                      <p>{t('cancel_tour.note_content')}</p>*/}
                                     </div>
                                     <div className="checkbox-zone">
                                       <CustomCheckbox isCheck={this.state.isAgree} onCheck={this.handleCheck.bind(this)}

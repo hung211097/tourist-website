@@ -154,7 +154,7 @@ class SearchItem extends React.Component {
                     <i><FaCalendarAlt /></i>&nbsp;&nbsp;{t('search.start_date')}: {formatDate(item.start_date)}
                   </div>
                   <div className="col-lg-6 col-md-6 mg-bot10">
-                    <i><FaClock /></i>&nbsp;&nbsp;{t('search.lasting')}: {distanceFromDays(new Date(item.start_date), new Date(item.end_date)) + 1} days
+                    <i><FaClock /></i>&nbsp;&nbsp;{t('search.lasting')}: {distanceFromDays(new Date(item.start_date), new Date(item.end_date)) + 1} {t('search.days_lower')}
                   </div>
                   <div className="col-lg-6 col-md-6 mg-bot10">
                     <i><FaUserAlt /></i>&nbsp;&nbsp;{t('search.vacancy')}: {item.num_max_people - item.num_current_people}

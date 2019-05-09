@@ -37,6 +37,7 @@ class MyBooking extends React.Component {
         bookingCode: '',
         searchTour: '',
         sort: 'bookDayDesc',
+        isLoading: false
       }
       this.sorts = [
         { value: 'bookDayDesc', label: props.t('my_booking.bookDayDesc') },
@@ -47,19 +48,23 @@ class MyBooking extends React.Component {
     }
 
     loadMore(){
-      if(this.state.page > 0){
+      if(this.state.page > 0 && !this.state.isLoading){
+        this.setState({
+          isLoading: true
+        })
         this.apiService.getBookToursHistory(this.state.page, 3).then((res) => {
           this.setState({
             bookTours: [...this.state.bookTours, ...res.data],
             page: res.next_page,
-            hasMore: res.next_page > 0
+            hasMore: res.next_page > 0,
+            isLoading: false
           })
         })
       }
     }
 
     componentDidMount(){
-      this.loadMore()
+      // this.loadMore()
     }
 
     handleCancelTour(value){
@@ -185,7 +190,6 @@ class MyBooking extends React.Component {
                             pageStart={0}
                             loadMore={this.loadMore.bind(this)}
                             hasMore={this.state.page > 0}
-                            useWindow={false}
                             threshold={20}
                             initialLoad={false}>
                             {/*<ReactTable
