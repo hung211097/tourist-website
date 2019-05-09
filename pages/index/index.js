@@ -230,8 +230,9 @@ class Home extends React.Component {
                        <RatingStar rate={5} hideNumber/>
                      </div>
                      <div className="comment-content">
-                       I&apos;ve tried a dozen maps plugins, but the Google Maps one from Elfsight was the most intuitive,
-                       with just the right features and was the quickest to build. Excellent job.
+                       Nói thật, ban đầu chưa dám đặt niềm tin nhiều ! Nhưng sau những ngày du lịch ở đà lạt, giờ thì thay mặt đoàn,
+                       rất cảm ơn các em ! Dịch vụ rất tốt, các em rất nhiệt tình, thân thiện và thiệt là uy tín ! Chúc 2 em nhiều sức khoẻ
+                       và luôn vững vàng trong công việc ! Hẹn gặp lại.
                      </div>
                    </div>
                    <div className="author">
@@ -249,8 +250,9 @@ class Home extends React.Component {
                        <RatingStar rate={5} hideNumber/>
                      </div>
                      <div className="comment-content">
-                       Plugin works flawlessly and very easy to use. Just input facebook url and put the code into the page
-                       and done! Thank you, Elfsight!
+                       Cám ơn vì nhà mình đã có chuyến đi rất vui. Mọi người đều hài lòng hết.
+                       Hdv ai cũng trẻ trung dễ thương nên hợp gu mấy đứa nhỏ ở nhà. Nói chung nếu có quay lại ĐL sẽ đi cùng với
+                       page nữa. Hẹn gặp lại
                      </div>
                    </div>
                    <div className="author">
@@ -268,8 +270,7 @@ class Home extends React.Component {
                        <RatingStar rate={5} hideNumber/>
                      </div>
                      <div className="comment-content">
-                       The easiest pricing plugin I&apos;ve ever come across! The UI is absolutely intuitive, and it&apos;s super-easy
-                       to install, too! Thumbs up for Elfsight! 👍👍👍
+                       Thật là buồn khi đến với Đà lạt vào những ngày mưa nhưng nỗi buồn ấy tan biến nhanh vì có các bạn. Cảm ơn các bạn rất nhiều. 👍👍👍
                      </div>
                    </div>
                    <div className="author">
@@ -287,8 +288,8 @@ class Home extends React.Component {
                        <RatingStar rate={5} hideNumber/>
                      </div>
                      <div className="comment-content">
-                       Yottie is highly configurable and works great! The whole team went above and beyond to help me fix an
-                       issue which ultimately had nothing to do with the app. Highly recommend this plugin and development team.
+                       Cảm ơn các thành viên của Cty đã giúp mình và các thành viên trong đoàn có 1 chuyến đi thành công, e HDV Tâm
+                       rất nhiệt tình và đáng iu. Lần sau nếu quay lại Đà Lạt sẽ tiếp tục nhờ đến sự giúp đỡ của Cty.
                      </div>
                    </div>
                    <div className="author">
