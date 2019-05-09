@@ -92,7 +92,7 @@ class MyBooking extends React.Component {
         return item.id === id
       })
       if(temp){
-        temp.status = capitalize(status)
+        temp.status = status
         temp.isCancelBooking = flag
       }
       this.setState({

@@ -158,7 +158,7 @@ class CheckOutConfirmation extends React.Component {
                             </div>
                             <div className="col-sm-8">
                               <h3>
-                                <Link route="detail-tour" params={{id: tourInfo.id, name: slugify(tourInfo.tour.name)}}>
+                                <Link route="detail-tour" params={{id: tourInfo.code, name: slugify(tourInfo.tour.name)}}>
                                   <a>{tourInfo.tour.name}</a>
                                 </Link>
                               </h3>

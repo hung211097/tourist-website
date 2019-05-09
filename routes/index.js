@@ -15,9 +15,9 @@ module.exports = routes()                           // ----                   --
 .add('terms-condition')                             // terms-condition        terms-condition         /terms-condition
 .add('faq')                                         // faq                    faq                     /faq
 .add('contact')                                     // contact                contact                 /contact
-.add('tours-tags', '/tour/tags/:mark-:name-:id(\\d+)')// tours-tags           tours-tags             /tour/tags/:id/:mark-:name
+.add('tours-tags', '/tour/tags/:mark-:name-:id(\\d+)')// tours-tags           tours-tags             /tour/tags/:mark-:name-:id
 .add('tours', '/tour/:name-:id(\\d+)')              // tours                  tours                   /tours/:name-:id
-.add('detail-tour', '/tour/:id(\\d+)/:name')        // detail-tour            detail-tour            /tours/:id/:name
+.add('detail-tour', '/tour/:id/:name')              // detail-tour            detail-tour            /tours/:id/:name
 .add('search-result', '/search')                    // search-result          search                 /search-result?keyword=
 .add('checkout-payment', '/checkout/payment')       // checkout-payment       checkout-payment        /checkout/payment
 .add('checkout-passengers', '/checkout/passengers') // checkout               checkout-passengers     /checkout/passengers

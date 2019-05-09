@@ -71,14 +71,14 @@ class DetailBookedTour extends React.Component {
         passLocation: []
       }
       this.time = {
-        "10.7683": "2019-04-24T08:05:00.000",
-        "10.7794": "2019-04-24T09:11:00.000",
-        "10.770042": "2019-04-24T10:05:00.000",
-        "10.7535": "2019-04-24T10:20:00.000",
-        "10.7779": "2019-04-24T13:10:00.000",
-        "10.7798": "2019-04-24T14:15:00.000",
-        "10.7799": "2019-04-24T15:12:00.000",
-        "10.7682": "2019-04-24T17:09:00.000"
+        "10.7683": "2019-05-17T08:05:00.000",
+        "10.7794": "2019-05-17T09:11:00.000",
+        "10.770042": "2019-05-17T10:05:00.000",
+        "10.7535": "2019-05-17T10:20:00.000",
+        "10.7779": "2019-05-17T13:10:00.000",
+        "10.7798": "2019-05-17T14:15:00.000",
+        "10.7799": "2019-05-17T15:12:00.000",
+        "10.7682": "2019-05-17T17:09:00.000"
       } //Test data
       this.handleClick = this.handleClick.bind(this);
     }
@@ -294,7 +294,7 @@ class DetailBookedTour extends React.Component {
                                   </div>
                                   <div className="content-tour row">
                                     <div className="col-sm-4">
-                                      <Link route="detail-tour" params={{id: tourInfo.id, name: slugify(tourInfo.tour.name)}}>
+                                      <Link route="detail-tour" params={{id: tourInfo.code, name: slugify(tourInfo.tour.name)}}>
                                         <a>
                                           <img alt="featured_img" src={tourInfo.tour.featured_img}/>
                                         </a>
@@ -302,7 +302,7 @@ class DetailBookedTour extends React.Component {
                                     </div>
                                     <div className="col-sm-8">
                                       <h3>
-                                        <Link route="detail-tour" params={{id: tourInfo.id, name: slugify(tourInfo.tour.name)}}>
+                                        <Link route="detail-tour" params={{id: tourInfo.code, name: slugify(tourInfo.tour.name)}}>
                                           <a>{tourInfo.tour.name}</a>
                                         </Link>
                                       </h3>

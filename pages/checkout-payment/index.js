@@ -48,7 +48,7 @@ class CheckOutPayment extends React.Component {
         Redirect(res, '404')
       }
       try{
-        let tourInfo = await apiService.getToursTurnId(query.tour_id)
+        let tourInfo = await apiService.getToursTurnByCode(query.tour_id)
         return { tourInfo: tourInfo.data, query };
       }
       catch(e){
@@ -209,7 +209,7 @@ class CheckOutPayment extends React.Component {
   }
 
   handleBack(){
-    Router.pushRoute("checkout-passengers", {tour_id: this.state.tourInfo.id})
+    Router.pushRoute("checkout-passengers", {tour_id: this.state.tourInfo.code})
   }
 
   handleChooseMethod_1(){
@@ -468,7 +468,7 @@ class CheckOutPayment extends React.Component {
                           </div>
                           <div className="info-area">
                             <h3>
-                              <Link route="detail-tour" params={{id: tourInfo.id, name: slugify(tourInfo.tour.name)}}>
+                              <Link route="detail-tour" params={{id: tourInfo.code, name: slugify(tourInfo.tour.name)}}>
                                 <a>{tourInfo.tour.name}</a>
                               </Link>
                             </h3>

@@ -43,6 +43,10 @@ export default () => {
       let url = baseURL + `tour_turn/getById/${id}`
       return fetchCached(url)
     },
+    getToursTurnByCode: (code) => {
+      let url = baseURL + `tour_turn/getByCode/${code}`
+      return fetchCached(url)
+    },
     getRouteByTour: (id) => {
       let url = baseURL + `route/getByTour/${id}`
       return fetchCached(url)

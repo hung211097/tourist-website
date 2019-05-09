@@ -194,7 +194,7 @@ class PopupRecommend extends React.Component {
                                             <div className="row tour" key={key}>
                                               <div className="col-sm-3">
                                                 <div className="tour-img">
-                                                  <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
+                                                  <Link route="detail-tour" params={{id: item.code, name: slugify(item.tour.name)}}>
                                                     <a>
                                                       <img alt="featured_img" src={item.tour.featured_img ? item.tour.featured_img : '/static/images/no_image.jpg'} />
                                                     </a>
@@ -203,7 +203,7 @@ class PopupRecommend extends React.Component {
                                               </div>
                                               <div className="col-sm-9 name-tour">
                                                 <h3>
-                                                  <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
+                                                  <Link route="detail-tour" params={{id: item.code, name: slugify(item.tour.name)}}>
                                                     <a>{item.tour.name}</a>
                                                   </Link>
                                                   {!!item.discount &&

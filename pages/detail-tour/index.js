@@ -49,7 +49,7 @@ class DetailTour extends React.Component {
   static async getInitialProps({ res, query }) {
       let apiService = ApiService()
       try{
-          let tourTurn = await apiService.getToursTurnId(query.id)
+          let tourTurn = await apiService.getToursTurnByCode(query.id)
           return { tourInfo: tourTurn.data, query };
       } catch(e) {
           Redirect(res, '404')
@@ -164,7 +164,7 @@ class DetailTour extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(+prevProps.query.id !== +this.props.query.id){
+    if(prevProps.query.id !== this.props.query.id){
       this.setState(
         {
           tourTurn: null,
@@ -195,7 +195,7 @@ class DetailTour extends React.Component {
   }
 
   init() {
-    this.apiService.getToursTurnId(this.props.query.id).then((res) => {
+    this.apiService.getToursTurnByCode(this.props.query.id).then((res) => {
       this.setState({
         tourTurn: res.data,
         average_rating: res.data.tour.average_rating,
@@ -214,8 +214,8 @@ class DetailTour extends React.Component {
             timeline: groupDayRoute(result.data)
           })
         })
+        this.breadcrumb[this.breadcrumb.length - 1] = { name: this.state.tourTurn.tour.name }
       })
-      this.breadcrumb[this.breadcrumb.length - 1] = { name: this.state.tourTurn.tour.name }
     })
   }
 
@@ -310,7 +310,7 @@ class DetailTour extends React.Component {
       this.props.useModal && this.props.useModal({type: modal.NO_BOOK, isOpen: true, data: ''})
       return
     }
-    Router.pushRoute("checkout-passengers", {tour_id: tourTurn.id})
+    Router.pushRoute("checkout-passengers", {tour_id: tourTurn.code})
   }
 
   handleClosePopup(){

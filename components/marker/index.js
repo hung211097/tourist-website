@@ -144,7 +144,7 @@ class MarkerComponent extends React.Component{
                         return(
                           <li className="tour-item" key={item.id}>
                             {item.tour_turns ?
-                              <Link route="detail-tour" params={{id: item.tour_turns.id, name: slugify(item.name)}}>
+                              <Link route="detail-tour" params={{id: item.tour_turns.code, name: slugify(item.name)}}>
                                 <a>{item.name}</a>
                               </Link>
                               :

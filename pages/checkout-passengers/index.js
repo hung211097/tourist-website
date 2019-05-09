@@ -47,7 +47,7 @@ class CheckOutPassengers extends React.Component {
         Redirect(res, '404')
       }
       try{
-        let tourInfo = await apiService.getToursTurnId(query.tour_id)
+        let tourInfo = await apiService.getToursTurnByCode(query.tour_id)
         if(tourInfo.data.num_max_people - tourInfo.data.num_current_people === 0 || !tourInfo.data.isAllowBooking){
           Redirect(res, '/')
         }
@@ -505,7 +505,7 @@ class CheckOutPassengers extends React.Component {
                           </div>
                           <div className="info-area">
                             <h3>
-                              <Link route="detail-tour" params={{id: tourInfo.id, name: slugify(tourInfo.tour.name)}}>
+                              <Link route="detail-tour" params={{id: tourInfo.code, name: slugify(tourInfo.tour.name)}}>
                                 <a>{tourInfo.tour.name}</a>
                               </Link>
                             </h3>
