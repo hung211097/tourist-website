@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import ApiService from 'services/api.service'
 import InfiniteScroll from 'react-infinite-scroller'
-import { capitalize } from '../../services/utils.service'
 import { withNamespaces } from "react-i18next"
 import Select from 'react-select'
 import arraySort from 'array-sort'

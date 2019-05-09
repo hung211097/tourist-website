@@ -87,10 +87,10 @@ const app = next({
     dev: process.env.NODE_ENV === 'development'
 })
 
-// const handle = routes.getRequestHandler(app)
-const handler = routes.getRequestHandler(app, ({req, res, route, query}) => {
-  app.render(req, res, route.page, query)
-})
+const handler = routes.getRequestHandler(app)
+// const handler = routes.getRequestHandler(app, ({req, res, route, query}) => {
+//   app.render(req, res, route.page, query)
+// })
 
 app.prepare()
 .then(() => {
