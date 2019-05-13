@@ -113,7 +113,7 @@ class ChangePassword extends React.Component {
         }
 
         if (name == 'match') {
-            return !(this.state.password && this.state.confirmPassword && (this.state.confirmPassword !== this.state.password))
+            return !(this.state.newPassword && this.state.confirmPassword && (this.state.confirmPassword !== this.state.newPassword))
         }
 
         if (name == 'new') {
@@ -136,7 +136,7 @@ class ChangePassword extends React.Component {
                     <div className="content">
                       <div className="profile-info row">
                         <div className="col-sm-6 offset-sm-3">
-                          <div className="co-field" id="fullname">
+                          <div className="co-field">
                               <p>
                                   <strong>{t('change_password.password')}</strong>
                               </p>
@@ -150,6 +150,23 @@ class ChangePassword extends React.Component {
                             {!this.onValidated('password') && (
                                   <div className="notify-box">
                                       <p className="error">{t('change_password.password_required')}</p>
+                                  </div>
+                              )}
+                          </div>
+                          <div className="co-field">
+                              <p>
+                                  <strong>{t('change_password.new_pass')}</strong>
+                              </p>
+                              <input
+                                  type="password"
+                                  className="co-text low"
+                                  maxLength="20"
+                                  value={this.state.newPassword}
+                                  onChange={this.handleChangeNewPassword.bind(this)}
+                              />
+                            {!this.onValidated('new') && (
+                                  <div className="notify-box">
+                                      <p className="error">{t('change_password.new_pass_required')}</p>
                                   </div>
                               )}
                           </div>
@@ -175,23 +192,6 @@ class ChangePassword extends React.Component {
                                 <p className="error">{t('change_password.not_match')}</p>
                               </div>
                             )}
-                          </div>
-                          <div className="co-field" id="fullname">
-                              <p>
-                                  <strong>{t('change_password.new_pass')}</strong>
-                              </p>
-                              <input
-                                  type="password"
-                                  className="co-text low"
-                                  maxLength="20"
-                                  value={this.state.newPassword}
-                                  onChange={this.handleChangeNewPassword.bind(this)}
-                              />
-                            {!this.onValidated('new') && (
-                                  <div className="notify-box">
-                                      <p className="error">{t('change_password.new_pass_required')}</p>
-                                  </div>
-                              )}
                           </div>
                         </div>
                         <div className="row w-100 text-center alert-zone">

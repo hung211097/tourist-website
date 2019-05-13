@@ -10,7 +10,6 @@ import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaUserSecret, FaChild
 import { formatDate, distanceFromDays, compareDate } from '../../services/time.service'
 import { slugify } from '../../services/utils.service'
 import ReactTable from 'react-table'
-import matchSorter from 'match-sorter'
 import InfiniteScroll from 'react-infinite-scroller'
 import { withNamespaces } from "react-i18next"
 import { metaData } from '../../constants/meta-data'
@@ -261,34 +260,24 @@ class CheckOutConfirmation extends React.Component {
                                     data={this.state.passengers}
                                     className="-striped -highlight"
                                     showPagination={false}
-                                    filterable={true}
                                     columns={[
                                       {
                                         Header: t('checkout_confirmation.fullname'),
                                         accessor: 'fullname',
                                         id: 'fullname',
-                                        filterAll: true,
-                                        className: 'text-center',
-                                        filterMethod: (filter, rows) =>
-                                          matchSorter(rows, filter.value, { keys: ["fullname"] }),
+                                        className: 'text-center'
                                       },
                                       {
                                         Header: t('checkout_confirmation.phone'),
                                         accessor: 'phone',
                                         id: 'phone',
-                                        filterAll: true,
-                                        className: 'text-center',
-                                        filterMethod: (filter, rows) =>
-                                          matchSorter(rows, filter.value, { keys: ["phone"] }),
+                                        className: 'text-center'
                                       },
                                       {
                                         Header: t('checkout_confirmation.birthdate'),
                                         accessor: d => formatDate(d.birthdate),
                                         id: 'birthdate',
-                                        filterAll: true,
                                         className: 'text-center',
-                                        filterMethod: (filter, rows) =>
-                                          matchSorter(rows, filter.value, { keys: ["birthdate"] }),
                                         sortMethod: (a, b) =>
                                           compareDate(a, b)
                                       },
@@ -296,30 +285,22 @@ class CheckOutConfirmation extends React.Component {
                                         Header: t('checkout_confirmation.gender'),
                                         accessor: d => t('checkout_confirmation.' + d.sex),
                                         id: 'gender',
-                                        filterAll: true,
-                                        className: 'text-center',
-                                        filterMethod: (filter, rows) =>
-                                          matchSorter(rows, filter.value.toLocaleString(), { keys: ["gender"] }),
+                                        className: 'text-center'
                                       },
                                       {
                                         Header: t('checkout_confirmation.age'),
                                         accessor: d => t('checkout_confirmation.' + this.ages[d.type_passenger.name]),
                                         id: 'age',
-                                        filterAll: true,
-                                        className: 'text-center',
-                                        filterMethod: (filter, rows) =>
-                                          matchSorter(rows, filter.value, { keys: ["age"] }),
+                                        className: 'text-center'
+                                      },
+                                      {
+                                        Header: t('checkout_confirmation.passport'),
+                                        id: 'passport',
+                                        accessor: 'passport',
+                                        className: 'text-center'
                                       }
                                     ]}
                                   />
-                                  {/*,{
-                                    Header: t('checkout_confirmation.passport'),
-                                    id: 'passport',
-                                    accessor: 'passport',
-                                    filterAll: true,
-                                    filterMethod: (filter, rows) =>
-                                      matchSorter(rows, filter.value, { keys: ["passport"] }),
-                                  }*/}
                                 </InfiniteScroll>
                               </div>
                             </div>

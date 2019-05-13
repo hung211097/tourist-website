@@ -140,6 +140,10 @@
     font-weight: bold;
     border-color: #d0e9c6;
     color: #3c763d;
+    @media screen and (min-width: 768px){
+      position: relative;
+      left: 15px;
+    }
 }
 
 .alert-danger{
@@ -148,6 +152,10 @@
   margin-top: 20px;
   font-size: 1.4rem;
   font-weight: bold;
+  @media screen and (min-width: 768px){
+    position: relative;
+    left: 15px;
+  }
 }
 
 .w-100{
@@ -170,7 +178,7 @@
   width: 25%;
   margin: auto;
   margin-top: 20px;
-  @media screen and (max-width: 768px){
+  @media screen and (max-width: 834px){
     width: 40%;
   }
   @media screen and (max-width: 576px){

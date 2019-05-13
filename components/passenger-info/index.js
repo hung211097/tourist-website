@@ -35,7 +35,7 @@ class PassengerInfo extends React.Component {
     this.state = {
       fullname: props.traveler && props.traveler.name ? props.traveler.name : '',
       phone: props.traveler && props.traveler.phone ? props.traveler.phone : '',
-      passport: '',
+      passport: props.traveler && props.traveler.passport ? props.traveler.passport : '',
       sex: props.traveler && props.traveler.sex ? props.traveler.sex : '',
       birthdate: props.traveler && props.traveler.birthdate ? props.traveler.birthdate : '',
       type: this.props.age
@@ -200,6 +200,13 @@ class PassengerInfo extends React.Component {
           <div className="row">
             <div className="form-group col-sm-6 col-12">
               <div className="form-group">
+                <label htmlFor={"passport" + this.props.index}>{t('checkout_passenger.passport')}</label>
+                <input type="text" name="passport" id={"passport" + this.props.index} value={this.state.passport}
+                  onChange={this.handleChangePassport.bind(this)}/>
+              </div>
+            </div>
+            <div className="form-group col-sm-6 col-12">
+              <div className="form-group">
                 <label htmlFor={"phone" + this.props.index}>{t('checkout_passenger.phone')}</label>
                 <input type="text" name="phone" id={"phone" + this.props.index} value={this.state.phone}
                   onChange={this.handleChangePhone.bind(this)}
@@ -210,13 +217,6 @@ class PassengerInfo extends React.Component {
                 }
               </div>
             </div>
-            {/*<div className="form-group col-sm-6 col-12">
-              <div className="form-group">
-                <label htmlFor={"passport" + this.props.index}>{t('checkout_passenger.passport')}</label>
-                <input type="text" name="passport" id={"passport" + this.props.index} value={this.state.passport}
-                  onChange={this.handleChangePassport.bind(this)}/>
-              </div>
-            </div>*/}
           </div>
         </div>
       </div>

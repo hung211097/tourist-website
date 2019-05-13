@@ -278,7 +278,7 @@ class CheckOutPayment extends React.Component {
   render() {
     const { tourInfo } = this.state
     const {t} = this.props
-    const checkout_days = 7
+    const checkout_days = tourInfo.payment_term ? tourInfo.payment_term : 3
     return (
       <>
         <Layout page="checkout" seo={{title: metaData.CHECKOUT.title, description: metaData.CHECKOUT.description}} {...this.props}>

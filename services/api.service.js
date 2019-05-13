@@ -169,7 +169,7 @@ export default () => {
       return httpPost(url, data)
     },
     cancelTour: (data) => {
-      let url = baseURL + `request_cancel_booking/create`
+      let url = baseURL + `cancel_booking/requestCancel`
       return httpPost(url, data)
     },
     increaseView: (id) => {

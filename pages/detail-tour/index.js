@@ -628,13 +628,13 @@ class DetailTour extends React.Component {
                                   <li>Từ 11 tuổi trở lên: 100% giá tour và tiêu chuẩn như người lớn.</li>
                                 </ul>
                                 <p className="bold">Điều kiện thanh toán:</p>
-                                <p className="no-margin">Thanh toán hết trước ngày khởi hành 7 ngày (tour ngày thường), 20-25 ngày (tour lễ tết).</p>
+                                <p className="no-margin">Thanh toán hết trước ngày khởi hành {tourTurn.payment_term ? tourTurn.payment_term : 3} ngày</p>
                                 <p className="bold">Các điều kiện khi đăng ký tour:</p>
                                 <ul>
                                   <li>
                                     Khi đăng ký vui lòng cung cấp giấy tờ tùy thân tất cả người đi: Chứng minh nhân dân/Hộ chiếu
                                     (Passport)/Giấy khai sinh (trẻ em dưới 14 tuổi). Trong trường hợp đăng ký trực tuyến qua
-                                    <a href="www.travel-tour.com">www.travel-tour.com</a> vui lòng nhập tên chính xác theo thứ tự: Họ/tên lót/tên xuất vé máy bay.
+                                    <a href="www.travel-tour.com"> www.travel-tour.com</a> vui lòng nhập tên chính xác theo thứ tự: Họ/tên lót/tên xuất vé máy bay.
                                     Quý khách khi đăng ký cung cấp tên theo giấy tờ tùy thân nào, khi đi tour mang theo giấy tờ
                                     tùy thân đó.
                                   </li>
@@ -726,11 +726,10 @@ class DetailTour extends React.Component {
                                 <p className="bold">Các điều kiện hủy tour: (đối với ngày thường)</p>
                                 <ul>
                                   <li>
-                                    Nếu hủy hoặc chuyển sang các chuyến du lịch khác ngay sau khi đăng ký đến từ 15-19 ngày trước ngày
-                                    khởi hành: Chi phí hủy tour: 50% tiền cọc tour.
+                                    Nếu hủy chuyến du lịch trong vòng từ 15-19 ngày trước ngày khởi hành: Chi phí hủy tour: 15% trên giá tour du lịch.
                                   </li>
                                   <li>
-                                    Nếu hủy hoặc chuyển sang các chuyến du lịch khác từ 12-14 ngày trước ngày khởi hành: Chi phí hủy tour: 100% tiền cọc tour.
+                                    Nếu hủy chuyến du lịch trong vòng từ 12-14 ngày trước ngày khởi hành: Chi phí hủy tour: 30% trên giá tour du lịch.
                                   </li>
                                   <li>
                                     Nếu hủy chuyến du lịch trong vòng từ 08-11 ngày trước ngày khởi hành: Chi phí hủy tour: 50% trên giá tour du lịch.
@@ -748,10 +747,10 @@ class DetailTour extends React.Component {
                                 <p className="bold">Các điều kiện hủy tour: (đối với ngày lễ, tết)</p>
                                 <ul>
                                   <li>
-                                    Nếu hủy hoặc chuyển sang các chuyến khác ngay sau khi đăng ký đến từ 25-29 ngày trước ngày khởi hành: Chi phí hủy tour: 50% tiền cọc tour.
+                                    Nếu hủy chuyến du lịch trong vòng từ 25-29 ngày trước ngày khởi hành: Chi phí hủy tour: 15% trên giá tour du lịch.
                                   </li>
                                   <li>
-                                    Nếu hủy hoặc chuyển sang các chuyến khác từ 20-24 ngày trước ngày khởi hành: Chi phí hủy tour: 100% tiền cọc tour.
+                                    Nếu hủy chuyến du lịch trong vòng từ 20-24 ngày trước ngày khởi hành: Chi phí hủy tour: 30% trên giá tour du lịch.
                                   </li>
                                   <li>
                                     Nếu hủy chuyến du lịch trong vòng từ 17-19 ngày trước ngày khởi hành: Chi phí hủy tour: 50% trên giá tour du lịch.

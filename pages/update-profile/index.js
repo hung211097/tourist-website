@@ -55,7 +55,8 @@ class UpdateProfile extends React.Component {
             error: '',
             actionError: false,
             imagePreviewUrl: '',
-            address: ''
+            address: '',
+            identity: ''
         }
     }
 
@@ -116,6 +117,12 @@ class UpdateProfile extends React.Component {
         })
     }
 
+    handleIdentityChange(event){
+        this.setState({
+          identity: event.target.value
+        })
+    }
+
     submitProfile() {
         this.setState({
             isSubmit: true
@@ -136,6 +143,9 @@ class UpdateProfile extends React.Component {
         }
         if(this.state.address){
           form.append('address', this.state.address)
+        }
+        if(this.state.identity){
+          form.append('passport', this.state.identity)
         }
         if(this.state.gender){
           form.append('sex', this.state.gender)
@@ -279,6 +289,18 @@ class UpdateProfile extends React.Component {
                                   placeholder=""
                                   value={this.state.birthdate}
                                   onChange={this.handleBirthdayChange.bind(this)}
+                              />
+                          </div>
+                          <div className="co-field">
+                              <p>
+                                  <strong>{t('update_profile.identity')}</strong>
+                              </p>
+                              <input
+                                  type="text"
+                                  className="co-text low"
+                                  placeholder=""
+                                  value={this.state.identity}
+                                  onChange={this.handleIdentityChange.bind(this)}
                               />
                           </div>
                           <div className="co-field">

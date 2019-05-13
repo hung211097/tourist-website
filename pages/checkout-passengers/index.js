@@ -69,6 +69,7 @@ class CheckOutPassengers extends React.Component {
       address: '',
       sex: '',
       birthdate: '',
+      passport: '',
       tourInfo: this.props.tourInfo,
       adult: 1,
       child: 0,
@@ -91,7 +92,8 @@ class CheckOutPassengers extends React.Component {
             phone: user.phone ?  user.phone : '',
             address: user.address ?  user.address : '',
             sex: user.sex ? user.sex : '',
-            birthdate: user.birthdate ? user.birthdate : ''
+            birthdate: user.birthdate ? user.birthdate : '',
+            passport: user.passport ? user.passport : ''
         }, () => {
           this.fillInTraveler()
         })
@@ -266,6 +268,7 @@ class CheckOutPassengers extends React.Component {
         fullname: this.state.name,
         phone: this.state.phone,
         sex: this.state.sex,
+        passport: this.state.passport,
         type: 'adults'
       }
     }else{
@@ -274,6 +277,7 @@ class CheckOutPassengers extends React.Component {
         fullname: '',
         phone: '',
         sex: '',
+        passport: '',
         type: 'adults'
       }
     }
@@ -317,6 +321,7 @@ class CheckOutPassengers extends React.Component {
                     <div className="payment-wrap bookingForm">
                       <form onSubmit={this.handleSubmit.bind(this)}>
                         <div className="wrapper">
+                          <p className="mb-4" style={{fontStyle: 'italic', color: 'red'}}>(*) Thông tin bắt buộc</p>
                           <div className="title">
                             <h3>{t('checkout_passenger.num_passenger')}</h3>
                           </div>
@@ -454,6 +459,7 @@ class CheckOutPassengers extends React.Component {
                                   phone: this.state.phone,
                                   sex: this.state.sex,
                                   birthdate: this.state.birthdate,
+                                  passport: this.state.passport
                                 }: null}/>
                             }
                             {this.state.isTraveler === 'false' &&
