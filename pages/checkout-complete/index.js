@@ -234,6 +234,7 @@ class CheckOutConfirmation extends React.Component {
                                 <p>{t('checkout_confirmation.phone')}: <span> {bookInfo.book_tour_contact_info.phone}</span></p>
                                 <p>Email: <span>{bookInfo.book_tour_contact_info.email}</span></p>
                                 <p>{t('checkout_confirmation.address')}: <span>{bookInfo.book_tour_contact_info.address}</span></p>
+                                <p>{t('checkout_confirmation.passport')}: <span>{bookInfo.book_tour_contact_info.passport}</span></p>
                               </div>
                             </div>
                           </div>

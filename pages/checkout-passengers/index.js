@@ -111,9 +111,16 @@ class CheckOutPassengers extends React.Component {
       phone: e.target.value
     })
   }
+
   handleChangeEmail(e){
     this.setState({
       email: e.target.value
+    })
+  }
+
+  handleChangePassport(e){
+    this.setState({
+      passport: e.target.value
     })
   }
 
@@ -154,7 +161,8 @@ class CheckOutPassengers extends React.Component {
         name: this.state.name,
         email: this.state.email,
         phone: this.state.phone,
-        address: this.state.address
+        address: this.state.address,
+        passport: this.state.passport
       },
       num_adult: this.state.adult,
       num_child: this.state.child,
@@ -185,6 +193,11 @@ class CheckOutPassengers extends React.Component {
 
     if(!this.state.email || !validateEmail(this.state.email)){
       moveToElementId('email')
+      return false
+    }
+
+    if(!this.state.passport){
+      moveToElementId('passport')
       return false
     }
 
@@ -424,6 +437,21 @@ class CheckOutPassengers extends React.Component {
                                 }
                               </div>
                             </div>
+                          </div>
+                          <div className="row contact-zone">
+                            <div className="form-group col-sm-6 col-xs-12" id="passport">
+                              <div className="form-group has-success">
+                                <label htmlFor="passport">{t('checkout_passenger.passport')} (*)</label>
+                                <input type="passport" id="passport" name="passport"
+                                  value={this.state.passport}
+                                  onChange={this.handleChangePassport.bind(this)}
+                                  className={this.state.isSubmit && !this.state.passport ? "error custom-input" : "custom-input"}/>
+                                {this.state.isSubmit && !this.state.passport &&
+                                  <p className="error">{t('checkout_passenger.passport_required')}</p>
+                                }
+                              </div>
+                            </div>
+                            <div className="form-group col-sm-6 col-xs-12"></div>
                           </div>
                           <div className="nd_options_height_10"/>
                           {!_.isEmpty(this.props.user) &&

@@ -155,6 +155,7 @@ class CheckOutPayment extends React.Component {
       phone: this.state.contactInfo.phone,
       email: this.state.contactInfo.email,
       address: this.state.contactInfo.address,
+      passport: this.state.contactInfo.passport,
       idTour_Turn: this.state.tourInfo.id,
       total_pay: this.getTotalPrice(),
       payment: this.state.method,

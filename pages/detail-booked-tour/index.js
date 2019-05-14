@@ -260,8 +260,10 @@ class DetailBookedTour extends React.Component {
     render() {
       const {t} = this.props
       let tourInfo = null
+      let cancel_info = null
       if(this.state.bookTour){
         tourInfo = this.state.bookTour.tour_turn
+        cancel_info = this.state.bookTour.cancel_bookings[0]
       }
         return (
             <LayoutProfile page="profile" tabName="my-booking" {...this.props}>
@@ -278,6 +280,24 @@ class DetailBookedTour extends React.Component {
                         <div className="container">
                           {!this.state.trackingTour ?
                             <div className="finish">
+                              {cancel_info &&
+                                <div className="notification-info">
+                                  {cancel_info.confirm_time && !cancel_info.refunded_time && cancel_info.money_refunded && cancel_info.refund_period &&
+                                    <div>
+                                      <p>{t('detail_booked_tour.confirm_cancel_content')} <strong>{formatDate(cancel_info.confirm_time, "dd/MM/yyyy HH:mm")}</strong></p>
+                                      <p>{t('detail_booked_tour.refund_money')} <strong>{cancel_info.money_refunded.toLocaleString()} VND</strong></p>
+                                      <p>{t('detail_booked_tour.refund_note')}</p>
+                                      <p>{t('detail_booked_tour.refund_period')} <strong>{formatDate(cancel_info.refund_period)}</strong></p>
+                                    </div>
+                                  }
+                                  {cancel_info.refunded_time && cancel_info.money_refunded &&
+                                    <div>
+                                      <p>{t('detail_booked_tour.refund_time')} <strong>{formatDate(cancel_info.refunded_time, "dd/MM/yyyy HH:mm")}</strong></p>
+                                      <p>{t('detail_booked_tour.refund_money')} <strong>{cancel_info.money_refunded.toLocaleString()} VND</strong></p>
+                                    </div>
+                                  }
+                                </div>
+                              }
                               {tourInfo &&
                                 <div className="tour-info">
                                   {this.checkTrackingButton() &&
@@ -333,6 +353,7 @@ class DetailBookedTour extends React.Component {
                                 <div className="header-title has-top-border">{t('detail_booked_tour.checkout_info')}
                                   <span className="icon"><FaMoneyBill style={{fontSize: '25px', position: 'relative', top: '-1px'}}/></span>
                                 </div>
+                                <p className="mt-3 mb-3">{t('detail_booked_tour.method')}&nbsp; <strong>{t('detail_booked_tour.' + this.state.bookTour.payment_method.name)}</strong></p>
                                 <div className="row no-padding">
                                   <div className="col-md-6 col-sm-6 col-12">
                                     <div className="checkout-contact">
@@ -396,6 +417,10 @@ class DetailBookedTour extends React.Component {
                                     <span className="item-label bold">{t('detail_booked_tour.address')}: </span>
                                     <span className="value responsive">{this.state.bookTour.book_tour_contact_info.address}</span>
                                   </div>
+                                  <div className="item-row">
+                                    <span className="item-label bold">{t('detail_booked_tour.passport')}: </span>
+                                    <span className="value responsive">{this.state.bookTour.book_tour_contact_info.passport}</span>
+                                  </div>
                                 </div>
                               </div>
                               <div className="pax-info">
@@ -450,7 +475,8 @@ class DetailBookedTour extends React.Component {
                                         {
                                           Header: t('detail_booked_tour.passport'),
                                           id: 'passport',
-                                          accessor: 'passport'
+                                          accessor: 'passport',
+                                          className: 'text-center'
                                         }
                                       ]}
                                     />

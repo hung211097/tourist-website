@@ -63,7 +63,7 @@ class PopupCancelTour extends React.Component {
 
       this.apiService.cancelTour({
         idBookTour: this.props.tour.id,
-        message: this.state.reason
+        request_message: this.state.reason
       }).then((res) => {
         this.props.changeStatus && this.props.changeStatus(this.props.tour.id, res.data.status, res.data.isCancelBooking)
         this.setState({
