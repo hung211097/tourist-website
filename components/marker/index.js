@@ -34,7 +34,7 @@ class MarkerComponent extends React.Component{
     isMe: PropTypes.bool,
     infoLocation: PropTypes.object.isRequired,
     onDrawDirection: PropTypes.func,
-    tourChosen: PropTypes.number,
+    tourChosen: PropTypes.number, //id tour được chọn
     toggleShowTour: PropTypes.func,
     isShowTour: PropTypes.bool,
     isSetTour: PropTypes.bool,
@@ -97,6 +97,9 @@ class MarkerComponent extends React.Component{
 
   render(){
     const {t} = this.props
+    if(this.props.isSetTour && !this.props.infoLocation.isInTour){
+      return null
+    }
     return(
       <Marker
         position={{lat: +this.props.infoLocation.latitude, lng: +this.props.infoLocation.longitude}}
@@ -144,7 +147,7 @@ class MarkerComponent extends React.Component{
                         return(
                           <li className="tour-item" key={item.id}>
                             {item.tour_turns ?
-                              <Link route="detail-tour" params={{id: item.tour_turns.id, name: slugify(item.name)}}>
+                              <Link route="detail-tour" params={{id: item.tour_turns.code, name: slugify(item.name)}}>
                                 <a>{item.name}</a>
                               </Link>
                               :

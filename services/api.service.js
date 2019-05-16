@@ -43,6 +43,10 @@ export default () => {
       let url = baseURL + `tour_turn/getById/${id}`
       return fetchCached(url)
     },
+    getToursTurnByCode: (code) => {
+      let url = baseURL + `tour_turn/getByCode/${code}`
+      return fetchCached(url)
+    },
     getRouteByTour: (id) => {
       let url = baseURL + `route/getByTour/${id}`
       return fetchCached(url)
@@ -165,7 +169,7 @@ export default () => {
       return httpPost(url, data)
     },
     cancelTour: (data) => {
-      let url = baseURL + `request_cancel_booking/create`
+      let url = baseURL + `cancel_booking/requestCancel`
       return httpPost(url, data)
     },
     increaseView: (id) => {

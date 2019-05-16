@@ -31,7 +31,15 @@
           border-top: 1px dashed #ebebeb;
         }
       }
-      .contact-info, .checkout-info, .tour-info{
+      .notification-info{
+        margin-bottom: 20px;
+        p{
+          margin: 5px;
+          font-style: italic;
+          font-size: 15px;
+        }
+      }
+      .contact-info, .checkout-info, .tour-info, .notification-info{
         font-size: 14px;
         color: #474848;
         margin-top: 30px;

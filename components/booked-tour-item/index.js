@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'routes'
 import { FaBarcode, FaRegCalendarAlt, FaRegCalendarMinus, FaRegCalendarPlus, FaMoneyBill, FaInfoCircle, FaUsers } from "react-icons/fa"
 import { formatDate, distanceFromDays } from '../../services/time.service'
-import { getCode, capitalize } from '../../services/utils.service'
+import { capitalize } from '../../services/utils.service'
 
 class BookedTourItem extends React.Component {
   displayName = 'Booked Tour Item'
@@ -40,15 +40,19 @@ class BookedTourItem extends React.Component {
             {!!item.tour_turn.discount &&
               <span className="sale">{t('tours.sale')}!</span>
             }
-            <img alt="featured_img" src={item.tour_turn.tour.featured_img ? item.tour_turn.tour.featured_img : '/static/images/no_image.jpg'} />
+            <Link route="detail-booked-tour" params={{id: item.code}}>
+              <a className="detail-btn">
+                <img alt="featured_img" src={item.tour_turn.tour.featured_img ? item.tour_turn.tour.featured_img : '/static/images/no_image.jpg'} />
+              </a>
+            </Link>
           </div>
           <div className="col-lg-8 col-sm-12 book-info">
             <h2>{item.tour_turn.tour.name}</h2>
             <div className="detail-info">
               <div className="row">
                 <div className="col-sm-7">
-                  <p><span><i><FaBarcode /></i>{t('my_booking.code')}:</span> {getCode(item.id)}</p>
-                  <p><span><i><FaInfoCircle /></i>{t('my_booking.status')}:</span> {capitalize(t('detail_booked_tour.' + item.status))}</p>
+                  <p><span><i><FaBarcode /></i>{t('my_booking.code')}:</span> {item.code}</p>
+                  <p style={{color: 'red'}}><span style={{color: '#434a54'}}><i><FaInfoCircle /></i>{t('my_booking.status')}:</span> {capitalize(t('detail_booked_tour.' + item.status))}</p>
                   <p><span><i><FaRegCalendarAlt /></i>{t('my_booking.book_day')}:</span> {formatDate(item.book_time, "dd/MM/yyyy HH:mm")}</p>
                   <p><span><i><FaUsers /></i>{t('my_booking.total_slot')}:</span> {item.num_passenger}</p>
                   <p><span><i><FaMoneyBill /></i>{t('my_booking.total_money')}:</span> {item.total_pay.toLocaleString()} VND</p>
@@ -68,7 +72,7 @@ class BookedTourItem extends React.Component {
                   </p>
                 </div>
                 <div className="btn-zone col-12">
-                  <Link route="detail-booked-tour" params={{id: item.id}}>
+                  <Link route="detail-booked-tour" params={{id: item.code}}>
                     <a className="detail-btn">{t('my_booking.detail')}</a>
                   </Link>
                   {item.isCancelBooking &&

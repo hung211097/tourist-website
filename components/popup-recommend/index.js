@@ -9,7 +9,7 @@ import { withNamespaces } from "react-i18next"
 import { connect } from 'react-redux'
 import { removeRecommendLocaiton, removeAllRecommendLocaiton } from '../../actions'
 import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaRegCalendarAlt, FaMoneyBill, FaTimes, FaRegFrown, FaUser, FaUsers } from "react-icons/fa"
-import { getCode, slugify } from '../../services/utils.service'
+import { slugify } from '../../services/utils.service'
 
 let customStyles = {
     width: '90%',
@@ -194,7 +194,7 @@ class PopupRecommend extends React.Component {
                                             <div className="row tour" key={key}>
                                               <div className="col-sm-3">
                                                 <div className="tour-img">
-                                                  <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
+                                                  <Link route="detail-tour" params={{id: item.code, name: slugify(item.tour.name)}}>
                                                     <a>
                                                       <img alt="featured_img" src={item.tour.featured_img ? item.tour.featured_img : '/static/images/no_image.jpg'} />
                                                     </a>
@@ -203,7 +203,7 @@ class PopupRecommend extends React.Component {
                                               </div>
                                               <div className="col-sm-9 name-tour">
                                                 <h3>
-                                                  <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
+                                                  <Link route="detail-tour" params={{id: item.code, name: slugify(item.tour.name)}}>
                                                     <a>{item.tour.name}</a>
                                                   </Link>
                                                   {!!item.discount &&
@@ -218,7 +218,7 @@ class PopupRecommend extends React.Component {
                                                     <p>
                                                       <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
                                                       {t('checkout_confirmation.code')}:&nbsp;
-                                                      <span>{getCode(item.id)}</span>
+                                                      <span>{item.code}</span>
                                                     </p>
                                                     {!!item.discount &&
                                                       <p>

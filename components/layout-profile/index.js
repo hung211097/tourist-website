@@ -14,6 +14,7 @@ import { removeItem } from '../../services/local-storage.service'
 import { KEY } from '../../constants/local-storage'
 import { withNamespaces } from "react-i18next"
 import { metaData } from '../../constants/meta-data'
+import StickyBox from 'react-sticky-box'
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -85,7 +86,8 @@ class LayoutProfile extends React.Component {
                           <section className="user-profile">
                             <div className="row">
                               <div className="col-md-4 col-lg-3">
-                                <ul className="user-profile__navigation">
+                                <StickyBox offsetTop={90}>
+                                  <ul className="user-profile__navigation">
                                   <li className={this.props.tabName === "profile" ? "active" : ""}>
                                     <Link route="profile">
                                       <a>
@@ -127,6 +129,7 @@ class LayoutProfile extends React.Component {
                                     </a>
                                   </li>
                                 </ul>
+                                </StickyBox>
                               </div>
                               <div className="col-md-8 col-lg-9">
                                 {this.props.children}

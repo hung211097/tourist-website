@@ -69,5 +69,5 @@ export {
     Breadcrumb,
     CommentsFacebook,
     PopupRecommend,
-    BookedTourItem
+    BookedTourItem,
 }

@@ -40,7 +40,7 @@ class TourItem extends React.Component {
       this.props.useModal && this.props.useModal({type: modal.NO_BOOK, isOpen: true, data: ''})
       return
     }
-    Router.pushRoute("checkout-passengers", {tour_id: item.id})
+    Router.pushRoute("checkout-passengers", {tour_id: item.code})
   }
 
   render() {
@@ -50,7 +50,7 @@ class TourItem extends React.Component {
     return (
       <div className="tour-item">
         <style jsx>{styles}</style>
-        <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
+        <Link route="detail-tour" params={{id: item.code, name: slugify(item.tour.name)}}>
           <a>
             {!!item.discount &&
               <span className="sale">{t('tours.sale')}!</span>
@@ -73,7 +73,7 @@ class TourItem extends React.Component {
           <a className={item.num_max_people - item.num_current_people === 0 || !item.isAllowBooking ? "button disabled" : "button"}
             onClick={this.handleBook.bind(this)}>{t('tours.book')}
           </a>
-          <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
+          <Link route="detail-tour" params={{id: item.code, name: slugify(item.tour.name)}}>
             <a className="button ml-4">{t('tours.detail')}</a>
           </Link>
         </div>

@@ -8,10 +8,10 @@ import ApiService from '../../services/api.service'
 import { wizardStep } from '../../constants'
 import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaUserSecret, FaChild, FaRegCalendarAlt, FaChevronDown, FaCheck, FaPaypal } from "react-icons/fa"
 import { formatDate, distanceFromDays } from '../../services/time.service'
-import { getCode, slugify, isServer, convertCurrencyToUSD } from '../../services/utils.service'
+import { slugify, isServer, convertCurrencyToUSD } from '../../services/utils.service'
 import { useModal } from '../../actions'
 import { modal } from '../../constants'
-import { withNamespaces } from "react-i18next"
+import { withNamespaces, Trans } from "react-i18next"
 import { metaData } from '../../constants/meta-data'
 import Redirect from 'routes/redirect'
 import PaypalExpressBtn from 'react-paypal-express-checkout'
@@ -48,7 +48,7 @@ class CheckOutPayment extends React.Component {
         Redirect(res, '404')
       }
       try{
-        let tourInfo = await apiService.getToursTurnId(query.tour_id)
+        let tourInfo = await apiService.getToursTurnByCode(query.tour_id)
         return { tourInfo: tourInfo.data, query };
       }
       catch(e){
@@ -155,6 +155,7 @@ class CheckOutPayment extends React.Component {
       phone: this.state.contactInfo.phone,
       email: this.state.contactInfo.email,
       address: this.state.contactInfo.address,
+      passport: this.state.contactInfo.passport,
       idTour_Turn: this.state.tourInfo.id,
       total_pay: this.getTotalPrice(),
       payment: this.state.method,
@@ -209,7 +210,7 @@ class CheckOutPayment extends React.Component {
   }
 
   handleBack(){
-    Router.pushRoute("checkout-passengers", {tour_id: this.state.tourInfo.id})
+    Router.pushRoute("checkout-passengers", {tour_id: this.state.tourInfo.code})
   }
 
   handleChooseMethod_1(){
@@ -278,6 +279,7 @@ class CheckOutPayment extends React.Component {
   render() {
     const { tourInfo } = this.state
     const {t} = this.props
+    const checkout_days = tourInfo.payment_term ? tourInfo.payment_term : 3
     return (
       <>
         <Layout page="checkout" seo={{title: metaData.CHECKOUT.title, description: metaData.CHECKOUT.description}} {...this.props}>
@@ -345,7 +347,11 @@ class CheckOutPayment extends React.Component {
                                     <div className="nd_options_section nd_options_height_5"/>
                                     <strong>Email:</strong>&nbsp;<a href="mailto:traveltour@gmail.com">traveltour@gmail.com</a><br />
                                     <br/>
-                                    <p className="bold">{t('checkout_payment.note_pay')}</p>
+                                      <p className="bold">
+                                        <Trans i18nKey="checkout_payment.note_pay" count={checkout_days}>
+                                          Quý khách vui lòng thanh toán trước {{checkout_days}} ngày tour khởi hành, nếu sau đó chưa thanh toán thì bên công ty sẽ hủy tour của quý khách.
+                                        </Trans>
+                                      </p>
                                   </div>
                                 </div>
                               </div>
@@ -383,8 +389,13 @@ class CheckOutPayment extends React.Component {
                                     <br/>
                                     <p>{t('checkout_payment.bank')}</p>
                                     <p>{t('checkout_payment.account_number')}: <strong>13422518A41</strong></p>
+                                    <p>{t('checkout_payment.account_name')}: <strong>TRAVEL TOUR</strong></p>
                                     <br/>
-                                    <p className="bold">{t('checkout_payment.note_pay')}</p>
+                                    <p className="bold">
+                                      <Trans i18nKey="checkout_payment.note_pay" count={checkout_days}>
+                                        Quý khách vui lòng thanh toán trước {{checkout_days}} ngày tour khởi hành, nếu sau đó chưa thanh toán thì bên công ty sẽ hủy tour của quý khách.
+                                      </Trans>
+                                    </p>
                                     <br/>
                                     <p>{t('checkout_payment.thank')}</p>
                                   </div>
@@ -468,7 +479,7 @@ class CheckOutPayment extends React.Component {
                           </div>
                           <div className="info-area">
                             <h3>
-                              <Link route="detail-tour" params={{id: tourInfo.id, name: slugify(tourInfo.tour.name)}}>
+                              <Link route="detail-tour" params={{id: tourInfo.code, name: slugify(tourInfo.tour.name)}}>
                                 <a>{tourInfo.tour.name}</a>
                               </Link>
                             </h3>
@@ -476,7 +487,7 @@ class CheckOutPayment extends React.Component {
                               <li>
                                 <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
                                 {t('checkout_passenger.code')}:&nbsp;
-                                <span>{getCode(tourInfo.id)}</span>
+                                <span>{tourInfo.code}</span>
                               </li>
                               <li>
                                 <i className="fa fa-calendar-minus-o" aria-hidden="true"><FaRegCalendarMinus /></i>

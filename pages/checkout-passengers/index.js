@@ -12,7 +12,7 @@ import { addInfoPassengers } from '../../actions'
 import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaUserSecret, FaChild, FaRegCalendarAlt } from "react-icons/fa"
 import { formatDate, distanceFromDays } from '../../services/time.service'
 import { getUserAuth } from 'services/auth.service'
-import { getCode, moveToElementId, slugify } from '../../services/utils.service'
+import { moveToElementId, slugify } from '../../services/utils.service'
 import { withNamespaces } from "react-i18next"
 import { validateStringWithoutNumber } from '../../services/validates'
 import { metaData } from '../../constants/meta-data'
@@ -47,7 +47,7 @@ class CheckOutPassengers extends React.Component {
         Redirect(res, '404')
       }
       try{
-        let tourInfo = await apiService.getToursTurnId(query.tour_id)
+        let tourInfo = await apiService.getToursTurnByCode(query.tour_id)
         if(tourInfo.data.num_max_people - tourInfo.data.num_current_people === 0 || !tourInfo.data.isAllowBooking){
           Redirect(res, '/')
         }
@@ -69,6 +69,7 @@ class CheckOutPassengers extends React.Component {
       address: '',
       sex: '',
       birthdate: '',
+      passport: '',
       tourInfo: this.props.tourInfo,
       adult: 1,
       child: 0,
@@ -91,7 +92,8 @@ class CheckOutPassengers extends React.Component {
             phone: user.phone ?  user.phone : '',
             address: user.address ?  user.address : '',
             sex: user.sex ? user.sex : '',
-            birthdate: user.birthdate ? user.birthdate : ''
+            birthdate: user.birthdate ? user.birthdate : '',
+            passport: user.passport ? user.passport : ''
         }, () => {
           this.fillInTraveler()
         })
@@ -109,9 +111,16 @@ class CheckOutPassengers extends React.Component {
       phone: e.target.value
     })
   }
+
   handleChangeEmail(e){
     this.setState({
       email: e.target.value
+    })
+  }
+
+  handleChangePassport(e){
+    this.setState({
+      passport: e.target.value
     })
   }
 
@@ -152,13 +161,14 @@ class CheckOutPassengers extends React.Component {
         name: this.state.name,
         email: this.state.email,
         phone: this.state.phone,
-        address: this.state.address
+        address: this.state.address,
+        passport: this.state.passport
       },
       num_adult: this.state.adult,
       num_child: this.state.child,
       passengers: this.state.passengers
     })
-    Router.pushRoute("checkout-payment", {tour_id: this.state.tourInfo.id})
+    Router.pushRoute("checkout-payment", {tour_id: this.state.tourInfo.code})
   }
 
   validate(){
@@ -183,6 +193,11 @@ class CheckOutPassengers extends React.Component {
 
     if(!this.state.email || !validateEmail(this.state.email)){
       moveToElementId('email')
+      return false
+    }
+
+    if(!this.state.passport){
+      moveToElementId('passport')
       return false
     }
 
@@ -266,6 +281,7 @@ class CheckOutPassengers extends React.Component {
         fullname: this.state.name,
         phone: this.state.phone,
         sex: this.state.sex,
+        passport: this.state.passport,
         type: 'adults'
       }
     }else{
@@ -274,6 +290,7 @@ class CheckOutPassengers extends React.Component {
         fullname: '',
         phone: '',
         sex: '',
+        passport: '',
         type: 'adults'
       }
     }
@@ -317,6 +334,7 @@ class CheckOutPassengers extends React.Component {
                     <div className="payment-wrap bookingForm">
                       <form onSubmit={this.handleSubmit.bind(this)}>
                         <div className="wrapper">
+                          <p className="mb-4" style={{fontStyle: 'italic', color: 'red'}}>(*) Thông tin bắt buộc</p>
                           <div className="title">
                             <h3>{t('checkout_passenger.num_passenger')}</h3>
                           </div>
@@ -342,14 +360,13 @@ class CheckOutPassengers extends React.Component {
                             <div className="row child-zone">
                               <div className="col-md-5 col-sm-5 col-12">
                                 <div className="form-group">
-                                  <label>{t('checkout_passenger.Children')} </label>
+                                  <label>{t('checkout_passenger.Children')} (<span className="caption-text">{t('checkout_passenger.note_children')}</span>)</label>
                                   <input type="number" name="child" value={this.state.child} min={0} pattern="^\d+$" className="custom-input"
                                     onChange={this.handleChangeChild.bind(this)}/>
                                   <span className="error" />
                                 </div>
                               </div>
                               <div className="col-md-7 col-sm-7 col-12">
-                                <p className="caption-text">{t('checkout_passenger.note_children')}</p>
                               </div>
                               <div className="nd_options_height_10"/>
                             </div>
@@ -421,6 +438,21 @@ class CheckOutPassengers extends React.Component {
                               </div>
                             </div>
                           </div>
+                          <div className="row contact-zone">
+                            <div className="form-group col-sm-6 col-xs-12" id="passport">
+                              <div className="form-group has-success">
+                                <label htmlFor="passport">{t('checkout_passenger.passport')} (*)</label>
+                                <input type="passport" id="passport" name="passport"
+                                  value={this.state.passport}
+                                  onChange={this.handleChangePassport.bind(this)}
+                                  className={this.state.isSubmit && !this.state.passport ? "error custom-input" : "custom-input"}/>
+                                {this.state.isSubmit && !this.state.passport &&
+                                  <p className="error">{t('checkout_passenger.passport_required')}</p>
+                                }
+                              </div>
+                            </div>
+                            <div className="form-group col-sm-6 col-xs-12"></div>
+                          </div>
                           <div className="nd_options_height_10"/>
                           {!_.isEmpty(this.props.user) &&
                             <div className="question">
@@ -455,6 +487,7 @@ class CheckOutPassengers extends React.Component {
                                   phone: this.state.phone,
                                   sex: this.state.sex,
                                   birthdate: this.state.birthdate,
+                                  passport: this.state.passport
                                 }: null}/>
                             }
                             {this.state.isTraveler === 'false' &&
@@ -505,7 +538,7 @@ class CheckOutPassengers extends React.Component {
                           </div>
                           <div className="info-area">
                             <h3>
-                              <Link route="detail-tour" params={{id: tourInfo.id, name: slugify(tourInfo.tour.name)}}>
+                              <Link route="detail-tour" params={{id: tourInfo.code, name: slugify(tourInfo.tour.name)}}>
                                 <a>{tourInfo.tour.name}</a>
                               </Link>
                             </h3>
@@ -513,7 +546,7 @@ class CheckOutPassengers extends React.Component {
                               <li>
                                 <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
                                 {t('checkout_passenger.code')}:&nbsp;
-                                <span>{getCode(tourInfo.id)}</span>
+                                <span>{tourInfo.code}</span>
                               </li>
                               <li>
                                 <i className="fa fa-calendar-minus-o" aria-hidden="true"><FaRegCalendarMinus /></i>

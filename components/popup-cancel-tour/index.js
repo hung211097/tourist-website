@@ -4,10 +4,7 @@ import PropTypes from 'prop-types'
 import Popup from 'reactjs-popup'
 import ApiService from 'services/api.service'
 import { CustomCheckbox } from 'components'
-import { Link } from 'routes'
-import { formatDate } from '../../services/time.service'
 import { withNamespaces } from "react-i18next"
-import { slugify } from '../../services/utils.service'
 
 let customStyles = {
     width: '90%',
@@ -30,8 +27,8 @@ class PopupCancelTour extends React.Component {
         children: PropTypes.any,
         customContent: PropTypes.object,
         customOverlay: PropTypes.object,
-        tour: PropTypes.any,
         changeStatus: PropTypes.func,
+        tour: PropTypes.any,
         t: PropTypes.func
     }
 
@@ -43,19 +40,11 @@ class PopupCancelTour extends React.Component {
           reason: '',
           isAgree: false,
           isSubmit: false,
-          tourInfo: null,
           error: ''
         }
     }
 
     componentDidMount(){
-      if(this.props.tour){
-        this.apiService.getToursTurnId(this.props.tour.fk_tour_turn).then((res) => {
-          this.setState({
-            tourInfo: res.data
-          })
-        })
-      }
     }
 
     handleClose() {
@@ -74,7 +63,7 @@ class PopupCancelTour extends React.Component {
 
       this.apiService.cancelTour({
         idBookTour: this.props.tour.id,
-        message: this.state.reason
+        request_message: this.state.reason
       }).then((res) => {
         this.props.changeStatus && this.props.changeStatus(this.props.tour.id, res.data.status, res.data.isCancelBooking)
         this.setState({
@@ -123,8 +112,7 @@ class PopupCancelTour extends React.Component {
         if(this.state.isSend){
           localStyles.maxWidth = '400px'
         }
-        const { tour, t } = this.props
-        const { tourInfo } = this.state
+        const { t } = this.props
         return (
             <div>
                 <style jsx>{styles}</style>
@@ -148,25 +136,6 @@ class PopupCancelTour extends React.Component {
                               </div>
                               :
                               <div>
-                                <div className="tour-info">
-                                  <h3>{t('cancel_tour.tour_info')}: </h3>
-                                  <div className="nd_options_section nd_options_line_height_0 underline-zone">
-                                    <span className="underline"></span>
-                                  </div>
-                                  {tourInfo &&
-                                    <ul>
-                                      <li>
-                                        <Link route="detail-tour" params={{id: tourInfo.id, name: slugify(tourInfo.tour.name)}}>
-                                          <a>{tourInfo.tour.name}</a>
-                                        </Link>
-                                      </li>
-                                      <li>{t('cancel_tour.start_date')}: {formatDate(tourInfo.start_date)}</li>
-                                      <li>{t('cancel_tour.book_at')}: {formatDate(tour.book_time, "dd/MM/yyyy HH:mm")}</li>
-                                      <li>{t('cancel_tour.num_people')}: {tour.num_passenger}</li>
-                                      <li>{t('cancel_tour.total_money')}: {tour.total_pay.toLocaleString()} VND</li>
-                                    </ul>
-                                  }
-                                </div>
                                 <form onSubmit={this.handleSubmit.bind(this)}>
                                   <div className="reason">
                                     <div className="nd_options_height_20"/>
@@ -197,21 +166,23 @@ class PopupCancelTour extends React.Component {
                                         <li>{t('cancel_tour.domestic_week_day_3')}</li>
                                         <li>{t('cancel_tour.domestic_week_day_4')}</li>
                                         <li>{t('cancel_tour.domestic_week_day_5')}</li>
+                                        <li>{t('cancel_tour.domestic_week_day_6')}</li>
                                       </ul>
                                       <br/>
                                       <h4><strong>{t('cancel_tour.domestic_holiday')}</strong></h4>
                                       <ul>
                                         <li>{t('cancel_tour.domestic_holiday_1')}</li>
-                                        <li>{t('cancel_tour.domestic_holiday-2')}</li>
+                                        <li>{t('cancel_tour.domestic_holiday_2')}</li>
                                         <li>{t('cancel_tour.domestic_holiday_3')}</li>
                                         <li>{t('cancel_tour.domestic_holiday_4')}</li>
                                         <li>{t('cancel_tour.domestic_holiday_5')}</li>
+                                        <li>{t('cancel_tour.domestic_holiday_6')}</li>
                                       </ul>
                                       <br/>
                                       <h4><strong>{t('cancel_tour.note')}</strong></h4>
                                       <p>{t('cancel_tour.note_content')}</p>
                                       <br/>
-                                      <h3>{t('cancel_tour.foreign')}</h3>
+                                      {/*<h3>{t('cancel_tour.foreign')}</h3>
                                       <h4><strong>{t('cancel_tour.foreign_week_day')}</strong></h4>
                                       <ul>
                                         <li>{t('cancel_tour.foreign_week_day_1')}</li>
@@ -235,7 +206,7 @@ class PopupCancelTour extends React.Component {
                                       </ul>
                                       <br/>
                                       <h4><strong>{t('cancel_tour.note')}</strong></h4>
-                                      <p>{t('cancel_tour.note_content')}</p>
+                                      <p>{t('cancel_tour.note_content')}</p>*/}
                                     </div>
                                     <div className="checkbox-zone">
                                       <CustomCheckbox isCheck={this.state.isAgree} onCheck={this.handleCheck.bind(this)}

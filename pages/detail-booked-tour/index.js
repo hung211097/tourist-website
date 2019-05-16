@@ -10,8 +10,7 @@ import { FaRegCalendarMinus, FaRegCalendarPlus, FaRegCalendarAlt, FaMoneyBill,
 import { Router, Link } from 'routes'
 import ApiService from 'services/api.service'
 import ReactTable from 'react-table'
-import { getCode, capitalize } from '../../services/utils.service'
-import matchSorter from 'match-sorter'
+import { capitalize } from '../../services/utils.service'
 import { formatDate, compareDate, distanceFromDays, isSameDate } from '../../services/time.service'
 import { withNamespaces } from "react-i18next"
 import { slugify } from '../../services/utils.service'
@@ -39,7 +38,7 @@ class DetailBookedTour extends React.Component {
           Redirect(res, '404')
         }
         try{
-          let tourInfo = await apiService.getBookTourHistoryById(query.id, {isTour: true})
+          let tourInfo = await apiService.getBookTourHistoryByCode(query.id, {isTour: true})
           if(!tourInfo.data){
             Redirect(res, '404')
           }
@@ -71,20 +70,20 @@ class DetailBookedTour extends React.Component {
         passLocation: []
       }
       this.time = {
-        "10.7683": "2019-04-24T08:05:00.000",
-        "10.7794": "2019-04-24T09:11:00.000",
-        "10.770042": "2019-04-24T10:05:00.000",
-        "10.7535": "2019-04-24T10:20:00.000",
-        "10.7779": "2019-04-24T13:10:00.000",
-        "10.7798": "2019-04-24T14:15:00.000",
-        "10.7799": "2019-04-24T15:12:00.000",
-        "10.7682": "2019-04-24T17:09:00.000"
+        "10.7683": "2019-05-17T08:05:00.000",
+        "10.7794": "2019-05-17T09:11:00.000",
+        "10.770042": "2019-05-17T10:05:00.000",
+        "10.7535": "2019-05-17T10:20:00.000",
+        "10.7779": "2019-05-17T13:10:00.000",
+        "10.7798": "2019-05-17T14:15:00.000",
+        "10.7799": "2019-05-17T15:12:00.000",
+        "10.7682": "2019-05-17T17:09:00.000"
       } //Test data
       this.handleClick = this.handleClick.bind(this);
     }
 
     loadMore(){
-      const id = Router.query.id
+      const id = this.state.bookTour.id
       if(this.state.page > 0){
         this.apiService.getPassengersInBookTour(id, this.state.page, 5).then((res) => {
           this.setState({
@@ -261,8 +260,10 @@ class DetailBookedTour extends React.Component {
     render() {
       const {t} = this.props
       let tourInfo = null
+      let cancel_info = null
       if(this.state.bookTour){
         tourInfo = this.state.bookTour.tour_turn
+        cancel_info = this.state.bookTour.cancel_bookings[0]
       }
         return (
             <LayoutProfile page="profile" tabName="my-booking" {...this.props}>
@@ -272,16 +273,34 @@ class DetailBookedTour extends React.Component {
                     <div className="title">
                       <div className="text-center title-contain">
                         <a className="back" onClick={this.handleBack.bind(this)}><FaArrowLeft style={{fontSize: '25px'}}/></a>
-                        <h1 className="my-profile__title">{t('detail_booked_tour.title')} <span>#{getCode(this.state.bookTour.id)}</span></h1>
+                        <h1 className="my-profile__title">{t('detail_booked_tour.title')} <span>#{this.state.bookTour.code}</span></h1>
                         <h3 className="booking-status">{t('detail_booked_tour.status')}: <span>{capitalize(t('detail_booked_tour.' + this.state.bookTour.status))}</span></h3>
                       </div>
                       <div className="content">
                         <div className="container">
                           {!this.state.trackingTour ?
                             <div className="finish">
+                              {cancel_info &&
+                                <div className="notification-info">
+                                  {cancel_info.confirm_time && !cancel_info.refunded_time && !!cancel_info.money_refunded && cancel_info.refund_period && this.state.bookTour.status === 'confirm_cancel' &&
+                                    <div>
+                                      <p>{t('detail_booked_tour.confirm_cancel_content')} <strong>{formatDate(cancel_info.confirm_time, "dd/MM/yyyy HH:mm")}</strong></p>
+                                      <p>{t('detail_booked_tour.refund_money')} <strong>{cancel_info.money_refunded.toLocaleString()} VND</strong></p>
+                                      <p>{t('detail_booked_tour.refund_note')}</p>
+                                      <p>{t('detail_booked_tour.refund_period')} <strong>{formatDate(cancel_info.refund_period)}</strong></p>
+                                    </div>
+                                  }
+                                  {cancel_info.refunded_time && !!cancel_info.money_refunded && this.state.bookTour.status === 'refunded' &&
+                                    <div>
+                                      <p>{t('detail_booked_tour.refund_time')} <strong>{formatDate(cancel_info.refunded_time, "dd/MM/yyyy HH:mm")}</strong></p>
+                                      <p>{t('detail_booked_tour.refund_money')} <strong>{cancel_info.money_refunded.toLocaleString()} VND</strong></p>
+                                    </div>
+                                  }
+                                </div>
+                              }
                               {tourInfo &&
                                 <div className="tour-info">
-                                  {!this.checkTrackingButton() &&
+                                  {this.checkTrackingButton() &&
                                     <div className="tracking-tour">
                                       <button type="button" className="co-btn green" onClick={this.handleTrackingTour.bind(this)}>
                                         <img alt="icon" src="/static/images/gps.png"/>
@@ -294,7 +313,7 @@ class DetailBookedTour extends React.Component {
                                   </div>
                                   <div className="content-tour row">
                                     <div className="col-sm-4">
-                                      <Link route="detail-tour" params={{id: tourInfo.id, name: slugify(tourInfo.tour.name)}}>
+                                      <Link route="detail-tour" params={{id: tourInfo.code, name: slugify(tourInfo.tour.name)}}>
                                         <a>
                                           <img alt="featured_img" src={tourInfo.tour.featured_img}/>
                                         </a>
@@ -302,7 +321,7 @@ class DetailBookedTour extends React.Component {
                                     </div>
                                     <div className="col-sm-8">
                                       <h3>
-                                        <Link route="detail-tour" params={{id: tourInfo.id, name: slugify(tourInfo.tour.name)}}>
+                                        <Link route="detail-tour" params={{id: tourInfo.code, name: slugify(tourInfo.tour.name)}}>
                                           <a>{tourInfo.tour.name}</a>
                                         </Link>
                                       </h3>
@@ -334,6 +353,7 @@ class DetailBookedTour extends React.Component {
                                 <div className="header-title has-top-border">{t('detail_booked_tour.checkout_info')}
                                   <span className="icon"><FaMoneyBill style={{fontSize: '25px', position: 'relative', top: '-1px'}}/></span>
                                 </div>
+                                <p className="mt-3 mb-3">{t('detail_booked_tour.method')}&nbsp; <strong>{t('detail_booked_tour.' + this.state.bookTour.payment_method.name)}</strong></p>
                                 <div className="row no-padding">
                                   <div className="col-md-6 col-sm-6 col-12">
                                     <div className="checkout-contact">
@@ -349,8 +369,11 @@ class DetailBookedTour extends React.Component {
                                           <span className="value">{this.getPriceByAge('children').toLocaleString()} VND</span>
                                         </div>
                                       }
-                                      <div className="item-row">
-                                        <span className="item-label bold">{t('detail_booked_tour.total_price')}</span>
+                                      <br/>
+                                      <div className="item-row" style={{fontSize: '18px'}}>
+                                        <span className="item-label bold" style={{fontSize: '18px', fontWeight: 'bold'}}>
+                                          {t('detail_booked_tour.total_price')}
+                                        </span>
                                         <span className="value">{this.state.bookTour.total_pay.toLocaleString()} VND</span>
                                       </div>
                                     </div>
@@ -394,6 +417,10 @@ class DetailBookedTour extends React.Component {
                                     <span className="item-label bold">{t('detail_booked_tour.address')}: </span>
                                     <span className="value responsive">{this.state.bookTour.book_tour_contact_info.address}</span>
                                   </div>
+                                  <div className="item-row">
+                                    <span className="item-label bold">{t('detail_booked_tour.passport')}: </span>
+                                    <span className="value responsive">{this.state.bookTour.book_tour_contact_info.passport}</span>
+                                  </div>
                                 </div>
                               </div>
                               <div className="pax-info">
@@ -412,34 +439,24 @@ class DetailBookedTour extends React.Component {
                                       data={this.state.passengers}
                                       className="-striped -highlight"
                                       showPagination={false}
-                                      filterable={true}
                                       columns={[
                                         {
                                           Header: t('detail_booked_tour.fullname'),
                                           accessor: 'fullname',
                                           id: 'fullname',
-                                          filterAll: true,
                                           className: 'text-center',
-                                          filterMethod: (filter, rows) =>
-                                            matchSorter(rows, filter.value, { keys: ["fullname"] }),
                                         },
                                         {
                                           Header: t('detail_booked_tour.phone'),
                                           accessor: 'phone',
                                           id: 'phone',
-                                          filterAll: true,
                                           className: 'text-center',
-                                          filterMethod: (filter, rows) =>
-                                            matchSorter(rows, filter.value, { keys: ["phone"] }),
                                         },
                                         {
                                           Header: t('detail_booked_tour.birthdate'),
                                           accessor: d => formatDate(d.birthdate),
                                           id: 'birthdate',
-                                          filterAll: true,
                                           className: 'text-center',
-                                          filterMethod: (filter, rows) =>
-                                            matchSorter(rows, filter.value, { keys: ["birthdate"] }),
                                           sortMethod: (a, b) =>
                                             compareDate(a, b)
                                         },
@@ -447,30 +464,22 @@ class DetailBookedTour extends React.Component {
                                           Header: t('detail_booked_tour.gender'),
                                           accessor: d => t('detail_booked_tour.' + d.sex),
                                           id: 'gender',
-                                          filterAll: true,
-                                          className: 'text-center',
-                                          filterMethod: (filter, rows) =>
-                                            matchSorter(rows, filter.value.toLocaleString(), { keys: ["gender"] }),
+                                          className: 'text-center'
                                         },
                                         {
                                           Header: t('detail_booked_tour.age'),
                                           accessor: d => t('detail_booked_tour.' + this.ages[d.type_passenger.name]),
                                           id: 'age',
-                                          filterAll: true,
-                                          className: 'text-center',
-                                          filterMethod: (filter, rows) =>
-                                            matchSorter(rows, filter.value, { keys: ["age"] }),
+                                          className: 'text-center'
+                                        },
+                                        {
+                                          Header: t('detail_booked_tour.passport'),
+                                          id: 'passport',
+                                          accessor: 'passport',
+                                          className: 'text-center'
                                         }
                                       ]}
                                     />
-                                    {/*,{
-                                      Header: t('detail_booked_tour.passport'),
-                                      id: 'passport',
-                                      accessor: 'passport',
-                                      filterAll: true,
-                                      filterMethod: (filter, rows) =>
-                                        matchSorter(rows, filter.value, { keys: ["passport"] }),
-                                    }*/}
                                   </InfiniteScroll>
                                 </div>
                               </div>

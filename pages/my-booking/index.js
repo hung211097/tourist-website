@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import ApiService from 'services/api.service'
 import InfiniteScroll from 'react-infinite-scroller'
-import { getCode, capitalize } from '../../services/utils.service'
 import { withNamespaces } from "react-i18next"
 import Select from 'react-select'
 import arraySort from 'array-sort'
@@ -36,7 +35,9 @@ class MyBooking extends React.Component {
         showPopup: false,
         dataPopup: null,
         bookingCode: '',
+        searchTour: '',
         sort: 'bookDayDesc',
+        isLoading: false
       }
       this.sorts = [
         { value: 'bookDayDesc', label: props.t('my_booking.bookDayDesc') },
@@ -47,19 +48,23 @@ class MyBooking extends React.Component {
     }
 
     loadMore(){
-      if(this.state.page > 0){
+      if(this.state.page > 0 && !this.state.isLoading){
+        this.setState({
+          isLoading: true
+        })
         this.apiService.getBookToursHistory(this.state.page, 3).then((res) => {
           this.setState({
             bookTours: [...this.state.bookTours, ...res.data],
             page: res.next_page,
-            hasMore: res.next_page > 0
+            hasMore: res.next_page > 0,
+            isLoading: false
           })
         })
       }
     }
 
     componentDidMount(){
-      this.loadMore()
+      // this.loadMore()
     }
 
     handleCancelTour(value){
@@ -91,7 +96,7 @@ class MyBooking extends React.Component {
         return item.id === id
       })
       if(temp){
-        temp.status = capitalize(status)
+        temp.status = status
         temp.isCancelBooking = flag
       }
       this.setState({
@@ -102,6 +107,12 @@ class MyBooking extends React.Component {
     handleChangeBookingCode(e){
       this.setState({
         bookingCode: e.target.value
+      })
+    }
+
+    handleChangeSearchTour(e){
+      this.setState({
+        searchTour: e.target.value
       })
     }
 
@@ -138,7 +149,8 @@ class MyBooking extends React.Component {
     render() {
         const {t} = this.props
         let displayArray = this.state.bookTours.filter((item) => {
-          return getCode(item.id).search(this.state.bookingCode.toString()) > -1
+          return item.code.search(this.state.bookingCode.toString()) > -1 &&
+          item.tour_turn.tour.name.toLowerCase().search(this.state.searchTour.toLowerCase()) > -1
         })
         displayArray = this.sortArray(displayArray);
         return (
@@ -158,7 +170,8 @@ class MyBooking extends React.Component {
                                 className="form-control" placeholder={t('my_booking.code')}/>
                             </div>
                             <div className="col-lg-4">
-
+                              <input type="text" value={this.state.searchTour} onChange={this.handleChangeSearchTour.bind(this)}
+                                className="form-control" placeholder={t('my_booking.search_tour')}/>
                             </div>
                             <div className="col-lg-4">
                               <div className="select-zone">
@@ -177,9 +190,8 @@ class MyBooking extends React.Component {
                             pageStart={0}
                             loadMore={this.loadMore.bind(this)}
                             hasMore={this.state.page > 0}
-                            useWindow={false}
                             threshold={20}
-                            initialLoad={false}>
+                            >
                             {/*<ReactTable
                               data={this.state.bookTours}
                               className="-striped -highlight"

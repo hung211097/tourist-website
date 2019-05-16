@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import ApiService from 'services/api.service'
 import { Link, Router } from 'routes'
 import { RatingStar, BtnViewMore, MyMap, TourItem, Lightbox, Breadcrumb } from 'components'
-import { getCode, convertFullUrl, slugify, groupDayRoute } from '../../services/utils.service'
+import { convertFullUrl, slugify, groupDayRoute } from '../../services/utils.service'
 import { FaRegCalendarAlt, FaEye, FaSuitcase } from "react-icons/fa"
 import { formatDate, distanceFromDays, fromNow, addDay } from '../../services/time.service'
 import validateEmail from '../../services/validates/email.js'
@@ -49,7 +49,7 @@ class DetailTour extends React.Component {
   static async getInitialProps({ res, query }) {
       let apiService = ApiService()
       try{
-          let tourTurn = await apiService.getToursTurnId(query.id)
+          let tourTurn = await apiService.getToursTurnByCode(query.id)
           return { tourInfo: tourTurn.data, query };
       } catch(e) {
           Redirect(res, '404')
@@ -164,7 +164,7 @@ class DetailTour extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(+prevProps.query.id !== +this.props.query.id){
+    if(prevProps.query.id !== this.props.query.id){
       this.setState(
         {
           tourTurn: null,
@@ -195,7 +195,7 @@ class DetailTour extends React.Component {
   }
 
   init() {
-    this.apiService.getToursTurnId(this.props.query.id).then((res) => {
+    this.apiService.getToursTurnByCode(this.props.query.id).then((res) => {
       this.setState({
         tourTurn: res.data,
         average_rating: res.data.tour.average_rating,
@@ -214,8 +214,8 @@ class DetailTour extends React.Component {
             timeline: groupDayRoute(result.data)
           })
         })
+        this.breadcrumb[this.breadcrumb.length - 1] = { name: this.state.tourTurn.tour.name }
       })
-      this.breadcrumb[this.breadcrumb.length - 1] = { name: this.state.tourTurn.tour.name }
     })
   }
 
@@ -310,7 +310,7 @@ class DetailTour extends React.Component {
       this.props.useModal && this.props.useModal({type: modal.NO_BOOK, isOpen: true, data: ''})
       return
     }
-    Router.pushRoute("checkout-passengers", {tour_id: tourTurn.id})
+    Router.pushRoute("checkout-passengers", {tour_id: tourTurn.code})
   }
 
   handleClosePopup(){
@@ -407,7 +407,7 @@ class DetailTour extends React.Component {
                             <div className="col-12">
                               <div className="row" style={{marginBottom: '15px', marginTop: '30px'}}>
                                 <div className="col-md-4 col-sm-4 col-6">{t('detail_tour.tour_code')}:</div>
-                                <div className="col-md-8 col-sm-8 col-6">{getCode(tourTurn.id)}</div>
+                                <div className="col-md-8 col-sm-8 col-6">{tourTurn.code}</div>
                               </div>
                               <div className="row">
                                 <div className="col-lg-4 col-md-6 col-sm-4 col-6 mg-10">{t('detail_tour.start_date')}:</div>
@@ -552,13 +552,13 @@ class DetailTour extends React.Component {
                                                     return(
                                                       <li key={key_2}>
                                                         {item_2.arrive_time && item_2.leave_time &&
-                                                          <h4 className="time">{item_2.arrive_time} - {item_2.leave_time}</h4>
+                                                          <h4 className="time">{item_2.arrive_time.replace(':00', '')} - {item_2.leave_time.replace(':00', '')}</h4>
                                                         }
                                                         {item_2.arrive_time && !item_2.leave_time &&
-                                                          <h4 className="time">{t('detail_tour.arrive_at')} {item_2.arrive_time}</h4>
+                                                          <h4 className="time">{t('detail_tour.arrive_at')} {item_2.arrive_time.replace(':00', '')}</h4>
                                                         }
                                                         {!item_2.arrive_time && item_2.leave_time &&
-                                                          <h4 className="time">{t('detail_tour.leave_at')} {item_2.leave_time}</h4>
+                                                          <h4 className="time">{t('detail_tour.leave_at')} {item_2.leave_time.replace(':00', '')}</h4>
                                                         }
                                                         <h4 className="name-location">&nbsp;- {item_2.location.name} ({item_2.location.type.name})</h4>
                                                         <p>{item_2.detail}</p>
@@ -628,13 +628,13 @@ class DetailTour extends React.Component {
                                   <li>Từ 11 tuổi trở lên: 100% giá tour và tiêu chuẩn như người lớn.</li>
                                 </ul>
                                 <p className="bold">Điều kiện thanh toán:</p>
-                                <p className="no-margin">Thanh toán hết trước ngày khởi hành 7 ngày (tour ngày thường), 20-25 ngày (tour lễ tết).</p>
+                                <p className="no-margin">Thanh toán hết trước ngày khởi hành {tourTurn.payment_term ? tourTurn.payment_term : 3} ngày</p>
                                 <p className="bold">Các điều kiện khi đăng ký tour:</p>
                                 <ul>
                                   <li>
                                     Khi đăng ký vui lòng cung cấp giấy tờ tùy thân tất cả người đi: Chứng minh nhân dân/Hộ chiếu
                                     (Passport)/Giấy khai sinh (trẻ em dưới 14 tuổi). Trong trường hợp đăng ký trực tuyến qua
-                                    <a href="www.travel-tour.com">www.travel-tour.com</a> vui lòng nhập tên chính xác theo thứ tự: Họ/tên lót/tên xuất vé máy bay.
+                                    <a href="www.travel-tour.com"> www.travel-tour.com</a> vui lòng nhập tên chính xác theo thứ tự: Họ/tên lót/tên xuất vé máy bay.
                                     Quý khách khi đăng ký cung cấp tên theo giấy tờ tùy thân nào, khi đi tour mang theo giấy tờ
                                     tùy thân đó.
                                   </li>
@@ -717,23 +717,19 @@ class DetailTour extends React.Component {
                                     lòng tìm hiểu kỹ chương trình từ người đăng ký cho mình.
                                   </li>
                                 </ul>
-                                <p className="bold">Lưu ý khi chuyển/hủy tour:</p>
+                                <p className="bold">Lưu ý khi hủy tour:</p>
                                 <p className="no-margin">
-                                  Sau khi thanh toán tiền, nếu Quý khách muốn chuyển/hủy tour xin vui lòng mang Vé Du Lịch đến văn
-                                  phòng đăng ký tour để làm thủ tục chuyển/hủy tour và chịu chi phí theo quy định của TravelTour.
-                                  Không giải quyết các trường hợp liên hệ chuyển/hủy tour qua điện thoại.
+                                  Sau khi thanh toán tiền, nếu Quý khách muốn hủy tour xin vui lòng mang Vé Du Lịch đến văn
+                                  phòng đăng ký tour để làm thủ tục hủy tour và chịu chi phí theo quy định của TravelTour.
+                                  Không giải quyết các trường hợp liên hệ hủy tour qua điện thoại.
                                 </p>
                                 <p className="bold">Các điều kiện hủy tour: (đối với ngày thường)</p>
                                 <ul>
                                   <li>
-                                    Được chuyển sang các tuyến du lịch khác trước ngày khởi hành 20 ngày : Không mất chi phí.
+                                    Nếu hủy chuyến du lịch trong vòng từ 15-19 ngày trước ngày khởi hành: Chi phí hủy tour: 15% trên giá tour du lịch.
                                   </li>
                                   <li>
-                                    Nếu hủy hoặc chuyển sang các chuyến du lịch khác ngay sau khi đăng ký đến từ 15-19 ngày trước ngày
-                                    khởi hành: Chi phí hủy tour: 50% tiền cọc tour.
-                                  </li>
-                                  <li>
-                                    Nếu hủy hoặc chuyển sang các chuyến du lịch khác từ 12-14 ngày trước ngày khởi hành: Chi phí hủy tour: 100% tiền cọc tour.
+                                    Nếu hủy chuyến du lịch trong vòng từ 12-14 ngày trước ngày khởi hành: Chi phí hủy tour: 30% trên giá tour du lịch.
                                   </li>
                                   <li>
                                     Nếu hủy chuyến du lịch trong vòng từ 08-11 ngày trước ngày khởi hành: Chi phí hủy tour: 50% trên giá tour du lịch.
@@ -751,13 +747,10 @@ class DetailTour extends React.Component {
                                 <p className="bold">Các điều kiện hủy tour: (đối với ngày lễ, tết)</p>
                                 <ul>
                                   <li>
-                                    Được chuyển sang các tuyến du lịch khác trước ngày khởi hành 30 ngày : Không mất chi phí
+                                    Nếu hủy chuyến du lịch trong vòng từ 25-29 ngày trước ngày khởi hành: Chi phí hủy tour: 15% trên giá tour du lịch.
                                   </li>
                                   <li>
-                                    Nếu hủy hoặc chuyển sang các chuyến khác ngay sau khi đăng ký đến từ 25-29 ngày trước ngày khởi hành: Chi phí hủy tour: 50% tiền cọc tour.
-                                  </li>
-                                  <li>
-                                    Nếu hủy hoặc chuyển sang các chuyến khác từ 20-24 ngày trước ngày khởi hành: Chi phí hủy tour: 100% tiền cọc tour.
+                                    Nếu hủy chuyến du lịch trong vòng từ 20-24 ngày trước ngày khởi hành: Chi phí hủy tour: 30% trên giá tour du lịch.
                                   </li>
                                   <li>
                                     Nếu hủy chuyến du lịch trong vòng từ 17-19 ngày trước ngày khởi hành: Chi phí hủy tour: 50% trên giá tour du lịch.

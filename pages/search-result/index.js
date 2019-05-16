@@ -18,28 +18,13 @@ class SearchResult extends React.Component {
   displayName = 'Search Result'
 
   static propTypes = {
-    searchResult: PropTypes.object,
     query: PropTypes.object,
     t: PropTypes.func,
     route: PropTypes.object
   }
 
   static async getInitialProps({ query }) {
-    let apiService = ApiService()
-    let searchResult = null
-    try{
-      if(query.keyword){
-        searchResult = await apiService.search(1, 5, {name: replaceInvalidCharacter(query.keyword)})
-      }
-      else{
-        searchResult = await apiService.search(1, 5)
-      }
-    }
-    catch(e){
-      return { searchResult: null, query }
-    }
-
-    return { searchResult: searchResult, query }
+    return { query }
   }
 
   constructor(props) {
@@ -56,8 +41,8 @@ class SearchResult extends React.Component {
       lasting: 0,
       filterShow: true, //Show phần filter ở mobile hay không?
       isListView: true, //Xem dạng list ngang hay grid ô
-      searchResult: props.searchResult ? props.searchResult.data : null,
-      totalPage: props.searchResult ? calcTotalPage(props.searchResult.itemCount, 5) : 0,
+      searchResult: null,
+      totalPage: 0,
       page: 0,
       isSubmit: false,
       autoSuggest: [],
@@ -65,7 +50,18 @@ class SearchResult extends React.Component {
   }
 
   componentDidMount() {
+    this.init(this.props)
+  }
 
+  init(props){
+    const {query} = props
+    this.apiService.search(1, 5, query.keyword ? {name: replaceInvalidCharacter(query.keyword)} : {}).then((res) => {
+      this.setState({
+        searchResult: res.data,
+        totalPage: res.data ? calcTotalPage(res.itemCount, 5) : 0,
+        keywordDisplay: query.keyword
+      })
+    })
   }
 
   componentWillUnmount(){
@@ -73,11 +69,7 @@ class SearchResult extends React.Component {
   }
 
   UNSAFE_componentWillReceiveProps(props){
-    this.setState({
-      searchResult: props.searchResult ? props.searchResult.data : null,
-      totalPage: props.searchResult ? calcTotalPage(props.searchResult.itemCount, 5) : 0,
-      keywordDisplay: props.query.keyword
-    })
+    this.init(props)
     this.handleReset()
   }
 

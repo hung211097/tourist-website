@@ -11,7 +11,8 @@ class RatingStar extends React.Component {
     rate: 0,
     reviewCount: 0,
     smallTextReview: false,
-    isWhite: false
+    isWhite: false,
+    notRateStyle: {}
   }
 
   static propTypes = {
@@ -26,7 +27,8 @@ class RatingStar extends React.Component {
     onWriteReview: PropTypes.func,
     smallTextReview: PropTypes.bool,
     isWhite: PropTypes.bool,
-    t: PropTypes.func
+    t: PropTypes.func,
+    notRateStyle: PropTypes.object
   }
 
   constructor(props) {
@@ -87,7 +89,7 @@ class RatingStar extends React.Component {
             </span>)
           }
           {this.props.rate === 0 && !this.props.editor &&
-            <span className="not_rated">&nbsp;&nbsp;{t('not_rated')}</span>
+            <span className="not_rated" style={this.props.notRateStyle}>&nbsp;&nbsp;{t('not_rated')}</span>
           }
         </div>
       </div>

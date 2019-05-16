@@ -43,6 +43,7 @@ class Profile extends React.Component {
                             </li>
                             <li><span>{t('profile.fullname')}:</span>{this.props.user.fullname}&nbsp;</li>
                             <li title={this.props.user.email}><span>Email:</span> {this.props.user.email}</li>
+                            <li><span>{t('profile.identity')}:</span>{this.props.user.passport}&nbsp;</li>
                             <li><span>{t('profile.phone')}:</span>{this.props.user.phone}&nbsp;</li>
                             <li className="capitalize"><span>{t('profile.gender')}:</span> {this.props.user.sex ? t('profile.' + this.props.user.sex) : ''} &nbsp;</li>
                             <li><span>{t('profile.birthdate')}:</span> {this.props.user.birthdate && isValidDate(this.props.user.birthdate) ? formatDate(this.props.user.birthdate) : ''} &nbsp;</li>

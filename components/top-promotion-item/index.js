@@ -50,7 +50,7 @@ class TopPromotionItem extends React.Component {
         <style jsx>{styles}</style>
         <div className="wrapper-item">
           <div className="content-item">
-            <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
+            <Link route="detail-tour" params={{id: item.code, name: slugify(item.tour.name)}}>
               <a>
                 <div className="contain-price">
                   {!!item.discount &&
@@ -66,7 +66,7 @@ class TopPromotionItem extends React.Component {
             </Link>
           </div>
           <div className="name-item">
-            <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
+            <Link route="detail-tour" params={{id: item.code, name: slugify(item.tour.name)}}>
               <a>
                 <h3 style={item.tour.name.length > 30 ? {fontSize: '16px'} : null}>
                   {item.tour.name}
@@ -82,7 +82,7 @@ class TopPromotionItem extends React.Component {
           </div>
           <div className="description-item">
             <p>{item.tour.description.substring(0, this.maxDes) + '...'}</p>
-            <Link route="detail-tour" params={{id: item.id, name: slugify(item.tour.name)}}>
+            <Link route="detail-tour" params={{id: item.code, name: slugify(item.tour.name)}}>
               <a>{t('home.top_item.detail')}</a>
             </Link>
           </div>
