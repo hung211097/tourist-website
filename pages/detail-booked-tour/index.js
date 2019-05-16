@@ -282,7 +282,7 @@ class DetailBookedTour extends React.Component {
                             <div className="finish">
                               {cancel_info &&
                                 <div className="notification-info">
-                                  {cancel_info.confirm_time && !cancel_info.refunded_time && cancel_info.money_refunded && cancel_info.refund_period &&
+                                  {cancel_info.confirm_time && !cancel_info.refunded_time && !!cancel_info.money_refunded && cancel_info.refund_period && this.state.bookTour.status === 'confirm_cancel' &&
                                     <div>
                                       <p>{t('detail_booked_tour.confirm_cancel_content')} <strong>{formatDate(cancel_info.confirm_time, "dd/MM/yyyy HH:mm")}</strong></p>
                                       <p>{t('detail_booked_tour.refund_money')} <strong>{cancel_info.money_refunded.toLocaleString()} VND</strong></p>
@@ -290,7 +290,7 @@ class DetailBookedTour extends React.Component {
                                       <p>{t('detail_booked_tour.refund_period')} <strong>{formatDate(cancel_info.refund_period)}</strong></p>
                                     </div>
                                   }
-                                  {cancel_info.refunded_time && cancel_info.money_refunded &&
+                                  {cancel_info.refunded_time && !!cancel_info.money_refunded && this.state.bookTour.status === 'refunded' &&
                                     <div>
                                       <p>{t('detail_booked_tour.refund_time')} <strong>{formatDate(cancel_info.refunded_time, "dd/MM/yyyy HH:mm")}</strong></p>
                                       <p>{t('detail_booked_tour.refund_money')} <strong>{cancel_info.money_refunded.toLocaleString()} VND</strong></p>
