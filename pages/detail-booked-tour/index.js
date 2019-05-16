@@ -264,6 +264,9 @@ class DetailBookedTour extends React.Component {
       if(this.state.bookTour){
         tourInfo = this.state.bookTour.tour_turn
         cancel_info = this.state.bookTour.cancel_bookings[0]
+        // if(cancel_info.request_offline_person){
+        //   cancel_info.request_offline_person = JSON.parse(cancel_info.request_offline_person)
+        // }
       }
         return (
             <LayoutProfile page="profile" tabName="my-booking" {...this.props}>
@@ -282,8 +285,15 @@ class DetailBookedTour extends React.Component {
                             <div className="finish">
                               {cancel_info &&
                                 <div className="notification-info">
-                                  {cancel_info.confirm_time && !cancel_info.refunded_time && !!cancel_info.money_refunded && cancel_info.refund_period && this.state.bookTour.status === 'confirm_cancel' &&
+                                  {cancel_info.confirm_time && !cancel_info.refunded_time && !!cancel_info.money_refunded &&
+                                    cancel_info.refund_period && this.state.bookTour.status === 'confirm_cancel' &&
                                     <div>
+                                      {cancel_info.request_offline_person &&
+                                        <div>
+                                          <p>{t('detail_booked_tour.people_cancel')} <strong>{cancel_info.request_offline_person.name}</strong></p>
+                                          <p>{t('detail_booked_tour.passport')}: <strong>{cancel_info.request_offline_person.passport}</strong></p>
+                                        </div>
+                                      }
                                       <p>{t('detail_booked_tour.confirm_cancel_content')} <strong>{formatDate(cancel_info.confirm_time, "dd/MM/yyyy HH:mm")}</strong></p>
                                       <p>{t('detail_booked_tour.refund_money')} <strong>{cancel_info.money_refunded.toLocaleString()} VND</strong></p>
                                       <p>{t('detail_booked_tour.refund_note')}</p>
@@ -292,6 +302,14 @@ class DetailBookedTour extends React.Component {
                                   }
                                   {cancel_info.refunded_time && !!cancel_info.money_refunded && this.state.bookTour.status === 'refunded' &&
                                     <div>
+                                      {cancel_info.refund_message &&
+                                        <div>
+                                          <p>{t(`detail_booked_tour.${cancel_info.refund_message.helper ? 'people_refund_help' : 'people_refund'}`)}&nbsp;
+                                            <strong>{cancel_info.refund_message.name}</strong>
+                                          </p>
+                                          <p>{t('detail_booked_tour.passport')}: <strong>{cancel_info.refund_message.passport}</strong></p>
+                                        </div>
+                                      }
                                       <p>{t('detail_booked_tour.refund_time')} <strong>{formatDate(cancel_info.refunded_time, "dd/MM/yyyy HH:mm")}</strong></p>
                                       <p>{t('detail_booked_tour.refund_money')} <strong>{cancel_info.money_refunded.toLocaleString()} VND</strong></p>
                                     </div>
@@ -353,7 +371,17 @@ class DetailBookedTour extends React.Component {
                                 <div className="header-title has-top-border">{t('detail_booked_tour.checkout_info')}
                                   <span className="icon"><FaMoneyBill style={{fontSize: '25px', position: 'relative', top: '-1px'}}/></span>
                                 </div>
-                                <p className="mt-3 mb-3">{t('detail_booked_tour.method')}&nbsp; <strong>{t('detail_booked_tour.' + this.state.bookTour.payment_method.name)}</strong></p>
+                                <p className="mt-3 checkout-p">{t('detail_booked_tour.method')}&nbsp; <strong>{t('detail_booked_tour.' + this.state.bookTour.payment_method.name)}</strong></p>
+                                {this.state.bookTour.message_pay && this.state.bookTour.status !== 'booked' && this.state.bookTour !== 'cancelled' &&
+                                  <div>
+                                    <p className="checkout-p">{t(`detail_booked_tour.${this.state.bookTour.message_pay.helper ? 'people_pay_help' : 'people_pay'}`)}&nbsp;&nbsp;
+                                      <strong>{this.state.bookTour.message_pay.name}</strong>
+                                    </p>
+                                    <p className="mb-3 checkout-p">{t('detail_booked_tour.passport')}:&nbsp;&nbsp;
+                                      <strong>{this.state.bookTour.message_pay.passport}</strong>
+                                    </p>
+                                  </div>
+                                }
                                 <div className="row no-padding">
                                   <div className="col-md-6 col-sm-6 col-12">
                                     <div className="checkout-contact">

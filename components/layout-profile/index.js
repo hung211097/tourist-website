@@ -86,7 +86,7 @@ class LayoutProfile extends React.Component {
                           <section className="user-profile">
                             <div className="row">
                               <div className="col-md-4 col-lg-3">
-                                <StickyBox offsetTop={90}>
+                                <StickyBox offsetTop={10}>
                                   <ul className="user-profile__navigation">
                                   <li className={this.props.tabName === "profile" ? "active" : ""}>
                                     <Link route="profile">

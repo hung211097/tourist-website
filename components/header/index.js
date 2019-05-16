@@ -748,115 +748,113 @@ class Header extends React.Component {
             </div>
           </div>
           {/*STICKY NAVIGATION*/}
-          <div className={this.state.isSticky ? "nd_options_section navigation sticky_nav sticky_move_down"  : "nd_options_section navigation sticky_nav sticky_move_up"}>
-            <div className="nd_options_container nd_options_position_relative">
-              <div className="nav-content nd_options_dnone_responsive">
+          {/*<div className={this.state.isSticky ? "nd_options_section navigation sticky_nav sticky_move_down"  : "nd_options_section navigation sticky_nav sticky_move_up"}>*/}
+            {/*<div className="nd_options_container nd_options_position_relative">*/}
+              {/*<div className="nav-content nd_options_dnone_responsive">*/}
                   {/*<div style={{height: '10px'}} className="nd_options_section" />*/}
-                    {/*LOGO*/}
-                    <Link route="home">
-                      <a>
-                        <img alt="logo" className="nd_options_position_absolute nd_options_left_15 logo" src="/static/images/logo.png"/>
-                      </a>
-                    </Link>
-                    <div className="nd_options_navigation_2 nd_options_navigation_type nd_options_text_align_right nd_options_float_right nd_options_dnone_responsive">
+                  {/*<Link route="home">
+                    <a>
+                      <img alt="logo" className="nd_options_position_absolute nd_options_left_15 logo" src="/static/images/logo.png"/>
+                    </a>
+                  </Link>*/}
+                  {/*<div className="nd_options_navigation_2 nd_options_navigation_type nd_options_text_align_right nd_options_float_right nd_options_dnone_responsive">
                     <div className="nd_options_display_table">
-                      <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
-                        <div className="menu-menu-1-container">
-                          <ul id="menu-menu-2" className="menu">
-                            <li className={this.props.page === 'home' ? 'active' : ''}>
-                              <Link route="home">
-                                <a>{t('header.home')}</a>
-                              </Link>
-                            </li>
-                            <li className={this.props.page === 'domestic_tour' ? 'active mega-menu' : 'mega-menu'}>
-                              <Link route="tours" params={{id: 1, name: "trong-nuoc"}}>
-                                <a>{t('header.domestic_tour')}</a>
-                              </Link>
-                              <ul className="row dropdown-menu">
-                                {this.domesticTour.map((item, key) => {
-                                    return(
-                                      <li className="col-sm-4 col-12" key={key}>
-                                        <ul className="list-unstyled">
-                                          <li>{t('header.' + item.name)}</li>
-                                          {item.locations.map((item_2, key_2) => {
-                                              return(
-                                                <li key={key_2}>
-                                                  <Link route="tours" params={{id: item_2.id, name: item_2.slug, mark: 'p'}}>
-                                                    <a>
-                                                      {item_2.name}
-                                                    </a>
-                                                  </Link>
-                                                </li>
-                                              )
-                                            })
-                                          }
-                                        </ul>
-                                      </li>
-                                    )
-                                  })
+                        <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
+                          <div className="menu-menu-1-container">
+                            <ul id="menu-menu-2" className="menu">
+                              <li className={this.props.page === 'home' ? 'active' : ''}>
+                                <Link route="home">
+                                  <a>{t('header.home')}</a>
+                                </Link>
+                              </li>
+                              <li className={this.props.page === 'domestic_tour' ? 'active mega-menu' : 'mega-menu'}>
+                                <Link route="tours" params={{id: 1, name: "trong-nuoc"}}>
+                                  <a>{t('header.domestic_tour')}</a>
+                                </Link>
+                                <ul className="row dropdown-menu">
+                                  {this.domesticTour.map((item, key) => {
+                                      return(
+                                        <li className="col-sm-4 col-12" key={key}>
+                                          <ul className="list-unstyled">
+                                            <li>{t('header.' + item.name)}</li>
+                                            {item.locations.map((item_2, key_2) => {
+                                                return(
+                                                  <li key={key_2}>
+                                                    <Link route="tours" params={{id: item_2.id, name: item_2.slug, mark: 'p'}}>
+                                                      <a>
+                                                        {item_2.name}
+                                                      </a>
+                                                    </Link>
+                                                  </li>
+                                                )
+                                              })
+                                            }
+                                          </ul>
+                                        </li>
+                                      )
+                                    })
+                                  }
+                                </ul>
+                              </li>
+                              <li className={this.props.page === 'international_tour' ? 'active mega-menu' : 'mega-menu'}>
+                                <Link route="tours" params={{id: 2, name: "quoc-te"}}>
+                                  <a>{t('header.international_tour')}</a>
+                                </Link>
+                                <ul className="row dropdown-menu">
+                                  {this.internationalTour.map((item, key) => {
+                                      return(
+                                        <li className="col-sm-4 col-12" key={key}>
+                                          <ul className="list-unstyled">
+                                            <li>{t('header.' + item.name)}</li>
+                                            {item.locations.map((item_2, key_2) => {
+                                                return(
+                                                  <li key={key_2}>
+                                                    <Link route="tours" params={{id: item_2.id, name: item_2.slug, mark: 'c'}}>
+                                                      <a>
+                                                        {t('header.' + item_2.name)}
+                                                      </a>
+                                                    </Link>
+                                                  </li>
+                                                )
+                                              })
+                                            }
+                                          </ul>
+                                        </li>
+                                      )
+                                    })
+                                  }
+                                </ul>
+                              </li>
+                              <li className={this.props.page === 'news' ? 'active' : ''}>
+                                <Link route="news">
+                                  <a>{t('header.news')}</a>
+                                </Link>
+                              </li>
+                              <li className="nd_options_recommend">
+                                {this.props.recommendLocation &&
+                                  <div className="count-location">
+                                    <span>{this.props.recommendLocation.length}</span>
+                                  </div>
                                 }
-                              </ul>
-                            </li>
-                            <li className={this.props.page === 'international_tour' ? 'active mega-menu' : 'mega-menu'}>
-                              <Link route="tours" params={{id: 2, name: "quoc-te"}}>
-                                <a>{t('header.international_tour')}</a>
-                              </Link>
-                              <ul className="row dropdown-menu">
-                                {this.internationalTour.map((item, key) => {
-                                    return(
-                                      <li className="col-sm-4 col-12" key={key}>
-                                        <ul className="list-unstyled">
-                                          <li>{t('header.' + item.name)}</li>
-                                          {item.locations.map((item_2, key_2) => {
-                                              return(
-                                                <li key={key_2}>
-                                                  <Link route="tours" params={{id: item_2.id, name: item_2.slug, mark: 'c'}}>
-                                                    <a>
-                                                      {t('header.' + item_2.name)}
-                                                    </a>
-                                                  </Link>
-                                                </li>
-                                              )
-                                            })
-                                          }
-                                        </ul>
-                                      </li>
-                                    )
-                                  })
-                                }
-                              </ul>
-                            </li>
-                            <li className={this.props.page === 'news' ? 'active' : ''}>
-                              <Link route="news">
-                                <a>{t('header.news')}</a>
-                              </Link>
-                            </li>
-                            <li className="nd_options_recommend">
-                              {this.props.recommendLocation &&
-                                <div className="count-location">
-                                  <span>{this.props.recommendLocation.length}</span>
+                                <div className="recommend-container">
+                                  <a onClick={this.handleShowRecommendation.bind(this)} title="Recommendation">
+                                    <img alt="icon" src="/static/images/luggage.png"/>
+                                  </a>
                                 </div>
-                              }
-                              <div className="recommend-container">
-                                <a onClick={this.handleShowRecommendation.bind(this)} title="Recommendation">
-                                  <img alt="icon" src="/static/images/luggage.png"/>
-                                </a>
-                              </div>
-                            </li>
-                          </ul>
-                          <div className="access-location">
-                            <a href='javascript:;' onClick={this.requestGeolocation.bind(this)} title="Access your location">
-                              <MdLocationOn style={{color: '#EA4335', fontSize: '28px'}}/>
-                            </a>
+                              </li>
+                            </ul>
+                            <div className="access-location">
+                              <a href='javascript:;' onClick={this.requestGeolocation.bind(this)} title="Access your location">
+                                <MdLocationOn style={{color: '#EA4335', fontSize: '28px'}}/>
+                              </a>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                  {/*<div style={{height: '10px'}} className="nd_options_section" />*/}
-                </div>
+                  </div>*/}
+              {/*</div>*/}
               {/*RESPONSIVE*/}
-              <div className="nd_options_section text-center d-none nd_options_display_block_responsive">
+              {/*<div className="nd_options_section text-center d-none nd_options_display_block_responsive">
                 <div className="nd_options_section nd_options_height_20" />
                 <div className="nd_options_section row row-center">
                   <div className="col-2 no-padding text-left">
@@ -901,10 +899,10 @@ class Header extends React.Component {
                   </div>
                 </div>
                 <div className="nd_options_section nd_options_height_20" />
-              </div>
+              </div>*/}
               {/*RESPONSIVE*/}
-            </div>
-          </div>
+            {/*</div>*/}
+          {/*</div>*/}
           {/*STICKY NAVIGATION*/}
         </header>
       </div>

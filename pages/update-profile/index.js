@@ -70,6 +70,7 @@ class UpdateProfile extends React.Component {
                 birthdate: user.birthdate && isValidDate(user.birthdate) ? formatDate(user.birthdate, 'yyyy-MM-dd') : '',
                 gender: user.sex ? user.sex.charAt(0).toUpperCase() + user.sex.substr(1) : '',
                 address: user.address ? user.address : '',
+                identity: user.passport ? user.passport : '',
                 action: false
             })
         }

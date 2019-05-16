@@ -536,7 +536,12 @@
     "refund_money": "Số tiền hoàn trả:",
     "refund_note": "Sau 3 ngày làm việc (không tính T7, Chủ Nhật) kể từ thời gian xác nhận hủy tour, quý khách có thể đến văn phòng TRAVEL TOUR nhận lại tiền hoàn",
     "refund_period": "Hạn chót nhận tiền hoàn lại:",
-    "refund_time": "Đã đến nhận tiền hoàn vào lúc:"
+    "refund_time": "Đã đến nhận tiền hoàn vào lúc:",
+    "people_pay": "Người thanh toán:",
+    "people_pay_help": "Người thanh toán giúp:",
+    "people_cancel": "Người hủy tour trực tiếp:",
+    "people_refund": "Người nhận tiền",
+    "people_refund_help": "Người nhận tiền giúp:"
   },
   "cancel_tour": {
     "title": "HỦY TOUR",
