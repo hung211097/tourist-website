@@ -264,9 +264,6 @@ class DetailBookedTour extends React.Component {
       if(this.state.bookTour){
         tourInfo = this.state.bookTour.tour_turn
         cancel_info = this.state.bookTour.cancel_bookings[0]
-        // if(cancel_info.request_offline_person){
-        //   cancel_info.request_offline_person = JSON.parse(cancel_info.request_offline_person)
-        // }
       }
         return (
             <LayoutProfile page="profile" tabName="my-booking" {...this.props}>
@@ -285,7 +282,7 @@ class DetailBookedTour extends React.Component {
                             <div className="finish">
                               {cancel_info &&
                                 <div className="notification-info">
-                                  {cancel_info.confirm_time && !cancel_info.refunded_time && !!cancel_info.money_refunded &&
+                                  {cancel_info.confirm_time && !!cancel_info.money_refunded &&
                                     cancel_info.refund_period && this.state.bookTour.status === 'confirm_cancel' &&
                                     <div>
                                       {cancel_info.request_offline_person &&
@@ -296,6 +293,7 @@ class DetailBookedTour extends React.Component {
                                       }
                                       <p>{t('detail_booked_tour.confirm_cancel_content')} <strong>{formatDate(cancel_info.confirm_time, "dd/MM/yyyy HH:mm")}</strong></p>
                                       <p>{t('detail_booked_tour.refund_money')} <strong>{cancel_info.money_refunded.toLocaleString()} VND</strong></p>
+                                      <br/>
                                       <p>{t('detail_booked_tour.refund_note')}</p>
                                       <p>{t('detail_booked_tour.refund_period')} <strong>{formatDate(cancel_info.refund_period)}</strong></p>
                                     </div>
