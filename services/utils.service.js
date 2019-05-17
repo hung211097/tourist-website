@@ -227,7 +227,7 @@ export function convertCurrencyToUSD(money, rate){
 
 export function caculateRefund(money, startDay, isHoliday){
   let numDay = distanceFromDays(new Date(), new Date(startDay))
-  return money * percentMoneyRefund(numDay, isHoliday)
+  return money * percentMoneyRefund(numDay, isHoliday) / 100
 }
 
 function percentMoneyRefund(numDay, holiday) {
@@ -249,7 +249,7 @@ function percentMoneyRefund(numDay, holiday) {
         }
     } else {
         if (numDay >= 30) {
-            return 0;
+            return 100;
         } else if (25 <= numDay && numDay <= 29) {
             return 85;
         } else if (22 <= numDay && numDay <= 24) {

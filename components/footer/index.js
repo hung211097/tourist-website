@@ -1,8 +1,9 @@
 import React from 'react'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
+import { PopupInfo } from 'components'
 import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa"
-import { FaArrowCircleUp } from "react-icons/fa"
+import { FaPhone, FaEnvelope, FaLocationArrow, FaArrowCircleUp } from "react-icons/fa"
 import * as Scroll from 'react-scroll'
 import { Link } from 'routes'
 import { withNamespaces  } from "react-i18next"
@@ -17,14 +18,43 @@ class Footer extends React.Component {
 
   constructor(props) {
     super(props)
+    this.state = {
+      email: '',
+      showPopup: false
+    }
   }
 
   componentDidMount() {
   }
 
+  handleChangeEmail(e){
+    this.setState({
+      email: e.target.value
+    })
+  }
+
   scrollToTop(){
     scroll.scrollToTop({
       duration: 500
+    })
+  }
+
+  handleSubmit(e){
+    e.preventDefault()
+
+    if(!this.state.email){
+      return
+    }
+
+    this.setState({
+      email: '',
+      showPopup: true
+    })
+  }
+
+  handleClose(){
+    this.setState({
+      showPopup: false
     })
   }
 
@@ -44,11 +74,13 @@ class Footer extends React.Component {
                       <div className="col-sm-4">
                         <div className="inner">
                           <div className="wrapper">
-                            <h3>{t('footer.phone_support')}</h3>
-                            <div style={{height: '10px'}} />
+                            <h3>{t('footer.contact')}</h3>
+                            {/*<div style={{height: '5px'}} />
                             <p>24 {t('footer.hour')}</p>
-                            <div className="dummy-height"/>
-                            <p className="phone-number">+ 0963 186 896</p>
+                            <div className="dummy-height"/>*/}
+                            <a href="tel:0963 186 896" className="contact-detail"><i><FaPhone /></i>&nbsp;&nbsp;0963 186 896</a>
+                            <a href="mailto:traveltour@gmail.com" className="contact-detail"><i><FaEnvelope /></i>&nbsp;&nbsp;traveltour@gmail.com</a>
+                            <p style={{marginTop: '15px'}} className="contact-detail"><i><FaLocationArrow/></i>&nbsp;&nbsp; 162 Ba Tháng Hai, Phường 12, Quận 10</p>
                           </div>
                         </div>
                       </div>
@@ -56,13 +88,26 @@ class Footer extends React.Component {
                         <div className="inner">
                           <div className="wrapper">
                             <h3>{t('footer.connect')}</h3>
-                            <div style={{height: '10px'}}/>
-                            <p>{t('footer.social')}</p>
-                            <div className="dummy-height"/>
+                            <div style={{height: '15px'}}/>
+                            {/*<p>{t('footer.social')}</p>
+                            <div className="dummy-height"/>*/}
                             <div className="social-media">
                               <a href="javascript:;"><FaFacebookF style={{fontSize: '24px', color: 'white'}}/></a>
                               <a href="javascript:;"><FaInstagram style={{fontSize: '24px', color: 'white'}}/></a>
                               <a href="javascript:;"><FaYoutube style={{fontSize: '24px', color: 'white'}}/></a>
+                            </div>
+                            <div className="subscribe-zone">
+                              <form onSubmit={this.handleSubmit.bind(this)}>
+                                <p>Đăng ký nhận tin</p>
+                                <div className="subscribe-wrapper">
+                                  <span className="email-sub">
+                                    <input type="email" name="email" value={this.state.email} onChange={this.handleChangeEmail.bind(this)} placeholder="Email"/>
+                                  </span>
+                                </div>
+                                <div className="subscribe-btn">
+                                  <button onClick={this.handleSubmit.bind(this)}>{t('footer.subscribe')}</button>
+                                </div>
+                              </form>
                             </div>
                           </div>
                         </div>
@@ -76,13 +121,19 @@ class Footer extends React.Component {
                             <Link route="faq">
                               <a><h3>{t('footer.faq')}</h3></a>
                             </Link>
-                          </div>
-                          <div className="col-sm-6">
-                            <Link route="contact">
-                              <a><h3 className="margin-top-responsive">{t('footer.contact')}</h3></a>
+                            <Link route="news">
+                              <a><h3 className="margin-top-responsive">{t('footer.news')}</h3></a>
                             </Link>
                             <Link route="terms-condition">
                               <a><h3 className="term-condition">{t('footer.terms')}</h3></a>
+                            </Link>
+                          </div>
+                          <div className="col-sm-6">
+                            <Link route="tours" params={{id: 1, name: "trong-nuoc"}}>
+                              <a><h3>{t('footer.domestic_tour')}</h3></a>
+                            </Link>
+                            <Link route="tours" params={{id: 2, name: "quoc-te"}}>
+                              <a><h3>{t('footer.international_tour')}</h3></a>
                             </Link>
                           </div>
                         </div>
@@ -108,6 +159,13 @@ class Footer extends React.Component {
             </div>
           </div>
         </div>
+        <PopupInfo show={this.state.showPopup} onClose={this.handleClose.bind(this)} customContent={{width: '90%', maxWidth: '430px'}}>
+          <h1>{t('subscription.thank')}!</h1>
+          <div className="nd_options_height_10" />
+          <p>{t('subscription.content')}</p>
+          <div className="nd_options_height_10" />
+          <a className="co-btn" onClick={this.handleClose.bind(this)}>{t('register.OK')}</a>
+        </PopupInfo>
       </footer>
     )
   }

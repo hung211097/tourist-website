@@ -11,7 +11,7 @@ import { Router, Link } from 'routes'
 import ApiService from 'services/api.service'
 import ReactTable from 'react-table'
 import { capitalize } from '../../services/utils.service'
-import { formatDate, compareDate, distanceFromDays, isSameDate } from '../../services/time.service'
+import { formatDate, compareDate, distanceFromDays, isSameDate, addDay } from '../../services/time.service'
 import { withNamespaces } from "react-i18next"
 import { slugify } from '../../services/utils.service'
 import Redirect from 'routes/redirect'
@@ -265,6 +265,10 @@ class DetailBookedTour extends React.Component {
         tourInfo = this.state.bookTour.tour_turn
         cancel_info = this.state.bookTour.cancel_bookings[0]
       }
+      let dt = null
+      if(cancel_info){
+        dt = new Date(cancel_info.confirm_time)
+      }
         return (
             <LayoutProfile page="profile" tabName="my-booking" {...this.props}>
                 <style jsx>{styles}</style>
@@ -291,10 +295,12 @@ class DetailBookedTour extends React.Component {
                                           <p>{t('detail_booked_tour.passport')}: <strong>{cancel_info.request_offline_person.passport}</strong></p>
                                         </div>
                                       }
-                                      <p>{t('detail_booked_tour.confirm_cancel_content')} <strong>{formatDate(cancel_info.confirm_time, "dd/MM/yyyy HH:mm")}</strong></p>
+                                      <p>{t('detail_booked_tour.confirm_cancel_content')} &nbsp;
+                                        <strong>{formatDate(new Date(dt.valueOf() + dt.getTimezoneOffset() * 60 * 1000), "dd/MM/yyyy HH:mm")}</strong>
+                                      </p>
                                       <p>{t('detail_booked_tour.refund_money')} <strong>{cancel_info.money_refunded.toLocaleString()} VND</strong></p>
                                       <br/>
-                                      <p>{t('detail_booked_tour.refund_note')}</p>
+                                      <p>{t('detail_booked_tour.refund_note')} <strong>{formatDate(addDay(cancel_info.confirm_time, 3))}</strong></p>
                                       <p>{t('detail_booked_tour.refund_period')} <strong>{formatDate(cancel_info.refund_period)}</strong></p>
                                     </div>
                                   }

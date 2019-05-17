@@ -5,6 +5,9 @@ import Popup from 'reactjs-popup'
 import ApiService from 'services/api.service'
 import { CustomCheckbox } from 'components'
 import { withNamespaces } from "react-i18next"
+import { formatDate } from '../../services/time.service'
+import { Link } from 'routes'
+import { caculateRefund, slugify } from '../../services/utils.service'
 
 let customStyles = {
     width: '90%',
@@ -40,11 +43,19 @@ class PopupCancelTour extends React.Component {
           reason: '',
           isAgree: false,
           isSubmit: false,
+          tourInfo: null,
           error: ''
         }
     }
 
     componentDidMount(){
+      if(this.props.tour){
+        this.apiService.getToursTurnId(this.props.tour.fk_tour_turn).then((res) => {
+          this.setState({
+            tourInfo: res.data
+          })
+        })
+      }
     }
 
     handleClose() {
@@ -112,7 +123,9 @@ class PopupCancelTour extends React.Component {
         if(this.state.isSend){
           localStyles.maxWidth = '400px'
         }
-        const { t } = this.props
+        const { t, tour } = this.props
+        const tourInfo = tour.tour_turn
+
         return (
             <div>
                 <style jsx>{styles}</style>
@@ -136,6 +149,30 @@ class PopupCancelTour extends React.Component {
                               </div>
                               :
                               <div>
+                                <div className="tour-info">
+                                  <h3>{t('cancel_tour.tour_info')}: </h3>
+                                  <div className="nd_options_section nd_options_line_height_0 underline-zone">
+                                    <span className="underline"></span>
+                                  </div>
+                                  {tourInfo &&
+                                    <ul>
+                                      <li>
+                                        <Link route="detail-tour" params={{id: tourInfo.code, name: slugify(tourInfo.tour.name)}}>
+                                          <a>{tourInfo.tour.name}</a>
+                                        </Link>
+                                      </li>
+                                      <li>{t('cancel_tour.start_date')}: <strong>{formatDate(tourInfo.start_date)}</strong></li>
+                                      <li>{t('cancel_tour.book_at')}: <strong>{formatDate(tour.book_time, 'dd/MM/yyyy HH:mm')}</strong></li>
+                                      <li>{t('cancel_tour.num_people')}: <strong>{tour.num_passenger}</strong></li>
+                                      <li>{t('cancel_tour.total_money')}: <strong>{tour.total_pay.toLocaleString()} VND</strong></li>
+                                      {tour.status === 'paid' &&
+                                        <li>{t('cancel_tour.refund_money')}: &nbsp;
+                                          <strong>{caculateRefund(tour.total_pay, tourInfo.start_date, tourInfo.isHoliday).toLocaleString()} VND</strong>
+                                        </li>
+                                      }
+                                    </ul>
+                                  }
+                                </div>
                                 <form onSubmit={this.handleSubmit.bind(this)}>
                                   <div className="reason">
                                     <div className="nd_options_height_20"/>

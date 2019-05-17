@@ -7,11 +7,11 @@ import { connect } from 'react-redux'
 import ApiService from '../../services/api.service'
 import { wizardStep } from '../../constants'
 import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaUserSecret, FaChild, FaRegCalendarAlt, FaChevronDown, FaCheck, FaPaypal } from "react-icons/fa"
-import { formatDate, distanceFromDays } from '../../services/time.service'
+import { formatDate, distanceFromDays, subDay } from '../../services/time.service'
 import { slugify, isServer, convertCurrencyToUSD } from '../../services/utils.service'
 import { useModal } from '../../actions'
 import { modal } from '../../constants'
-import { withNamespaces, Trans } from "react-i18next"
+import { withNamespaces } from "react-i18next"
 import { metaData } from '../../constants/meta-data'
 import Redirect from 'routes/redirect'
 import PaypalExpressBtn from 'react-paypal-express-checkout'
@@ -347,11 +347,11 @@ class CheckOutPayment extends React.Component {
                                     <div className="nd_options_section nd_options_height_5"/>
                                     <strong>Email:</strong>&nbsp;<a href="mailto:traveltour@gmail.com">traveltour@gmail.com</a><br />
                                     <br/>
-                                      <p className="bold">
-                                        <Trans i18nKey="checkout_payment.note_pay" count={checkout_days}>
-                                          Quý khách vui lòng thanh toán trước {{checkout_days}} ngày tour khởi hành, nếu sau đó chưa thanh toán thì bên công ty sẽ hủy tour của quý khách.
-                                        </Trans>
-                                      </p>
+                                    <p className="bold">
+                                      {t('checkout_payment.note_pay_1')}&nbsp;
+                                      <span style={{color: 'red'}}>{formatDate(subDay(tourInfo.start_date, checkout_days))}</span>.&nbsp;
+                                      {t('checkout_payment.note_pay_2')}
+                                    </p>
                                   </div>
                                 </div>
                               </div>
@@ -392,9 +392,9 @@ class CheckOutPayment extends React.Component {
                                     <p>{t('checkout_payment.account_name')}: <strong>TRAVEL TOUR</strong></p>
                                     <br/>
                                     <p className="bold">
-                                      <Trans i18nKey="checkout_payment.note_pay" count={checkout_days}>
-                                        Quý khách vui lòng thanh toán trước {{checkout_days}} ngày tour khởi hành, nếu sau đó chưa thanh toán thì bên công ty sẽ hủy tour của quý khách.
-                                      </Trans>
+                                      {t('checkout_payment.note_pay_1')}&nbsp;
+                                      <span style={{color: 'red'}}>{formatDate(subDay(tourInfo.start_date, checkout_days))}</span>.&nbsp;
+                                      {t('checkout_payment.note_pay_2')}
                                     </p>
                                     <br/>
                                     <p>{t('checkout_payment.thank')}</p>
