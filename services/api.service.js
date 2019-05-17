@@ -72,8 +72,8 @@ export default () => {
       url += params.isTour ? "?tour=true" : ''
       return fetchCached(url)
     },
-    getPassengersInBookTour: (id, page = 1, limit = 5) => {
-      let url = baseURL + `book_tour/getPassengerInBookTourHistory/${id}?page=${page}&per_page=${limit}`
+    getPassengersInBookTour: (id) => {
+      let url = baseURL + `book_tour/getPassengerInBookTourHistory/${id}`
       return fetchCached(url)
     },
     getBookToursHistory: (page = 1, limit = 5) => {

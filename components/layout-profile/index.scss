@@ -59,6 +59,11 @@
         @media screen and (max-width: 767px){
           margin-right: 0;
         }
+        @media screen and (max-width: 576px){
+          .col-md-4, .col-md-8{
+            padding: 0 !important;
+          }
+        }
         padding-bottom: 20px;
 
         .user-profile__navigation {

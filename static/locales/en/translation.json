@@ -65,9 +65,13 @@
     "social": "SOCIAL MEDIA CHANNELS",
     "about": "About Us",
     "faq": "FAQ",
-    "contact": "Contact",
+    "news": "News",
+    "contact": "Contact Us",
     "terms": "Terms of condition",
-    "copyright": "© Copyright 2018 Travel Tour"
+    "copyright": "© Copyright 2018 Travel Tour",
+    "domestic_tour": "Domestic tour",
+    "international_tour": "International tour",
+    "subscribe": "Subscribe"
   },
   "login": {
     "title": "LOGIN",
@@ -327,7 +331,7 @@
     "sub_part_3_3_2_2": "Cancellation before 72 hours compared to departure time: 50% of the total value of the travel program.",
     "sub_part_3_3_2_3": "Cancellation 24 hours prior to departure: 75% of the total value of the tour program.",
     "sub_part_3_3_2_4": "Cancel after 24 hours compared to departure time: 100% of the total value of the tour program.",
-    "sub_part_3_3_2_5": "No refunds for customers who leave the tour program And depending on the specific tour, will be clearly informed in each tour.",
+    "sub_part_3_3_2_5": "No refund for customers who leave the tour program And depending on the specific tour, will be clearly informed in each tour.",
     "sub_part_3_3_3": "Force Majeure: If the travel program is canceled or changed due to force majeure (Fire, weather, natural disaster, war ...), then both parties will not be liable to any compensation obligation Completion of losses has occurred and does not assume any liability.",
     "sub_part_3_4": "4. Payment of money.",
     "sub_part_3_4_1": "Payment by cash or bank transfer.",
@@ -534,9 +538,14 @@
     "method": "Payment method:",
     "confirm_cancel_content": "Confirm cancel tour in:",
     "refund_money": "Refund money:",
-    "refund_note": "After three working day (except Saturday and Sunday) since confirm cancel time, you can come to TRAVEL TOUR Office to receive refunds",
-    "refund_period": "Deadline to receive refunds:",
-    "refund_time": "Received refunds in:"
+    "refund_note": "Time to receive refund:",
+    "refund_period": "Deadline to receive refund:",
+    "refund_time": "Received refund in:",
+    "people_pay": "People paying:",
+    "people_pay_help": "People help pay:",
+    "people_cancel": "People cancel tour directly:",
+    "people_refund": "People receive refund:",
+    "people_refund_help": "People help receive refund:"
   },
   "cancel_tour": {
     "title": "CANCEL TOUR",
@@ -545,6 +554,7 @@
     "book_at": "Book at",
     "num_people": "Number of people",
     "total_money": "Total money",
+    "refund_money": "refund after cancelling tour",
     "reason": "Your reason",
     "terms": "Terms of condition",
     "have_read": "I have read and accepted with these above terms of condition",
@@ -588,7 +598,11 @@
     "thank": "Thank you!",
     "reason_required": "Reason is required!",
     "not_agree": "You haven't agreed with our terms of condition yet!",
-    "There is an error, please try again!": "There is an error, please try again!"
+    "There is an error, please try again!": "There is an error, please try again!",
+    "close": "CLOSE",
+    "busy": "Busy work unexpectedly",
+    "sick": "Sick, hospitalized and cannot go",
+    "other": "Other"
   },
   "wizard_step": {
     "step": "Step",
@@ -669,7 +683,8 @@
     "choose_method": "Please choose a payment method!",
     "There is an error, please try book tour again!": "There is an error, please try book tour again!",
     "This tour is full slot": "This tour is full slot, please book another tour!",
-    "note_pay": "Please pay {{checkout_days}} days before departure tour. If the tour is not paid, the company will cancel your tour."
+    "note_pay_1": "Please pay before",
+    "note_pay_2": "If the tour is not paid, the company will cancel your tour."
   },
   "checkout_confirmation": {
     "title": "BOOKING CONFIRMATION",
@@ -746,6 +761,10 @@
     "sale_price": "Price",
     "max_people": "Maximum passengers",
     "rest_people": "Accepted passengers"
+  },
+  "subscription": {
+    "thank": "THANK YOU",
+    "content": "We will send you email with preferential information, new tours quickly"
   },
   "search_location": "Search location",
   "checkout": "CHECKOUT",

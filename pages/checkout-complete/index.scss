@@ -136,6 +136,10 @@
             margin-bottom: 15px;
             border: 1px solid #ddd;
           }
+          th, td{
+            text-align: center;
+            white-space: nowrap;
+          }
         }
         .passenger-table {
           margin-top: 20px;

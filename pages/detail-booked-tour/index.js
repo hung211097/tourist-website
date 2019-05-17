@@ -4,14 +4,14 @@ import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 // import _ from 'lodash'
-import InfiniteScroll from 'react-infinite-scroller'
 import { FaRegCalendarMinus, FaRegCalendarPlus, FaRegCalendarAlt, FaMoneyBill,
   FaPhone, FaUsers, FaArrowLeft, FaInfoCircle } from "react-icons/fa"
 import { Router, Link } from 'routes'
 import ApiService from 'services/api.service'
-import ReactTable from 'react-table'
+// import ReactTable from 'react-table'
+// import InfiniteScroll from 'react-infinite-scroller'
 import { capitalize } from '../../services/utils.service'
-import { formatDate, compareDate, distanceFromDays, isSameDate } from '../../services/time.service'
+import { formatDate, distanceFromDays, isSameDate, addDay } from '../../services/time.service'
 import { withNamespaces } from "react-i18next"
 import { slugify } from '../../services/utils.service'
 import Redirect from 'routes/redirect'
@@ -57,8 +57,6 @@ class DetailBookedTour extends React.Component {
         'children': 'Children'
       }
       this.state = {
-        page: 1,
-        hasMore: true,
         passengers: [],
         bookTour: props.tourInfo,
         trackingTour: false,
@@ -84,15 +82,11 @@ class DetailBookedTour extends React.Component {
 
     loadMore(){
       const id = this.state.bookTour.id
-      if(this.state.page > 0){
-        this.apiService.getPassengersInBookTour(id, this.state.page, 5).then((res) => {
-          this.setState({
-            passengers: [...this.state.passengers, ...res.data],
-            page: res.next_page,
-            hasMore: res.next_page > 0
-          })
+      this.apiService.getPassengersInBookTour(id).then((res) => {
+        this.setState({
+          passengers: res.data,
         })
-      }
+      })
     }
 
     componentDidMount(){
@@ -265,6 +259,10 @@ class DetailBookedTour extends React.Component {
         tourInfo = this.state.bookTour.tour_turn
         cancel_info = this.state.bookTour.cancel_bookings[0]
       }
+      let dt = null
+      if(cancel_info){
+        dt = new Date(cancel_info.confirm_time)
+      }
         return (
             <LayoutProfile page="profile" tabName="my-booking" {...this.props}>
                 <style jsx>{styles}</style>
@@ -282,16 +280,34 @@ class DetailBookedTour extends React.Component {
                             <div className="finish">
                               {cancel_info &&
                                 <div className="notification-info">
-                                  {cancel_info.confirm_time && !cancel_info.refunded_time && !!cancel_info.money_refunded && cancel_info.refund_period && this.state.bookTour.status === 'confirm_cancel' &&
+                                  {cancel_info.confirm_time && !!cancel_info.money_refunded &&
+                                    cancel_info.refund_period && this.state.bookTour.status === 'confirm_cancel' &&
                                     <div>
-                                      <p>{t('detail_booked_tour.confirm_cancel_content')} <strong>{formatDate(cancel_info.confirm_time, "dd/MM/yyyy HH:mm")}</strong></p>
+                                      {cancel_info.request_offline_person &&
+                                        <div>
+                                          <p>{t('detail_booked_tour.people_cancel')} <strong>{cancel_info.request_offline_person.name}</strong></p>
+                                          <p>{t('detail_booked_tour.passport')}: <strong>{cancel_info.request_offline_person.passport}</strong></p>
+                                        </div>
+                                      }
+                                      <p>{t('detail_booked_tour.confirm_cancel_content')} &nbsp;
+                                        <strong>{formatDate(new Date(dt.valueOf() + dt.getTimezoneOffset() * 60 * 1000), "dd/MM/yyyy HH:mm")}</strong>
+                                      </p>
                                       <p>{t('detail_booked_tour.refund_money')} <strong>{cancel_info.money_refunded.toLocaleString()} VND</strong></p>
-                                      <p>{t('detail_booked_tour.refund_note')}</p>
+                                      <br/>
+                                      <p>{t('detail_booked_tour.refund_note')} <strong>{formatDate(addDay(cancel_info.confirm_time, 3))}</strong></p>
                                       <p>{t('detail_booked_tour.refund_period')} <strong>{formatDate(cancel_info.refund_period)}</strong></p>
                                     </div>
                                   }
                                   {cancel_info.refunded_time && !!cancel_info.money_refunded && this.state.bookTour.status === 'refunded' &&
                                     <div>
+                                      {cancel_info.refund_message &&
+                                        <div>
+                                          <p>{t(`detail_booked_tour.${cancel_info.refund_message.helper ? 'people_refund_help' : 'people_refund'}`)}&nbsp;
+                                            <strong>{cancel_info.refund_message.name}</strong>
+                                          </p>
+                                          <p>{t('detail_booked_tour.passport')}: <strong>{cancel_info.refund_message.passport}</strong></p>
+                                        </div>
+                                      }
                                       <p>{t('detail_booked_tour.refund_time')} <strong>{formatDate(cancel_info.refunded_time, "dd/MM/yyyy HH:mm")}</strong></p>
                                       <p>{t('detail_booked_tour.refund_money')} <strong>{cancel_info.money_refunded.toLocaleString()} VND</strong></p>
                                     </div>
@@ -353,7 +369,17 @@ class DetailBookedTour extends React.Component {
                                 <div className="header-title has-top-border">{t('detail_booked_tour.checkout_info')}
                                   <span className="icon"><FaMoneyBill style={{fontSize: '25px', position: 'relative', top: '-1px'}}/></span>
                                 </div>
-                                <p className="mt-3 mb-3">{t('detail_booked_tour.method')}&nbsp; <strong>{t('detail_booked_tour.' + this.state.bookTour.payment_method.name)}</strong></p>
+                                <p className="mt-3 checkout-p">{t('detail_booked_tour.method')}&nbsp; <strong>{t('detail_booked_tour.' + this.state.bookTour.payment_method.name)}</strong></p>
+                                {this.state.bookTour.message_pay && this.state.bookTour.status !== 'booked' && this.state.bookTour !== 'cancelled' &&
+                                  <div>
+                                    <p className="checkout-p">{t(`detail_booked_tour.${this.state.bookTour.message_pay.helper ? 'people_pay_help' : 'people_pay'}`)}&nbsp;&nbsp;
+                                      <strong>{this.state.bookTour.message_pay.name}</strong>
+                                    </p>
+                                    <p className="mb-3 checkout-p">{t('detail_booked_tour.passport')}:&nbsp;&nbsp;
+                                      <strong>{this.state.bookTour.message_pay.passport}</strong>
+                                    </p>
+                                  </div>
+                                }
                                 <div className="row no-padding">
                                   <div className="col-md-6 col-sm-6 col-12">
                                     <div className="checkout-contact">
@@ -428,14 +454,34 @@ class DetailBookedTour extends React.Component {
                                   <span className="icon"><FaUsers style={{fontSize: '24px', position: 'relative', top: '-2px'}}/></span>
                                 </div>
                                 <div className="table-responsive">
-                                  <InfiniteScroll
-                                    pageStart={0}
-                                    loadMore={this.loadMore.bind(this)}
-                                    hasMore={this.state.page > 0}
-                                    useWindow={false}
-                                    threshold={400}
-                                    initialLoad={false}>
-                                    <ReactTable
+                                  <table className="table table-hover table-striped table-responsive-lg table-bordered">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col">{t('detail_booked_tour.fullname')}</th>
+                                        <th scope="col">{t('detail_booked_tour.phone')}</th>
+                                        <th scope="col">{t('detail_booked_tour.birthdate')}</th>
+                                        <th scope="col">{t('detail_booked_tour.gender')}</th>
+                                        <th scope="col">{t('detail_booked_tour.age')}</th>
+                                        <th scope="col">{t('detail_booked_tour.passport')}</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {!!this.state.passengers.length && this.state.passengers.map((item, key) => {
+                                          return(
+                                            <tr key={key}>
+                                              <td>{item.fullname}</td>
+                                              <td>{item.phone}</td>
+                                              <td>{formatDate(item.birthdate)}</td>
+                                              <td>{t('detail_booked_tour.' + item.sex)}</td>
+                                              <td>{t('detail_booked_tour.' + this.ages[item.type_passenger.name])}</td>
+                                              <td>{item.passport}</td>
+                                            </tr>
+                                          )
+                                        })
+                                      }
+                                    </tbody>
+                                  </table>
+                                    {/*<ReactTable
                                       data={this.state.passengers}
                                       className="-striped -highlight"
                                       showPagination={false}
@@ -479,8 +525,7 @@ class DetailBookedTour extends React.Component {
                                           className: 'text-center'
                                         }
                                       ]}
-                                    />
-                                  </InfiniteScroll>
+                                    />*/}
                                 </div>
                               </div>
                             </div>

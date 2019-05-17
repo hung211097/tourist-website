@@ -64,10 +64,14 @@
     "connect": "Kết Nối Với Chúng Tôi",
     "social": "KÊNH TRUYỀN THÔNG",
     "about": "Giới thiệu",
-    "faq": "Câu hỏi thường gặp",
+    "faq": "FAQ",
+    "news": "Tin tức",
     "contact": "Liên hệ",
     "terms": "Điều khoản",
-    "copyright": "© Bản quyền thuộc về 2018 Travel Tour"
+    "copyright": "© Bản quyền thuộc về 2018 Travel Tour",
+    "domestic_tour": "Tour trong nước",
+    "international_tour": "Tour quốc tế",
+    "subscribe": "Gửi"
   },
   "login": {
     "title": "ĐĂNG NHẬP",
@@ -517,7 +521,7 @@
     "gender": "Giới tính",
     "birthdate": "Ngày sinh",
     "age": "Độ tuổi",
-    "passport": "Chứng minh thư",
+    "passport": "CMND",
     "male": "Nam",
     "female": "Nữ",
     "other": "Khác",
@@ -534,9 +538,14 @@
     "method": "Phương thức thanh toán:",
     "confirm_cancel_content": "Đã xác nhận hủy tour vào lúc:",
     "refund_money": "Số tiền hoàn trả:",
-    "refund_note": "Sau 3 ngày làm việc (không tính T7, Chủ Nhật) kể từ thời gian xác nhận hủy tour, quý khách có thể đến văn phòng TRAVEL TOUR nhận lại tiền hoàn",
+    "refund_note": "Thời gian đến nhận tiền hoàn:",
     "refund_period": "Hạn chót nhận tiền hoàn lại:",
-    "refund_time": "Đã đến nhận tiền hoàn vào lúc:"
+    "refund_time": "Đã đến nhận tiền hoàn vào lúc:",
+    "people_pay": "Người thanh toán:",
+    "people_pay_help": "Người thanh toán giúp:",
+    "people_cancel": "Người hủy tour trực tiếp:",
+    "people_refund": "Người nhận tiền",
+    "people_refund_help": "Người nhận tiền giúp:"
   },
   "cancel_tour": {
     "title": "HỦY TOUR",
@@ -545,6 +554,7 @@
     "book_at": "Đặt vào lúc",
     "num_people": "Số hành khách",
     "total_money": "Tổng tiền",
+    "refund_money": "Tiền hoàn lại sau khi hủy tour",
     "reason": "Lý do của bạn",
     "terms": "Điều khoản hủy tour",
     "have_read": "Tôi đã đọc và đồng ý với các điều khoản hủy tour trên",
@@ -587,7 +597,11 @@
     "thank": "Xin cảm ơn!",
     "reason_required": "Lý do còn để trống!",
     "not_agree": "Bạn chưa đồng ý với điều khoản hủy tour của chúng tôi!",
-    "There is an error, please try again!": "Có lỗi xảy ra, hãy thử lại!"
+    "There is an error, please try again!": "Có lỗi xảy ra, hãy thử lại!",
+    "close": "ĐÓNG",
+    "busy": "Bận công việc đột xuất",
+    "sick": "Bị ốm, nhập viện không thể đi được",
+    "other": "Khác"
   },
   "wizard_step": {
     "step": "Bước",
@@ -668,7 +682,8 @@
     "choose_method": "Hãy chọn một phương thức thanh toán!",
     "There is an error, please try book tour again!": "Có lỗi xảy ra, xin hãy đặt tour lại!",
     "This tour is full slot": "Tour này đã hết chỗ, quý khách vui lòng đặt tour khác!",
-    "note_pay": "Quý khách vui lòng thanh toán trước {{checkout_days}} ngày tour khởi hành, nếu sau đó chưa thanh toán thì bên công ty sẽ hủy tour của quý khách."
+    "note_pay_1": "Quý khách vui lòng thanh toán trước",
+    "note_pay_2": "Nếu sau đó chưa thanh toán thì bên công ty sẽ hủy tour của quý khách."
   },
   "checkout_confirmation": {
     "title": "THÔNG TIN ĐẶT TOUR",
@@ -680,10 +695,9 @@
     "phone": "Số điện thoại",
     "address": "Địa chỉ",
     "gender": "Giới tính",
-    "passport": "Chứng minh thư",
+    "passport": "CMND",
     "birthdate": "Ngày sinh",
     "age": "Độ tuổi",
-    "passport": "Chứng minh thư",
     "male": "Nam",
     "female": "Nữ",
     "other": "Khác",
@@ -746,6 +760,10 @@
     "sale_price": "Giá tour",
     "max_people": "Số hành khách tối đa",
     "rest_people": "Số hành khách còn nhận"
+  },
+  "subscription": {
+    "thank": "CẢM ƠN QUÝ KHÁCH",
+    "content": "Chúng tôi sẽ gửi đến email của quý khách những thông tin ưu đãi, những tour du lịch mới một cách nhanh chóng"
   },
   "search_location": "Tìm địa điểm",
   "checkout": "THANH TOÁN",

@@ -70,6 +70,7 @@ class UpdateProfile extends React.Component {
                 birthdate: user.birthdate && isValidDate(user.birthdate) ? formatDate(user.birthdate, 'yyyy-MM-dd') : '',
                 gender: user.sex ? user.sex.charAt(0).toUpperCase() + user.sex.substr(1) : '',
                 address: user.address ? user.address : '',
+                identity: user.passport ? user.passport : '',
                 action: false
             })
         }
@@ -178,9 +179,9 @@ class UpdateProfile extends React.Component {
 
     handleOnSelectFileAvatar(event) {
         let file = event.target.files[0]
-        if(file.size > 10240){
-          return
-        }
+        //if(file.size > 10240){
+          //return
+        //}
 
         let reader = new FileReader();
         reader.onloadend = () => {
