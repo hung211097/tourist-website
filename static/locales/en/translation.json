@@ -598,7 +598,11 @@
     "thank": "Thank you!",
     "reason_required": "Reason is required!",
     "not_agree": "You haven't agreed with our terms of condition yet!",
-    "There is an error, please try again!": "There is an error, please try again!"
+    "There is an error, please try again!": "There is an error, please try again!",
+    "close": "CLOSE",
+    "busy": "Busy work unexpectedly",
+    "sick": "Sick, hospitalized and cannot go",
+    "other": "Other"
   },
   "wizard_step": {
     "step": "Step",

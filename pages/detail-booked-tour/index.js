@@ -4,14 +4,14 @@ import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 // import _ from 'lodash'
-import InfiniteScroll from 'react-infinite-scroller'
 import { FaRegCalendarMinus, FaRegCalendarPlus, FaRegCalendarAlt, FaMoneyBill,
   FaPhone, FaUsers, FaArrowLeft, FaInfoCircle } from "react-icons/fa"
 import { Router, Link } from 'routes'
 import ApiService from 'services/api.service'
-import ReactTable from 'react-table'
+// import ReactTable from 'react-table'
+// import InfiniteScroll from 'react-infinite-scroller'
 import { capitalize } from '../../services/utils.service'
-import { formatDate, compareDate, distanceFromDays, isSameDate, addDay } from '../../services/time.service'
+import { formatDate, distanceFromDays, isSameDate, addDay } from '../../services/time.service'
 import { withNamespaces } from "react-i18next"
 import { slugify } from '../../services/utils.service'
 import Redirect from 'routes/redirect'
@@ -57,8 +57,6 @@ class DetailBookedTour extends React.Component {
         'children': 'Children'
       }
       this.state = {
-        page: 1,
-        hasMore: true,
         passengers: [],
         bookTour: props.tourInfo,
         trackingTour: false,
@@ -84,15 +82,11 @@ class DetailBookedTour extends React.Component {
 
     loadMore(){
       const id = this.state.bookTour.id
-      if(this.state.page > 0){
-        this.apiService.getPassengersInBookTour(id, this.state.page, 5).then((res) => {
-          this.setState({
-            passengers: [...this.state.passengers, ...res.data],
-            page: res.next_page,
-            hasMore: res.next_page > 0
-          })
+      this.apiService.getPassengersInBookTour(id).then((res) => {
+        this.setState({
+          passengers: res.data,
         })
-      }
+      })
     }
 
     componentDidMount(){
@@ -460,14 +454,34 @@ class DetailBookedTour extends React.Component {
                                   <span className="icon"><FaUsers style={{fontSize: '24px', position: 'relative', top: '-2px'}}/></span>
                                 </div>
                                 <div className="table-responsive">
-                                  <InfiniteScroll
-                                    pageStart={0}
-                                    loadMore={this.loadMore.bind(this)}
-                                    hasMore={this.state.page > 0}
-                                    useWindow={false}
-                                    threshold={400}
-                                    initialLoad={false}>
-                                    <ReactTable
+                                  <table className="table table-hover table-striped table-responsive-lg table-bordered">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col">{t('detail_booked_tour.fullname')}</th>
+                                        <th scope="col">{t('detail_booked_tour.phone')}</th>
+                                        <th scope="col">{t('detail_booked_tour.birthdate')}</th>
+                                        <th scope="col">{t('detail_booked_tour.gender')}</th>
+                                        <th scope="col">{t('detail_booked_tour.age')}</th>
+                                        <th scope="col">{t('detail_booked_tour.passport')}</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {!!this.state.passengers.length && this.state.passengers.map((item, key) => {
+                                          return(
+                                            <tr key={key}>
+                                              <td>{item.fullname}</td>
+                                              <td>{item.phone}</td>
+                                              <td>{formatDate(item.birthdate)}</td>
+                                              <td>{t('detail_booked_tour.' + item.sex)}</td>
+                                              <td>{t('detail_booked_tour.' + this.ages[item.type_passenger.name])}</td>
+                                              <td>{item.passport}</td>
+                                            </tr>
+                                          )
+                                        })
+                                      }
+                                    </tbody>
+                                  </table>
+                                    {/*<ReactTable
                                       data={this.state.passengers}
                                       className="-striped -highlight"
                                       showPagination={false}
@@ -511,8 +525,7 @@ class DetailBookedTour extends React.Component {
                                           className: 'text-center'
                                         }
                                       ]}
-                                    />
-                                  </InfiniteScroll>
+                                    />*/}
                                 </div>
                               </div>
                             </div>

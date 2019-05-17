@@ -23,7 +23,6 @@
       font-size: 1.75rem;
     }
     textarea{
-      margin-top: 20px;
       font-size: 14px;
       resize: vertical;
     }
@@ -67,16 +66,28 @@
       }
     }
     .checkbox-zone{
-      margin-top: 10px;
+      margin-top: 20px;
     }
     .confirm-zone{
-      width: 35%;
+      width: 75%;
       @media screen and (max-width: 576px){
         width: 80%;
       }
       text-align: center;
       margin: auto;
       margin-top: 20px;
+      button{
+        width: 35%;
+        @media screen and (max-width: 576px){
+          width: 100%;
+        }
+      }
+      .close-btn{
+        margin-left: 25px;
+        @media screen and (max-width: 576px){
+          margin-left: 0px;
+        }
+      }
     }
     .result{
       margin-top: 20px;
@@ -95,6 +106,11 @@
     }
     .tour-info{
       margin-top: 20px;
+      .tour-name{
+        font-size: 1.7rem;
+        color: $main-bg-color;
+        font-weight: 600;
+      }
       ul{
         list-style-type: none;
         padding: 0;
@@ -110,6 +126,14 @@
         }
       }
     }
+}
+
+.reason{
+  .input-group{
+    span{
+      font-size: 1.5rem;
+    }
+  }
 }
 
 .error{

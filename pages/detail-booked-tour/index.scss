@@ -112,6 +112,10 @@
             border: 1px solid #ddd;
           }
         }
+        th, td{
+          text-align: center;
+          white-space: nowrap;
+        }
         .passenger-table {
           width: 100%;
           thead{

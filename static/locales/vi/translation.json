@@ -521,7 +521,7 @@
     "gender": "Giới tính",
     "birthdate": "Ngày sinh",
     "age": "Độ tuổi",
-    "passport": "Chứng minh thư",
+    "passport": "CMND",
     "male": "Nam",
     "female": "Nữ",
     "other": "Khác",
@@ -597,7 +597,11 @@
     "thank": "Xin cảm ơn!",
     "reason_required": "Lý do còn để trống!",
     "not_agree": "Bạn chưa đồng ý với điều khoản hủy tour của chúng tôi!",
-    "There is an error, please try again!": "Có lỗi xảy ra, hãy thử lại!"
+    "There is an error, please try again!": "Có lỗi xảy ra, hãy thử lại!",
+    "close": "ĐÓNG",
+    "busy": "Bận công việc đột xuất",
+    "sick": "Bị ốm, nhập viện không thể đi được",
+    "other": "Khác"
   },
   "wizard_step": {
     "step": "Bước",
@@ -691,10 +695,9 @@
     "phone": "Số điện thoại",
     "address": "Địa chỉ",
     "gender": "Giới tính",
-    "passport": "Chứng minh thư",
+    "passport": "CMND",
     "birthdate": "Ngày sinh",
     "age": "Độ tuổi",
-    "passport": "Chứng minh thư",
     "male": "Nam",
     "female": "Nữ",
     "other": "Khác",

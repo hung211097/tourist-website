@@ -7,10 +7,10 @@ import { connect } from 'react-redux'
 import ApiService from '../../services/api.service'
 import { wizardStep } from '../../constants'
 import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaUserSecret, FaChild, FaRegCalendarAlt, FaPlaneDeparture, FaMoneyBill } from "react-icons/fa"
-import { formatDate, distanceFromDays, compareDate } from '../../services/time.service'
+import { formatDate, distanceFromDays } from '../../services/time.service'
 import { slugify } from '../../services/utils.service'
-import ReactTable from 'react-table'
-import InfiniteScroll from 'react-infinite-scroller'
+// import ReactTable from 'react-table'
+// import InfiniteScroll from 'react-infinite-scroller'
 import { withNamespaces } from "react-i18next"
 import { metaData } from '../../constants/meta-data'
 import Redirect from 'routes/redirect'
@@ -70,22 +70,16 @@ class CheckOutConfirmation extends React.Component {
     this.state = {
       bookInfo: this.props.bookInfo ? this.props.bookInfo : null,
       tourInfo: this.props.bookInfo ? this.props.bookInfo.tour_turn : null,
-      passengers: [],
-      page: 1,
-      hasMore: true
+      passengers: []
     }
   }
 
   loadMore(){
-    if(this.state.bookInfo){
-      this.apiService.getPassengersInBookTour(this.state.bookInfo.id, this.state.page).then((res) => {
-        this.setState({
-          passengers: [...this.state.passengers, ...res.data],
-          page: res.next_page,
-          hasMore: res.next_page > 0
-        })
+    this.apiService.getPassengersInBookTour(this.state.bookInfo.id).then((res) => {
+      this.setState({
+        passengers: res.data
       })
-    }
+    })
   }
 
   componentDidMount() {
@@ -153,7 +147,9 @@ class CheckOutConfirmation extends React.Component {
                           </div>
                           <div className="content-tour row">
                             <div className="col-sm-4">
-                              <img alt="featured_img" src={tourInfo.tour.featured_img}/>
+                              <Link route="detail-tour" params={{id: tourInfo.code, name: slugify(tourInfo.tour.name)}}>
+                                <a><img alt="featured_img" src={tourInfo.tour.featured_img}/></a>
+                              </Link>
                             </div>
                             <div className="col-sm-8">
                               <h3>
@@ -250,7 +246,34 @@ class CheckOutConfirmation extends React.Component {
                           <div className="content-contact row">
                             <div className="col-12">
                               <div className="table-responsive mt-5">
-                                <InfiniteScroll
+                                <table className="table table-hover table-striped table-responsive-lg table-bordered">
+                                  <thead>
+                                    <tr>
+                                      <th scope="col">{t('detail_booked_tour.fullname')}</th>
+                                      <th scope="col">{t('detail_booked_tour.phone')}</th>
+                                      <th scope="col">{t('detail_booked_tour.birthdate')}</th>
+                                      <th scope="col">{t('detail_booked_tour.gender')}</th>
+                                      <th scope="col">{t('detail_booked_tour.age')}</th>
+                                      <th scope="col">{t('detail_booked_tour.passport')}</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {!!this.state.passengers.length && this.state.passengers.map((item, key) => {
+                                        return(
+                                          <tr key={key}>
+                                            <td>{item.fullname}</td>
+                                            <td>{item.phone}</td>
+                                            <td>{formatDate(item.birthdate)}</td>
+                                            <td>{t('detail_booked_tour.' + item.sex)}</td>
+                                            <td>{t('detail_booked_tour.' + this.ages[item.type_passenger.name])}</td>
+                                            <td>{item.passport}</td>
+                                          </tr>
+                                        )
+                                      })
+                                    }
+                                  </tbody>
+                                </table>
+                                {/*<InfiniteScroll
                                   pageStart={0}
                                   loadMore={this.loadMore.bind(this)}
                                   hasMore={this.state.hasMore}
@@ -302,7 +325,7 @@ class CheckOutConfirmation extends React.Component {
                                       }
                                     ]}
                                   />
-                                </InfiniteScroll>
+                                </InfiniteScroll>*/}
                               </div>
                             </div>
                           </div>
