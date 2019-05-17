@@ -179,9 +179,9 @@ class UpdateProfile extends React.Component {
 
     handleOnSelectFileAvatar(event) {
         let file = event.target.files[0]
-        if(file.size > 10240){
-          return
-        }
+        //if(file.size > 10240){
+          //return
+        //}
 
         let reader = new FileReader();
         reader.onloadend = () => {

@@ -2,11 +2,12 @@ import formatDistance from 'date-fns/formatDistance'
 import format from 'date-fns/format'
 import locale from 'date-fns/locale/vi'
 import differenceInHours from 'date-fns/differenceInHours'
-import differenceInDays from 'date-fns/differenceInDays'
+// import differenceInDays from 'date-fns/differenceInDays'
 import isValid from 'date-fns/isValid'
 import compareAsc from 'date-fns/compareAsc'
 import addDays from 'date-fns/addDays'
 import isSameDay from 'date-fns/isSameDay'
+import differenceInCalendarDays from 'date-fns/differenceInCalendarDays'
 
 export function fromNow(date, lng) {
   if(lng && lng === 'vi'){
@@ -27,7 +28,7 @@ export function distanceFromHours(dateEarlier, dateLater){
 }
 
 export function distanceFromDays(dateEarlier, dateLater){
-	return differenceInDays(dateLater, new Date(dateEarlier))
+	return differenceInCalendarDays(dateLater, new Date(dateEarlier))
 }
 
 export function isValidDate(date){
