@@ -85,6 +85,9 @@ footer{
                 border-radius: 0px;
                 border-style: solid;
                 padding: 10px 20px;
+                &.error{
+                  border-color: red;
+                }
               }
             }
           }
@@ -172,4 +175,9 @@ footer{
       font-size: 1.75rem;
     }
   }
+}
+
+p.error{
+  color: red !important;
+  margin-top: 6rem;
 }
