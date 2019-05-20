@@ -118,7 +118,7 @@
     "captcha": "Captcha chưa đúng!"
   },
   "tours": {
-    "title": "TOURS DU LỊCH",
+    "title": "TOUR DU LỊCH",
     "popular": "TOP TOUR PHỔ BIẾN",
     "rating": "TOP TOUR ĐƯỢC ĐÁNH GIÁ CAO",
     "concern": "TOP TOUR NHIỀU NGƯỜI QUAN TÂM",
@@ -458,7 +458,7 @@
   },
   "change_password": {
     "title": "ĐỔI MẬT KHẨU",
-    "password": "Mật khẩu",
+    "password": "Mật khẩu cũ",
     "confirm": "Xác nhận mật khẩu",
     "password_required": "Mật khẩu còn trống!",
     "confirm_required": "Mật khẩu xác nhận còn trống!",

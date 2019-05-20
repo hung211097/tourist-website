@@ -118,7 +118,7 @@
     "captcha": "Captcha is not correct!"
   },
   "tours": {
-    "title": "TOURS",
+    "title": "TOUR",
     "popular": "TOP POPULAR TOUR",
     "rating": "TOP RATING TOUR",
     "concern": "TOP CONCERNED TOUR",
@@ -458,7 +458,7 @@
   },
   "change_password": {
     "title": "CHANGE PASSWORD",
-    "password": "Password",
+    "password": "Old Password",
     "confirm": "Confirm Password",
     "password_required": "Password is required!",
     "confirm_required": "Confirm password is required!",

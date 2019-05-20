@@ -423,7 +423,7 @@ class SearchResult extends React.Component {
                                       </div>
                                     </div>
                                     <div className="nd_options_height_10" />
-                                    {/*<div className="break" />*/}
+                                    <div className="break" />
                                   </div>
                                   <div className="rating-box">
                                     <div className="acc-content">
@@ -600,7 +600,7 @@ class SearchResult extends React.Component {
                               </div>
                             </div>
                             <div className="nd_options_height_10" />
-                            {/*<div className="break" />*/}
+                            <div className="break" />
                           </div>
                           <div className="rating-box">
                             <div className="acc-content">
