@@ -156,7 +156,7 @@ class Contact extends React.Component {
                               <div className="input-field">
                                 <p>{t('contact.name')}: </p>
                                 <span>
-                                  <input type="text" name="name" placeholder="Name" value={this.state.name}
+                                  <input type="text" name="name" value={this.state.name}
                                     onChange={this.handleChangeName.bind(this)}/>
                                 </span>
                                 {this.state.isSubmit && !this.state.name &&
@@ -169,7 +169,7 @@ class Contact extends React.Component {
                               <div className="input-field">
                                 <p>Email: </p>
                                 <span>
-                                  <input type="text" name="email" placeholder="Email" value={this.state.email}
+                                  <input type="text" name="email" value={this.state.email}
                                     onChange={this.handleChangeEmail.bind(this)}/>
                                 </span>
                                 {this.state.isSubmit && !this.state.email &&
@@ -182,7 +182,7 @@ class Contact extends React.Component {
                               <div className="input-field">
                                 <p>{t('contact.message')}: </p>
                                 <span>
-                                  <textarea type="text" name="message" placeholder="Message" value={this.state.message}
+                                  <textarea type="text" name="message" value={this.state.message}
                                     onChange={this.handleChangeMessage.bind(this)}/>
                                 </span>
                                 {this.state.isSubmit && !this.state.message &&

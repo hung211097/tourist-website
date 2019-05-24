@@ -7,6 +7,8 @@ import { FaPhone, FaEnvelope, FaLocationArrow, FaArrowCircleUp } from "react-ico
 import * as Scroll from 'react-scroll'
 import { Link } from 'routes'
 import { withNamespaces  } from "react-i18next"
+import validateEmail from '../../services/validates/email.js'
+
 const scroll = Scroll.animateScroll
 
 class Footer extends React.Component {
@@ -20,7 +22,8 @@ class Footer extends React.Component {
     super(props)
     this.state = {
       email: '',
-      showPopup: false
+      showPopup: false,
+      isSubmit: false
     }
   }
 
@@ -41,14 +44,18 @@ class Footer extends React.Component {
 
   handleSubmit(e){
     e.preventDefault()
+    this.setState({
+      isSubmit: true
+    })
 
-    if(!this.state.email){
+    if(!this.state.email || !validateEmail(this.state.email)){
       return
     }
 
     this.setState({
       email: '',
-      showPopup: true
+      showPopup: true,
+      isSubmit: false
     })
   }
 
@@ -74,7 +81,11 @@ class Footer extends React.Component {
                       <div className="col-sm-4">
                         <div className="inner">
                           <div className="wrapper">
-                            <h3>{t('footer.contact')}</h3>
+                            <Link route="contact">
+                              <a>
+                                <h3>{t('footer.contact')}</h3>
+                              </a>
+                            </Link>
                             {/*<div style={{height: '5px'}} />
                             <p>24 {t('footer.hour')}</p>
                             <div className="dummy-height"/>*/}
@@ -107,6 +118,9 @@ class Footer extends React.Component {
                                 <div className="subscribe-btn">
                                   <button onClick={this.handleSubmit.bind(this)}>{t('footer.subscribe')}</button>
                                 </div>
+                                {this.state.isSubmit && this.state.email && !validateEmail(this.state.email) &&
+                                  <p className="error">{t('register.email_format')}</p>
+                                }
                               </form>
                             </div>
                           </div>

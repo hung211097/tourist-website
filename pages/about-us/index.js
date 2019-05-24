@@ -80,17 +80,15 @@ class AboutUs extends React.Component {
                     </p>
                     <br/>
                     <strong>{t('about.part_7')}</strong>
-                    <p>
-                      <ul>
-                        <li>{t('about.sub_part_7_1')}</li>
-                        <li>
-                          {t('about.sub_part_7_2')}
-                        </li>
-                        <li>
-                          {t('about.sub_part_7_3')}
-                        </li>
-                      </ul>
-                    </p>
+                    <ul>
+                      <li>{t('about.sub_part_7_1')}</li>
+                      <li>
+                        {t('about.sub_part_7_2')}
+                      </li>
+                      <li>
+                        {t('about.sub_part_7_3')}
+                      </li>
+                    </ul>
                   </div>
                   <div className="col-sm-4">
                     <div className="gallery">
