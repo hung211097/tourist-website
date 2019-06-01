@@ -71,7 +71,8 @@
     "copyright": "© Bản quyền thuộc về 2018 Travel Tour",
     "domestic_tour": "Tour trong nước",
     "international_tour": "Tour quốc tế",
-    "subscribe": "Gửi"
+    "subscribe": "Gửi",
+    "sub": "Đăng ký nhận tin"
   },
   "login": {
     "title": "ĐĂNG NHẬP",
@@ -234,12 +235,14 @@
   "search": {
     "title": "TÌM KIẾM",
     "sort_price": "GIÁ",
-    "lowest_price": "GIÁ THẤP",
-    "highest_price": "GIÁ CAO",
+    "priceAsc": "Giá thấp",
+    "priceDesc": "Giá cao",
     "sort_date": "NGÀY",
     "sort_rating": "ĐÁNH GIÁ",
-    "asc": "TĂNG DẦN",
-    "desc": "GIẢM DẦN",
+    "dateAsc": "Ngày gần nhất",
+    "dateDesc": "Ngày xa nhất",
+    "ratingAsc": "Đánh giá thấp nhất",
+    "ratingDesc": "Đánh giá cao nhất",
     "search_destination": "Tìm điểm đến của bạn",
     "search_for": "Kết quả tìm kiếm cho",
     "filter": "BỘ LỌC",
@@ -258,7 +261,8 @@
     "days": "NGÀY",
     "days_lower": "ngày",
     "slot": "chỗ trống",
-    "sale": "KHUYẾN MÃI"
+    "sale": "KHUYẾN MÃI",
+    "sort": "Sắp xếp"
   },
   "about": {
     "title": "THÔNG TIN VỀ CHÚNG TÔI",

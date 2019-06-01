@@ -109,7 +109,7 @@ class Footer extends React.Component {
                             </div>
                             <div className="subscribe-zone">
                               <form onSubmit={this.handleSubmit.bind(this)}>
-                                <p>Đăng ký nhận tin</p>
+                                <p>{t('footer.sub')}</p>
                                 <div className="subscribe-wrapper">
                                   <span className="email-sub">
                                     <input type="email" name="email" value={this.state.email} onChange={this.handleChangeEmail.bind(this)} placeholder="Email"/>

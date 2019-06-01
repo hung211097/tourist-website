@@ -1,5 +1,5 @@
 import i18n from 'i18next';
-import Backend from 'i18next-xhr-backend';
+// import Backend from 'i18next-xhr-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { reactI18nextModule } from 'react-i18next';
 import translationEN from '../static/locales/en/translation.json';
@@ -17,7 +17,8 @@ const resources = {
 i18n
   // load translation using xhr -> see /public/locales
   // learn more: https://github.com/i18next/i18next-xhr-backend
-  .use(Backend)
+  // .use(Backend)
+
   // detect user language
   // learn more: https://github.com/i18next/i18next-browser-languageDetector
   .use(LanguageDetector)
