@@ -216,7 +216,8 @@ class Header extends React.Component {
 
   onHideSearchBox(){
     this.setState({
-      showSearchBox: false
+      showSearchBox: false,
+      keyword: ''
     })
   }
 
@@ -571,7 +572,7 @@ class Header extends React.Component {
                       </a>
                     </Link>*/}
                     <form className="search-box" onSubmit={this.handleSubmit.bind(this)}>
-                      <div className={this.state.showSearchBox ? "icon-search-container active" : "icon-search-container"}>
+                      <div className={"icon-search-container active"}>
                         <span className="fa-search" onClick={this.onShowSearchBox.bind(this)}><FaSearch style={{color: 'white', fontSize: '18px'}}/></span>
                         <input type="text" className="search-input"
                           value={this.state.keyword} onChange={this.handleChangeKeyword.bind(this)}
