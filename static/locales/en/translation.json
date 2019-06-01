@@ -71,7 +71,8 @@
     "copyright": "© Copyright 2018 Travel Tour",
     "domestic_tour": "Domestic tour",
     "international_tour": "International tour",
-    "subscribe": "Subscribe"
+    "subscribe": "Subscribe",
+    "sub": "Subscribe for news"
   },
   "login": {
     "title": "LOGIN",
@@ -234,12 +235,14 @@
   "search": {
     "title": "SEARCH",
     "sort_price": "PRICE",
-    "lowest_price": "LOWEST PRICE",
-    "highest_price": "HIGHEST PRICE",
+    "priceAsc": "Lowest price",
+    "priceDesc": "Highest price",
     "sort_date": "DATE",
     "sort_rating": "RATING",
-    "asc": "ASC",
-    "desc": "DESC",
+    "dateAsc": "Nearly date",
+    "dateDesc": "Far date",
+    "ratingAsc": "Low rating",
+    "ratingDesc": "High rating",
     "search_destination": "Search your destination",
     "search_for": "Search's result for",
     "filter": "FILTER",
@@ -258,7 +261,8 @@
     "days": "DAYS",
     "days_lower": "days",
     "slot": "slots",
-    "sale": "SALE"
+    "sale": "SALE",
+    "sort": "Sort"
   },
   "about": {
     "title": "ABOUT US",

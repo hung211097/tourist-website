@@ -128,10 +128,10 @@
   .content{
     margin-top: 50px;
     .content-page{
-      margin-top: 60px;
+      margin-top: 20px;
       margin-bottom: 60px;
       @media screen and (max-width: 576px){
-        margin-top: 50px;
+        margin-top: 20px;
       }
       .inner{
         padding-top: 0px;
@@ -301,8 +301,10 @@
               font-size: 18px;
               position: relative;
               top: -2px;
-              @media screen and (max-width: 1024px){
+              @media screen and (max-width: 767px){
                 float: none;
+                margin: 5px;
+                margin-top: 10px;
               }
               span{
                 &.active{
@@ -338,6 +340,15 @@
           }
         }
       }
+    }
+  }
+  .sort-container{
+    width: 40%;
+    @media screen and (max-width: 834px){
+      width: 50%;
+    }
+    @media screen and (max-width: 576px){
+      width: 100%;
     }
   }
   .pagination{

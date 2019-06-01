@@ -78,12 +78,19 @@
       margin-top: 20px;
       button{
         width: 35%;
+        border: 1px solid $main-bg-color;
         @media screen and (max-width: 576px){
           width: 100%;
         }
       }
       .close-btn{
         margin-left: 25px;
+        color: $main-bg-color !important;
+        background: white;
+        &:hover{
+          color: white !important;
+          background: $main-bg-color !important;
+        }
         @media screen and (max-width: 576px){
           margin-left: 0px;
         }

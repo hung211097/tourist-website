@@ -67,7 +67,7 @@ class DetailBookedTour extends React.Component {
         body: '',
         passLocation: []
       }
-      this.time = {
+      {/*this.time = {
         "10.7683": "2019-05-24T08:05:00.000",
         "10.7794": "2019-05-24T09:11:00.000",
         "10.770042": "2019-05-24T10:05:00.000",
@@ -76,7 +76,7 @@ class DetailBookedTour extends React.Component {
         "10.7798": "2019-05-24T14:15:00.000",
         "10.7799": "2019-05-24T15:12:00.000",
         "10.7682": "2019-05-24T17:09:00.000"
-      } //Test data
+      } //Test data*/}
       this.handleClick = this.handleClick.bind(this);
     }
 
@@ -122,7 +122,7 @@ class DetailBookedTour extends React.Component {
         position: objLocation
       })
       this.apiService.getCurrentRoute({id: this.state.bookTour.tour_turn.id, lat: objLocation.latitude, lng: objLocation.longitude,
-        cur_time: this.time[objLocation.latitude]}).then((res) => { //Thay this.time bằng new Date()
+        cur_time: new Date()}).then((res) => { //Thay this.time bằng new Date()
           if(res.data && !this.checkExistPassLocation(res.data)){
             this.setState({
               currentLocation: res.data,

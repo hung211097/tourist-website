@@ -13,6 +13,7 @@ import Autosuggest from 'react-autosuggest'
 import { Router } from 'routes'
 import { withNamespaces } from "react-i18next"
 import { metaData } from '../../constants/meta-data'
+import Select from 'react-select'
 
 class SearchResult extends React.Component {
   displayName = 'Search Result'
@@ -46,6 +47,41 @@ class SearchResult extends React.Component {
       page: 0,
       isSubmit: false,
       autoSuggest: [],
+      sort: ''
+    }
+    this.sorts = [
+      { value: 'priceAsc', label: props.t('search.priceAsc') },
+      { value: 'priceDesc', label: props.t('search.priceDesc')  },
+      { value: 'dateAsc', label: props.t('search.dateAsc')  },
+      { value: 'dateDesc', label: props.t('search.dateDesc')  },
+      { value: 'ratingAsc', label: props.t('search.ratingAsc')  },
+      { value: 'ratingDesc', label: props.t('search.ratingDesc')  },
+    ]
+    this.mapSort = {
+      'priceAsc': {
+        sortBy: 'price',
+        sortType: 'ASC'
+      },
+      'priceDesc': {
+        sortBy: 'price',
+        sortType: 'DESC'
+      },
+      'dateAsc': {
+        sortBy: 'date',
+        sortType: 'ASC'
+      },
+      'dateDesc': {
+        sortBy: 'date',
+        sortType: 'DESC'
+      },
+      'ratingAsc': {
+        sortBy: 'rating',
+        sortType: 'ASC'
+      },
+      'ratingDesc': {
+        sortBy: 'rating',
+        sortType: 'DESC'
+      },
     }
   }
 
@@ -71,8 +107,10 @@ class SearchResult extends React.Component {
   UNSAFE_componentWillReceiveProps(props){
     this.init(props)
     this.handleReset()
+    this.sorts.forEach((item) => {
+      item.label = props.t(`search.${item.value}`)
+    })
   }
-
 
   loadSearchItem(){
     let params = {}
@@ -200,10 +238,11 @@ class SearchResult extends React.Component {
     })
   }
 
-  handleChangeSort(by, type){
+  handleChangeSort(event){
     this.setState({
-      sortBy: by,
-      sortType: type,
+      sort: event.value,
+      sortBy: this.mapSort[event.value].sortBy,
+      sortType: this.mapSort[event.value].sortType,
       page: 0
     }, () => {
       this.loadSearchItem()
@@ -251,7 +290,7 @@ class SearchResult extends React.Component {
           <style jsx>{styles}</style>
           <section className='middle'>
             {/* section box*/}
-            <div className="content-title nd_options_section">
+            {/*<div className="content-title nd_options_section">
               <div className="nd_options_section overlay">
                 <div className="nd_options_container nd_options_clearfix">
                   <div className="nd_options_section nd_options_height_110"/>
@@ -266,8 +305,8 @@ class SearchResult extends React.Component {
                   <div className="nd_options_section nd_options_height_110"/>
                 </div>
               </div>
-            </div>
-            <div className="sort-zone row no-margin">
+            </div>*/}
+            {/*<div className="sort-zone row no-margin">
               <div className="col-sm-12 no-padding">
                 <div className="inner no-padding">
                   <div className="wrapper">
@@ -322,8 +361,8 @@ class SearchResult extends React.Component {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="nd_options_container nd_options_clearfix content">
+            </div>*/}
+            <div className="nd_options_container nd_options_clearfix content" style={{marginTop: '0'}}>
               <div className="row content-page">
                 <div className="col-sm-12">
                   <div className="inner">
@@ -693,8 +732,16 @@ class SearchResult extends React.Component {
                       <div className="col-sm-8 search-zone">
                           <div className="break d-sm-none d-block mb-5" />
                         <div className="search-for">
-                          <div className="title d-inline-block">
-                            <h2>{t('search.search_for')}: &quot;{this.state.keywordDisplay}&quot;</h2>
+                          <h2>{t('search.search_for')}: &quot;{this.state.keywordDisplay}&quot;</h2>
+                          <div className="nd_options_height_20"/>
+                          <div className="title d-inline-block sort-container w-40">
+                            <Select
+                                instanceId="gender"
+                                value={this.state.sort}
+                                onChange={this.handleChangeSort.bind(this)}
+                                placeholder={this.state.sort ? t(`search.${this.state.sort}`) : t(`search.sort`)}
+                                options={this.sorts}
+                            />
                           </div>
                           <div className="change-view">
                             <span className={this.state.isListView ? "active" : ''}>
