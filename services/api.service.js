@@ -47,8 +47,9 @@ export default () => {
       let url = baseURL + `tour_turn/getByCode/${code}`
       return fetchCached(url)
     },
-    getRouteByTour: (id) => {
+    getRouteByTour: (id, params = {}) => {
       let url = baseURL + `route/getByTour/${id}`
+      url += params.vs ? `?_vs=${params.vs}` : ''
       return fetchCached(url)
     },
     getImageByTour: (id) => {

@@ -6,9 +6,9 @@ import { connect } from 'react-redux'
 import ApiService from 'services/api.service'
 import { Link, Router } from 'routes'
 import { RatingStar, BtnViewMore, MyMap, TourItem, Lightbox, Breadcrumb } from 'components'
-import { convertFullUrl, slugify, groupDayRoute } from '../../services/utils.service'
+import { convertFullUrl, slugify } from '../../services/utils.service'
 import { FaRegCalendarAlt, FaEye, FaSuitcase } from "react-icons/fa"
-import { formatDate, distanceFromDays, fromNow, addDay } from '../../services/time.service'
+import { formatDate, distanceFromDays, fromNow } from '../../services/time.service'
 import validateEmail from '../../services/validates/email.js'
 import { withNamespaces, Trans } from "react-i18next"
 import { validateStringWithoutNumber } from '../../services/validates'
@@ -117,9 +117,9 @@ class DetailTour extends React.Component {
       this.onLoadMoreReviews()
       this.apiService.increaseView(this.state.tourTurn.id).then(() => {})
       this.loadOtherTour()
-      this.apiService.getRouteByTour(this.state.tourTurn.tour.id).then((res) => {
+      this.apiService.getRouteByTour(this.state.tourTurn.tour.id, {vs: 2}).then((res) => {
         this.setState({
-          timeline: groupDayRoute(res.data)
+          timeline: res.data
         })
       })
     }
@@ -209,9 +209,9 @@ class DetailTour extends React.Component {
         this.onLoadMoreReviews()
         this.apiService.increaseView(this.state.tourTurn.id).then(() => {})
         this.loadOtherTour()
-        this.apiService.getRouteByTour(this.state.tourTurn.tour.id).then((result) => {
+        this.apiService.getRouteByTour(this.state.tourTurn.tour.id, {vs: 2}).then((result) => {
           this.setState({
-            timeline: groupDayRoute(result.data)
+            timeline: result.data
           })
         })
         this.breadcrumb[this.breadcrumb.length - 1] = { name: this.state.tourTurn.tour.name }
@@ -545,10 +545,18 @@ class DetailTour extends React.Component {
                                         return(
                                             <li key={key} className="item-timeline">
                                               <div className="timeline-wrapper">
-                                                <span>{t('detail_tour.day')} {item.day} - {formatDate(addDay(tourTurn.start_date, item.day - 1))}</span>
+                                                <span>{t('detail_tour.day')} {item.day} {item.list_province.length ? ' - ' : ''}</span>
+                                                <span>
+                                                  {!!item.list_province.length && item.list_province.map((province, pkey) => {
+                                                      return(
+                                                        <span key={pkey}>{province}{pkey !== item.list_province.length - 1 ? " - " : ""}</span>
+                                                      )
+                                                    })
+                                                  }
+                                                </span>
                                               </div>
                                               <ul className="sub-timeline">
-                                                {!!item.routes.length && item.routes.map((item_2, key_2) => {
+                                                {!!item.list_routes.length && item.list_routes.map((item_2, key_2) => {
                                                     return(
                                                       <li key={key_2}>
                                                         {item_2.arrive_time && item_2.leave_time &&
@@ -563,9 +571,9 @@ class DetailTour extends React.Component {
                                                         <h4 className="name-location">&nbsp;- {item_2.location.name} ({item_2.location.type.name})</h4>
                                                         <p>{item_2.detail}</p>
                                                       </li>
-                                                    )
-                                                  })
-                                                }
+                                                      )
+                                                    })
+                                                  }
                                               </ul>
                                             </li>
                                           )
