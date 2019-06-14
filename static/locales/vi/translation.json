@@ -125,7 +125,7 @@
     "concern": "TOP TOUR NHIỀU NGƯỜI QUAN TÂM",
     "book": "ĐẶT NGAY",
     "detail": "CHI TIẾT",
-    "sale": "KHUYẾN MÃI",
+    "sale": "SALE",
     "tag_title": "TOUR GẮN THẺ"
   },
   "detail_tour": {
@@ -143,7 +143,7 @@
     "addition": "Thông tin khác",
     "review": "Đánh giá",
     "you_May_like": "Có thể bạn sẽ thích",
-    "sale": "KHUYẾN MÃI",
+    "sale": "SALE",
     "route": "Lộ trình",
     "timeline": "Thời gian biểu",
     "price_tour": "Giá vé",
@@ -261,7 +261,7 @@
     "days": "NGÀY",
     "days_lower": "ngày",
     "slot": "chỗ trống",
-    "sale": "KHUYẾN MÃI",
+    "sale": "SALE",
     "sort": "Sắp xếp"
   },
   "about": {
@@ -503,7 +503,7 @@
     "cancelled": "Đã hủy",
     "pending_cancel": "Chờ hủy",
     "finished": "Đã hoàn thành tour",
-    "confirm_cancel": "Đã xác nhận hủy",
+    "confirm_cancel": "Chờ hoàn tiền",
     "refunded": "Đã hoàn tiền",
     "not_refunded": "Đã hủy và không nhận tiền",
     "tour_info": "Thông tin tour",
@@ -649,7 +649,7 @@
     "birthdate_required": "Ngày sinh còn trống!",
     "gender_required": "Giới tính còn trống!",
     "minimum": "Cần tối thiểu 1 người",
-    "sale": "KHUYẾN MÃI",
+    "sale": "SALE",
     "days": "ngày",
     "choose_gender": "Chọn giới tính",
     "question": "QUÝ KHÁCH LÀ NGƯỜI ĐI DU LỊCH HAY ĐẶT TOUR GIÚP?",

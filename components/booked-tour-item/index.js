@@ -38,7 +38,7 @@ class BookedTourItem extends React.Component {
         <div className="row">
           <div className="col-lg-4 col-sm-12 featured_img">
             {!!item.tour_turn.discount &&
-              <span className="sale">{t('tours.sale')}!</span>
+              <span className="sale">{t('tours.sale')} {item.tour_turn.discount * 100}%</span>
             }
             <Link route="detail-booked-tour" params={{id: item.code}}>
               <a className="detail-btn">

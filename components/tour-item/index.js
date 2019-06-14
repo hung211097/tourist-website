@@ -53,7 +53,7 @@ class TourItem extends React.Component {
         <Link route="detail-tour" params={{id: item.code, name: slugify(item.tour.name)}}>
           <a>
             {!!item.discount &&
-              <span className="sale">{t('tours.sale')}!</span>
+              <span className="sale">{t('tours.sale')} {item.discount * 100}%</span>
             }
             <img alt="featured_image" src={item.tour.featured_img}/>
             <h2>{item.tour.name}</h2>

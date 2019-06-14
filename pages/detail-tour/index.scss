@@ -427,7 +427,9 @@
             color: #fff;
             position: relative;
             height: 35px;
-            width: 25%;
+            width: auto;
+            display: inline-block;
+            padding-right: 20px;
             @media screen and (max-width: 1024px){
               width: 30%;
             }
