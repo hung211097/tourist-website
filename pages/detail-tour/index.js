@@ -367,7 +367,7 @@ class DetailTour extends React.Component {
                       <div className="col-sm-6 no-padding">
                         <div className="featured_img">
                           {!!tourTurn.discount &&
-                            <span className="sale">{t('detail_tour.sale')}!</span>
+                            <span className="sale">{t('detail_tour.sale')} {tourTurn.discount * 100}%</span>
                           }
                           <figure className="img-wrapper">
                             <div className="big-img">

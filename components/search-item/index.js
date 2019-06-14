@@ -43,7 +43,7 @@ class SearchItem extends React.Component {
                   <div className="tour-img">
                     <img src={item.tour.featured_img} className="img-responsive" alt="featured_image" />
                     {!!item.discount &&
-                      <span className="sale">{t('search.sale')}!</span>
+                      <span className="sale">{t('search.sale')} {item.discount * 100}%</span>
                     }
                     <div className="tour-statistic">
                       <div className="row figure">
@@ -110,7 +110,7 @@ class SearchItem extends React.Component {
                 <a>
                   <img src={item.tour.featured_img} className="img-responsive pic" alt="featured_image" />
                   {!!item.discount &&
-                    <span className="sale">{t('search.sale')}!</span>
+                    <span className="sale">{t('search.sale')} {item.discount * 100}%</span>
                   }
                 </a>
               </Link>
