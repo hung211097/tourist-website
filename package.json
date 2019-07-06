@@ -8,8 +8,9 @@
     "lint:fix": "./node_modules/.bin/eslint ./pages/**/*.js ./components/**/*.js ./pages/**.js ./components/**.js ./services/**.js --fix",
     "lint-watch": "./node_modules/.bin/esw -w ./pages/**/*.js ./components/**/*.js ./pages/**.js ./components/**.js",
     "dev": "./node_modules/.bin/concurrently \"next\" \"npm run lint-watch\" \"node index\"",
-    "build": "./node_modules/.bin/concurrently NODE_ENV=production \"next build\" \"node index\" \"npm run lint-watch\" ",
-    "heroku-postbuild": "npm run build",
+    "next-build": "next build",
+    "build": "./node_modules/.bin/concurrently \"next build\" \"cross-env HTTPS_SERVER=true NODE_ENV=production node index\" \"npm run lint-watch\" ",
+    "heroku-postbuild": "npm run next-build",
     "start": "./node_modules/.bin/concurrently \"next build\" \"node index\" \"npm run lint-watch\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -91,6 +92,7 @@
   "devDependencies": {
     "babel-eslint": "^8.2.3",
     "concurrently": "^3.6.0",
+    "cross-env": "^5.2.0",
     "eslint": "^4.19.1",
     "eslint-config-xo": "^0.22.1",
     "eslint-config-xo-react": "^0.16.0",
