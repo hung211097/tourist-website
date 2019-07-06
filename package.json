@@ -9,6 +9,7 @@
     "lint-watch": "./node_modules/.bin/esw -w ./pages/**/*.js ./components/**/*.js ./pages/**.js ./components/**.js",
     "dev": "./node_modules/.bin/concurrently \"next\" \"npm run lint-watch\" \"node index\"",
     "build": "./node_modules/.bin/concurrently NODE_ENV=production \"next build\" \"node index\" \"npm run lint-watch\" ",
+    "heroku-postbuild": "npm run build",
     "start": "./node_modules/.bin/concurrently \"next build\" \"node index\" \"npm run lint-watch\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
