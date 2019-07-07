@@ -13,7 +13,7 @@
     "start": "node index",
     "test": "echo \"Error: no test specified\" && exit 1",
     "analyze": "ANALYZE=1 next build",
-    "awseb": "NODE_ENV=production && next build && node ./node_modules/.bin/pm2 flush && node ./node_modules/.bin/pm2 start app.json",
+    "awseb": "NODE_ENV=production && next build && node ./node_modules/.bin/pm2 flush && node ./node_modules/.bin/pm2 start app.json"
   },
   "keywords": [],
   "author": "Ta Nguyen Hung",
