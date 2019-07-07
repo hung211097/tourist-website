@@ -91,6 +91,7 @@ const handler = routes.getRequestHandler(app)
 // const handler = routes.getRequestHandler(app, ({req, res, route, query}) => {
 //   app.render(req, res, route.page, query)
 // })
+app.use('/static', express.static(path.join(__dirname, 'public')))
 
 app.prepare()
 .then(() => {
