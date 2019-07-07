@@ -12,7 +12,8 @@
     "heroku-postbuild": "cross-env HTTPS_SERVER=true NODE_ENV=production ./node_modules/next/dist/bin/next build",
     "start": "node index",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "analyze": "ANALYZE=1 next build"
+    "analyze": "ANALYZE=1 next build",
+    "awseb": "NODE_ENV=production && next build && node ./node_modules/.bin/pm2 flush && node ./node_modules/.bin/pm2 start app.json",
   },
   "keywords": [],
   "author": "Ta Nguyen Hung",
