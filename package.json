@@ -11,7 +11,8 @@
     "build": "cross-env HTTPS_SERVER=true NODE_ENV=production ./node_modules/next/dist/bin/next build",
     "heroku-postbuild": "cross-env HTTPS_SERVER=true NODE_ENV=production ./node_modules/next/dist/bin/next build",
     "start": "node index",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "analyze": "ANALYZE=1 next build"
   },
   "keywords": [],
   "author": "Ta Nguyen Hung",
@@ -99,7 +100,7 @@
     "eslint-plugin-react": "^7.8.2",
     "eslint-watch": "^4.0.0",
     "pm2": "~2.4.0",
-    "webpack-bundle-analyzer": "^2.8.2",
+    "webpack-bundle-analyzer": "^2.13.1",
     "xo": "^0.21.0"
   }
 }
