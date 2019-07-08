@@ -15,6 +15,7 @@ import { withNamespaces } from "react-i18next"
 import { metaData } from '../../constants/meta-data'
 import Redirect from 'routes/redirect'
 import PaypalExpressBtn from 'react-paypal-express-checkout'
+import { quotes } from '../../constants'
 const client_id_paypal = process.env.CLIENT_ID_PAYPAL
 
 const mapStateToProps = state => {
@@ -72,7 +73,8 @@ class CheckOutPayment extends React.Component {
       isShowMethod3: false,
       method: '',
       block: false,
-      isPay: false
+      isPay: false,
+      rateCurrency: quotes.USDVND
     }
     this.method_1 = React.createRef()
     this.method_2 = React.createRef()
@@ -81,11 +83,11 @@ class CheckOutPayment extends React.Component {
 
   componentDidMount() {
     window.scrollTo(0, 0)
-    this.apiService.getRateCurrency().then((res) => {
-      this.setState({
-        rateCurrency: res.quotes.USDVND
-      })
-    })
+    // this.apiService.getRateCurrency().then((res) => {
+    //   this.setState({
+    //     rateCurrency: res.quotes.USDVND
+    //   })
+    // })
     const { passengerInfo } = this.props
     if(passengerInfo){
       this.setState({

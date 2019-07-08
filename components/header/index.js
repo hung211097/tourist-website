@@ -539,7 +539,7 @@ class Header extends React.Component {
                         <a>
                           <div className="account-zone" style={{lineHeight: '2.6', padding: '11px 15px'}}>
                             <div>
-                              <img alt="avatar" src={this.props.user.avatar ? (this.props.user.avatar) : "/static/images/avatar.jpg"} width={30} />
+                              <img alt="avatar" src={this.props.user.avatar ? (this.props.user.avatar) : "/static/images/avatar.jpg"} />
                               <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
                                 <p className="fullname">{this.props.user.fullname}</p>
                               </div>

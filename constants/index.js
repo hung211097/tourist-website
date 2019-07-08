@@ -20,6 +20,10 @@ export const lng = {
   VI: 'vi'
 }
 
+export const quotes = {
+  USDVND: 23237.5
+}
+
 export const mainCategoriesList = [NEWS]
 
 export function getDosmesticTour(){

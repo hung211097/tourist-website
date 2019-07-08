@@ -7,7 +7,7 @@
     "lint": "./node_modules/.bin/eslint ./pages/**/*.js ./components/**/*.js ./pages/**.js ./components/**.js",
     "lint:fix": "./node_modules/.bin/eslint ./pages/**/*.js ./components/**/*.js ./pages/**.js ./components/**.js ./services/**.js --fix",
     "lint-watch": "./node_modules/.bin/esw -w ./pages/**/*.js ./components/**/*.js ./pages/**.js ./components/**.js",
-    "dev": "./node_modules/.bin/concurrently \"next\" \"npm run lint-watch\" \"node index\"",
+    "dev": "./node_modules/.bin/concurrently \"next build\" \"node index\" \"npm run lint-watch\"",
     "build": "cross-env HTTPS_SERVER=true NODE_ENV=production ./node_modules/next/dist/bin/next build",
     "heroku-postbuild": "cross-env HTTPS_SERVER=true NODE_ENV=production ./node_modules/next/dist/bin/next build",
     "start": "node index",
@@ -58,6 +58,7 @@
     "react-countdown-now": "^2.1.0",
     "react-dom": "^16.7.0",
     "react-facebook": "^8.0.4",
+    "react-facebook-login": "^4.1.1",
     "react-geocode": "^0.1.2",
     "react-google-maps": "^9.4.5",
     "react-google-recaptcha": "^1.0.5",
@@ -85,10 +86,10 @@
     "redux-thunk": "2.3.0",
     "sass-loader": "^7.0.1",
     "slick-carousel": "^1.8.1",
-    "styled-jsx": "^3.2.1",
+    "styled-jsx": "^2.2.1",
     "styled-jsx-css-loader": "^0.3.0",
     "styled-jsx-plugin-postcss": "^2.0.0",
-    "styled-jsx-plugin-sass": "^1.0.0"
+    "styled-jsx-plugin-sass": "^0.2.2"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.3",

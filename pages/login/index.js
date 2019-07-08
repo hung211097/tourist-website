@@ -10,9 +10,11 @@ import { authLogin } from 'actions'
 import validateEmail from '../../services/validates/email.js'
 import validatePhone from '../../services/validates/phone.js'
 import ApiService from '../../services/api.service'
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import { setLocalStorage } from '../../services/local-storage.service'
 import { withNamespaces } from "react-i18next"
 import { KEY } from '../../constants/local-storage'
+const FB_CLIENT_ID = process.env.FB_CLIENT_ID
 
 const mapStateToProps = state => {
   return {
@@ -136,6 +138,21 @@ class Login extends React.Component {
     return true
   }
 
+  responseFacebook(response) {
+      this.apiService.loginFb({
+          userData: {
+            id: response.id,
+            name: response.name,
+            email: response.email,
+            phone: ''
+          }
+      }).then((data) => {
+          setLocalStorage(KEY.TOKEN, data.token)
+          this.props.authLogin && this.props.authLogin(data)
+          Router.pushRoute(this.props.link_redirect || 'home')
+      })
+  }
+
   render() {
     const {t} = this.props
     return (
@@ -221,10 +238,18 @@ class Login extends React.Component {
                       </button>
                     </div>
                     <p className="co-break">{t('login.or')}</p>
-                    <button type="button" className="woocommerce-Button button fb" name="loginFB" onClick={this.handleLoginFB.bind(this)}>
-                      <span><FaFacebookF style={{fontSize: '18px', position: 'relative', top: '-2px'}}/></span>
-                      <span> {t('login.login_fb')}</span>
-                    </button>
+                    <FacebookLogin
+                      appId={FB_CLIENT_ID}
+                      autoLoad={true}
+                      fields="id, name, email, gender, birthday, picture"
+                      callback={this.responseFacebook.bind(this)}
+                      render={renderProps => (
+                        <button type="button" className="woocommerce-Button button fb" name="loginFB" onClick={renderProps.onClick}>
+                          <span><FaFacebookF style={{fontSize: '18px', position: 'relative', top: '-2px'}}/></span>
+                          <span> {t('login.login_fb')}</span>
+                        </button>
+                      )}
+                    />
                     <p className="link-page">
                       {t('login.no_account')}&nbsp;
                       <Link route="register"><a>{t('login.register_here')}</a></Link>

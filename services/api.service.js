@@ -145,6 +145,10 @@ export default () => {
       let url = baseURL + `user/login`
       return httpPost(url, data)
     },
+    loginFb: (data) => {
+      let url = baseURL + `user/loginWithFacebook`
+      return httpPost(url, data)
+    },
     logout: () => {
       let url = baseURL + `user/logout`
       return fetchCached(url)
