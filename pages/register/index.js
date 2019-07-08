@@ -13,6 +13,11 @@ import { authLogin } from 'actions'
 import { checkAfterLogin } from '../../services/auth.service'
 import { withNamespaces } from "react-i18next"
 import ReCAPTCHA from "react-google-recaptcha"
+import { setLocalStorage } from '../../services/local-storage.service'
+import { KEY } from '../../constants/local-storage'
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+
+const FB_CLIENT_ID = process.env.FB_CLIENT_ID
 const site_key = process.env.KEY_GOOGLE_RECAPTCHA
 
 const mapStateToProps = state => {
@@ -213,6 +218,21 @@ class Register extends React.Component {
     })
   }
 
+  responseFacebook(response) {
+      this.apiService.loginFb({
+          userData: {
+            id: response.id,
+            name: response.name,
+            email: response.email,
+            phone: ''
+          }
+      }).then((data) => {
+          setLocalStorage(KEY.TOKEN, data.token)
+          this.props.authLogin && this.props.authLogin(data)
+          Router.pushRoute(this.props.link_redirect || 'home')
+      })
+  }
+
   render() {
     const {t} = this.props
     return (
@@ -349,10 +369,18 @@ class Register extends React.Component {
                       </button>
                     </div>
                     <p className="co-break">{t('register.or')}</p>
-                    <button type="button" className="woocommerce-Button button fb" name="loginFB" onClick={this.handleLoginFB.bind(this)}>
-                      <span><FaFacebookF style={{fontSize: '18px', position: 'relative', top: '-2px'}}/></span>
-                      <span> {t('register.login_fb')}</span>
-                    </button>
+                    <FacebookLogin
+                      appId={FB_CLIENT_ID}
+                      autoLoad={false}
+                      fields="id, name, email, gender, birthday, picture"
+                      callback={this.responseFacebook.bind(this)}
+                      render={renderProps => (
+                        <button type="button" className="woocommerce-Button button fb" name="loginFB" onClick={renderProps.onClick}>
+                          <span><FaFacebookF style={{fontSize: '18px', position: 'relative', top: '-2px'}}/></span>
+                          <span> {t('login.login_fb')}</span>
+                        </button>
+                      )}
+                    />
                     <p className="link-page">{t('register.have_account')}&nbsp;
                       <Link route="login"><a>{t('register.login_here')}</a></Link>
                     </p>

@@ -240,7 +240,7 @@ class Login extends React.Component {
                     <p className="co-break">{t('login.or')}</p>
                     <FacebookLogin
                       appId={FB_CLIENT_ID}
-                      autoLoad={true}
+                      autoLoad={false}
                       fields="id, name, email, gender, birthday, picture"
                       callback={this.responseFacebook.bind(this)}
                       render={renderProps => (
