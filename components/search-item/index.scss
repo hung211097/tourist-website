@@ -19,7 +19,7 @@
       .featured_image{
         position: relative;
         img{
-          height: 190px;
+          height: 228px;
           width: 100%;
         }
       }
@@ -184,6 +184,14 @@
       overflow: hidden;
       font-size: 15px;
       height: 100px;
+      h4{
+        font-weight: 700;
+        font-size: 1.45rem;
+      }
+      p{
+        font-size: 14px;
+        font-style: italic;
+      }
     }
     .tour-info{
       border-top: 1px solid #ccc;
@@ -264,5 +272,12 @@
         }
       }
     }
+  }
+}
+
+.short-desc {
+  margin: 1rem 0 0;
+  p {
+    font-style: italic;
   }
 }

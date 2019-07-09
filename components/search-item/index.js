@@ -71,9 +71,11 @@ class SearchItem extends React.Component {
               </Link>
               <div className="tour-content">
                     <div className="tour-title col-md-12 col-sm-12 col-12">
-                      <div style={{display: 'table-cell', verticalAlign: 'middle'}}>
+                      {/*<div style={{display: 'table-cell', verticalAlign: 'middle'}}>
                         {item.tour.name}
-                      </div>
+                      </div>*/}
+                      <h4>{item.tour.name}</h4>
+                      <p>{item.tour.description.substring(0, 100) + (item.tour.description.length > 100 ? '...' : '')}</p>
                     </div>
                     <div className="tour-info row">
                       <div className="date col-2">
@@ -144,6 +146,9 @@ class SearchItem extends React.Component {
                   </div>
                   <div className="clear" />
                 </div>
+              </div>
+              <div className="col-sm-12 short-desc">
+                <p>{item.tour.description.substring(0, 100) + (item.tour.description.length > 100 ? '...' : '')}</p>
               </div>
               <div className="col-sm-12 statistic-content">
                 <div className="row mg-listtour">
