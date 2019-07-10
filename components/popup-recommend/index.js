@@ -8,7 +8,6 @@ import { formatDate, distanceFromDays } from '../../services/time.service'
 import { withNamespaces } from "react-i18next"
 import { connect } from 'react-redux'
 import { removeRecommendLocaiton, removeAllRecommendLocaiton } from '../../actions'
-import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaRegCalendarAlt, FaMoneyBill, FaTimes, FaRegFrown, FaUser, FaUsers } from "react-icons/fa"
 import { slugify } from '../../services/utils.service'
 
 let customStyles = {
@@ -137,7 +136,7 @@ class PopupRecommend extends React.Component {
                                           <div className="col-sm-3">
                                             <div className="location-img">
                                               <a onClick={this.handleRemove.bind(this, item)} className="d-sm-none d-block">
-                                                <i><FaTimes /></i>
+                                                <i className="fas fa-times"></i>
                                               </a>
                                               <img alt="featured_img" src={item.featured_img ? item.featured_img : '/static/images/no_image.jpg'} />
                                             </div>
@@ -154,7 +153,7 @@ class PopupRecommend extends React.Component {
                                           </div>
                                           <div className="col-sm-1 remove-icon d-sm-flex d-none">
                                             <a onClick={this.handleRemove.bind(this, item)}>
-                                              <i><FaTimes /></i>
+                                              <i className="fas fa-times"></i>
                                             </a>
                                           </div>
                                         </div>
@@ -179,7 +178,7 @@ class PopupRecommend extends React.Component {
                                   <div className="no-result">
                                     <div className="inform">
                                       <p>
-                                        <i><FaRegFrown /></i>
+                                        <i className="far fa-frown"></i>
                                         {t('recommendation.no_result')}
                                       </p>
                                     </div>
@@ -216,46 +215,46 @@ class PopupRecommend extends React.Component {
                                                 <div className="row">
                                                   <div className="col-sm-6">
                                                     <p>
-                                                      <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
+                                                      <i className="fa fa-barcode" aria-hidden="true"></i>
                                                       {t('checkout_confirmation.code')}:&nbsp;
                                                       <span>{item.code}</span>
                                                     </p>
                                                     {!!item.discount &&
                                                       <p>
-                                                        <i aria-hidden="true"><FaMoneyBill /></i>
+                                                        <i className="fas fa-money-bill"></i>
                                                         {t('recommendation.origin_price')}:&nbsp;
                                                         <span>{item.original_price.toLocaleString()} VND</span>
                                                       </p>
                                                     }
                                                     <p>
-                                                      <i aria-hidden="true"><FaMoneyBill /></i>
+                                                      <i className="fas fa-money-bill"></i>
                                                       {t('recommendation.sale_price')}:&nbsp;
                                                       <span>{item.end_price.toLocaleString()} VND</span>
                                                     </p>
                                                     <p>
-                                                      <i aria-hidden="true"><FaUsers /></i>
+                                                      <i className="fas fa-users"></i>
                                                       {t('recommendation.max_people')}:&nbsp;
                                                       <span>{item.num_max_people}</span>
                                                     </p>
                                                     <p>
-                                                      <i aria-hidden="true"><FaUser /></i>
+                                                      <i className="fas fa-user"></i>
                                                       {t('recommendation.rest_people')}:&nbsp;
                                                       <span>{item.num_max_people - item.num_current_people}</span>
                                                     </p>
                                                   </div>
                                                   <div className="col-sm-6">
                                                     <p>
-                                                      <i className="fa fa-calendar-minus-o" aria-hidden="true"><FaRegCalendarMinus /></i>
+                                                      <i className="far fa-calendar-minus"></i>
                                                       {t('checkout_confirmation.start_date')}:&nbsp;
                                                       <span>{formatDate(item.start_date)}</span>
                                                     </p>
                                                     <p>
-                                                      <i className="fa fa-calendar-plus-o" aria-hidden="true"><FaRegCalendarPlus /></i>
+                                                      <i className="far fa-calendar-plus"></i>
                                                       {t('checkout_confirmation.end_date')}:&nbsp;
                                                       <span>{formatDate(item.end_date)}</span>
                                                     </p>
                                                     <p>
-                                                      <i className="fa fa-calendar" aria-hidden="true"><FaRegCalendarAlt /></i>
+                                                      <i className="far fa-calendar-alt"></i>
                                                       {t('checkout_confirmation.lasting')}:&nbsp;
                                                       <span>{distanceFromDays(new Date(item.start_date), new Date(item.end_date)) + 1} {t('checkout_confirmation.days')}</span>
                                                     </p>

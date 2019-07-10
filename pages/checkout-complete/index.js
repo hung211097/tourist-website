@@ -6,7 +6,6 @@ import { Link } from 'routes'
 import { connect } from 'react-redux'
 import ApiService from '../../services/api.service'
 import { wizardStep } from '../../constants'
-import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaUserSecret, FaChild, FaRegCalendarAlt, FaPlaneDeparture, FaMoneyBill } from "react-icons/fa"
 import { formatDate, distanceFromDays } from '../../services/time.service'
 import { slugify } from '../../services/utils.service'
 // import ReactTable from 'react-table'
@@ -136,7 +135,7 @@ class CheckOutConfirmation extends React.Component {
                       <div className="book-form">
                         <div className="text-center">
                           <h1>{t('checkout_confirmation.title')}</h1>
-                          <span className="undericon"><FaPlaneDeparture /></span>
+                          <span className="undericon"><i className="fas fa-plane-departure"></i></span>
                         </div>
                         <div className="tour-info">
                           <div className="title ">
@@ -160,25 +159,19 @@ class CheckOutConfirmation extends React.Component {
                               <div className="row mt-4">
                                 <div className="col-sm-6">
                                   <p>
-                                    <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
+                                    <i className="fa fa-barcode" aria-hidden="true"></i>
                                     {t('checkout_confirmation.book_code')}:&nbsp;
                                     <span>{bookInfo.code}</span>
                                   </p>
                                   <p>
-                                    <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
+                                    <i className="fa fa-barcode" aria-hidden="true"></i>
                                       {t('checkout_confirmation.code')}:&nbsp;:&nbsp;
                                     <span>{tourInfo.code}</span>
                                   </p>
                                   {!!bookInfo.type_passenger_detail.length && bookInfo.type_passenger_detail.map((item, key) => {
                                       return(
                                         <p key={key}>
-                                          <i aria-hidden="true">
-                                            {item.type === 'adults' ?
-                                              <FaUserSecret />
-                                              : item.type === 'children' ?
-                                              <FaChild /> : null
-                                            }
-                                          </i>
+                                          <i className={item.type === 'adults' ? "fas fa-user-secret" : "fas fa-child"} aria-hidden="true"></i>
                                           {t('checkout_confirmation.' + this.ages[item.type])} price:&nbsp;
                                           <span>
                                             {item.price.toLocaleString()} VND
@@ -189,24 +182,24 @@ class CheckOutConfirmation extends React.Component {
                                     })
                                   }
                                   <p className="total">
-                                    <i className="fa fa-child" aria-hidden="true"><FaMoneyBill /></i>
+                                    <i className="fas fa-money-bill"></i>
                                     {t('checkout_confirmation.total_price')}:&nbsp;
                                     <span>{bookInfo.total_pay.toLocaleString()} VND</span>
                                   </p>
                                 </div>
                                 <div className="col-sm-6">
                                   <p>
-                                    <i className="fa fa-calendar-minus-o" aria-hidden="true"><FaRegCalendarMinus /></i>
+                                    <i className="far fa-calendar-minus"></i>
                                     {t('checkout_confirmation.start_date')}:&nbsp;
                                     <span>{formatDate(tourInfo.start_date)}</span>
                                   </p>
                                   <p>
-                                    <i className="fa fa-calendar-plus-o" aria-hidden="true"><FaRegCalendarPlus /></i>
+                                    <i className="far fa-calendar-plus"></i>
                                     {t('checkout_confirmation.end_date')}:&nbsp;
                                     <span>{formatDate(tourInfo.end_date)}</span>
                                   </p>
                                   <p>
-                                    <i className="fa fa-calendar" aria-hidden="true"><FaRegCalendarAlt /></i>
+                                    <i className="far fa-calendar-alt"></i>
                                     {t('checkout_confirmation.lasting')}:&nbsp;
                                     <span>{distanceFromDays(new Date(tourInfo.start_date), new Date(tourInfo.end_date)) + 1} {t('checkout_confirmation.days')}</span>
                                   </p>

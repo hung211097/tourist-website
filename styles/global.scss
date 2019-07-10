@@ -1,5 +1,6 @@
 @import 'node_modules/bootstrap/scss/bootstrap.scss';
 @import 'styles/fonts.scss';
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css');
 @import 'styles/variables.scss';
 @import 'styles/react-range-slider.scss';
 @import 'styles/react-table.scss';
@@ -176,7 +177,7 @@ p {
       z-index: 99;
       padding: 7px;
       position: relative;
-      top: -1px;
+      top: 2px;
     }
   }
 }

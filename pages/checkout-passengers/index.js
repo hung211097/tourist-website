@@ -9,7 +9,6 @@ import validatePhone from '../../services/validates/phone.js'
 import ApiService from '../../services/api.service'
 import { wizardStep } from '../../constants'
 import { addInfoPassengers } from '../../actions'
-import { FaBarcode, FaRegCalendarMinus, FaRegCalendarPlus, FaUserSecret, FaChild, FaRegCalendarAlt } from "react-icons/fa"
 import { formatDate, distanceFromDays } from '../../services/time.service'
 import { getUserAuth } from 'services/auth.service'
 import { moveToElementId, slugify } from '../../services/utils.service'
@@ -17,7 +16,6 @@ import { withNamespaces } from "react-i18next"
 import { validateStringWithoutNumber } from '../../services/validates'
 import { metaData } from '../../constants/meta-data'
 import Redirect from 'routes/redirect'
-import _ from 'lodash'
 
 const mapStateToProps = state => {
   return {
@@ -454,7 +452,7 @@ class CheckOutPassengers extends React.Component {
                             <div className="form-group col-sm-6 col-xs-12"></div>
                           </div>
                           <div className="nd_options_height_10"/>
-                          {!_.isEmpty(this.props.user) &&
+                          {!!this.props.user && !!Object.keys(this.props.user).length &&
                             <div className="question">
                               <div className="title">
                                 <h3>{t('checkout_passenger.question')}</h3>
@@ -544,28 +542,28 @@ class CheckOutPassengers extends React.Component {
                             </h3>
                             <ul className="list-unstyled">
                               <li>
-                                <i className="fa fa-barcode" aria-hidden="true"><FaBarcode /></i>
+                                <i className="fas fa-barcode"></i>
                                 {t('checkout_passenger.code')}:&nbsp;
                                 <span>{tourInfo.code}</span>
                               </li>
                               <li>
-                                <i className="fa fa-calendar-minus-o" aria-hidden="true"><FaRegCalendarMinus /></i>
+                                <i className="far fa-calendar-minus"></i>
                                 {t('checkout_passenger.start_date')}:&nbsp;
                                 <span>{formatDate(tourInfo.start_date)}</span>
                               </li>
                               <li>
-                                <i className="fa fa-calendar-plus-o" aria-hidden="true"><FaRegCalendarPlus /></i>
+                                <i className="far fa-calendar-plus"></i>
                                 {t('checkout_passenger.end_date')}:&nbsp;
                                 <span>{formatDate(tourInfo.end_date)}</span>
                               </li>
                               <li>
-                                <i className="fa fa-calendar" aria-hidden="true"><FaRegCalendarAlt /></i>
+                                <i className="far fa-calendar-alt"></i>
                                 {t('checkout_passenger.lasting')}:&nbsp;
                                 <span>{distanceFromDays(new Date(tourInfo.start_date), new Date(tourInfo.end_date)) + 1} {t('checkout_passenger.days')}</span>
                               </li>
                               {!!this.state.adult && !!this.getPriceByAge('adults') &&
                                 <li id="liAdult" className="display-hidden" style={{display: 'list-item'}}>
-                                  <i className="fa fa-user-secret" aria-hidden="true"><FaUserSecret /></i>
+                                  <i className="fas fa-user-secret"></i>
                                   {t('checkout_passenger.adult_price')}:&nbsp;
                                   <span>
                                     <strong>
@@ -577,7 +575,7 @@ class CheckOutPassengers extends React.Component {
                               }
                               {!!this.state.child && this.getPriceByAge('children') &&
                                 <li id="liChild" className="display-hidden" style={{display: 'list-item'}}>
-                                  <i className="fa fa-child" aria-hidden="true"><FaChild /></i>
+                                  <i className="fas fa-child" aria-hidden="true"></i>
                                   {t('checkout_passenger.children_price')}:&nbsp;
                                   <span>
                                     <strong>

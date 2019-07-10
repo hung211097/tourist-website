@@ -2,8 +2,6 @@ import React from 'react'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { PopupInfo } from 'components'
-import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa"
-import { FaPhone, FaEnvelope, FaLocationArrow, FaArrowCircleUp } from "react-icons/fa"
 import * as Scroll from 'react-scroll'
 import { Link } from 'routes'
 import { withNamespaces  } from "react-i18next"
@@ -89,9 +87,9 @@ class Footer extends React.Component {
                             {/*<div style={{height: '5px'}} />
                             <p>24 {t('footer.hour')}</p>
                             <div className="dummy-height"/>*/}
-                            <a href="tel:0963 186 896" className="contact-detail"><i><FaPhone /></i>&nbsp;&nbsp;0963 186 896</a>
-                            <a href="mailto:traveltour@gmail.com" className="contact-detail"><i><FaEnvelope /></i>&nbsp;&nbsp;traveltour@gmail.com</a>
-                            <p style={{marginTop: '15px'}} className="contact-detail"><i><FaLocationArrow/></i>&nbsp;&nbsp; 162 Ba Tháng Hai, Phường 12, Quận 10</p>
+                            <a href="tel:0963 186 896" className="contact-detail"><i className="fas fa-phone"></i>&nbsp;&nbsp;0963 186 896</a>
+                            <a href="mailto:traveltour@gmail.com" className="contact-detail"><i className="fas fa-envelope"></i>&nbsp;&nbsp;traveltour@gmail.com</a>
+                            <p style={{marginTop: '15px'}} className="contact-detail"><i className="fas fa-location-arrow"></i>&nbsp;&nbsp; 162 Ba Tháng Hai, Phường 12, Quận 10</p>
                           </div>
                         </div>
                       </div>
@@ -103,9 +101,9 @@ class Footer extends React.Component {
                             {/*<p>{t('footer.social')}</p>
                             <div className="dummy-height"/>*/}
                             <div className="social-media">
-                              <a href="javascript:;"><FaFacebookF style={{fontSize: '24px', color: 'white'}}/></a>
-                              <a href="javascript:;"><FaInstagram style={{fontSize: '24px', color: 'white'}}/></a>
-                              <a href="javascript:;"><FaYoutube style={{fontSize: '24px', color: 'white'}}/></a>
+                              <a href="javascript:;"><i className="fab fa-facebook-f" style={{fontSize: '24px', color: 'white'}}></i></a>
+                              <a href="javascript:;"><i className="fab fa-instagram" style={{fontSize: '24px', color: 'white'}}></i></a>
+                              <a href="javascript:;"><i className="fab fa-youtube" style={{fontSize: '24px', color: 'white'}}></i></a>
                             </div>
                             <div className="subscribe-zone">
                               <form onSubmit={this.handleSubmit.bind(this)}>
@@ -160,7 +158,7 @@ class Footer extends React.Component {
           {/*end container*/}
           <div className="nd_options_section nd_options_height_10" />
           <a href="javascript:;" className="to-top" onClick={this.scrollToTop.bind(this)}>
-            <FaArrowCircleUp style={{color: 'white', fontSize: '28px'}}/>
+            <i className="fas fa-arrow-circle-up" style={{color: 'white', fontSize: '28px'}}></i>
           </a>
         </div>
         <div className="nd_options_section copy-right">

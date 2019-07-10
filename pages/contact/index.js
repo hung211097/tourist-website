@@ -4,7 +4,6 @@ import { Layout, MapContact, PopupInfo } from 'components'
 import validateEmail from '../../services/validates/email.js'
 import { companyPosition } from '../../constants/map-option'
 import ApiService from 'services/api.service'
-import { FaCheck } from "react-icons/fa"
 import PropTypes from 'prop-types'
 import { withNamespaces } from "react-i18next"
 import { validateStringWithoutNumber } from '../../services/validates'
@@ -270,7 +269,7 @@ class Contact extends React.Component {
             </div>
           </section>
           <PopupInfo show={this.state.showPopup} onClose={this.handleClose.bind(this)}>
-            <FaCheck size={100} style={{color: 'rgb(67, 74, 84)'}}/>
+            <i className="fas fa-check" style={{color: 'rgb(67, 74, 84)', fontSize: '80px'}}></i>
             <h1>{t('contact.success')}</h1>
             <div className="nd_options_height_10" />
             <p>{t('contact.success_content_1')}</p>

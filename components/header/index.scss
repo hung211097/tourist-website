@@ -457,7 +457,13 @@
   .access-location{
     line-height: 3.3;
     display: table;
-    padding-left: 20px;
+    padding-left: 30px;
+    i {
+      color: rgb(234, 67, 53);
+      font-size: 23px;
+      position: relative;
+      top: 3px;
+    }
   }
 
   .nd_options_recommend {
@@ -522,8 +528,8 @@
           color: #2980b9;
           font-size: 30px;
           position: absolute;
-          top: 3px;
-          left: 7px;
+          top: 6px;
+          left: 10px;
           cursor: pointer;
           z-index: 1;
       }
@@ -532,7 +538,7 @@
           color: #d9d9d9;
           font-size: 17px;
           position: absolute;
-          top: 5px;
+          top: 7px;
           right: 6px;
           transition: opacity 0.2s ease-out;
           cursor: pointer;
@@ -577,7 +583,7 @@
           color: #2980b9;
           font-size: 30px;
           position: absolute;
-          top: -10px;
+          top: 6px;
           left: 8px;
           cursor: pointer;
           z-index: 1;

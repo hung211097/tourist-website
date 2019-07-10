@@ -3,8 +3,6 @@ import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { Layout, SearchItem, RatingStar } from 'components' //Bỏ RatingStar
 import Slider from 'react-rangeslider'
-import { FaFilter, FaChevronDown, FaChevronUp, FaChevronLeft, FaChevronRight, FaList } from "react-icons/fa"
-import { TiThSmallOutline } from "react-icons/ti"
 import { UnmountClosed } from 'react-collapse'
 import ReactPaginate from 'react-paginate'
 import ApiService from 'services/api.service'
@@ -398,11 +396,11 @@ class SearchResult extends React.Component {
                             </form>
                             <div className="title-filter" onClick={this.handleToggleFilter.bind(this)}>
                               <h3>
-                                {t('search.filter')} <FaFilter />
+                                {t('search.filter')} <i className="fas fa-filter"></i>
                                 <span className="pull-right">
                                   {this.state.filterShow ?
-                                    <FaChevronDown />
-                                    : <FaChevronUp />
+                                    <i className="fas fa-chevron-down"></i>
+                                    : <i className="fas fa-chevron-up"></i>
                                   }
                                 </span>
                               </h3>
@@ -584,7 +582,7 @@ class SearchResult extends React.Component {
                         <form onSubmit={this.handleSubmitFilter.bind(this)} className="d-sm-block d-none">
                           <div className="title-filter-web">
                             <h3>
-                              {t('search.filter')} <FaFilter />
+                              {t('search.filter')} <i className="fas fa-filter"></i>
                             </h3>
                           </div>
                           <div className="search-date-box">
@@ -745,10 +743,10 @@ class SearchResult extends React.Component {
                           </div>
                           <div className="change-view">
                             <span className={this.state.isListView ? "active" : ''}>
-                              <a onClick={this.onListView.bind(this)}><FaList /></a>
+                              <a onClick={this.onListView.bind(this)}><i className="fas fa-list"></i></a>
                             </span>
                             <span className={!this.state.isListView ? "active" : ''}>
-                              <a onClick={this.offListView.bind(this)}><TiThSmallOutline /></a>
+                              <a onClick={this.offListView.bind(this)}><i className="fas fa-th-large"></i></a>
                             </span>
                           </div>
                         </div>
@@ -771,8 +769,8 @@ class SearchResult extends React.Component {
                         {this.state.searchResult && !!this.state.searchResult.length && this.state.totalPage > 1 &&
                           <div className="pagination row text-center">
                             <ReactPaginate
-                              previousLabel={<FaChevronLeft />}
-                              nextLabel={<FaChevronRight />}
+                              previousLabel={<i className="fas fa-chevron-left"></i>}
+                              nextLabel={<i className="fas fa-chevron-right"></i>}
                               previousClassName={'previous-pagination-li'}
                               nextClassName={'next-pagination-li'}
                               previousLinkClassName={'previous-pagination-a'}

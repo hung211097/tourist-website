@@ -9,7 +9,6 @@ import Geocode from "react-geocode"
 import { mapOption, mapDistance, filter, transports } from '../../constants/map-option'
 import { MarkerComponent } from 'components'
 import ApiService from '../../services/api.service'
-import { FaEyeSlash, FaFilter } from "react-icons/fa"
 import { PopupInfo, CustomCheckbox } from 'components'
 import { getAirportPoint } from '../../services/utils.service'
 
@@ -587,12 +586,12 @@ class MapComponent extends React.Component{
         </GoogleMap>
         {this.props.isShowTour && !this.props.isSetTour &&
           <a className="hide-tour" title="Hide tour's direction on map" onClick={this.onToggleShowTour.bind(this)}>
-            <FaEyeSlash style={{fontSize: '20px'}}/>
+            <i className="fas fa-eye-slash" style={{fontSize: '20px'}}></i>
           </a>
         }
         <a className={this.props.isSetTour && !this.props.styleDetailBookedFilter ? "filter detail" :
           this.props.styleDetailBookedFilter ? "filter detail-booked" : "filter"} title="Filter" onClick={this.onFilterTour.bind(this)}>
-          <FaFilter style={{fontSize: '20px'}}/>
+          <i className="fas fa-filter" style={{fontSize: '20px'}}></i>
         </a>
         <PopupInfo show={this.state.showFilter} onClose={this.handleClose.bind(this)} customContent={customStyles}>
           <div className="popup-title-filter">

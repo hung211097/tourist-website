@@ -5,7 +5,6 @@ import { Layout } from 'components'
 import { Router, Link } from 'routes'
 import { connect } from 'react-redux'
 import { isServer } from 'services/utils.service'
-import { FaFacebookF } from "react-icons/fa";
 import { authLogin } from 'actions'
 import validateEmail from '../../services/validates/email.js'
 import validatePhone from '../../services/validates/phone.js'
@@ -245,7 +244,7 @@ class Login extends React.Component {
                       callback={this.responseFacebook.bind(this)}
                       render={renderProps => (
                         <button type="button" className="woocommerce-Button button fb" name="loginFB" onClick={renderProps.onClick}>
-                          <span><FaFacebookF style={{fontSize: '18px', position: 'relative', top: '-2px'}}/></span>
+                          <span><i className="fab fa-facebook-f" style={{fontSize: '18px', marginRight: '10px'}}></i></span>
                           <span> {t('login.login_fb')}</span>
                         </button>
                       )}

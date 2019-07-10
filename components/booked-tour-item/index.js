@@ -2,7 +2,6 @@ import React from 'react'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { Link } from 'routes'
-import { FaBarcode, FaRegCalendarAlt, FaRegCalendarMinus, FaRegCalendarPlus, FaMoneyBill, FaInfoCircle, FaUsers } from "react-icons/fa"
 import { formatDate, distanceFromDays } from '../../services/time.service'
 import { capitalize } from '../../services/utils.service'
 
@@ -51,23 +50,25 @@ class BookedTourItem extends React.Component {
             <div className="detail-info">
               <div className="row">
                 <div className="col-sm-7">
-                  <p><span><i><FaBarcode /></i>{t('my_booking.code')}:</span> {item.code}</p>
-                  <p style={{color: 'red'}}><span style={{color: '#434a54'}}><i><FaInfoCircle /></i>{t('my_booking.status')}:</span> {capitalize(t('detail_booked_tour.' + item.status))}</p>
-                  <p><span><i><FaRegCalendarAlt /></i>{t('my_booking.book_day')}:</span> {formatDate(item.book_time, "dd/MM/yyyy HH:mm")}</p>
-                  <p><span><i><FaUsers /></i>{t('my_booking.total_slot')}:</span> {item.num_passenger}</p>
-                  <p><span><i><FaMoneyBill /></i>{t('my_booking.total_money')}:</span> {item.total_pay.toLocaleString()} VND</p>
+                  <p><span><i className="fas fa-barcode"></i>{t('my_booking.code')}:</span> {item.code}</p>
+                  <p style={{color: 'red'}}><span style={{color: '#434a54'}}>
+                    <i className="fas fa-info-circle"></i>{t('my_booking.status')}:</span> {capitalize(t('detail_booked_tour.' + item.status))}
+                  </p>
+                  <p><span><i className="far fa-calendar-alt"></i>{t('my_booking.book_day')}:</span> {formatDate(item.book_time, "dd/MM/yyyy HH:mm")}</p>
+                  <p><span><i className="fas fa-users"></i>{t('my_booking.total_slot')}:</span> {item.num_passenger}</p>
+                  <p><span><i className="fas fa-money-bill"></i>{t('my_booking.total_money')}:</span> {item.total_pay.toLocaleString()} VND</p>
                 </div>
                 <div className="col-sm-5">
                   <p>
-                    <span><i className="fa fa-calendar-minus-o" aria-hidden="true"><FaRegCalendarMinus /></i>{t('detail_booked_tour.start_date')}:&nbsp;</span>
+                    <span><i className="far fa-calendar-minus"></i>{t('detail_booked_tour.start_date')}:&nbsp;</span>
                     {formatDate(item.tour_turn.start_date)}
                   </p>
                   <p>
-                    <span><i className="fa fa-calendar-plus-o" aria-hidden="true"><FaRegCalendarPlus /></i>{t('detail_booked_tour.end_date')}:&nbsp;</span>
+                    <span><i className="far fa-calendar-plus"></i>{t('detail_booked_tour.end_date')}:&nbsp;</span>
                     {formatDate(item.tour_turn.end_date)}
                   </p>
                   <p>
-                    <span><i className="fa fa-calendar" aria-hidden="true"><FaRegCalendarAlt /></i>{t('detail_booked_tour.lasting')}:&nbsp;</span>
+                    <span><i className="far fa-calendar-alt"></i>{t('detail_booked_tour.lasting')}:&nbsp;</span>
                     {distanceFromDays(new Date(item.tour_turn.start_date), new Date(item.tour_turn.end_date)) + 1} {t('detail_booked_tour.days')}
                   </p>
                 </div>

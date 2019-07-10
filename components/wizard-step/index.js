@@ -2,7 +2,6 @@ import React from 'react'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 // import { Link } from 'routes'
-import { FaUser, FaCreditCard, FaReceipt } from "react-icons/fa"
 import { wizardStep } from '../../constants'
 
 class WizardStep extends React.Component {
@@ -48,7 +47,7 @@ class WizardStep extends React.Component {
             aria-disabled="false" aria-selected="false">
             <a id="form-total-t-0" aria-controls="form-total-p-0" onClick={this.handleClickPassenger.bind(this)}>
               <div className="title">
-                <span className="step-icon"><i><FaUser/></i></span>
+                <span className="step-icon"><i className="fas fa-user"></i></span>
                 <span className="step-number">{t('wizard_step.step')} 1</span>
                 <span className="step-text">{t('wizard_step.passenger_info')}</span>
               </div>
@@ -60,7 +59,7 @@ class WizardStep extends React.Component {
             <a id="form-total-t-1" aria-controls="form-total-p-1" onClick={this.handleClickPayment.bind(this)}>
               <span className="current-info audible"> </span>
               <div className="title">
-                <span className="step-icon"><i><FaCreditCard/></i></span>
+                <span className="step-icon"><i className="fas fa-credit-card"></i></span>
                 <span className="step-number">{t('wizard_step.step')} 2</span>
                 <span className="step-text">{t('wizard_step.payment_info')}</span>
               </div>
@@ -70,7 +69,7 @@ class WizardStep extends React.Component {
             : ""} aria-disabled="true">
             <a id="form-total-t-2" aria-controls="form-total-p-2" onClick={this.handleClickConfirmation.bind(this)}>
               <div className="title">
-                <span className="step-icon"><i><FaReceipt/></i></span>
+                <span className="step-icon"><i className="fas fa-receipt"></i></span>
                 <span className="step-number">{t('wizard_step.step')} 3</span>
                 <span className="step-text">{t('wizard_step.complete')}</span>
               </div>

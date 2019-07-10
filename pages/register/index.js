@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import { Layout, PopupInfo } from 'components'
 import { Link, Router } from 'routes'
 import { connect } from 'react-redux'
-import { FaFacebookF, FaCheck } from "react-icons/fa"
 import validateEmail from '../../services/validates/email.js'
 import validatePhone from '../../services/validates/phone.js'
 import { validateStringWithoutNumber } from '../../services/validates'
@@ -376,7 +375,7 @@ class Register extends React.Component {
                       callback={this.responseFacebook.bind(this)}
                       render={renderProps => (
                         <button type="button" className="woocommerce-Button button fb" name="loginFB" onClick={renderProps.onClick}>
-                          <span><FaFacebookF style={{fontSize: '18px', position: 'relative', top: '-2px'}}/></span>
+                          <span><i className="fab fa-facebook-f" style={{fontSize: '18px', marginRight: '10px'}}></i></span>
                           <span> {t('login.login_fb')}</span>
                         </button>
                       )}
@@ -390,7 +389,7 @@ class Register extends React.Component {
             </div>
           </section>
           <PopupInfo show={this.state.showPopup} onClose={this.handleClose.bind(this)}>
-            <FaCheck size={100} style={{color: 'rgb(67, 74, 84)'}}/>
+            <i className="fas fa-check" style={{color: 'rgb(67, 74, 84)', fontSize: '80px'}}></i>
             <h1>{t('register.congratulations')}!</h1>
             <div className="nd_options_height_10" />
             <p>{t('register.successfully')}</p>

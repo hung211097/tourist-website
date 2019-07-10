@@ -6,9 +6,6 @@ import { Router, Link } from 'routes'
 import { logout, saveRedirectUrl } from 'actions'
 import { connect } from 'react-redux'
 import ApiService from 'services/api.service'
-import { FaUserAlt, FaCog, FaShoppingCart, FaKey } from "react-icons/fa"
-import { IoIosUndo } from "react-icons/io"
-import _ from 'lodash'
 import { checkLogin } from 'services/auth.service'
 import { removeItem } from '../../services/local-storage.service'
 import { KEY } from '../../constants/local-storage'
@@ -91,7 +88,7 @@ class LayoutProfile extends React.Component {
                                   <li className={this.props.tabName === "profile" ? "active" : ""}>
                                     <Link route="profile">
                                       <a>
-                                        <FaUserAlt style={{fontSize: '16px', marginRight: '10px'}}/>
+                                        <i className="fas fa-user-alt" style={{fontSize: '16px', marginRight: '10px'}}></i>
                                         <span>{t('profile.menu_profile')}</span>
                                       </a>
                                     </Link>
@@ -99,7 +96,7 @@ class LayoutProfile extends React.Component {
                                   <li className={this.props.tabName === "my-booking" ? "active" : ""}>
                                     <Link route="my-booking">
                                       <a>
-                                        <FaShoppingCart style={{fontSize: '16px', marginRight: '10px'}}/>
+                                        <i className="fas fa-shopping-cart" style={{fontSize: '16px', marginRight: '10px'}}></i>
                                         {t('profile.menu_booking')}
                                       </a>
                                     </Link>
@@ -107,16 +104,16 @@ class LayoutProfile extends React.Component {
                                   <li className={this.props.tabName === "update-profile" ? "active" : ""}>
                                     <Link route="update-profile">
                                       <a>
-                                        <FaCog style={{fontSize: '16px', marginRight: '10px'}}/>
+                                        <i className="fas fa-cog" style={{fontSize: '16px', marginRight: '10px'}}></i>
                                         {t('profile.menu_update_profile')}
                                       </a>
                                     </Link>
                                   </li>
-                                  {!_.isEmpty(this.props.user) && this.props.user.type === 'local' &&
+                                  {!!this.props.user && !!Object.keys(this.props.user).length && this.props.user.type === 'local' &&
                                     <li className={this.props.tabName === "change-password" ? "active" : ""}>
                                       <Link route="change-password">
                                         <a>
-                                          <FaKey style={{fontSize: '16px', marginRight: '10px'}}/>
+                                          <i className="fas fa-key" style={{fontSize: '16px', marginRight: '10px'}}></i>
                                           {t('profile.menu_change_password')}
                                         </a>
                                       </Link>
@@ -124,7 +121,7 @@ class LayoutProfile extends React.Component {
                                   }
                                   <li>
                                     <a href="javascript:;" onClick={this.handleLogout.bind(this)}>
-                                      <IoIosUndo style={{fontSize: '16px', marginRight: '10px'}}/>
+                                      <i className="fas fa-sign-out-alt" style={{fontSize: '16px', marginRight: '10px'}}></i>
                                       {t('profile.menu_logout')}
                                     </a>
                                   </li>

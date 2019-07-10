@@ -3,7 +3,6 @@ import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { RatingStar } from 'components'
 import { Link } from 'routes'
-import { FaRegCommentDots, FaRegEye, FaBarcode, FaCalendarAlt, FaClock, FaUserAlt, FaRegCalendarAlt } from "react-icons/fa"
 import { formatDate, distanceFromDays } from '../../services/time.service'
 import { slugify } from '../../services/utils.service'
 
@@ -48,9 +47,9 @@ class SearchItem extends React.Component {
                     <div className="tour-statistic">
                       <div className="row figure">
                         <div className="col-sm-5 col-12 text-left no-padding">
-                          <i title="views"><FaRegEye /></i>&nbsp;&nbsp;
+                          <i className="far fa-eye" title="views"></i>&nbsp;&nbsp;
                           <span style={{color: 'white'}} title="views">{item.view.toLocaleString()}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                          <i title="comments"><FaRegCommentDots /></i>&nbsp;&nbsp;
+                          <i className="far fa-comment-dots" title="comments"></i>&nbsp;&nbsp;
                           <span style={{color: 'white'}} title="comments">{item.tour.num_review}</span>&nbsp;&nbsp;&nbsp;&nbsp;
                         </div>
                         <div className="col-sm-7 col-12 no-padding ratingstar">
@@ -59,10 +58,10 @@ class SearchItem extends React.Component {
                       </div>
                       <div className="row no-margin">
                         <div className="col-6 text-left no-padding">
-                          <i><FaRegCalendarAlt style={{position: 'relative', top: '-2px'}}/></i>&nbsp;&nbsp;{formatDate(item.start_date)}
+                          <i className="far fa-calendar-alt"></i>&nbsp;&nbsp;{formatDate(item.start_date)}
                         </div>
                         <div className="col-6 text-right no-padding">
-                          <i><FaUserAlt style={{position: 'relative', top: '-2px'}}/></i>&nbsp;&nbsp;{item.num_max_people - item.num_current_people} {t('search.slot')}
+                          <i className="fas fa-user-alt"></i>&nbsp;&nbsp;{item.num_max_people - item.num_current_people} {t('search.slot')}
                         </div>
                       </div>
                     </div>
@@ -138,10 +137,10 @@ class SearchItem extends React.Component {
                   </div>
                   <div className="statistic">
                     <span className="views" title="views">
-                      <FaRegEye />&nbsp;{item.view.toLocaleString()}
+                      <i className="far fa-eye"></i>&nbsp;{item.view.toLocaleString()}
                     </span>
                     <span className="comments" title="comment">
-                      <FaRegCommentDots />&nbsp;{item.tour.num_review}
+                      <i className="far fa-comment-dots"></i>&nbsp;{item.tour.num_review}
                     </span>
                   </div>
                   <div className="clear" />
@@ -153,16 +152,16 @@ class SearchItem extends React.Component {
               <div className="col-sm-12 statistic-content">
                 <div className="row mg-listtour">
                   <div className="col-lg-6 col-md-6 mg-bot10">
-                    <i><FaBarcode /></i>&nbsp;&nbsp;{t('search.tour_code')}: {item.code}
+                    <i className="fas fa-barcode"></i>&nbsp;&nbsp;{t('search.tour_code')}: {item.code}
                   </div>
                   <div className="col-lg-6 col-md-6 mg-bot10">
-                    <i><FaCalendarAlt /></i>&nbsp;&nbsp;{t('search.start_date')}: {formatDate(item.start_date)}
+                    <i className="far fa-calendar-alt"></i>&nbsp;&nbsp;{t('search.start_date')}: {formatDate(item.start_date)}
                   </div>
                   <div className="col-lg-6 col-md-6 mg-bot10">
-                    <i><FaClock /></i>&nbsp;&nbsp;{t('search.lasting')}: {distanceFromDays(new Date(item.start_date), new Date(item.end_date)) + 1} {t('search.days_lower')}
+                    <i className="fas fa-clock"></i>&nbsp;&nbsp;{t('search.lasting')}: {distanceFromDays(new Date(item.start_date), new Date(item.end_date)) + 1} {t('search.days_lower')}
                   </div>
                   <div className="col-lg-6 col-md-6 mg-bot10">
-                    <i><FaUserAlt /></i>&nbsp;&nbsp;{t('search.vacancy')}: {item.num_max_people - item.num_current_people}
+                    <i className="fas fa-user-alt"></i>&nbsp;&nbsp;{t('search.vacancy')}: {item.num_max_people - item.num_current_people}
                   </div>
                 </div>
               </div>

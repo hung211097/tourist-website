@@ -4,7 +4,6 @@ import { Layout, PopupInfo} from 'components'
 import {UnmountClosed} from 'react-collapse'
 import validateEmail from '../../services/validates/email.js'
 import ApiService from 'services/api.service'
-import { FaCheck } from "react-icons/fa"
 import PropTypes from 'prop-types'
 import { withNamespaces } from "react-i18next"
 import { validateStringWithoutNumber } from '../../services/validates'
@@ -325,7 +324,7 @@ class FAQ extends React.Component {
             </div>
           </section>
           <PopupInfo show={this.state.showPopup} onClose={this.handleClose.bind(this)}>
-            <FaCheck size={100} style={{color: 'rgb(67, 74, 84)'}}/>
+            <i className="fas fa-check" style={{color: 'rgb(67, 74, 84)', fontSize: '80px'}}></i>
             <h1>{t('faq.success')}!</h1>
             <div className="nd_options_height_10" />
             <p>{t('faq.success_content_1')}</p>

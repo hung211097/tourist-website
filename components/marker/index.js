@@ -1,7 +1,6 @@
 import React from 'react'
 import { Marker, InfoWindow } from "react-google-maps"
 import PropTypes from 'prop-types'
-import { FaEye, FaEyeSlash, FaPlusCircle } from "react-icons/fa"
 import ApiService from '../../services/api.service'
 import { connect } from 'react-redux'
 import { toggleShowTour, addRecommendLocaiton } from '../../actions'
@@ -156,9 +155,9 @@ class MarkerComponent extends React.Component{
                             &nbsp;&nbsp;&nbsp;
                             <a className="display-tour" onClick={this.onShowRoute.bind(this, item.id)} title="Display tour on the map">
                               {this.props.tourChosen && this.props.tourChosen === item.id && this.props.isShowTour ?
-                                <FaEyeSlash style={{fontSize: '19px'}}/>
+                                <i className="fas fa-eye-slash" style={{fontSize: '19px'}}></i>
                                 :
-                                <FaEye style={{fontSize: '19px'}}/>
+                                <i className="fas fa-eye" style={{fontSize: '19px'}}></i>
                               }
                             </a>
                           </li>
@@ -173,7 +172,7 @@ class MarkerComponent extends React.Component{
               }
               {!this.props.isInSuitcase && !this.props.isMe &&
                 <a onClick={this.handlePutInSuitcase.bind(this)} className="put-into" title="Add this location">
-                  <span><i><FaPlusCircle /></i> {t('marker.put')}</span>
+                  <span><i className="fas fa-plus-circle"></i> {t('marker.put')}</span>
                 </a>
               }
             </div>

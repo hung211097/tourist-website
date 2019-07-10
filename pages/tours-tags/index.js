@@ -34,7 +34,6 @@ class ToursTags extends React.Component {
           }
           return { tourInfo, query };
       } catch(e) {
-          console.log('e', e);
           Redirect(res, '404')
       }
   }

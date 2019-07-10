@@ -3,9 +3,6 @@ import { LayoutProfile, MyMap, PopupInfo } from 'components'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-// import _ from 'lodash'
-import { FaRegCalendarMinus, FaRegCalendarPlus, FaRegCalendarAlt, FaMoneyBill,
-  FaPhone, FaUsers, FaArrowLeft, FaInfoCircle } from "react-icons/fa"
 import { Router, Link } from 'routes'
 import ApiService from 'services/api.service'
 // import ReactTable from 'react-table'
@@ -270,7 +267,7 @@ class DetailBookedTour extends React.Component {
                   {this.state.bookTour &&
                     <div className="title">
                       <div className="text-center title-contain">
-                        <a className="back" onClick={this.handleBack.bind(this)}><FaArrowLeft style={{fontSize: '25px'}}/></a>
+                        <a className="back" onClick={this.handleBack.bind(this)}><i className="fas fa-arrow-left" style={{fontSize: '25px'}}></i></a>
                         <h1 className="my-profile__title">{t('detail_booked_tour.title')} <span>#{this.state.bookTour.code}</span></h1>
                         <h3 className="booking-status">{t('detail_booked_tour.status')}: <span>{capitalize(t('detail_booked_tour.' + this.state.bookTour.status))}</span></h3>
                       </div>
@@ -325,7 +322,7 @@ class DetailBookedTour extends React.Component {
                                     </div>
                                   }
                                   <div className="header-title has-top-border">{t('detail_booked_tour.tour_info')}
-                                    <span className="icon"><FaInfoCircle style={{fontSize: '25px', position: 'relative', top: '-1px'}}/></span>
+                                    <span className="icon"><i className="fas fa-info-circle" style={{fontSize: '25px'}}></i></span>
                                   </div>
                                   <div className="content-tour row">
                                     <div className="col-sm-4">
@@ -344,17 +341,17 @@ class DetailBookedTour extends React.Component {
                                       <div className="row mt-4">
                                         <div className="col-sm-6">
                                           <p>
-                                            <i className="fa fa-calendar-minus-o" aria-hidden="true"><FaRegCalendarMinus /></i>
+                                            <i className="far fa-calendar-minus"></i>
                                             {t('detail_booked_tour.start_date')}:&nbsp;
                                             <span>{formatDate(tourInfo.start_date)}</span>
                                           </p>
                                           <p>
-                                            <i className="fa fa-calendar-plus-o" aria-hidden="true"><FaRegCalendarPlus /></i>
+                                            <i className="far fa-calendar-plus"></i>
                                             {t('detail_booked_tour.end_date')}:&nbsp;
                                             <span>{formatDate(tourInfo.end_date)}</span>
                                           </p>
                                           <p>
-                                            <i className="fa fa-calendar" aria-hidden="true"><FaRegCalendarAlt /></i>
+                                            <i className="far fa-calendar-alt"></i>
                                             {t('detail_booked_tour.lasting')}:&nbsp;
                                             <span>{distanceFromDays(new Date(tourInfo.start_date), new Date(tourInfo.end_date)) + 1} {t('detail_booked_tour.days')}</span>
                                           </p>
@@ -367,7 +364,7 @@ class DetailBookedTour extends React.Component {
                               }
                               <div className="checkout-info">
                                 <div className="header-title has-top-border">{t('detail_booked_tour.checkout_info')}
-                                  <span className="icon"><FaMoneyBill style={{fontSize: '25px', position: 'relative', top: '-1px'}}/></span>
+                                  <span className="icon"><i className="fas fa-money-bill" style={{fontSize: '25px'}}></i></span>
                                 </div>
                                 <p className="mt-3 checkout-p">{t('detail_booked_tour.method')}&nbsp; <strong>{t('detail_booked_tour.' + this.state.bookTour.payment_method.name)}</strong></p>
                                 {this.state.bookTour.message_pay && this.state.bookTour.status !== 'booked' && this.state.bookTour !== 'cancelled' &&
@@ -424,7 +421,7 @@ class DetailBookedTour extends React.Component {
                               </div>
                               <div className="contact-info">
                                 <div className="header-title has-top-border">{t('detail_booked_tour.contact_info')}
-                                  <span className="icon"><FaPhone style={{fontSize: '18px', position: 'relative', top: '-2px'}}/></span>
+                                  <span className="icon"><i className="fas fa-phone" style={{fontSize: '18px'}}></i></span>
                                 </div>
                                 <div className="booking-contact">
                                   <div className="item-row">
@@ -451,7 +448,7 @@ class DetailBookedTour extends React.Component {
                               </div>
                               <div className="pax-info">
                                 <div className="header-title has-top-border mb-4">{t('detail_booked_tour.passenger_info')}
-                                  <span className="icon"><FaUsers style={{fontSize: '24px', position: 'relative', top: '-2px'}}/></span>
+                                  <span className="icon"><i className="fas fa-users" style={{fontSize: '24px', position: 'relative', top: '-2px'}}></i></span>
                                 </div>
                                 <div className="table-responsive">
                                   <table className="table table-hover table-striped table-responsive-lg table-bordered">

@@ -4,7 +4,6 @@ import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { formatDate, isValidDate } from '../../services/time.service'
-import _ from 'lodash'
 import { withNamespaces } from "react-i18next"
 
 const mapStateToProps = (state) => {
@@ -35,7 +34,7 @@ class Profile extends React.Component {
                     </div>
                     <div className="row content">
                       <div className="col-md-8">
-                        {!_.isEmpty(this.props.user) &&
+                        {!!this.props.user && !!Object.keys(this.props.user).length &&
                           <ul>
                             <li className="d-md-none d-block"><span>{t('profile.avatar')}:</span>
                             <img alt="avatar" src={this.props.user.avatar ? (this.props.user.avatar) : "/static/images/default-avatar.png"} />

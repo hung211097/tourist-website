@@ -64,7 +64,6 @@
     "react-google-recaptcha": "^1.0.5",
     "react-html-parser": "^2.0.2",
     "react-i18next": "^9.0.10",
-    "react-icons": "^3.4.0",
     "react-images": "^0.5.19",
     "react-infinite-scroller": "^1.2.4",
     "react-masonry-css": "^1.0.12",
@@ -86,10 +85,10 @@
     "redux-thunk": "2.3.0",
     "sass-loader": "^7.0.1",
     "slick-carousel": "^1.8.1",
-    "styled-jsx": "^2.2.1",
+    "styled-jsx": "^3.2.1",
     "styled-jsx-css-loader": "^0.3.0",
     "styled-jsx-plugin-postcss": "^2.0.0",
-    "styled-jsx-plugin-sass": "^0.2.2"
+    "styled-jsx-plugin-sass": "^1.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.3",

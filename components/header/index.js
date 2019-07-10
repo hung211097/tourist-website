@@ -3,11 +3,8 @@ import { Router, Link } from 'routes'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import _ from 'lodash'
 import ApiService from 'services/api.service'
 import { ClickOutside } from 'components'
-import { FaSearch, FaTimesCircle, FaSignOutAlt, FaSignInAlt, FaEnvelope, FaPhone, FaChevronRight, FaChevronLeft } from "react-icons/fa"
-import { MdLocationOn } from "react-icons/md"
 import { saveLocation, logout, saveRedirectUrl, saveProfile, useModal } from '../../actions'
 import { setLocalStorage, getLocalStorage, removeItem } from '../../services/local-storage.service'
 import { KEY } from '../../constants/local-storage'
@@ -321,23 +318,23 @@ class Header extends React.Component {
               <div className="nd_options_navigation_2_sidebar">
                 <div className="menu-menu-1-container">
                   <ul className="menu">
-                    <li style={_.isEmpty(this.props.user) ? {paddingBottom: '30px'} : null}>
+                    <li style={this.props.user && !!Object.keys(this.props.user).length ? {paddingBottom: '30px'} : null}>
                       <form className="search-box-responsive" onSubmit={this.handleSubmit.bind(this)}>
                         <div className="icon-search-container active">
-                          <span className="fa-search"><FaSearch style={{color: 'white', fontSize: '18px'}}/></span>
+                          <span><i className="fas fa-search" style={{color: 'white', fontSize: '18px'}}></i></span>
                           <input type="text" className="search-input"
                             value={this.state.keyword} onChange={this.handleChangeKeyword.bind(this)}
-                            data-ic-class="search-input" placeholder={t('header.search_tour')} />
+                            placeholder={t('header.search_tour')} />
                         </div>
                       </form>
                     </li>
-                    {!_.isEmpty(this.props.user) &&
+                    {!!this.props.user && !!Object.keys(this.props.user).length &&
                       <li>
                         <Link route="profile">
                           <a className="w-100 effect-hover">
                             <div className="account-zone-responsive">
-                              <img alt="avatar" src={this.props.user.avatar ? (this.props.user.avatar) : "/static/images/avatar.jpg"} />
-                              <p>{this.props.user.fullname}</p>
+                              <img alt="avatar" src={this.props.user && this.props.user.avatar ? (this.props.user.avatar) : "/static/images/avatar.jpg"} />
+                              <p>{this.props.user ? this.props.user.fullname : ''}</p>
                             </div>
                           </a>
                         </Link>
@@ -353,7 +350,7 @@ class Header extends React.Component {
                           {name: 'domestic_tour', params: {id: 1, name: "trong-nuoc"}})}>{t('header.domestic_tour')}</a>
                       <span className="arr"
                         onClick={this.handleShowMenuLv2.bind(this, this.domesticTour, {name: 'domestic_tour', params: {id: 1, name: "trong-nuoc"}})}>
-                        <i><FaChevronRight /></i>
+                        <i className="fas fa-chevron-right"></i>
                       </span>
                     </li>
                     <li className={this.props.page === 'international_tour has-child' ? 'active' : 'has-child'}>
@@ -361,7 +358,7 @@ class Header extends React.Component {
                           {name: 'international_tour', params: {id: 2, name: "quoc-te"}})}>{t('header.international_tour')}</a>
                       <span className="arr"
                         onClick={this.handleShowMenuLv2.bind(this, this.internationalTour, {name: 'international_tour', params: {id: 2, name: "quoc-te"}})}>
-                        <i><FaChevronRight /></i>
+                        <i className="fas fa-chevron-right"></i>
                       </span>
                     </li>
                     <li className={this.props.page === 'news' ? 'active' : ''}>
@@ -372,10 +369,10 @@ class Header extends React.Component {
                     <li className="no-padding">
                       <div className="apart" />
                     </li>
-                    {!_.isEmpty(this.props.user) ?
+                    {!!this.props.user && !!Object.keys(this.props.user).length ?
                       <li>
                         <a onClick={this.handleLogout.bind(this)} href="javascript:;" className="effect-hover">
-                          {t('header.logout')} <FaSignOutAlt style={{fontSize: '18px', color: 'white', marginLeft: '8px'}}/>
+                          {t('header.logout')} <i className="fas fa-sign-out-alt" style={{fontSize: '18px', color: 'white', marginLeft: '8px'}}></i>
                         </a>
                       </li>
                       :
@@ -383,7 +380,7 @@ class Header extends React.Component {
                         <Link route="login">
                           <a className="effect-hover">
                             {t('header.login')}
-                            <FaSignInAlt style={{fontSize: '18px', color: 'white', marginLeft: '8px'}}/>
+                            <i className="fas fa-sign-in-alt" style={{fontSize: '18px', color: 'white', marginLeft: '8px'}}></i>
                           </a>
                         </Link>
                       </li>
@@ -392,7 +389,7 @@ class Header extends React.Component {
                       <div className="contact-sidebar">
                         <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
                           <a href="mailto:traveltour@gmail.com" className="nd_options_margin_right_10 nd_options_float_left">
-                            <FaEnvelope style={{color: 'white', fontSize: '16px'}}/>
+                            <i className="fas fa-envelope" style={{color: 'white', fontSize: '16px'}}></i>
                           </a>
                         </div>
                         <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
@@ -402,7 +399,7 @@ class Header extends React.Component {
                       <div className="contact-sidebar">
                         <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
                           <a href="tel:0963186896" className="nd_options_margin_right_10 nd_options_float_left">
-                            <FaPhone style={{color: 'white', fontSize: '16px'}}/>
+                            <i className="fas fa-phone" style={{color: 'white', fontSize: '16px'}}></i>
                           </a>
                         </div>
                         <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
@@ -418,7 +415,7 @@ class Header extends React.Component {
               <ul className="menu-lv2">
                 <li>
                   <a className="mm-item back-lv1 inactive" onClick={this.handleBackLv1.bind(this)}>
-                    <span><i><FaChevronLeft /></i></span>&nbsp;
+                    <span><i className="fas fa-chevron-left"></i></span>&nbsp;
                     <p> &nbsp;{t('header.back')}</p>
                   </a>
                 </li>
@@ -464,7 +461,7 @@ class Header extends React.Component {
                     <div className="  nd_options_display_table nd_options_float_left">
                       <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
                         <a href="mailto:traveltour@gmail.com" className="nd_options_margin_right_10 nd_options_float_left">
-                          <FaEnvelope style={{color: 'white', fontSize: '16px'}}/>
+                          <i className="fas fa-envelope" style={{color: 'white', fontSize: '16px', position: 'relative', top: '2px'}}></i>
                         </a>
                       </div>
                       <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
@@ -474,7 +471,7 @@ class Header extends React.Component {
                     <div className="nd_options_display_table nd_options_float_left">
                       <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
                         <a href="tel:0963186896" className="nd_options_margin_right_10 nd_options_float_left">
-                          <FaPhone style={{color: 'white', fontSize: '16px'}}/>
+                          <i className="fas fa-phone" style={{color: 'white', fontSize: '16px', position: 'relative', top: '1px'}}></i>
                         </a>
                       </div>
                       <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
@@ -485,14 +482,14 @@ class Header extends React.Component {
                 </div>
                 <div className="right-header">
                   <div className="nd_options_navigation_top_header_2">
-                    {!_.isEmpty(this.props.user) &&
+                    {!!this.props.user && !!Object.keys(this.props.user).length &&
                       <a onClick={this.handleLogout.bind(this)} href="javascript:;">
                         <div className="nd_options_display_table_cell nd_options_vertical_align_middle float-right logout">
-                          <p>{t('header.logout')} <FaSignOutAlt style={{fontSize: '16px', color: 'white', marginLeft: '5px'}}/></p>
+                          <p>{t('header.logout')} <i className="fas fa-sign-out-alt" style={{fontSize: '16px', color: 'white', marginLeft: '5px', position: 'relative', top: '3px'}}></i></p>
                         </div>
                       </a>
                     }
-                    {_.isEmpty(this.props.user) &&
+                    {!this.props.user &&
                       <Link route="login">
                         <a>
                           <div className="account-zone">
@@ -500,7 +497,7 @@ class Header extends React.Component {
                               <h6 className="nd_options_font_size_10 nd_options_text_align_left nd_options_color_white nd_options_second_font">
                                 <p className="nd_options_color_white">
                                   {t('header.login')}
-                                  <FaSignInAlt style={{fontSize: '16px', color: 'white', marginLeft: '6px', position: 'relative', top: '-1px'}}/>
+                                  <i className="fas fa-sign-in-alt" style={{fontSize: '16px', color: 'white', marginLeft: '6px', position: 'relative', top: '2px'}}></i>
                                 </p>
                               </h6>
                             </div>
@@ -534,24 +531,24 @@ class Header extends React.Component {
                         </div>
                       </div>
                     </ClickOutside>
-                    {!_.isEmpty(this.props.user) &&
+                    {!!this.props.user && !!Object.keys(this.props.user).length &&
                       <Link route="profile">
                         <a>
                           <div className="account-zone" style={{lineHeight: '2.6', padding: '11px 15px'}}>
                             <div>
-                              <img alt="avatar" src={this.props.user.avatar ? (this.props.user.avatar) : "/static/images/avatar.jpg"} />
+                              <img alt="avatar" src={this.props.user && this.props.user.avatar ? (this.props.user.avatar) : "/static/images/avatar.jpg"} />
                               <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
-                                <p className="fullname">{this.props.user.fullname}</p>
+                                <p className="fullname">{this.props.user ? this.props.user.fullname : ''}</p>
                               </div>
                             </div>
                           </div>
                         </a>
                       </Link>
                     }
-                    {/*<Link route={!_.isEmpty(this.props.user) ? "profile" : "login"}>
+                    {/*<Link route={!!!this.props.user && !!Object.keys(this.props.user).length ? "profile" : "login"}>
                       <a>
-                        <div className="account-zone" style={!_.isEmpty(this.props.user) ? {lineHeight: '2.6', padding: '11px 15px'} : null}>
-                          {_.isEmpty(this.props.user) ?
+                        <div className="account-zone" style={!!!this.props.user && !!Object.keys(this.props.user).length ? {lineHeight: '2.6', padding: '11px 15px'} : null}>
+                          {!!this.props.user && !!Object.keys(this.props.user).length ?
                             <div className="nd_options_display_table_cell nd_options_vertical_align_middle">
                               <h6 className="nd_options_font_size_10 nd_options_text_align_left nd_options_color_white nd_options_second_font">
                                 <p className="nd_options_color_white">
@@ -573,11 +570,11 @@ class Header extends React.Component {
                     </Link>*/}
                     <form className="search-box" onSubmit={this.handleSubmit.bind(this)}>
                       <div className={"icon-search-container active"}>
-                        <span className="fa-search" onClick={this.onShowSearchBox.bind(this)}><FaSearch style={{color: 'white', fontSize: '18px'}}/></span>
+                        <span onClick={this.onShowSearchBox.bind(this)}><i className="fas fa-search" style={{color: 'white', fontSize: '18px'}}></i></span>
                         <input type="text" className="search-input"
                           value={this.state.keyword} onChange={this.handleChangeKeyword.bind(this)}
-                          data-ic-class="search-input" placeholder={t('header.search_tour')}/>
-                        <span className="fa-times-circle" onClick={this.onHideSearchBox.bind(this)}><FaTimesCircle /></span>
+                          placeholder={t('header.search_tour')}/>
+                        <span className="fas fa-times-circle" onClick={this.onHideSearchBox.bind(this)}></span>
                       </div>
                     </form>
                   </div>
@@ -687,7 +684,7 @@ class Header extends React.Component {
                           </ul>
                           <div className="access-location">
                             <a href='javascript:;' onClick={this.requestGeolocation.bind(this)} title="Access your location">
-                              <MdLocationOn style={{color: '#EA4335', fontSize: '28px'}}/>
+                              <i className="fas fa-map-marker-alt"></i>
                             </a>
                           </div>
                         </div>

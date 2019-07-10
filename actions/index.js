@@ -23,7 +23,7 @@ export const actionTypes = {
 export const storeKEY = 'tourist-v1'
 
 export const actionDefault = {
-    recommendLocation: []
+    recommendLocation: [],
 }
 
 export const authLogin = (user, bool = false) => {

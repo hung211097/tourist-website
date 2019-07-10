@@ -8,7 +8,6 @@ import { withNamespaces } from "react-i18next"
 import { formatDate } from '../../services/time.service'
 import { Link } from 'routes'
 import { caculateRefund, slugify } from '../../services/utils.service'
-import { FaChevronDown } from "react-icons/fa"
 import {UnmountClosed} from 'react-collapse'
 
 let customStyles = {
@@ -240,7 +239,7 @@ class PopupCancelTour extends React.Component {
                                   </div>
 
                                   <div className="condition">
-                                    <a onClick={this.handleToggleTerm.bind(this)}><h3>{t('cancel_tour.terms')} &nbsp;<i><FaChevronDown /></i> </h3></a>
+                                    <a onClick={this.handleToggleTerm.bind(this)}><h3>{t('cancel_tour.terms')} &nbsp;<i className="fas fa-chevron-down"></i> </h3></a>
                                     {/*<div className="nd_options_section nd_options_line_height_0 underline-zone">
                                       <span className="underline"></span>
                                     </div>*/}

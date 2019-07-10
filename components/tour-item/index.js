@@ -3,7 +3,6 @@ import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { RatingStar } from 'components'
 import { Link, Router } from 'routes'
-import { FaRegCalendarAlt } from "react-icons/fa"
 import { formatDate } from '../../services/time.service'
 import { slugify } from '../../services/utils.service'
 import { useModal } from '../../actions'
@@ -57,7 +56,9 @@ class TourItem extends React.Component {
             }
             <img alt="featured_image" src={item.tour.featured_img}/>
             <h2>{item.tour.name}</h2>
-            <p><FaRegCalendarAlt style={{fontSize: '15px', position: 'relative', top: '-1px'}} /> {formatDate(item.start_date)}</p>
+            <p>
+              <i className="far fa-calendar-alt" style={{fontSize: '15px', position: 'relative', top: '-1px'}}></i> {formatDate(item.start_date)}
+            </p>
           </a>
         </Link>
         <div className="rating-star">

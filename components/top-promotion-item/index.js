@@ -2,7 +2,6 @@ import React from 'react'
 import styles from './index.scss'
 import PropTypes from 'prop-types'
 import { Link } from 'routes'
-import { FaRegCalendarAlt, FaRegClock } from "react-icons/fa"
 import { formatDate } from '../../services/time.service'
 import Countdown, { zeroPad } from 'react-countdown-now'
 import { slugify } from '../../services/utils.service'
@@ -71,9 +70,11 @@ class TopPromotionItem extends React.Component {
                 <h3 style={item.tour.name.length > 30 ? {fontSize: '16px'} : null}>
                   {item.tour.name}
                   <br/>
-                  <p><FaRegCalendarAlt style={{fontSize: '15px', position: 'relative', top: '-1px'}} /> {formatDate(item.start_date)}</p>
+                  <p>
+                    <i className="far fa-calendar-alt" style={{fontSize: '15px', position: 'relative', top: '-1px'}}></i> {formatDate(item.start_date)}
+                  </p>
                   <p className="count-down">
-                    <FaRegClock style={{fontSize: '15px', position: 'relative', top: '-1px', marginRight: '5px'}} />
+                    <i className="far fa-clock" style={{fontSize: '15px', position: 'relative', top: '-1px', marginRight: '5px'}}></i>
                     <Countdown zeroPadTime={2} date={new Date(item.start_date)} key={item.id} renderer={renderTime} onComplete={this.handleComplete.bind(this)}/>
                   </p>
                 </h3>

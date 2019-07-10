@@ -7,14 +7,11 @@ import ApiService from 'services/api.service'
 import { Link, Router } from 'routes'
 import { RatingStar, BtnViewMore, MyMap, TourItem, Lightbox, Breadcrumb } from 'components'
 import { convertFullUrl, slugify } from '../../services/utils.service'
-import { FaRegCalendarAlt, FaEye, FaSuitcase } from "react-icons/fa"
 import { formatDate, distanceFromDays, fromNow } from '../../services/time.service'
 import validateEmail from '../../services/validates/email.js'
 import { withNamespaces, Trans } from "react-i18next"
 import { validateStringWithoutNumber } from '../../services/validates'
 import { FacebookShareButton } from 'react-share'
-import { FaFacebookF } from 'react-icons/fa'
-import _ from 'lodash'
 import { metaData } from '../../constants/meta-data'
 import { getLocalStorage } from '../../services/local-storage.service'
 import { KEY } from '../../constants/local-storage'
@@ -231,8 +228,8 @@ class DetailTour extends React.Component {
 
     this.apiService.writeReview({
       idTour: this.state.tourTurn.tour.id,
-      name: !_.isEmpty(this.props.user) ? this.props.user.fullname : this.state.author,
-      email: !_.isEmpty(this.props.user) ? this.props.user.email : this.state.email,
+      name: this.props.user && !!Object.keys(this.props.user).length ? this.props.user.fullname : this.state.author,
+      email: this.props.user && !!Object.keys(this.props.user).length ? this.props.user.email : this.state.email,
       comment: this.state.comment,
       rate: this.state.rating
     }).then((res) => {
@@ -285,11 +282,11 @@ class DetailTour extends React.Component {
   }
 
   validate(){
-    if(_.isEmpty(this.props.user) && (!this.state.email || !validateEmail(this.state.email))){
+    if(!this.props.user && (!this.state.email || !validateEmail(this.state.email))){
       return false
     }
 
-    if(_.isEmpty(this.props.user) && (!this.state.author || !validateStringWithoutNumber(this.state.author))){
+    if(!this.props.user && (!this.state.author || !validateStringWithoutNumber(this.state.author))){
       return false
     }
 
@@ -387,7 +384,7 @@ class DetailTour extends React.Component {
                           </div>
                           <div className="views-zone">
                             <span>
-                              <i><FaEye /></i>
+                              <i className="fas fa-eye"></i>
                               {tourTurn.view.toLocaleString()} {t('detail_tour.view')}
                             </span>
                           </div>
@@ -415,7 +412,7 @@ class DetailTour extends React.Component {
                                 <div className="col-lg-4 col-md-12 col-sm-5 col-12">
                                   <Link route="search-result" params={{keyword: tourTurn.tour.name}}>
                                     <a style={{color: '#333'}}>
-                                      <FaRegCalendarAlt style={{fontSize: '16px', color: 'rgb(67, 74, 84)', position: 'relative', top: '-2px'}}/>
+                                      <i className="far fa-calendar-alt" style={{fontSize: '16px', color: 'rgb(67, 74, 84)'}}></i>
                                       &nbsp;&nbsp;
                                       <span style={{color: '#fc6600'}}>{t('detail_tour.other_day')}</span>
                                     </a>
@@ -451,8 +448,8 @@ class DetailTour extends React.Component {
                               quote={tourTurn.tour.name}
                               style={{display: 'inline-block'}}>
                               <div id="fb-share-button">
-                                <i><FaFacebookF /></i>
-                                <span>Share</span>
+                                <i className="fab fa-facebook-f"></i>
+                                <span>{t('share')}</span>
                               </div>
                             </FacebookShareButton>
                             <div className="product_meta">
@@ -595,7 +592,7 @@ class DetailTour extends React.Component {
                             <div className="wrapper">
                               <div className="addtional-info">
                                 <p className="bold">
-                                  <i><FaSuitcase style={{position: 'relative', top: '-2px'}}/></i> {t('detail_tour.price_tour')}
+                                  <i className="fas fa-suitcase" style={{position: 'relative', top: '-1px'}}></i> {t('detail_tour.price_tour')}
                                 </p>
                                 {!!tourTurn.price_passengers.length &&
                                   <table className="table table-bordered">
@@ -843,27 +840,27 @@ class DetailTour extends React.Component {
                                   {this.state.isSubmit && !this.state.comment &&
                                     <p className="error">{t('detail_tour.review_required')}</p>
                                   }
-                                  {_.isEmpty(this.props.user) &&
+                                  {!this.props.user &&
                                     <p className="comment-form-author">
                                       <label htmlFor="author">{t('detail_tour.name')} <span className="required">*</span></label>
                                       <input id="author" name="author" type="text" value={this.state.author}
                                         onChange={this.handleChangeAuthor.bind(this)} size="30"/>
                                     </p>
                                   }
-                                  {this.state.isSubmit && !this.state.author && _.isEmpty(this.props.user) &&
+                                  {this.state.isSubmit && !this.state.author && !this.props.user &&
                                     <p className="error">{t('detail_tour.fullname_required')}</p>
                                   }
                                   {this.state.isSubmit && this.state.author && !validateStringWithoutNumber(this.state.author) &&
                                     <p className="error">{t('detail_tour.fullname_format')}</p>
                                   }
-                                  {_.isEmpty(this.props.user) &&
+                                  {!this.props.user &&
                                     <p className="comment-form-email">
                                       <label htmlFor="email">Email <span className="required">*</span></label>
                                       <input id="email" name="email" type="email" value={this.state.email}
                                         onChange={this.handleChangeEmail.bind(this)} size="30"/>
                                     </p>
                                   }
-                                  {this.state.isSubmit && !this.state.email && _.isEmpty(this.props.user) &&
+                                  {this.state.isSubmit && !this.state.email && !this.props.user &&
                                     <p className="error">{t('detail_tour.email_required')}</p>
                                   }
                                   {this.state.isSubmit && this.state.email && !validateEmail(this.state.email) &&
