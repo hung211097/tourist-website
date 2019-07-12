@@ -498,7 +498,7 @@ class DetailTour extends React.Component {
                       <div className="tab-panel">
                         <div className="row">
                           <div className="col-12">
-                            <div className="wrapper">
+                            <div className="wrapper wrapper-desc">
                               <p>{tourTurn.tour.description}</p>
                             </div>
                           </div>
@@ -617,7 +617,7 @@ class DetailTour extends React.Component {
                                 }
                                 <div className="nd_options_height_20"/>
                                 <p className="bold"><img alt="icon" src="/static/svg/policy.svg" /> {t('detail_tour.policy')}</p>
-                                <p className="mt-3">{tourTurn.tour.policy}</p>
+                                <p className="mt-3 policy">{tourTurn.tour.policy}</p>
                                 <p className="bold">Giá vé dành cho trẻ em:</p>
                                 <ul>
                                   <li>

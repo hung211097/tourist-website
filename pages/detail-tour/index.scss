@@ -262,6 +262,11 @@
             }
           }
         }
+        .wrapper-desc {
+          p{
+            white-space: pre-wrap;
+          }
+        }
       }
     }
     .reviews{
@@ -584,4 +589,8 @@
   font-size: 1.4rem;
   font-weight: bold;
   display: inline-block;
+}
+
+.policy{
+  white-space: pre-wrap;
 }
