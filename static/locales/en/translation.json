@@ -177,7 +177,8 @@
     "arrive_at": "Arrive at",
     "leave_at": "Leave at",
     "policy": "POLICY",
-    "no_book": "Tour is full slot or expired for booking, please find another travel date!"
+    "no_book": "Tour is full slot or expired for booking, please find another travel date!",
+    "booking_term": "Booking term"
   },
   "wrong_auth": {
     "oops": "Oops!",

@@ -7,7 +7,7 @@ import ApiService from 'services/api.service'
 import { Link, Router } from 'routes'
 import { RatingStar, BtnViewMore, MyMap, TourItem, Lightbox, Breadcrumb } from 'components'
 import { convertFullUrl, slugify } from '../../services/utils.service'
-import { formatDate, distanceFromDays, fromNow } from '../../services/time.service'
+import { formatDate, distanceFromDays, fromNow, subDay } from '../../services/time.service'
 import validateEmail from '../../services/validates/email.js'
 import { withNamespaces, Trans } from "react-i18next"
 import { validateStringWithoutNumber } from '../../services/validates'
@@ -320,7 +320,6 @@ class DetailTour extends React.Component {
     const { tourTurn, num_review } = this.state
     const {t} = this.props
     const distance = tourTurn ? distanceFromDays(new Date(tourTurn.start_date), new Date(tourTurn.end_date)) + 1 : 0
-    const day_left = tourTurn ? distanceFromDays(Date.now(), new Date(tourTurn.start_date)) : 0
     const slot = tourTurn ? tourTurn.num_max_people - tourTurn.num_current_people : 0
     const url = convertFullUrl(this.props.route.parsedUrl.pathname)
     return (
@@ -402,7 +401,7 @@ class DetailTour extends React.Component {
                           </p>
                           <div className="row short-des">
                             <div className="col-12">
-                              <div className="row" style={{marginBottom: '15px', marginTop: '30px'}}>
+                              <div className="row" style={{marginBottom: '15px', marginTop: '15px'}}>
                                 <div className="col-md-4 col-sm-4 col-6">{t('detail_tour.tour_code')}:</div>
                                 <div className="col-md-8 col-sm-8 col-6">{tourTurn.code}</div>
                               </div>
@@ -420,23 +419,21 @@ class DetailTour extends React.Component {
                                   </div>
                                 </div>
                                 <div className="row" style={{marginTop: '15px'}}>
-                                  <div className="col-lg-4 col-md-6 col-sm-4 col-6 mg-bot15">
+                                  <div className="col-lg-4 col-md-6 col-sm-6 col-6 mg-bot15">
                                     <span>
                                       <Trans i18nKey="detail_tour.last_in" count={distance}>
                                         Last in: {{distance}} days
                                       </Trans>
                                     </span>
                                   </div>
-                                  <div className="col-lg-4 col-md-6 col-sm-3 col-6">
-                                    <Trans i18nKey="detail_tour.days_left" count={day_left}>
-                                      {{day_left}} days left
-                                    </Trans>
-                                  </div>
-                                  <div className="col-lg-4 col-md-12 col-sm-5 col-12  mg-bot15">
+                                  <div className="col-lg-4 col-md-6 col-sm-6 col-6  mg-bot15">
                                     <Trans i18nKey="detail_tour.vacancy" count={slot}>
                                       {{slot}} vacancies left
                                     </Trans>
-                                   </div>
+                                  </div>
+                                  <div className="col-sm-12">
+                                    <span>{t('detail_tour.booking_term')}: {formatDate(subDay(new Date(tourTurn.start_date), tourTurn.booking_term))}</span>
+                                  </div>
                                 </div>
                               </div>
                             </div>
